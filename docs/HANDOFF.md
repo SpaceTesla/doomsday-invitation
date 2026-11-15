@@ -171,7 +171,7 @@ Follow the milestones in `ARCHITECTURE.md` section 12, in order. Each ends with 
 | # | Milestone | Done when |
 |---|---|---|
 | 0A | Local foundation (done) | A styled specimen page runs locally and reads the local database |
-| 0B | Deployment foundation (proven by hand; workflow waits for its first push) | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
+| 0B | Deployment foundation (done) | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
 | 1 | Schema and domain (done) | Domain and concurrency tests pass against PostgreSQL |
 | 2 | Administrator panel (done locally) | Doom can run an event end to end with no guest screens |
 | 3 | Guest journey, without motion (done locally) | The journey passes end to end on phone and desktop |

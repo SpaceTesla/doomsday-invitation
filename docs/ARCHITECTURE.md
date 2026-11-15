@@ -262,7 +262,7 @@ The approved experience is built exactly as specified. The host delivers files a
 | Cross-site requests | Administrator mutations check the `Origin` header |
 | Rate limiting | Failed sign-ins are counted in `attempt`: five in fifteen minutes locks sign-in for fifteen minutes. Unknown guest tokens are counted per address the same way |
 | Guest tokens | 256 bits. Stored as they are so a link can be copied again; a token can be replaced at will, and anyone able to read the database can read everything in it already |
-| Tokens in the address | The token stays in the path, `/s/{token}`. Vercel's request logs record paths, keep them for a short time (about an hour on Hobby, to be confirmed in milestone 0B) and show them only to the account's owner, who is Doom and already holds every token. Anyone who took over the account would also hold the database credentials. Exchanging the token from a URL fragment for a cookie was evaluated and rejected: it would make the first screen wait for a script and a request, remove the server-rendered fallback, and add a guest cookie that in-app browsers often drop, while protecting none of the places a link really leaks (the message thread, browser history, screenshots). Our own logs never contain a token or a full address, error responses never echo one, and Doom can replace any link |
+| Tokens in the address | The token stays in the path, `/s/{token}`. Vercel's request logs record paths, keep them for a short time (under an hour on Hobby, confirmed in milestone 0B) and show them only to the account's owner, who is Doom and already holds every token. Anyone who took over the account would also hold the database credentials. Exchanging the token from a URL fragment for a cookie was evaluated and rejected: it would make the first screen wait for a script and a request, remove the server-rendered fallback, and add a guest cookie that in-app browsers often drop, while protecting none of the places a link really leaks (the message thread, browser history, screenshots). Our own logs never contain a token or a full address, error responses never echo one, and Doom can replace any link |
 | Guest-specific access | A guest handler loads the guest by the token in its own path and acts only on that row. No handler accepts a guest id from the request |
 | What guests see | Never another guest's token or id, the opened status, or who approved |
 | Built in milestone 3 | Unknown guest links are counted per address like failed sign-ins; a locked address gets the invalid-link answer even for a valid link, so links cannot be searched for. The first open is recorded by a script on the page, not by the page request, so a messaging app's link-preview robot never marks a guest as having opened; either opening action records that the opening was seen. The summons plate is exported from the board generator (`scripts/export-plates.py`) and baked to WebP in a browser, because live SVG filters are too slow on phones; its words are real text and its seal is a live component. Long names are measured in the browser (`lib/fit.ts`) and take the approved fit. The guest list shows names without titles. A guest whose character Doom removed sees its name in the message (migration `0001` adds `guest.removed_character_name`) |
@@ -347,6 +347,8 @@ Built and proven on 16 November 2026 (milestone 0B). The workflow is `.github/wo
    4. `scripts/smoke-test.mjs` asks the staged deployment, through Vercel's protection bypass (`vercel curl`), whether it reads the database and has every migration in this commit's journal. If not, the run stops and the live deployment is untouched.
    5. `vercel promote` moves the production domain to the new deployment.
 
+The first production run through the workflow (16 November 2026) went through every step: checks, build on Linux, staged deploy, backup, migration under the lock, smoke test ("2 of 2 migrations applied"), promotion. Two fixes were needed on the way, both in the workflow, not the application: generate Next.js's route types before type-checking (`next typegen`), and let `vercel curl` read the token from `VERCEL_TOKEN` (it forwards options it does not know, `--token` included, to curl).
+
 What the trial established, by hand from the CLI, before the workflow was written:
 
 - **Staging and promotion work on Hobby.** Before promotion the production domain answered 404 (no deployment yet held it); after `vercel promote` it served the staged deployment at once.
@@ -358,7 +360,12 @@ Settings: Vercel holds `DATABASE_URL` (the pooled string), `EVENT_TIMEZONE`, `SE
 
 Migrations are written to be backward compatible, so the previous deployment keeps working while the new one goes live, and `vercel rollback` stays safe after a promotion.
 
-**Still to confirm:** that Vercel's daily cron sends `Authorization: Bearer <CRON_SECRET>` (the retention endpoint logs only whether the header matched; check the logs after its first run at 03:00 India time), how long Hobby keeps runtime logs, and Vercel's Hobby terms.
+**Confirmed on 16 November 2026:**
+
+- **Vercel's cron sends the secret.** The job is registered (`vercel crons list`: `/api/cron/retention`, `30 21 * * *`). A run triggered through Vercel (`vercel crons run /api/cron/retention`) logged "retention: nothing due", which the endpoint writes only after `Authorization: Bearer <CRON_SECRET>` has matched. On Hobby a scheduled run fires within the hour of its time, not at the minute.
+- **Hobby keeps runtime logs for less than an hour.** A log query for the last hour is refused ("The hobby plan does not retain runtime logs for the requested time range"); the last 30 minutes are available. So a request path carrying a token is gone from Vercel's logs within the hour (section 7.3).
+
+**Still to confirm:** Vercel's Hobby terms (the owner's reading). Also noted for milestone 6: `pg` warns that `sslmode=require` will mean less in its next major version; setting `sslmode=verify-full` in the connection strings keeps today's full certificate check.
 
 ## 9. Cost
 
@@ -448,7 +455,7 @@ doomsday-invitation/
 | # | Milestone | Contains | Done when |
 |---|---|---|---|
 | 0A | Local foundation | `web/` scaffold with Next, Tailwind v4, Drizzle; tokens, fonts, base components; approved assets copied and marks exported; Docker database; the migration runner; security headers. **Done on 15 November 2026** | A styled specimen page runs locally, the health route reads the local database, and `db:check` reaches Neon |
-| 0B | Deployment foundation | Vercel project, GitHub Actions, CI, the deployment workflow, the `preview` database branch; Vercel's terms, the cron header and log retention confirmed. **Staging and promotion proven by hand on 16 November 2026**; the workflow's first runs wait for the push | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
+| 0B | Deployment foundation | Vercel project, GitHub Actions, CI, the deployment workflow, the `preview` database branch; Vercel's terms, the cron header and log retention confirmed. **Done on 16 November 2026**: staging and promotion proven by hand, then by the workflow's first production run | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
 | 1 | Schema and domain | Migrations, the domain module, date words, tokens, retention. **Done on 15 November 2026** | Domain and concurrency tests pass against PostgreSQL |
 | 2 | Administrator panel | Sign-in, guests and links, characters, proposal, council view, finalise, amend, export. **Done on 16 November 2026**, verified locally; review on a preview waits for 0B | Doom can run an event end to end with no guest screens |
 | 3 | Guest journey, still | Summons, decline and leave, character selection, council, proposal and alternatives, decree, closing screens, invalid link, errors. Final type and copy, no motion. **Done on 16 November 2026**, verified locally; the preview check waits for 0B | The journey passes end to end on phone and desktop, on a preview deployment |
