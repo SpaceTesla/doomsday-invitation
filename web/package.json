@@ -12,7 +12,7 @@
     "lint": "eslint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "e2e": "next build && playwright test",
     "db:generate": "drizzle-kit generate",
