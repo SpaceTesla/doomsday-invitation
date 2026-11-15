@@ -25,9 +25,9 @@ Written on 15 November 2026 for a new Claude session taking over this project. R
 | Design specification | Complete and approved |
 | Copy deck | Complete and approved |
 | Technical architecture | Complete and final: Next.js on Vercel with Neon PostgreSQL |
-| Application code | **None. Nothing is implemented.** There is no `web/` folder yet |
+| Application code | Milestone 0A is built: `web/` holds the Next.js application with the design tokens, fonts, base components, approved assets, local database, migration runner and security headers. No product screen exists yet |
 | Version control | A Git repository on `main`. The specifications live in `docs/`; `AGENTS.md` and `CLAUDE.md` at the root point to them |
-| Accounts | No GitHub repository, Vercel project or Neon project exists yet |
+| Accounts | The GitHub repository (private), the Vercel account (Hobby) and the Neon project (PostgreSQL 18) exist. No Vercel project has been created yet; that is milestone 0B |
 
 The only code in the project is the Python that generated the concept boards, under `design/explorations/assets/board-4-*-source/`. It is drawing code, not application code.
 
@@ -138,10 +138,12 @@ A Cloudflare Workers and D1 variant was drafted and then rejected by the owner. 
 
 ## 7. Unresolved matters
 
-**Blocking the first milestone (owner must supply):**
+**Blocking the first milestone:** nothing. The accounts exist and the event's time zone is `Asia/Kolkata`.
 
-1. A GitHub repository, a Vercel account and a Neon account in the owner's name.
-2. The event's time zone.
+**Needed from the owner before milestone 0B:**
+
+1. A Vercel access token, stored by the owner as the GitHub secret `VERCEL_TOKEN` (`gh secret set VERCEL_TOKEN`, run in the owner's own terminal). No secret is ever pasted into a conversation.
+2. A Neon branch named `preview`, with its two connection strings added to the root `.env` as `PREVIEW_DATABASE_URL` and `PREVIEW_DATABASE_URL_DIRECT`.
 
 **To confirm during milestone 0, not blocking:**
 
@@ -168,7 +170,8 @@ Follow the milestones in `ARCHITECTURE.md` section 12, in order. Each ends with 
 
 | # | Milestone | Done when |
 |---|---|---|
-| 0 | Foundations, Vercel and Neon | A styled page that reads the database deploys from `main` |
+| 0A | Local foundation (done) | A styled specimen page runs locally and reads the local database |
+| 0B | Deployment foundation | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
 | 1 | Schema and domain | Domain and concurrency tests pass against PostgreSQL |
 | 2 | Administrator panel | Doom can run an event end to end with no guest screens |
 | 3 | Guest journey, without motion | The journey passes end to end on phone and desktop |
@@ -179,11 +182,18 @@ Follow the milestones in `ARCHITECTURE.md` section 12, in order. Each ends with 
 
 **Immediate next steps**
 
-1. Confirm with the owner that the accounts exist and get the time zone.
-2. The repository is initialised with a `.gitignore` and a first commit. Create the GitHub repository as private and push when the owner asks.
-3. Scaffold `web/` as described in `ARCHITECTURE.md` section 11.
-4. Copy the approved assets into `web/public/` from the paths in `DESIGN.md` section 9. Export the marks that exist only inside the board generators (seal mark, nested square, bolt, tile, clasps, seal states) from `design/explorations/assets/board-4-v5-source/`.
-5. Put the tokens, fonts and base components in place, then move to milestone 1.
+Milestone 0A is done (15 November 2026). Next:
+
+1. Milestone 1, schema and domain. It needs nothing from the owner and does not wait for 0B.
+2. Milestone 0B, the deployment foundation, once the owner has added the Vercel token and the `preview` branch. Its first step is a manual trial of a staged production deploy and promotion on the Hobby plan, which decides how the workflow is built (`ARCHITECTURE.md`, section 8.4).
+3. Two pieces of the foundation were left for milestone 3, where they are used and can be checked in place: the summons plate (the board's `_plate` drawing, exported as artwork) and the baked brushed-steel texture it carries. Panels and buttons use plain gradients on the boards and need neither.
+
+Decisions taken since this handoff was first written, all recorded in the documents that own them:
+
+- Choosing a mantle is optional and never gates the council (`PRODUCT_SPEC.md`, Stage 3 and section 7.6).
+- Pirata One never renders an individual word containing a V; only that word goes to Cinzel (`DESIGN.md`, section 2.2).
+- Invitation tokens stay in the address; the reasoning is in `ARCHITECTURE.md`, section 7.3.
+- The Content Security Policy is static and allows inline scripts and styles (`ARCHITECTURE.md`, section 7.4).
 
 ## 9. Working instructions for the next session
 

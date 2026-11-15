@@ -25,7 +25,7 @@ If documents conflict, the product spec governs behaviour, the copy deck wording
 | `design/` | Design specification, concept boards, approved artwork, board generators |
 | `references/` | Studio-owned reference images. **Never copy anything from here into the application** |
 | `research/` | Background research |
-| `web/` | The application. Does not exist yet; created in milestone 0. The only folder that is deployed |
+| `web/` | The application (Next.js). The only folder that is deployed. Read `web/AGENTS.md` before writing Next.js code: this version differs from older ones |
 
 ## Stack
 
@@ -57,4 +57,19 @@ Conventional Commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, 
 
 ## Commands
 
-None yet. Once `web/` exists, its commands are listed in `docs/ARCHITECTURE.md`, section 8.3; add them here when they are real.
+Run from `web/`. Docker Desktop must be running for the database and the tests.
+
+| Task | Command |
+|---|---|
+| Create `.env.local` (prints names only, never values) | `npm run env:setup` |
+| Start the local PostgreSQL 18 | `docker compose up -d` |
+| Check the local and Neon databases answer | `npm run db:check` |
+| Develop | `npm run dev`, then open `/dev/specimen` for the design foundation |
+| Format, lint, type-check | `npm run format`, `npm run lint`, `npm run typecheck` |
+| Tests (need the local database) | `npm test` |
+| Production build | `npm run build` |
+| Apply migrations | `npm run db:migrate` |
+| Copy approved assets and fonts into the application | `npm run assets:sync` |
+| Re-export the marks from the board generator | `python scripts/export-marks.py` |
+
+Tests never read `.env.local`, so they cannot reach Neon. Never print a connection string or any other secret.

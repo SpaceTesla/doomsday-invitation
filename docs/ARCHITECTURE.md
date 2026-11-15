@@ -44,6 +44,7 @@ One application, one database, one scheduled job. Everything a guest sees move r
 | Tests | Vitest against a real PostgreSQL; Playwright end to end | |
 | Tooling | Prettier; ESLint with the Next.js rules; GitHub Actions | |
 | Runtime | Node 22, npm | |
+| Database version | PostgreSQL 18 | Neon runs 18.7; the local and test container is `postgres:18` |
 
 Versions are pinned in the lock file when the project is created.
 
@@ -150,6 +151,7 @@ Multi-step operations use Drizzle's `db.transaction()`. Single-statement operati
 - The application connects with `pg` through **Neon's pooled connection string**, with a pool of at most a few connections per function instance. Neon's pooler absorbs the many short-lived connections that serverless functions create.
 - Migrations use the **direct** connection string.
 - Why `pg` and not Neon's HTTP driver: the HTTP mode supports only non-interactive transactions **(verified)**, and `pg` is also the driver that talks to an ordinary local or CI PostgreSQL. One driver everywhere means the tests exercise exactly the code that runs in production.
+- **The migration runner** (`src/db/migrate.ts`) serialises runs with a session-level advisory lock. The lock and Drizzle's migrator use one connection, because such a lock belongs to the connection that took it. The lock is released in a `finally` block and the connection is closed after it, so a failed run cannot leave it held. A second runner waits its turn, then gives up at a deadline without applying anything. A pooled connection string is refused: a session lock does not survive transaction pooling. `tests/db/migrate.test.ts` proves each of these against a real PostgreSQL.
 - Neon's free database sleeps after five minutes idle and wakes in a few hundred milliseconds **(verified)**. The first request after a quiet spell is slightly slower; the opening covers it.
 
 ## 5. Backend and API
@@ -169,8 +171,7 @@ The approval rules the product expects to change (`PRODUCT_SPEC.md`, section 5.9
 |---|---|
 | Token unknown or cancelled, or the event deleted | Invalid-link screen, status 404 |
 | Summoned, before the end of the day | Opening (once), then summons |
-| Seated, no character | Character selection |
-| Seated | Council |
+| Seated, with or without a character | Council. The mantle list is part of it; choosing a mantle is optional and gates nothing |
 | Declined, before the end of the day | Closing screen with "Take your seat" |
 | Summoned or declined, after the day | "The day has passed." |
 
@@ -207,8 +208,8 @@ Tailwind does layout. The identity stays in tokens and hand-written CSS.
 | Tailwind theme | `src/styles/app.css` | Tailwind v4's `@theme` maps its colour, font and spacing names onto those properties, so `bg-plate` and `text-silver` are the approved values |
 | Tailwind's job | In components | Flex and grid, spacing, sizing, positioning, breakpoints, hover and focus states |
 | Hand-written CSS | `src/styles/surfaces.css`, `scenes.css`, `type.css` | Brushed steel, bevels, the dotted gold line, engraving, glows, scrims, vignettes, the frame-relative type scale of the opening and summons, and every keyframe |
-| Typography rules | Components | `Heading` falls back to Cinzel if its text contains a V. `Label` rejects numerals and names. `Figure` sets numerals in Cinzel |
-| Fonts | `public/fonts/` | The four families as local WOFF2, Latin subset, through `next/font/local`. No request leaves our origin |
+| Typography rules | Components | `Heading` stays a Pirata One heading and sets only an individual word containing a V in Cinzel; a test keeps every approved heading free of such words. `Label` takes fixed copy only and rejects numerals. `Figure` sets numerals in Cinzel |
+| Fonts | `src/fonts/` | The four families as local WOFF2, Latin subset, taken from the `@fontsource` packages with their licence texts, through `next/font/local`. `next/font` serves its own hashed copies, so nothing is kept in `public/`. No request leaves our origin |
 | Doomscript | `Runes` component | Draws from `doomscript-glyphs.json`, hidden from assistive technology, fails the build on a letter with no rune |
 | Copy | `src/copy/` | Every string, keyed by its line number in `COPY.md` |
 | Long names | `lib/fit.ts` | The approved rule: wrap, step to 80%, then scroll |
@@ -250,12 +251,14 @@ The approved experience is built exactly as specified. The host delivers files a
 | Cross-site requests | Administrator mutations check the `Origin` header |
 | Rate limiting | Failed sign-ins are counted in `attempt`: five in fifteen minutes locks sign-in for fifteen minutes. Unknown guest tokens are counted per address the same way |
 | Guest tokens | 256 bits. Stored as they are so a link can be copied again; a token can be replaced at will, and anyone able to read the database can read everything in it already |
+| Tokens in the address | The token stays in the path, `/s/{token}`. Vercel's request logs record paths, keep them for a short time (about an hour on Hobby, to be confirmed in milestone 0B) and show them only to the account's owner, who is Doom and already holds every token. Anyone who took over the account would also hold the database credentials. Exchanging the token from a URL fragment for a cookie was evaluated and rejected: it would make the first screen wait for a script and a request, remove the server-rendered fallback, and add a guest cookie that in-app browsers often drop, while protecting none of the places a link really leaks (the message thread, browser history, screenshots). Our own logs never contain a token or a full address, error responses never echo one, and Doom can replace any link |
 | Guest-specific access | A guest handler loads the guest by the token in its own path and acts only on that row. No handler accepts a guest id from the request |
 | What guests see | Never another guest's token or id, the opened status, or who approved |
 
 ### 7.4 Privacy and headers
 
 - `Referrer-Policy: no-referrer`; a Content Security Policy limited to our own origin; `X-Content-Type-Options: nosniff`; `X-Frame-Options: DENY`.
+- The Content Security Policy is static, set in `next.config.ts`. A policy with nonces would need middleware, which this design does not use. Every source is limited to `'self'`; scripts and styles also allow `'unsafe-inline'`, which Next.js needs for hydration. That is a small risk here: React escapes what it renders, the site never renders HTML supplied by a user, and no other origin is allowed. `object-src` and `base-uri` are `'none'`, `frame-ancestors` is `'none'`, and `form-action` is `'self'`.
 - `Cache-Control: private, no-store` on guest and administrator responses.
 - `X-Robots-Tag: noindex, nofollow` on everything, and a `robots.txt` that disallows all.
 - No external scripts, fonts, analytics or images. Vercel's own analytics stay off.
@@ -277,7 +280,7 @@ The approved experience is built exactly as specified. The host delivers files a
 
 | Environment | Application | Database |
 |---|---|---|
-| Local | `next dev` | PostgreSQL in Docker, or a personal Neon branch |
+| Local | `next dev` | PostgreSQL 18 in Docker, on port 54329. Local work never writes to Neon |
 | Tests and CI | Vitest, Playwright | A throwaway PostgreSQL container, created per run |
 | Preview | Vercel preview deployments | Neon branch `preview` |
 | Production | Vercel production | Neon branch `main` |
@@ -293,9 +296,10 @@ Tests never touch Neon's production branch: they use a container that exists onl
 | `ADMIN_PASSPHRASE_HASH` | scrypt hash of the generated passphrase |
 | `SESSION_KEY` | Signs the session cookie |
 | `CRON_SECRET` | Protects the retention endpoint |
-| `EVENT_TIMEZONE` | IANA time zone of the event |
+| `EVENT_TIMEZONE` | IANA time zone of the event: `Asia/Kolkata`. It seeds `event.timezone` when the event row is created; from then on the column is the source |
+| `NEON_DATABASE_URL`, `NEON_DATABASE_URL_DIRECT` | Local only. The Neon strings, read by `npm run db:check` and nothing else |
 
-`web/.env.example` lists them. `web/.env.local` holds local values and is not committed. Preview and production values are set in Vercel's project settings.
+`web/.env.example` lists them. `web/.env.local` holds local values and is not committed; `npm run env:setup` creates it without printing a value. Locally, `DATABASE_URL` and `DATABASE_URL_DIRECT` both point at the Docker database. Preview and production values are set in Vercel's project settings.
 
 ### 8.3 Commands
 
@@ -303,8 +307,13 @@ Run from `web/`.
 
 | Task | Command |
 |---|---|
+| Create `.env.local` | `npm run env:setup` |
 | Start the local database | `docker compose up -d` |
+| Check every configured database answers | `npm run db:check` |
 | Develop | `npm run dev` |
+| Format, lint, type-check | `npm run format`, `npm run lint`, `npm run typecheck` |
+| Copy the approved assets and fonts into the application | `npm run assets:sync` |
+| Re-export the marks from the board generator | `python scripts/export-marks.py` |
 | Create a migration from the schema | `npm run db:generate` (drizzle-kit) |
 | Apply migrations | `npm run db:migrate` against the database in `DATABASE_URL_DIRECT` |
 | Unit and integration tests | `npm test` |
@@ -376,7 +385,7 @@ doomsday-invitation/
     package.json  next.config.ts  vercel.json  drizzle.config.ts  docker-compose.yml
     drizzle/                SQL migrations
     public/
-      art/  icons/  fonts/  audio/      approved assets, copied from design/explorations/assets
+      art/  icons/  audio/              approved assets, copied from design/explorations/assets
       robots.txt
     src/
       app/
@@ -388,7 +397,10 @@ doomsday-invitation/
         api/cron/retention/
       domain/               guests, characters, approval, alternatives, plan, cutoffs, retention
       db/                   schema.ts, client.ts
-      components/           Plate, Panel, Well, Button, Heading, Label, Figure, Runes, Seal, Mask
+      components/           Panel, Well, Button, QuietControl, Heading, Label, Figure, Runes, Mark (Seal, Mask, SuitRune)
+      fonts/                the four families as WOFF2, with their licences
+      marks/                generated.ts, exported from the board generator
+      data/                 Doomscript glyphs and the opening's layout data
       scenes/               Opening, Summons, Council, Hall, transitions
       styles/               tokens.css, app.css, surfaces.css, scenes.css, type.css
       copy/                 strings keyed by COPY.md line numbers
@@ -401,7 +413,8 @@ doomsday-invitation/
 
 | # | Milestone | Contains | Done when |
 |---|---|---|---|
-| 0 | Foundations, Vercel and Neon | Git repository; `web/` scaffold with Next, Tailwind v4, Drizzle; Vercel project and Neon branches; CI; tokens, fonts, base components; exported icons and baked steel textures; Vercel's terms and the cron header confirmed | A styled page that reads the database deploys from `main` |
+| 0A | Local foundation | `web/` scaffold with Next, Tailwind v4, Drizzle; tokens, fonts, base components; approved assets copied and marks exported; Docker database; the migration runner; security headers. **Done on 15 November 2026** | A styled specimen page runs locally, the health route reads the local database, and `db:check` reaches Neon |
+| 0B | Deployment foundation | Vercel project, GitHub Actions, CI, the deployment workflow, the `preview` database branch; Vercel's terms, the cron header and log retention confirmed | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
 | 1 | Schema and domain | Migrations, the domain module, date words, tokens, retention | Domain and concurrency tests pass against PostgreSQL |
 | 2 | Administrator panel | Sign-in, guests and links, characters, proposal, council view, finalise, amend, export | Doom can run an event end to end with no guest screens |
 | 3 | Guest journey, still | Summons, decline and leave, character selection, council, proposal and alternatives, decree, closing screens, invalid link, errors. Final type and copy, no motion | The journey passes end to end on phone and desktop, on a preview deployment |
@@ -429,10 +442,7 @@ Screens that were never drawn are built in milestones 2 to 4 from `DESIGN.md` an
 
 **Genuine blockers: none.** This stack meets every requirement without any change to product, design or copy.
 
-Needed from you before implementation begins:
-
-1. A GitHub repository, a Vercel account and a Neon account in your name.
-2. The event's time zone.
+Needed from you before implementation begins: nothing more. The GitHub repository, the Vercel account and the Neon project exist, and the event's time zone is `Asia/Kolkata`. Milestone 0B needs a Vercel access token stored as a GitHub secret and a `preview` branch in Neon.
 
 Later, during the build: your ear on the sounds in milestone 5, and the content you enter yourself (guests, characters, the first proposal).
 

@@ -1,0 +1,72 @@
+/* Design tokens: the single source for colour, type roles and the type scale.
+   Values are from design/DESIGN.md, sections 2.1 and 2.2. Do not add colours or faces here
+   that the specification does not name. */
+:root {
+  /* ---- interface colours (section 2.1) ---- */
+  --c-night: #0a0d12; /* the guest's world, before the hall */
+  --c-olive-black: #10130c; /* inside the hall */
+  --c-plate: #1a2020; /* every issued object */
+  --c-gunmetal: #252c2c; /* raised steel */
+  --c-dark-steel: #5a6462; /* rules and borders */
+  --c-steel: #96a19e; /* secondary text */
+  --c-silver: #d9dedc; /* text */
+  --c-emerald-deep: #0e5a40; /* cloth, unlit glass */
+  --c-emerald: #1f8f63; /* lines of an active mechanism; never text */
+  --c-emerald-light: #4fc395; /* lit runes, active marks */
+  --c-bronze: #7d5f2c; /* gold in shadow */
+  --c-gold: #c6a75e; /* Doom's name, dots, bolts */
+  --c-gold-light: #e4cb8c; /* window light, large gold type */
+  --c-signal: #e0806f; /* errors only */
+
+  /* ---- scene colours: artwork only, never text or controls ---- */
+  --c-scene-glass: #e2d874;
+  --c-scene-amber: #ee9a2e;
+  --c-scene-fog: #a9b192;
+  --c-scene-emerald-fire: #3fe07f;
+
+  /* ---- states of controls (sections 6.5 and 8) ---- */
+  --c-off-text: #6c7674;
+  --c-off-border: #333b3a;
+  --c-off-mark: #4c5553;
+  --c-holder: #7f8a88;
+  --c-well: #0c100f;
+  --c-well-edge: #333c3a;
+  --c-panel-border: #3a4341;
+  --c-row-rule: #1d2422;
+
+  /* ---- the four font roles (section 2.2). Change a face by changing one line. ---- */
+  --f-display: var(--ff-pirata), "Times New Roman", serif;
+  --f-serif: var(--ff-cinzel), "Times New Roman", serif;
+  --f-tech: var(--ff-orbitron), "Segoe UI", sans-serif;
+  --f-body: var(--ff-cormorant), Georgia, serif;
+
+  /* ---- type scale, phone first (section 2.2, "Scale"). 1rem = 16px. ---- */
+  --t-title: 2.5rem; /* council title, 40 px */
+  --t-heading: 1.875rem; /* panel and screen headings, 30 px */
+  --t-procl: 1.25rem; /* Doom's proposal, 20 px */
+  --t-expl: 1.125rem; /* explanatory text, 18 px */
+  --t-well: 1.125rem; /* wells and counts, 18 px */
+  --t-name: 1.375rem; /* character names, 22 px */
+  --t-holder: 0.9375rem; /* holder and proposer names, 15 px: Cinzel only */
+  --t-label: 0.71875rem; /* labels and status words, 11.5 px */
+  --t-button: 0.875rem; /* button labels, 14 px */
+
+  /* Cinzel beside Pirata One: the approved pairing is 26 px to 34 px. */
+  --serif-in-display: 0.765;
+
+  /* floors: never go below these to make a layout fit */
+  --floor-body: 1.0625rem; /* 17 px, anything read */
+  --floor-display: 1.5rem; /* 24 px, Pirata One */
+  --floor-label: 0.6875rem; /* 11 px, Orbitron */
+
+  --tap: 44px; /* minimum tap area */
+}
+
+@media (min-width: 50rem) {
+  :root {
+    --t-title: 3.25rem; /* 52 px */
+    --t-heading: 2.125rem; /* 34 px */
+    --t-procl: 1.375rem; /* 22 px */
+    --t-expl: 1.1875rem; /* 19 px */
+  }
+}

@@ -1,0 +1,260 @@
+/* Surfaces and controls, ported from the approved boards (revision 4 for the controls
+   and panels, revision 5 for type). See design/DESIGN.md, sections 6.5 and 8.1 to 8.3. */
+@layer components {
+  /* ---- marks ---- */
+  .mk {
+    display: block;
+    flex: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--c-steel);
+  }
+  .mk--stroke {
+    stroke: currentColor;
+  }
+  .mk--fill {
+    fill: currentColor;
+  }
+  .mk--gold {
+    color: var(--c-gold);
+  }
+  .mk--emerald {
+    color: var(--c-emerald-light);
+  }
+  .mk--silver {
+    color: var(--c-silver);
+  }
+  .mk--dim {
+    color: var(--c-off-mark);
+  }
+
+  /* ---- rune inscriptions: decoration only ---- */
+  .rune-line {
+    display: block;
+    height: 1em;
+    width: auto;
+    max-width: 100%;
+    fill: currentColor;
+  }
+
+  /* ---- the three-band seal ---- */
+  .seal-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .seal-base {
+    fill: #0c100f;
+  }
+  .seal-gold {
+    stroke: #b8964e;
+  }
+  .seal-gold-fill {
+    fill: #c9a85e;
+  }
+  .seal-steel {
+    stroke: #7f8a88;
+  }
+  .seal-steel-fill {
+    fill: #9ba6a3;
+  }
+  .seal-em {
+    stroke: var(--c-emerald);
+  }
+  .seal-em-fill {
+    fill: var(--c-emerald-light);
+  }
+  .seal-em-dim {
+    fill: #1d4a3a;
+  }
+  .seal--dormant .seal-em {
+    stroke: #39423f;
+  }
+  .seal--dormant .seal-em-fill {
+    fill: #4a5552;
+  }
+  .seal--dormant .seal-gold {
+    stroke: #6b6048;
+  }
+  .seal--dormant .seal-gold-fill {
+    fill: #7a6e52;
+  }
+  .seal--waking .seal-core {
+    stroke: #2b6e55;
+  }
+  .seal--waking .seal-core .seal-em-fill {
+    fill: #2b6e55;
+  }
+
+  /* ---- primary button: a small steel plate (section 8.1) ---- */
+  .btn-plate {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7em;
+    min-height: var(--tap);
+    margin: 0;
+    padding: 0.82em 1.5em 0.82em 1em;
+    font-family: var(--f-tech);
+    font-weight: 600;
+    font-size: var(--t-button);
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--c-silver);
+    /* the emerald layer is the pressed fill; it rests at zero width */
+    background-image:
+      linear-gradient(rgba(31, 143, 99, 0.5), rgba(31, 143, 99, 0.5)),
+      linear-gradient(#2a3232, #171c1c);
+    background-size:
+      0% 100%,
+      100% 100%;
+    background-repeat: no-repeat;
+    border: 1px solid var(--c-dark-steel);
+    border-radius: 2px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 0.5em 1.2em rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition:
+      background-size 0.16s linear,
+      border-color 0.1s linear;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-plate::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border: 1px dotted rgba(198, 167, 94, 0.55);
+    pointer-events: none;
+  }
+  .btn-plate .lbl {
+    font-size: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+  }
+  .btn-plate .mk {
+    width: 1.7em;
+    height: 1.7em;
+    color: var(--c-steel);
+    transition: color 0.1s linear;
+  }
+  .btn-plate:hover:not(:disabled),
+  .btn-plate:focus-visible {
+    border-color: var(--c-gold);
+  }
+  .btn-plate:hover:not(:disabled) .mk,
+  .btn-plate:focus-visible .mk,
+  .btn-plate:active:not(:disabled) .mk {
+    color: var(--c-emerald-light);
+  }
+  /* Pressed: the plate fills with emerald from the left. Feedback only; the action is
+     an ordinary press and never waits for the fill. */
+  .btn-plate:active:not(:disabled) {
+    border-color: var(--c-emerald);
+    background-size:
+      100% 100%,
+      100% 100%;
+  }
+  .btn-plate.is-done {
+    border-color: var(--c-emerald);
+    color: var(--c-emerald-light);
+  }
+  .btn-plate.is-done .mk {
+    color: var(--c-emerald-light);
+  }
+  .btn-plate:disabled {
+    color: var(--c-off-text);
+    border-color: var(--c-off-border);
+    box-shadow: none;
+    cursor: default;
+  }
+  .btn-plate:disabled::after {
+    border-color: rgba(150, 161, 158, 0.22);
+  }
+  .btn-plate:disabled .mk {
+    color: var(--c-off-mark);
+  }
+
+  /* ---- quiet control: the alternative to a primary action (section 8.2) ---- */
+  .link-quiet {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    margin: 0;
+    padding: 0;
+    font-family: var(--f-tech);
+    font-weight: 600;
+    font-size: var(--t-label);
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-steel);
+    background: none;
+    border: 0;
+    text-decoration: underline;
+    text-decoration-color: rgba(150, 161, 158, 0.5);
+    text-underline-offset: 0.3em;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .link-quiet .lbl {
+    font-size: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+  }
+  .link-quiet:hover,
+  .link-quiet:focus-visible {
+    color: var(--c-silver);
+  }
+
+  /* ---- panel: a plate that holds a part of the council (section 8.3) ---- */
+  .panel-plate {
+    position: relative;
+    padding: 26px 28px 24px;
+    color: var(--c-silver);
+    background: linear-gradient(#232a2a, #151a1a);
+    border: 1px solid var(--c-panel-border);
+    border-radius: 2px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  .panel-plate::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px dotted rgba(198, 167, 94, 0.5);
+    pointer-events: none;
+  }
+  .panel-plate > .hd {
+    margin-bottom: 8px;
+  }
+  .panel-acts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+    margin-top: 20px;
+  }
+
+  /* ---- well: a recessed strip for counts and lists inside a panel ---- */
+  .panel-well {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: var(--c-well);
+    border-top: 1px solid #000;
+    border-bottom: 1px solid var(--c-well-edge);
+    font-family: var(--f-body);
+    font-weight: 500;
+    font-size: var(--t-well);
+    line-height: 1.4;
+    color: var(--c-steel);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-plate,
+    .btn-plate .mk {
+      transition: none;
+    }
+  }
+}

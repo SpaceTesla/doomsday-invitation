@@ -134,7 +134,7 @@ Four families, chosen by you on 15 November 2026: the combination the board's ty
 | Role | Face | Weight | Use |
 |---|---|---|---|
 | Display | Pirata One | 400 (its only weight) | Titles and headings in Doom's voice: "Council of Doom", "Doom proposes", "The council is seated.", and "The Iron Throne" in the opening only |
-| Supporting serif | Cinzel | 500 | Guest names, Doom's name, character names, figures, and any heading the display face cannot set |
+| Supporting serif | Cinzel | 500 | Guest names, Doom's name, character names, figures, and any single word in a heading that the display face cannot set |
 | Technical | Orbitron | 600 | Buttons, quiet controls, labels and status words, in capitals |
 | Body | Cormorant Garamond | 500; italic 500; 700 for emphasis | The summons, the line Doom speaks, and everything read at length |
 | Inscription | Doomscript (section 4.1) | one weight | Inscriptions only |
@@ -145,7 +145,7 @@ No other typeface, and no monospace.
 
 Drawback: its capital V reads as a U and its lowercase v as an o, so "Victor von Doom" reads as "Uictor oon Doom" and "Latveria" as "Latoeria".
 
-- **Never set a word containing the letter V, in either case.** A heading that contains one is set in Cinzel instead.
+- **Never set a word containing the letter V, in either case.** The rule applies to the individual word. A heading that contains such a word stays a Pirata One heading, with its size, colour and place in the hierarchy unchanged; only the affected word is set in Cinzel 500, at the pairing of 26 px beside 34 px. The heading is not switched to Cinzel as a whole. Headings are written to avoid the letter, so this is a guard and should never be seen.
 - **"Victor von Doom" is always set in Cinzel.**
 - Mixed case only. Never all capitals.
 - 24 px and larger.
@@ -237,7 +237,7 @@ Sizes on the boards are set as a share of the frame's width. The table gives tha
 | Hall caption heading (phone) | Pirata One 400 | | 9.4% (37 px) |
 | Hall caption line (phone) | Cormorant Garamond italic 500 | | 5.0% (20 px) |
 | Council title | Pirata One 400, Gold light | 52 px | 40 px |
-| Panel and screen headings | Pirata One 400, Gold light. Cinzel 500 at 26 px if the heading contains a V | 34 px | 30 px |
+| Panel and screen headings | Pirata One 400, Gold light. A single word containing a V is set in Cinzel 500 at 26 px beside 34 px; the rest of the heading is unchanged | 34 px | 30 px |
 | Doom's proposal | Cormorant Garamond italic 500 | 22 px | 20 px |
 | Explanatory text | Cormorant Garamond 500 | 19 px | 18 px |
 | Well and counts | Cormorant Garamond 500 in Steel; figures in Cinzel 500, Silver | 18 px | 18 px |
@@ -830,7 +830,7 @@ An underlined label in Orbitron 600, capitals, letter-spacing 0.08 em, at 0.8 of
 - A plate: gradient `#232A2A` to `#151A1A`, 1 px border `#3A4341`, 2 px radius.
 - A 1 px dotted gold line 6 px inside the edge.
 - Padding 26 px top, 28 px sides, 24 px bottom.
-- Heading in Pirata One, 34 px, Gold light, or in Cinzel 500 at 26 px if it contains a V. Text in Cormorant Garamond 500, 20 px.
+- Heading in Pirata One, 34 px, Gold light. A single word containing a V is set in Cinzel 500 at 26 px; the heading itself stays as it is (section 2.2). Text in Cormorant Garamond 500, at the sizes of the scale in section 2.2.
 - **Well:** a recessed strip for counts and lists inside a panel. Background `#0C100F`, a black top edge, a `#333C3A` bottom edge, padding 14 px by 16 px, Cormorant Garamond 500 at 18 px in Steel, with figures in Cinzel 500 in Silver.
 - Actions in a row at the foot: one primary button, one quiet control.
 
@@ -1137,6 +1137,7 @@ Recommendations you accepted on 15 November 2026. The "Was" column gives the num
 | Tighter phone spacing on the summons. No readable body text below 17 px. Readability takes priority over avoiding scrolling | review |
 | "The Iron Throne" appears in the opening experience only | review |
 | The council layout of the typography review board is the design direction for the first version: structure, hierarchy, character states, proposal panel, approval count, alternatives. Its placeholder wording is not approved | review |
+| Pirata One never renders an individual word containing V or v. Only that word is set in Cinzel; the heading is not switched to Cinzel as a whole and keeps its place in the hierarchy. Stated by you on 15 November 2026, correcting the earlier wording of sections 2.2 and 8.3 | build |
 
 Product decisions that shaped section 8 (taken characters show their holder, approvals reset when the proposal changes, the count is against seated guests, the council updates on reload) are logged in `PRODUCT_SPEC.md`, section 7.
 

@@ -146,7 +146,9 @@ The wording for the decline and withdraw controls, their confirmations and the c
 
 ### Stage 3: Character selection
 
-After accepting, the guest chooses a character from *Avengers: Doomsday*.
+Once seated, a guest may choose a character from *Avengers: Doomsday* at any point, from the council screen.
+
+- **Choosing is optional and gates nothing.** A seated guest without a character sees the same council as everyone else and can approve the proposal, suggest an alternative and take every other council action. Their mantle is shown as "No mantle yet" until they claim one.
 
 - **One guest per character.** A character can be held by only one guest. Once chosen, it is unavailable to everyone else.
 - **Guests choose for themselves.** The administrator does not assign characters.
@@ -281,7 +283,7 @@ The administrator can also see whether a summoned guest has opened their link.
 9. After the day of the screening, a guest who never answered or had declined sees a closing screen (`COPY.md`, section 4.3).
 10. Thirty days after the screening, the links stop working and the event's data is deleted.
 
-A guest who accepts after the plan is final still chooses a character. Changing an existing choice stops when the plan is final; a first choice does not.
+A guest who accepts after the plan is final may still choose a character. Changing an existing choice stops when the plan is final; a first choice does not.
 
 ### 3.5 Invalid links
 
@@ -601,3 +603,9 @@ Typography is the combination "Two: Doomsday": Pirata One, Cinzel, Orbitron and 
 The typography review board was approved the same day: its sizes, body treatment, long-name rules and council layout. Two points touch this document: the summons may scroll on a phone for a rare long name, and the council's wording on that board is provisional until the copy review (section 6, part B).
 
 Decisions about how the product looks are logged in `design/DESIGN.md`, section 11.1.
+
+### 7.6 Stated by you: mantle selection
+
+| Decision | Was |
+|---|---|
+| Choosing a character is optional and never a prerequisite. A seated guest sees one council screen, with the mantle list part of it, and can approve, suggest alternatives and take every other council action without a character. "No mantle yet" is shown until they claim one | new |

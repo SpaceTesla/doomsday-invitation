@@ -1,0 +1,64 @@
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./type.css";
+@import "./surfaces.css";
+
+/* Tailwind does layout. Its colour and font names are mapped onto the tokens, and its
+   default palette and font stacks are removed, so only approved values can be used. */
+@theme inline {
+  --color-*: initial;
+  --color-night: var(--c-night);
+  --color-olive-black: var(--c-olive-black);
+  --color-plate: var(--c-plate);
+  --color-gunmetal: var(--c-gunmetal);
+  --color-dark-steel: var(--c-dark-steel);
+  --color-steel: var(--c-steel);
+  --color-silver: var(--c-silver);
+  --color-emerald-deep: var(--c-emerald-deep);
+  --color-emerald: var(--c-emerald);
+  --color-emerald-light: var(--c-emerald-light);
+  --color-bronze: var(--c-bronze);
+  --color-gold: var(--c-gold);
+  --color-gold-light: var(--c-gold-light);
+  --color-signal: var(--c-signal);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-*: initial;
+  --font-display: var(--f-display);
+  --font-serif: var(--f-serif);
+  --font-tech: var(--f-tech);
+  --font-body: var(--f-body);
+
+  --breakpoint-*: initial;
+  --breakpoint-wide: 50rem;
+}
+
+@layer base {
+  html {
+    background: var(--c-night);
+    color: var(--c-silver);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
+    font-family: var(--f-body);
+    font-weight: 500;
+    font-size: var(--t-expl);
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--c-gold-light);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--c-emerald-deep);
+    color: var(--c-silver);
+  }
+}

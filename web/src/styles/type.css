@@ -1,0 +1,91 @@
+/* Type roles. Sizes, weights and tracking are from design/DESIGN.md, section 2.2, and the
+   approved typography board (revision 5, sections C and D). */
+@layer components {
+  /* ---- display: Pirata One. Short headings in Doom's voice, mixed case, 24 px and up. ---- */
+  .hd {
+    margin: 0;
+    font-family: var(--f-display);
+    font-weight: 400;
+    font-size: var(--t-heading);
+    line-height: 1.05;
+    color: var(--c-gold-light);
+    text-wrap: balance;
+  }
+  .hd--title {
+    font-size: var(--t-title);
+    line-height: 1;
+  }
+  /* A single word the display face cannot set (one containing V) is set in Cinzel,
+     at the approved pairing, inside a heading that otherwise stays as it is. */
+  .hd-serif {
+    font-family: var(--f-serif);
+    font-weight: 500;
+    font-size: calc(1em * var(--serif-in-display));
+    letter-spacing: 0.03em;
+  }
+
+  /* ---- supporting serif: Cinzel. Names, titles, all figures. Never running text. ---- */
+  .t-name {
+    font-family: var(--f-serif);
+    font-weight: 500;
+    font-size: var(--t-name);
+    line-height: 1.15;
+    letter-spacing: 0.03em;
+    color: var(--c-silver);
+  }
+  .t-holder {
+    font-family: var(--f-serif);
+    font-weight: 500;
+    font-size: var(--t-holder);
+    line-height: 1.25;
+    letter-spacing: 0.04em;
+    color: var(--c-steel);
+  }
+  .fig {
+    font-family: var(--f-serif);
+    font-weight: 500;
+    font-size: 1.02em;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: var(--c-silver);
+    font-style: normal;
+  }
+
+  /* ---- technical: Orbitron. Short labels in capitals. No numerals, no names. ---- */
+  .lbl {
+    font-family: var(--f-tech);
+    font-weight: 600;
+    font-size: var(--t-label);
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-steel);
+  }
+  .lbl--block {
+    display: block;
+    margin: 0 0 8px;
+  }
+
+  /* ---- body: Cormorant Garamond 500. Upright to instruct, italic to proclaim. ---- */
+  .t-expl {
+    margin: 0;
+    font-family: var(--f-body);
+    font-weight: 500;
+    font-size: var(--t-expl);
+    line-height: 1.4;
+    color: var(--c-silver);
+    max-width: 46ch;
+  }
+  .t-procl {
+    margin: 0;
+    font-family: var(--f-body);
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--t-procl);
+    line-height: 1.35;
+    color: var(--c-silver);
+  }
+  .t-error {
+    color: var(--c-signal);
+  }
+}

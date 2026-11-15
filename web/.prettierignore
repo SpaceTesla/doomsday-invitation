@@ -1,0 +1,11 @@
+.next
+node_modules
+package-lock.json
+next-env.d.ts
+public
+drizzle
+src/marks/generated.ts
+src/data
+src/fonts
+tests/fixtures
+AGENTS.md
