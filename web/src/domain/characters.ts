@@ -59,9 +59,13 @@ export async function removeCharacter(
     if (holder) return { ok: false, reason: "held", holder };
   }
   await domain.db.transaction(async (tx) => {
+    const [removed] = await tx
+      .select({ name: character.name })
+      .from(character)
+      .where(eq(character.id, characterId));
     await tx
       .update(guest)
-      .set({ characterRemoved: true })
+      .set({ characterRemoved: true, removedCharacterName: removed?.name ?? null })
       .where(eq(guest.characterId, characterId));
     // The foreign key clears guest.character_id.
     await tx.delete(character).where(eq(character.id, characterId));
@@ -85,7 +89,7 @@ export async function claimCharacter(
   try {
     const rows = await domain.db
       .update(guest)
-      .set({ characterId, characterRemoved: false })
+      .set({ characterId, characterRemoved: false, removedCharacterName: null })
       .where(
         and(
           eq(guest.id, guestId),

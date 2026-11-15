@@ -7,7 +7,7 @@ import { Heading } from "@/components/Heading";
 import { Label } from "@/components/Label";
 import { Panel, PanelActions, Well } from "@/components/Panel";
 import { QuietControl } from "@/components/QuietControl";
-import { ConfirmDialog } from "./ConfirmDialog";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { ActionMessage, useAdminAction } from "./useAdminAction";
 
 type Title = "" | "Mr." | "Ms." | "Dr.";

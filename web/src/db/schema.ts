@@ -63,6 +63,8 @@ export const guest = pgTable(
     seenPlan: integer("seen_plan").notNull().default(0),
     /** Set when Doom removed the character this guest held; cleared by the next claim. */
     characterRemoved: boolean("character_removed").notNull().default(false),
+    /** The name of the character Doom removed, for the message that tells the guest. */
+    removedCharacterName: text("removed_character_name"),
     openedAt: instant("opened_at"),
     openingPlayedAt: instant("opening_played_at"),
     invitedAt: instant("invited_at").notNull().defaultNow(),

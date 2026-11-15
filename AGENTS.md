@@ -66,7 +66,7 @@ Run from `web/`. Docker Desktop must be running for the database and the tests.
 | Check the local and Neon databases answer | `npm run db:check` |
 | Develop | `npm run dev`, then open `/dev/specimen` for the design foundation |
 | Format, lint, type-check | `npm run format`, `npm run lint`, `npm run typecheck` |
-| Tests (need the local database) | `npm test` |
+| Unit, integration and handler tests (need the local database) | `npm test` |
 | Production build | `npm run build` |
 | Create a migration after changing `src/db/schema.ts` | `npm run db:generate` |
 | Apply migrations | `npm run db:migrate` |
@@ -74,5 +74,8 @@ Run from `web/`. Docker Desktop must be running for the database and the tests.
 | A local-only passphrase: hash into `.env.local`, passphrase into a file, nothing printed | `npm run admin:passphrase -- --local <file>` |
 | Copy approved assets and fonts into the application | `npm run assets:sync` |
 | Re-export the marks from the board generator | `python scripts/export-marks.py` |
+| Re-export the summons plates (then bake them to WebP in a browser) | `python scripts/export-plates.py <folder>` |
+| Fill the local database with a sample event and print its local links | `npm run seed:local` |
+| End-to-end tests (build, fresh database, desktop and phone) | `npm run e2e` |
 
 Tests never read `.env.local`, so they cannot reach Neon. Never print a connection string or any other secret.

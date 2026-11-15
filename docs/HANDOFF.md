@@ -174,7 +174,7 @@ Follow the milestones in `ARCHITECTURE.md` section 12, in order. Each ends with 
 | 0B | Deployment foundation | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
 | 1 | Schema and domain (done) | Domain and concurrency tests pass against PostgreSQL |
 | 2 | Administrator panel (done locally) | Doom can run an event end to end with no guest screens |
-| 3 | Guest journey, without motion | The journey passes end to end on phone and desktop |
+| 3 | Guest journey, without motion (done locally) | The journey passes end to end on phone and desktop |
 | 4 | Opening and motion | The reveal matches the storyboard; reduced motion works |
 | 5 | Sound | Plays only after a choice; silent mode loses nothing |
 | 6 | Hardening | Headers, rate limits, cron, accessibility, performance |
@@ -184,7 +184,7 @@ Follow the milestones in `ARCHITECTURE.md` section 12, in order. Each ends with 
 
 Milestone 0A is done (15 November 2026). Next:
 
-1. Milestone 1, schema and domain, is done (15 November 2026): the first migration, the domain module in `web/src/domain/` and its tests against PostgreSQL. Milestone 2, the administrator panel, is done and verified locally (16 November 2026). Milestone 3, the guest journey, is next.
+1. Milestone 1, schema and domain, is done (15 November 2026): the first migration, the domain module in `web/src/domain/` and its tests against PostgreSQL. Milestone 2, the administrator panel, is done and verified locally (16 November 2026). Milestone 3, the guest journey without motion, is done and verified locally (16 November 2026). Milestone 4, the opening and motion, is next.
 2. Milestone 0B, the deployment foundation, once the owner has added the Vercel token and the `preview` branch. Its first step is a manual trial of a staged production deploy and promotion on the Hobby plan, which decides how the workflow is built (`ARCHITECTURE.md`, section 8.4).
 3. Two pieces of the foundation were left for milestone 3, where they are used and can be checked in place: the summons plate (the board's `_plate` drawing, exported as artwork) and the baked brushed-steel texture it carries. Panels and buttons use plain gradients on the boards and need neither.
 

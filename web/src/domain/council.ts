@@ -29,6 +29,8 @@ export type GuestCouncil = {
     approves: boolean;
     alternativeAt: Date | null;
     characterRemoved: boolean;
+    /** The name of the character Doom removed from this guest, while the message stands. */
+    removedCharacter: string | null;
   };
   notices: { proposalChanged: boolean; decreeAmended: boolean };
   guests: {
@@ -67,6 +69,7 @@ export async function councilForGuest(
       seenProposal: guest.seenProposal,
       seenPlan: guest.seenPlan,
       characterRemoved: guest.characterRemoved,
+      removedCharacterName: guest.removedCharacterName,
     })
     .from(guest)
     .leftJoin(character, eq(character.id, guest.characterId))
@@ -117,6 +120,7 @@ export async function councilForGuest(
         me.approvedVersion === eventRow.proposalVersion,
       alternativeAt: myAlternative?.at ?? null,
       characterRemoved: me.characterRemoved,
+      removedCharacter: me.characterRemoved ? me.removedCharacterName : null,
     },
     notices: {
       // Shown once, to a guest who saw an earlier proposal or decree.

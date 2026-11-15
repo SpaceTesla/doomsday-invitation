@@ -52,7 +52,11 @@ describe("the roster", () => {
     expect(await removeCharacter(domain, thor, { confirm: true })).toEqual({ ok: true });
     expect(await holdings()).toEqual([]);
     const council = await councilForGuest(domain, anish.id);
-    expect(council?.you).toMatchObject({ characterId: null, characterRemoved: true });
+    expect(council?.you).toMatchObject({
+      characterId: null,
+      characterRemoved: true,
+      removedCharacter: "Thor",
+    });
 
     // Choosing again clears the message.
     const loki = await character("Loki");

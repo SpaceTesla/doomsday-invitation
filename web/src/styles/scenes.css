@@ -1,0 +1,599 @@
+/* The guest's scenes, without motion (milestone 3): the opening's final frame, the
+   summons plate, the closing screens and the council. Measures are the approved
+   boards': revision 4 for composition, revision 5 for type (design/DESIGN.md, 2.2 to 7). */
+@layer components {
+  /* =========================================================== the opening */
+  .op {
+    position: relative;
+    height: 100dvh;
+    min-height: 32rem;
+    overflow: hidden;
+    background: var(--c-night);
+    container-type: inline-size;
+  }
+  /* The frame covers the viewport and crops from the edges. The layer set follows the
+     shape of the viewport: the phone composition for upright screens. */
+  .op-frame {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, calc(100dvh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    transform: translate(-50%, -50%);
+    --l: var(--dl);
+    --t: var(--dt);
+    --w: var(--dw);
+  }
+  .op-l {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .op-l img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .op-dust {
+    background-size: 53.33% auto;
+    mix-blend-mode: screen;
+    opacity: 0.36;
+  }
+  .op-bokeh {
+    opacity: 0.7;
+  }
+  .op-glow {
+    position: absolute;
+    left: var(--dhx);
+    top: var(--dhy);
+    width: 44%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      closest-side,
+      rgba(250, 244, 210, 0.5),
+      rgba(250, 244, 210, 0.12) 46%,
+      transparent 70%
+    );
+    mix-blend-mode: screen;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .op-rock {
+    position: absolute;
+    left: var(--dl);
+    top: var(--dt);
+    width: var(--dw);
+  }
+  .op-rock img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .op-vignette {
+    background: radial-gradient(120% 95% at 50% 44%, transparent 52%, rgba(0, 0, 0, 0.62));
+    pointer-events: none;
+  }
+  .op-scrim {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50%;
+    background: linear-gradient(
+      rgba(4, 7, 6, 0),
+      rgba(4, 7, 6, 0.5) 22%,
+      rgba(4, 7, 6, 0.86) 46%,
+      rgba(4, 7, 6, 0.96)
+    );
+    pointer-events: none;
+  }
+  .op-copy {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 5%;
+    padding: 0 6%;
+    text-align: center;
+    color: var(--c-silver);
+  }
+  .op-name {
+    margin: 0;
+    font: 500 max(1.75rem, 4.2cqw) / 1.08 var(--f-serif);
+    letter-spacing: 0.02em;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+  .op-line {
+    margin: 1.1cqw 0 0;
+    font: italic 500 max(1.0625rem, 2.05cqw) / 1.3 var(--f-body);
+    color: #c9cfcd;
+  }
+  .op-sig {
+    margin-top: 1.1cqw;
+    font-size: max(9px, 0.8cqw);
+    color: #6f9c8b;
+  }
+  .op-sig svg {
+    margin: 0 auto;
+  }
+  .op-act {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2.2cqw;
+    margin-top: 1.8cqw;
+  }
+
+  @media (orientation: portrait) {
+    .op-frame {
+      width: max(100%, calc(100dvh * 780 / 1688));
+      aspect-ratio: 780 / 1688;
+    }
+    .op-rock {
+      left: var(--pl);
+      top: var(--pt);
+      width: var(--pw);
+    }
+    .op-glow {
+      left: var(--phx);
+      top: var(--phy);
+      width: 96%;
+    }
+    .op-dust {
+      background-size: 131.3% auto;
+    }
+    .op-scrim {
+      height: 48%;
+    }
+    .op-copy {
+      bottom: 4.6%;
+      padding: 0 8%;
+    }
+    .op-name {
+      font-size: 11.4cqw;
+    }
+    .op-line {
+      margin-top: 3cqw;
+      font-size: max(1.0625rem, 5.6cqw);
+    }
+    .op-sig {
+      margin-top: 3.6cqw;
+      font-size: 2.3cqw;
+    }
+    .op-act {
+      flex-direction: column;
+      gap: 3.4cqw;
+      margin-top: 5cqw;
+    }
+  }
+
+  /* =========================================================== the summons */
+  .sm-stage {
+    display: grid;
+    place-items: center;
+    min-height: 100dvh;
+    padding: 16px;
+    background: #060808;
+  }
+  .sm-plate {
+    position: relative;
+    width: min(100%, calc((100dvh - 32px) * 4 / 3), 1400px);
+    aspect-ratio: 4 / 3;
+    background: url("/art/summons-d-plate.webp") center / 100% 100% no-repeat;
+    container-type: inline-size;
+    color: var(--c-silver);
+  }
+  /* The text column. Its padding is in units of the whole plate: container units measure
+     the plate's content box, so the plate itself carries no padding. */
+  .sm-copy {
+    position: relative;
+    padding: 10.65cqw 9.2cqw 8.6cqw 45.6cqw;
+  }
+  .sm-seal {
+    position: absolute;
+    left: 25.17cqw;
+    top: 39.83cqw;
+    width: 23.1cqw;
+    transform: translate(-50%, -50%);
+  }
+  .sm-caption {
+    position: absolute;
+    left: 7cqw;
+    right: 58.4cqw;
+    top: 56.4cqw;
+    margin: 0;
+    text-align: center;
+    font: italic 500 max(1.0625rem, 1.58cqw) / 1.3 var(--f-body);
+    color: var(--c-steel);
+  }
+  .sm-from {
+    margin: 0;
+    font: 500 3.9cqw / 1.05 var(--f-serif);
+    letter-spacing: 0.03em;
+    color: var(--c-gold-light);
+  }
+  .sm-title,
+  .sm-greet {
+    margin: 1.1cqw 0 0;
+    font: italic 500 max(1.0625rem, 2.15cqw) / 1.3 var(--f-body);
+    color: var(--c-steel);
+    text-wrap: balance;
+  }
+  .sm-greet {
+    margin-top: 1cqw;
+  }
+  .sm-name {
+    margin: 1.5cqw 0 0;
+    padding-bottom: 1.3cqw;
+    font: 500 4.6cqw / 1.08 var(--f-serif);
+    letter-spacing: 0.02em;
+    border-bottom: 1px solid var(--c-emerald);
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+  .sm-body {
+    margin-top: 1.5cqw;
+    font: 500 max(1.0625rem, 2.12cqw) / 1.4 var(--f-body);
+  }
+  .sm-body p {
+    margin: 0;
+  }
+  .sm-body p + p {
+    margin-top: 0.9cqw;
+  }
+  .sm-sanction {
+    font-style: italic;
+    font-weight: 700;
+  }
+  /* On the wide plate the dating clause is the caption under the seal; this line stays
+     for screen readers only, so it is read once, in its place. */
+  .sm-date {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    font-style: italic;
+    color: var(--c-steel);
+  }
+  .sm-act {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2cqw;
+    margin-top: 2.4cqw;
+  }
+  /* A name on two lines: the approved fit. */
+  .sm-plate[data-fit="two-lines"] .sm-name {
+    font-size: 3.9cqw;
+    line-height: 1.04;
+  }
+  .sm-plate[data-fit="two-lines"] .sm-body {
+    font-size: max(1.0625rem, 2cqw);
+    line-height: 1.34;
+  }
+  .sm-plate[data-fit="two-lines"] .sm-body p + p {
+    margin-top: 0.6cqw;
+  }
+  .sm-plate[data-fit="two-lines"] .sm-act {
+    margin-top: 1.7cqw;
+  }
+  /* A single word too wide for the line: one step down, to 80%, never smaller. */
+  .sm-plate[data-fit="step"] .sm-name {
+    font-size: 3.68cqw;
+  }
+
+  /* The upright plate: phones, and any screen too narrow for two columns. */
+  @media (orientation: portrait), (max-width: 760px) {
+    .sm-stage {
+      padding: 0;
+      place-items: start center;
+    }
+    .sm-plate {
+      width: min(100%, 480px);
+      aspect-ratio: 780 / 1688;
+      background-image: url("/art/summons-p-plate.webp");
+    }
+    .sm-copy {
+      padding: 51.9cqw 12cqw 13.5cqw;
+    }
+    .sm-seal {
+      left: 50cqw;
+      top: 30.5cqw;
+      width: 26.9cqw;
+    }
+    .sm-caption {
+      display: none;
+    }
+    .sm-date {
+      position: static;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip-path: none;
+      white-space: normal;
+    }
+    .sm-from {
+      font-size: 7cqw;
+    }
+    .sm-title,
+    .sm-greet {
+      margin-top: 2cqw;
+      font-size: max(1.0625rem, 4.4cqw);
+    }
+    .sm-name {
+      margin-top: 3cqw;
+      padding-bottom: 2.4cqw;
+      font-size: 8.8cqw;
+    }
+    .sm-body {
+      margin-top: 2.6cqw;
+      font-size: max(1.0625rem, 4.5cqw);
+      line-height: 1.32;
+    }
+    .sm-body p + p {
+      margin-top: 1.5cqw;
+    }
+    .sm-act {
+      gap: 3cqw 4.5cqw;
+      margin-top: 3cqw;
+    }
+    .sm-plate[data-fit="two-lines"] .sm-name {
+      font-size: 6.9cqw;
+    }
+    .sm-plate[data-fit="two-lines"] .sm-body {
+      font-size: max(1.0625rem, 4.5cqw);
+      line-height: 1.32;
+    }
+    .sm-plate[data-fit="step"] .sm-name {
+      font-size: 7.04cqw;
+    }
+  }
+
+  /* =========================================================== closing screens */
+  .closing {
+    display: grid;
+    place-items: center;
+    min-height: 100dvh;
+    padding: 24px 16px;
+    background: var(--c-night);
+  }
+  .closing .panel-plate {
+    width: min(100%, 34rem);
+  }
+
+  /* =========================================================== the council */
+  .cn {
+    min-height: 100dvh;
+    background: var(--c-olive-black);
+    color: var(--c-silver);
+  }
+  .cn-hall {
+    position: relative;
+    width: 100%;
+    height: min(32.5vw, 46dvh);
+    overflow: hidden;
+  }
+  .cn-hall img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 36%;
+  }
+  .cn-hall::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      rgba(16, 19, 12, 0) 30%,
+      rgba(16, 19, 12, 0.86) 78%,
+      var(--c-olive-black)
+    );
+  }
+  .cn-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 14px;
+    z-index: 1;
+    text-align: center;
+  }
+  .cn-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 28px;
+    max-width: 75rem;
+    margin: 0 auto;
+    padding: 28px 36px 40px;
+    align-items: start;
+  }
+  .cn-col {
+    display: grid;
+    gap: 28px;
+    align-content: start;
+    min-width: 0;
+  }
+  .cn-full {
+    grid-column: 1 / -1;
+  }
+  .cn-intro {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+
+  /* the proposal's alternatives */
+  .cn-alt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2px 16px;
+    padding: 8px 0;
+    border-top: 1px solid var(--c-row-rule);
+  }
+  .cn-alt:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .cn-alt p {
+    margin: 0;
+    color: var(--c-silver);
+  }
+  .cn-state {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+  }
+
+  /* character plates: the approved button plate, enlarged, one per character */
+  .cn-chars {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .cn-char {
+    position: relative;
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 4px 12px;
+    width: 100%;
+    min-height: var(--tap);
+    padding: 16px 18px 15px 16px;
+    text-align: left;
+    color: inherit;
+    background: linear-gradient(#2a3232, #171c1c);
+    border: 1px solid var(--c-dark-steel);
+    border-radius: 2px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    font: inherit;
+  }
+  button.cn-char {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cn-char::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border: 1px dotted rgba(198, 167, 94, 0.5);
+    pointer-events: none;
+  }
+  button.cn-char:hover,
+  button.cn-char:focus-visible {
+    border-color: var(--c-gold);
+  }
+  button.cn-char:hover .mk,
+  button.cn-char:focus-visible .mk {
+    color: var(--c-emerald-light);
+  }
+  button.cn-char:active {
+    border-color: var(--c-emerald);
+  }
+  .cn-char .mk {
+    width: 24px;
+    height: 24px;
+  }
+  .cn-cname {
+    font: 500 var(--t-name) / 1.15 var(--f-serif);
+    letter-spacing: 0.03em;
+    color: var(--c-silver);
+    overflow-wrap: break-word;
+  }
+  .cn-holder {
+    grid-column: 2 / 4;
+    font: 500 var(--t-holder) / 1.25 var(--f-serif);
+    letter-spacing: 0.04em;
+    color: var(--c-holder);
+  }
+  .cn-char.is-yours {
+    border-color: var(--c-emerald);
+  }
+  .cn-char.is-yours .lbl {
+    color: var(--c-emerald-light);
+  }
+  .cn-char.is-taken {
+    background: none;
+    border-color: var(--c-off-border);
+    box-shadow: none;
+  }
+  .cn-char.is-taken::after {
+    border-color: rgba(150, 161, 158, 0.2);
+  }
+  .cn-char.is-taken .cn-cname {
+    color: var(--c-off-text);
+  }
+
+  /* the guest list */
+  .cn-guest {
+    position: relative;
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 2px 12px;
+  }
+  .cn-guest .mk {
+    width: 22px;
+    height: 22px;
+  }
+  .cn-guest.is-you::before {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--c-gold-light);
+  }
+  .cn-guest-tags {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .cn-guest-name {
+    font: 500 1.125rem / 1.2 var(--f-serif);
+    letter-spacing: 0.03em;
+    color: var(--c-silver);
+    overflow-wrap: break-word;
+  }
+  .cn-guest-mantle {
+    grid-column: 2 / 3;
+    margin: 0;
+    font: 500 var(--t-holder) / 1.25 var(--f-serif);
+    letter-spacing: 0.04em;
+    color: var(--c-steel);
+  }
+  .cn-guest-mantle.is-none {
+    font: 500 var(--floor-body) / 1.3 var(--f-body);
+    letter-spacing: 0;
+    color: var(--c-silver);
+  }
+  .cn-guest.is-declined .cn-guest-name {
+    color: var(--c-steel);
+  }
+
+  @media (max-width: 50rem) {
+    .cn-hall {
+      height: min(64.1vw, 46dvh);
+    }
+    .cn-body {
+      grid-template-columns: 1fr;
+      gap: 22px;
+      padding: 20px 16px 30px;
+    }
+    .cn-col {
+      gap: 22px;
+    }
+  }
+}

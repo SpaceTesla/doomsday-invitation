@@ -1,0 +1,1 @@
+ALTER TABLE "guest" ADD COLUMN "removed_character_name" text;

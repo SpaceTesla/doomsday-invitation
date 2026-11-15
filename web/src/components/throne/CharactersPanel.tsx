@@ -6,7 +6,7 @@ import { Button } from "@/components/Button";
 import { Label } from "@/components/Label";
 import { Panel, Well } from "@/components/Panel";
 import { QuietControl } from "@/components/QuietControl";
-import { ConfirmDialog } from "./ConfirmDialog";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { ActionMessage, useAdminAction } from "./useAdminAction";
 
 export type CharacterRow = {

@@ -8,7 +8,7 @@ import { Figure } from "@/components/Figure";
 import { Heading } from "@/components/Heading";
 import { Label } from "@/components/Label";
 import { Panel, Well } from "@/components/Panel";
-import { ConfirmDialog } from "./ConfirmDialog";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { ActionMessage, useAdminAction } from "./useAdminAction";
 
 export type CouncilView = {

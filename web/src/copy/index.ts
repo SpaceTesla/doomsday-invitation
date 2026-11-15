@@ -7,57 +7,121 @@
 export const copy = {
   // 2. Opening
   "2.1": "The Iron Throne",
+  "2.2": "[Title] [Name].",
+  "2.3": "Doctor Doom is here to collect you.",
   "2.4": "GO WITH HIM",
   "2.5": "GO WITHOUT SOUND",
+  "2.7": "Doctor Doom, hooded and masked, lifts the rubble from over you and raises one hand.",
   "2.9": "The Iron Throne",
   "2.10": "A summons",
   "2.11": "You have been summoned.",
 
   // 3. Summons
+  "3.1": "Victor von Doom",
+  "3.2": "by his own hand and will Sovereign of Latveria, to",
+  "3.3": "[Title] [Name]",
+  "3.4": "greeting.",
+  "3.5":
+    "Be it known that Doom has weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing; and that you have been chosen.",
+  "3.6":
+    "You are therefore summoned to take your seat at the Council of Doom, where the day, the hour and the place shall be set before you.",
+  "3.7": "Let none who is called fail to answer. The absent forfeit their voice.",
+  "3.8": "Given at Castle Doom, in Doomstadt, the [day] day of [Month], [year].",
+  "3.8.phone": "Given at Castle Doom, the [day] day of [Month], [year].",
   "3.10": "TAKE YOUR SEAT",
   "3.11": "DECLINE",
 
   // 4. Declining and withdrawing
   "4.1": "Refuse the summons?",
+  "4.2":
+    "You will have no seat at the council and no say in its plan. You may return and accept until the day itself.",
+  "4.3": "REFUSE",
+  "4.4": "GO BACK",
   "4.5": "So be it.",
+  "4.6":
+    "Doom does not ask twice. The seat stands empty until the day; return before then, and it is yours.",
+  "4.7": "TAKE YOUR SEAT",
+  "4.8": "LEAVE THE COUNCIL",
   "4.9": "Abandon your seat?",
+  "4.10":
+    "Your mantle will pass back to the council, and your approval and your alternative will be struck out. You may return until the day itself.",
+  "4.11": "ABANDON SEAT",
+  "4.12": "REMAIN",
   "4.13": "The day has passed.",
+  "4.14": "The council sat without you.",
 
   // 5. Character selection
   "5.1": "Choose your mantle",
+  "5.2":
+    "Each mantle is borne by one guest alone. You may choose again until Doom decrees the day.",
+  "5.4": "YOURS",
+  "5.5": "TAKEN",
+  "5.6": "Choose [Character]",
+  "5.7": "[Character], taken by [Title] [Name]",
+  "5.8": "You stand before the council as [Character].",
+  "5.9": "[Character] was claimed a moment ago by [Title] [Name]. Choose another.",
+  "5.10": "Doom has struck [Character] from the roster. Choose another.",
+  "5.11": "Every mantle is claimed. Doom may yet add to the roster.",
+  "5.12": "Doom has not yet named the mantles. Return in a while.",
+  "5.13": "The day is decreed. Mantles can no longer change.",
 
   // 6. The council
   "6.1": "Council of Doom",
   "6.2": "The council is seated.",
+  "6.3": "Doom will set the day, the hour and the place before you.",
+  "6.4.name": "Doctor Doom",
+  "6.4.tag": "SOVEREIGN",
   "6.5": "SUMMONED",
   "6.6": "SEATED",
   "6.7": "DECLINED",
   "6.8": "YOU",
+  "6.9": "No mantle yet",
+  "6.10": "You are the first to answer.",
+  "6.11": "The council: [n] summoned, [n] seated",
 
   // 7. The proposal
   "7.1": "Doom proposes",
   "7.3": "At [venue].",
+  "7.4": "[n] of [total] seats have approved",
+  "7.5": "1 of [total] seats has approved",
+  "7.6": "No seat has approved yet",
   "7.7": "APPROVE",
   "7.8": "PROPOSE ANOTHER",
   "7.9": "Your approval is counsel. Doom alone decides, and may change the proposal at any time.",
   "7.10": "APPROVED",
   "7.11": "WITHDRAW",
+  "7.12": "Doom has not yet named the day.",
+  "7.13": "Doom has changed the proposal. Earlier approvals no longer stand.",
   "7.14": "ALTERNATIVES",
+  "7.16": "No alternative has been put forward.",
   "7.17": "Propose another",
+  "7.18": "Name another day or hour. The place is Doom's to choose.",
+  "7.19.day": "DAY",
+  "7.19.hour": "HOUR",
+  "7.20": "SET IT BEFORE DOOM",
   "7.21": "CANCEL",
+  "7.22": "This replaces the alternative you gave before.",
+  "7.23": "Your alternative is before Doom.",
+  "7.24": "WITHDRAW",
   "7.25": "That day has passed. Name one to come.",
   "7.26": "Name both a day and an hour.",
+  "7.27": "That is the day Doom has proposed. Approve it, or name another.",
 
   // 8. The decree
   "8.1": "Doom decrees",
+  "8.4": "Be there. The absent forfeit their voice.",
   "8.5": "DECREED",
   "8.6": "PROPOSED",
+  "8.7": "Doom has amended the decree. Mark the new day.",
 
   // 9. Invalid links, errors and waiting
   "9.1": "No summons here.",
   "9.2": "This link opens nothing. If Doom summoned you, ask him for your link again.",
   "9.3": "That did not reach the council. Nothing was lost. Try again.",
+  "9.4": "TRY AGAIN",
   "9.5": "No connection. Your answer is not yet recorded.",
+  "9.6": "The council has changed since you arrived. Reload to see it as it stands.",
+  "9.7": "RELOAD",
   "9.8": "One moment.",
   "9.10": "Close",
 
