@@ -347,6 +347,8 @@ Built and proven on 16 November 2026 (milestone 0B). The workflow is `.github/wo
    4. `scripts/smoke-test.mjs` asks the staged deployment, through Vercel's protection bypass (`vercel curl`), whether it reads the database and has every migration in this commit's journal. If not, the run stops and the live deployment is untouched.
    5. `vercel promote` moves the production domain to the new deployment.
 
+The first production run through the workflow (16 November 2026) went through every step: checks, build on Linux, staged deploy, backup, migration under the lock, smoke test ("2 of 2 migrations applied"), promotion. Two fixes were needed on the way, both in the workflow, not the application: generate Next.js's route types before type-checking (`next typegen`), and let `vercel curl` read the token from `VERCEL_TOKEN` (it forwards options it does not know, `--token` included, to curl).
+
 What the trial established, by hand from the CLI, before the workflow was written:
 
 - **Staging and promotion work on Hobby.** Before promotion the production domain answered 404 (no deployment yet held it); after `vercel promote` it served the staged deployment at once.
@@ -448,7 +450,7 @@ doomsday-invitation/
 | # | Milestone | Contains | Done when |
 |---|---|---|---|
 | 0A | Local foundation | `web/` scaffold with Next, Tailwind v4, Drizzle; tokens, fonts, base components; approved assets copied and marks exported; Docker database; the migration runner; security headers. **Done on 15 November 2026** | A styled specimen page runs locally, the health route reads the local database, and `db:check` reaches Neon |
-| 0B | Deployment foundation | Vercel project, GitHub Actions, CI, the deployment workflow, the `preview` database branch; Vercel's terms, the cron header and log retention confirmed. **Staging and promotion proven by hand on 16 November 2026**; the workflow's first runs wait for the push | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
+| 0B | Deployment foundation | Vercel project, GitHub Actions, CI, the deployment workflow, the `preview` database branch; Vercel's terms, the cron header and log retention confirmed. **Done on 16 November 2026**: staging and promotion proven by hand, then by the workflow's first production run | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
 | 1 | Schema and domain | Migrations, the domain module, date words, tokens, retention. **Done on 15 November 2026** | Domain and concurrency tests pass against PostgreSQL |
 | 2 | Administrator panel | Sign-in, guests and links, characters, proposal, council view, finalise, amend, export. **Done on 16 November 2026**, verified locally; review on a preview waits for 0B | Doom can run an event end to end with no guest screens |
 | 3 | Guest journey, still | Summons, decline and leave, character selection, council, proposal and alternatives, decree, closing screens, invalid link, errors. Final type and copy, no motion. **Done on 16 November 2026**, verified locally; the preview check waits for 0B | The journey passes end to end on phone and desktop, on a preview deployment |
