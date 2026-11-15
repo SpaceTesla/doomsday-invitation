@@ -20,10 +20,12 @@ describe("logging", () => {
     const offences: string[] = [];
     for (const file of sourceFiles(srcDir)) {
       const text = fs.readFileSync(file, "utf8");
-      const calls = text.match(/console\.\w+\(([\s\S]*?)\);/g) ?? [];
-      for (const call of calls) {
-        if (/token|\.url\b|request\b|req\b|params|\berror\b|\berr\b|\be\b/.test(call)) {
-          offences.push(`${path.relative(srcDir, file)}: ${call.slice(0, 80)}`);
+      // Only the arguments matter, and a plain string literal is always safe.
+      for (const match of text.matchAll(/console\.\w+\(([\s\S]*?)\);/g)) {
+        const args = match[1].trim();
+        if (/^"[^"`$]*"$/.test(args)) continue;
+        if (/token|\.url\b|request\b|req\b|params|\berror\b|\berr\b|\be\b|failure/.test(args)) {
+          offences.push(`${path.relative(srcDir, file)}: ${match[0].slice(0, 80)}`);
         }
       }
     }

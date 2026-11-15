@@ -17,6 +17,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx --env-file=.env.local scripts/migrate.ts",
     "db:check": "tsx --env-file=.env.local scripts/db-check.ts",
+    "admin:passphrase": "tsx scripts/admin-passphrase.ts",
     "env:setup": "tsx scripts/setup-env.ts",
     "assets:sync": "tsx scripts/sync-assets.ts"
   },

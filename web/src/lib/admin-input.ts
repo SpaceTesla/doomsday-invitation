@@ -1,0 +1,28 @@
+// Input shapes for the administrator's requests, and the conversion of the panel's
+// day-and-hour fields into an instant in the event's time zone.
+import { z } from "zod";
+import { TITLES } from "@/domain/guests";
+import { zonedInstant } from "@/domain/time";
+
+export const idParam = z.uuid();
+
+export const guestInput = z.object({
+  name: z.string().max(200),
+  title: z.enum(TITLES),
+});
+
+export const characterInput = z.object({ name: z.string().max(120) });
+
+/** DAY as YYYY-MM-DD and HOUR as HH:MM on a quarter hour, as the panel's controls send them. */
+export const whenInput = z.object({
+  day: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  hour: z.string().regex(/^([01]\d|2[0-3]):(00|15|30|45)$/),
+});
+
+export const proposalInput = whenInput.extend({ venue: z.string().max(300) });
+
+export function instantFrom(when: { day: string; hour: string }, timeZone: string): Date {
+  const [year, month, day] = when.day.split("-").map(Number);
+  const [hour, minute] = when.hour.split(":").map(Number);
+  return zonedInstant(timeZone, year, month, day, hour, minute);
+}

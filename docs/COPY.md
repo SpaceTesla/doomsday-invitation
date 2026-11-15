@@ -334,6 +334,17 @@ The reader here is Doom. The copy is plain and brief, in the same typefaces, wit
 | 10.43 | Failed | Body | That did not save. Nothing was changed. Try again. | Approved |
 | 10.44 | Data lifetime note | Body | Links stop working and all data is deleted thirty days after the day. | Approved |
 
+### 10.5 Lines added during the build
+
+States the deck did not foresee, written under section 1 and the rule in section 12 ("reuse the nearest existing line"). Plain and brief, like the rest of the panel. Added on 15 November 2026 in milestone 2; the owner may reword any of them.
+
+| # | Where | Face | Copy | Standing |
+|---|---|---|---|---|
+| 10.45 | Edit name, save | Orbitron | SAVE NAME | Added in the build. Cancel reuses CANCEL |
+| 10.46 | A guest whose link was cancelled | Orbitron | NO LINK | Added in the build. REPLACE LINK then issues a new one |
+| 10.47 | Proposal, venue missing | Body | Name a venue. | Added in the build. A missing or past day reuses 7.26 and 7.25 |
+| 10.48 | Download the whole event | Orbitron | EXPORT | Added in the build. The panel's Export button (`ARCHITECTURE.md`, section 9) |
+
 ## 11. What changed from the placeholders
 
 | Placeholder | Final | Why |
