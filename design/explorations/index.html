@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latverian summons: directions</title>
+<link rel="stylesheet" href="shared/board.css">
+<style>
+  .idx-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px 32px;
+    max-width: 1560px;
+    margin: 0 auto;
+    padding-top: 40px;
+  }
+  @media (max-width: 1000px) { .idx-grid { grid-template-columns: 1fr; } }
+
+  .idx-dir { min-width: 0; }
+  .idx-dir h2 { margin: 0 0 6px; font: 600 20px/1.3 var(--board-font); }
+  .idx-dir h2 a { text-decoration: none; }
+  .idx-dir h2 a:hover { text-decoration: underline; }
+  .idx-dir p { margin: 0 0 16px; color: var(--board-dim); max-width: 46ch; }
+
+  .idx-wide,
+  .idx-pair img {
+    display: block;
+    width: 100%;
+    height: auto;
+    box-shadow: 0 0 0 1px var(--board-line);
+  }
+  .idx-wide { border-radius: 6px; }
+  .idx-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .idx-pair img { border-radius: 18px; }
+  .idx-cap { margin-top: 10px; font-size: 13px; color: var(--board-dim); }
+
+  .idx-facts {
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13.5px;
+    color: var(--board-dim);
+  }
+  .idx-facts li { padding: 7px 0; border-top: 1px solid var(--board-line); }
+  .idx-facts strong { color: var(--board-text); font-weight: 600; }
+
+  .idx-four {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 40px;
+    max-width: 1560px;
+    margin: 0 auto;
+    padding-top: 40px;
+  }
+  @media (max-width: 1000px) { .idx-four { grid-template-columns: 1fr; } }
+  .idx-four h2 { margin: 0 0 8px; font: 600 24px/1.25 var(--board-font); }
+  .idx-four h2 a { text-decoration: none; }
+  .idx-four h2 a:hover { text-decoration: underline; }
+  .idx-four p { margin: 0; color: var(--board-dim); max-width: 52ch; }
+  .idx-trio { display: grid; grid-template-columns: 16fr 12fr; gap: 14px; margin-top: 14px; }
+  .idx-trio img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 6px; box-shadow: 0 0 0 1px var(--board-line); }
+
+  .idx-rec {
+    max-width: 1560px;
+    margin: 64px auto 0;
+    padding-top: 28px;
+    border-top: 1px solid var(--board-line);
+  }
+  .idx-rec h2 { margin: 0 0 10px; font: 600 19px/1.3 var(--board-font); }
+  .idx-rec p { max-width: 74ch; margin: 0 0 12px; color: var(--board-dim); }
+  .idx-rec strong { color: var(--board-text); font-weight: 600; }
+</style>
+</head>
+<body class="board">
+
+<nav class="board-nav" aria-label="Boards">
+  <a href="index.html" aria-current="page">All directions</a>
+  <a href="direction-1-winter-chancery.html">I. The Winter Chancery</a>
+  <a href="direction-2-the-audience.html">II. The Audience</a>
+  <a href="direction-3-iron-protocol.html">III. The Iron Protocol</a>
+  <a href="direction-4-the-iron-throne.html">IV. The Iron Throne</a>
+  <a href="direction-4-the-iron-throne-v2.html">IV, refined</a>
+  <a href="direction-4-the-iron-throne-v3.html">IV, final art direction</a>
+  <a href="direction-4-the-iron-throne-v4.html">IV, final character pass</a>
+  <a href="direction-4-the-iron-throne-v5.html">IV, typography review</a>
+</nav>
+
+<header class="board-head">
+  <h1>Directions for the Latverian summons</h1>
+  <p>Direction IV is the approved direction, and the final character pass (revision 4) is the approved board. The typography review applies the approved typefaces to that board and is approved for type and for the council layout. Every earlier board is kept as it was.</p>
+</header>
+
+<section class="idx-four">
+  <div class="idx-four__text">
+    <h2><a href="direction-4-the-iron-throne-v5.html">IV. The Iron Throne, typography review</a></h2>
+    <p>The approved typefaces, Pirata One, Cinzel, Orbitron and Cormorant Garamond, set into the opening, the summons and a first mock of the council. The artwork is revision 4's, unchanged.</p>
+    <ul class="idx-facts">
+      <li><strong>For review</strong> every font size, regular against italic body text, and how long names are fitted</li>
+      <li><strong>Shown</strong> desktop and phone, with phone frames at real size</li>
+      <li><strong>Reported</strong> where the type does not fit, with a recommended fix for each</li>
+      <li><strong>Not approved</strong> the council layout and its placeholder wording</li>
+    </ul>
+    <p style="margin-top:16px"><a href="direction-4-the-iron-throne-v5.html">Open the typography review</a></p>
+  </div>
+  <div class="idx-four__art">
+    <a href="direction-4-the-iron-throne-v5.html"><img class="idx-wide" src="previews/direction-4-v5-opening-desktop.png" alt="Typography review, opening: the guest's name in Cinzel capitals, the line beneath in italic, the two actions in Orbitron, over the approved figure" width="1600" height="900"></a>
+    <div class="idx-trio">
+      <img src="previews/direction-4-v5-council-desktop.png" alt="Typography review, council: the title Council of Doom in Pirata One over the hall, a proposal panel and a list of characters marked yours and taken" width="1280" height="1066">
+      <img src="previews/direction-4-v5-summons-sheet.png" alt="Typography review, summons: the steel plate with Victor von Doom and the guest's name in Cinzel and the text in Cormorant Garamond" width="1200" height="900">
+    </div>
+  </div>
+</section>
+
+<header class="board-head" style="padding-top:64px">
+  <h1 style="font-size:22px">The approved board: final character pass</h1>
+  <p>Revision 4. Its artwork, composition and wording are approved. Its frames still show the earlier typefaces.</p>
+</header>
+
+<section class="idx-four" style="padding-top:8px">
+  <div class="idx-four__text">
+    <h2><a href="direction-4-the-iron-throne-v4.html">IV. The Iron Throne, final character pass</a></h2>
+    <p>One narrow correction to the figure. The hood keeps closer to the head, mail shows at the neck where a padded collar was, the cloak has more folds, and the hand is held side-on beside the shoulder with its fingers bent.</p>
+    <ul class="idx-facts">
+      <li><strong>Changed</strong> the two figure layers of the opening, and nothing else</li>
+      <li><strong>Compared</strong> hood and cowl, mask visibility, hand position, finger articulation, each before and after</li>
+      <li><strong>Unchanged</strong> the mask, the runes, the type, the hall, the summons, the reveal, the light</li>
+    </ul>
+    <p style="margin-top:16px"><a href="direction-4-the-iron-throne-v4.html">Open the final character pass</a></p>
+  </div>
+  <div class="idx-four__art">
+    <a href="direction-4-the-iron-throne-v4.html"><img class="idx-wide" src="previews/direction-4-v4-reveal-desktop.png" alt="Final character pass opening: Doom in a closer hood with mail at the neck, one hand raised side-on with curled fingers, the guest's name centred at the foot" width="1600" height="900"></a>
+    <a href="direction-4-the-iron-throne-v4.html#corrections"><img class="idx-wide" style="margin-top:14px" src="previews/direction-4-v4-before-after.png" alt="Before and after: the previous figure with a padded collar and a flat open hand beside the corrected figure" width="1812" height="576"></a>
+  </div>
+</section>
+
+<header class="board-head" style="padding-top:64px">
+  <h1 style="font-size:22px">The final art direction board</h1>
+  <p>Kept for comparison. It holds the first round of character corrections and the typography recommendation, which is repeated unchanged on the final character pass.</p>
+</header>
+
+<section class="idx-four" style="padding-top:8px">
+  <div class="idx-four__text">
+    <h2><a href="direction-4-the-iron-throne-v3.html">IV. The Iron Throne, final art direction</a></h2>
+    <p>A correction pass. The hood sits closer to the head, the mask is larger in it, the clasps and shoulders follow the references, and the raised hand is rebuilt with joints, a wrist and a flared cuff. Seventeen typefaces are compared and one set is recommended.</p>
+    <ul class="idx-facts">
+      <li><strong>Changed</strong> the two figure layers of the opening, and nothing else in the artwork</li>
+      <li><strong>Added</strong> before and after comparisons with measurements, and a typography section</li>
+      <li><strong>Recommended type</strong> Grenze Gotisch for display, Bodoni Moda for names, Oxanium for controls, Spectral for text</li>
+      <li><strong>Not yet applied</strong> the approved frames still use the approved faces</li>
+      <li><strong>Unchanged</strong> the hall, the mask, the runes, the summons, the palette, the reveal</li>
+    </ul>
+    <p style="margin-top:16px"><a href="direction-4-the-iron-throne-v3.html">Open the final art direction board</a></p>
+  </div>
+  <div class="idx-four__art">
+    <a href="direction-4-the-iron-throne-v3.html"><img class="idx-wide" src="previews/direction-4-v3-reveal-desktop.png" alt="Final art direction opening: Doom with a closer hood and larger mask behind blurred rubble, a jointed hand raised against pale light, the guest's name centred at the foot" width="1600" height="900"></a>
+    <a href="direction-4-the-iron-throne-v3.html#corrections"><img class="idx-wide" style="margin-top:14px" src="previews/direction-4-v3-before-after.png" alt="Before and after: the earlier figure with a tall thick hood and thin-fingered hand beside the corrected figure" width="1812" height="576"></a>
+  </div>
+</section>
+
+<header class="board-head" style="padding-top:64px">
+  <h1 style="font-size:22px">The refined board</h1>
+  <p>Kept for comparison. The final art direction board is this board with the figure corrected and a typography section added.</p>
+</header>
+
+<section class="idx-four" style="padding-top:8px">
+  <div class="idx-four__text">
+    <h2><a href="direction-4-the-iron-throne-v2.html">IV. The Iron Throne, refined</a></h2>
+    <p>The guest is under the rubble and Doom lifts it away: a hand, then a body, then the hood and the mask. The hall is rebuilt on the plan of the supplied reference. The steel summons, the seal and the runes are carried over.</p>
+    <ul class="idx-facts">
+      <li><strong>The opening is</strong> a reveal in four beats, with the message and actions at the foot of the frame</li>
+      <li><strong>Doom and the hall are</strong> rendered in light and shadow from drawings made from the references</li>
+      <li><strong>The mask has</strong> one measured master and three levels of detail</li>
+      <li><strong>New</strong> the suit rune, and a library sorted by source</li>
+      <li><strong>Unchanged</strong> the summons plate, the seal, Doomscript, type and interface colours</li>
+    </ul>
+    <p style="margin-top:16px"><a href="direction-4-the-iron-throne-v2.html">Open the refined board</a></p>
+  </div>
+  <div class="idx-four__art">
+    <a href="direction-4-the-iron-throne-v2.html"><img class="idx-wide" src="previews/direction-4-v2-reveal-desktop.png" alt="Refined opening: Doom in a green hood and steel mask behind blurred rubble, one hand raised against pale light, the guest's name centred at the foot" width="1600" height="900"></a>
+    <div class="idx-trio">
+      <img src="previews/direction-4-v2-hall-desktop.png" alt="Refined throne hall: a dark pier with a slit of amber light, tall leaded windows, a stepped dais and a ring of green runes in the floor" width="1600" height="900">
+      <img src="previews/direction-4-v2-mask-sheet.png" alt="The mask sheet: reference, measured master, rendered relief, line insignia and icon" width="1200" height="900">
+    </div>
+  </div>
+</section>
+
+<header class="board-head" style="padding-top:64px">
+  <h1 style="font-size:22px">The first version of Direction IV</h1>
+  <p>Kept as approved. The refined board replaces its opening and its hall and leaves the rest alone.</p>
+</header>
+
+<section class="idx-four" style="padding-top:8px">
+  <div class="idx-four__text">
+    <h2><a href="direction-4-the-iron-throne.html">IV. The Iron Throne</a></h2>
+    <p>Science, sorcery and sovereignty in one ring of three bands. Doom arrives in the guest's dark, names them, and takes them to a hall whose rose window is the same ring that seals the steel summons.</p>
+    <ul class="idx-facts">
+      <li><strong>The opening is</strong> "Mr. Anish. Doctor Doom is here to collect you."</li>
+      <li><strong>The summons is</strong> an engraved steel plate with runes on all four edges</li>
+      <li><strong>Palette</strong> blue-black and olive black, steel and silver, antique gold, emerald for active runes only</li>
+      <li><strong>Type</strong> Bodoni Moda, Spectral, IBM Plex Sans</li>
+      <li><strong>Runes</strong> traced from the fan-made decoder in the reference library</li>
+    </ul>
+    <p style="margin-top:16px"><a href="direction-4-the-iron-throne.html">Open the board</a></p>
+  </div>
+  <div class="idx-four__art">
+    <a href="direction-4-the-iron-throne.html"><img class="idx-wide" src="previews/direction-4-collection-desktop.png" alt="Direction IV opening: Doom backlit in a pointed doorway onto the throne hall, a ring of green runes on the floor, the guest's name at left" width="1600" height="900"></a>
+    <div class="idx-trio">
+      <img src="previews/direction-4-hall-desktop.png" alt="Direction IV throne hall: Doom seated under a circular rune mechanism between two tall windows" width="1600" height="900">
+      <img src="previews/direction-4-summons-sheet.png" alt="Direction IV summons: a brushed steel plate with a three-band seal, gold and silver type and engraved rune borders" width="1200" height="900">
+    </div>
+  </div>
+</section>
+
+<header class="board-head" style="padding-top:64px">
+  <h1 style="font-size:22px">The first three directions</h1>
+  <p>Each board shows the opening screen and the personalised summons on desktop and phone, then the palette, type, insignia and materials behind them. The words are the same on all three, so what differs is the form.</p>
+</header>
+
+<main class="idx-grid">
+
+  <article class="idx-dir">
+    <h2><a href="direction-1-winter-chancery.html">I. The Winter Chancery</a></h2>
+    <p>A sealed letter from a real place. Black vellum, silver ink, green wax, and a castle with one lit window.</p>
+    <a href="direction-1-winter-chancery.html"><img class="idx-wide" src="previews/direction-1-hero-desktop.png" alt="Direction I opening screen: a castle on a crag in snow at night, a green wax seal as the button" width="1600" height="900"></a>
+    <div class="idx-pair">
+      <img src="previews/direction-1-hero-phone.png" alt="Direction I opening screen on a phone" width="780" height="1688">
+      <img src="previews/direction-1-summons-phone.png" alt="Direction I summons on a phone: silver text on black vellum with a gold initial and a pendant green seal" width="780" height="1688">
+    </div>
+    <p class="idx-cap">Opening screen, and the summons once the seal is broken.</p>
+    <ul class="idx-facts">
+      <li><strong>The summons is</strong> a letter sealed shut for one reader</li>
+      <li><strong>Palette</strong> blue-black, silver, leaf gold, rubric red, green wax</li>
+      <li><strong>Type</strong> IM Fell English, EB Garamond, one Grenze Gotisch initial</li>
+    </ul>
+  </article>
+
+  <article class="idx-dir">
+    <h2><a href="direction-2-the-audience.html">II. The Audience</a></h2>
+    <p>You are received at court. Seven lit steps, a throne that rises out of frame, and a parchment in a pool of light.</p>
+    <a href="direction-2-the-audience.html"><img class="idx-wide" src="previews/direction-2-hero-desktop.png" alt="Direction II opening screen: a symmetrical throne hall with tall glass, crossing light and a small seated hooded figure" width="1136" height="639"></a>
+    <div class="idx-pair">
+      <img src="previews/direction-2-hero-phone.png" alt="Direction II opening screen on a phone" width="340" height="736">
+      <img src="previews/direction-2-summons-phone.png" alt="Direction II summons on a phone: ink on parchment with a crowned cypher and a hanging gilt seal" width="340" height="736">
+    </div>
+    <p class="idx-cap">Opening screen, and the summons as it is presented.</p>
+    <ul class="idx-facts">
+      <li><strong>The summons is</strong> an open sheet with a hanging seal</li>
+      <li><strong>Palette</strong> olive black, sage light, amber gold, parchment, oxblood</li>
+      <li><strong>Type</strong> Castoro Titling, Cormorant Garamond</li>
+    </ul>
+  </article>
+
+  <article class="idx-dir">
+    <h2><a href="direction-3-iron-protocol.html">III. The Iron Protocol</a></h2>
+    <p>The state speaks. A hooded figure in a stone niche, a ring of emerald light, and a decree engraved in steel.</p>
+    <a href="direction-3-iron-protocol.html"><img class="idx-wide" src="previews/direction-3-hero-desktop.png" alt="Direction III opening screen: a hooded figure with no visible face in a lancet niche, an emerald ring behind the hood" width="1600" height="900"></a>
+    <div class="idx-pair">
+      <img src="previews/direction-3-hero-phone.png" alt="Direction III opening screen on a phone" width="680" height="1472">
+      <img src="previews/direction-3-summons-phone.png" alt="Direction III summons on a phone: silver-white text on a riveted steel plate with an emerald ring seal" width="680" height="1472">
+    </div>
+    <p class="idx-cap">Opening screen, and the summons once the guest is recognised.</p>
+    <ul class="idx-facts">
+      <li><strong>The summons is</strong> an engraved plate with one line of machine voice</li>
+      <li><strong>Palette</strong> steel greys, one emerald light, brass rivets</li>
+      <li><strong>Type</strong> Bodoni Moda, Crimson Pro, IBM Plex Sans and Mono</li>
+    </ul>
+  </article>
+
+</main>
+
+<section class="idx-rec">
+  <h2>Where this stands</h2>
+  <p><strong>The typography review is approved.</strong> Its sizes, body treatment, long-name rules and council layout are decisions; the council wording on it is provisional until the copy review. The visual direction is approved, and the project is specified in <code>design/DESIGN.md</code> and <code>PRODUCT_SPEC.md</code>. The recommended faces are shown in a comparison and have not been applied to the approved frames. The final design system and the application have not been started.</p>
+  <p>This pass is written up in <code>design/FINAL_ART_DIRECTION.md</code>, and the refinement before it in <code>design/VISUAL_REFINEMENT.md</code>. The fourth direction is specified in <code>design/CREATIVE_DIRECTION_V2.md</code>, the first three in <code>design/CREATIVE_DIRECTIONS.md</code>, and the first comparison is kept in <code>design/COMPARISON.md</code> as a record.</p>
+</section>
+
+<footer class="board-foot">
+  Concept boards. The first four are original vector drawing with no reference image embedded. The refined and final boards use procedural renders of original drawings, and show supplied reference images only where labelled, loaded from the project's reference library. Rune shapes are traced from the fan-made decoder. Guest names and dates are placeholders.
+</footer>
+
+</body>
+</html>

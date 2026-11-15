@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IV. The Iron Throne, refined: concept board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=IBM+Plex+Sans:wght@400;500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/board.css">
+<style>
+[[CSS]]
+</style>
+</head>
+<body class="board dir-4 v2">
+
+<svg class="sprite" aria-hidden="true" focusable="false"><defs>
+[[rune_defs()]]
+[[DEFS]]
+[[sprite()]]
+</defs></svg>
+
+<nav class="board-nav" aria-label="Boards">
+  <a href="index.html">All directions</a>
+  <a href="direction-1-winter-chancery.html">I. The Winter Chancery</a>
+  <a href="direction-2-the-audience.html">II. The Audience</a>
+  <a href="direction-3-iron-protocol.html">III. The Iron Protocol</a>
+  <a href="direction-4-the-iron-throne.html">IV. The Iron Throne</a>
+  <a href="direction-4-the-iron-throne-v2.html" aria-current="page">IV, refined</a>
+</nav>
+
+<header class="board-head">
+  <h1>IV. The Iron Throne, refined</h1>
+  <p>A targeted second pass on the approved direction. The opening is now a reveal through rubble, Doom and the hall are rendered in light and shadow, and the mask has one measured master that every icon is cut from. The steel summons, the three-band seal, the Doomscript and the type are carried over as they were.</p>
+  <ul class="jump" aria-label="Sections">
+    <li><a href="#reveal">A. Reveal</a></li>
+    <li><a href="#storyboard">B. Storyboard</a></li>
+    <li><a href="#character">C. Character study</a></li>
+    <li><a href="#hall">D. Throne hall</a></li>
+    <li><a href="#mask">E. Mask</a></li>
+    <li><a href="#suitrune">F. Suit rune</a></li>
+    <li><a href="#library">G. Icon library</a></li>
+    <li><a href="#doomscript">H. Doomscript</a></li>
+    <li><a href="#summons">I. Summons</a></li>
+    <li><a href="#materials">J. Materials and light</a></li>
+    <li><a href="#status">K. Kept, changed, unfinished</a></li>
+  </ul>
+</header>
+
+<!-- ============================== A ============================== -->
+<section class="board-sec" id="reveal">
+  <h2>A. The reveal</h2>
+  <p class="board-lede">The guest is the one under the rubble. A hand is seen first, then a body with no head, then the hood. The mask comes last, and the two lines appear only after it. The message and both actions sit at the foot of the frame, where the rubble gives them a dark ground.</p>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--desktop" id="reveal-desktop">
+      <div class="frame frame--desktop">
+        [[reveal('d', 'open', True)]]
+        <div class="rv-scrim"></div>
+        [[reveal_copy()]]
+      </div>
+      <figcaption><strong>Desktop, end of the sequence.</strong> Doom holds the centre and upper two thirds. The light sits behind the raised hand, as it does in the reference frames.</figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="reveal-phone">
+      <div class="frame frame--phone">
+        [[reveal('p', 'open', True)]]
+        <div class="rv-scrim"></div>
+        [[reveal_copy()]]
+      </div>
+      <figcaption><strong>Phone.</strong> A separate composition: the hand is raised beside the head so both fit an upright frame, and the rubble closes from above and below.</figcaption>
+    </figure>
+  </div>
+  <div class="notes" style="margin-top:28px">
+    <div>
+      <h3>Taken from the three reveal frames</h3>
+      <ul>
+        <li><strong>The order of disclosure.</strong> Hand, then torso, then head. The first frame shows only a hand in a gap of light; the second hides the head behind the slab; the third shows the hood.</li>
+        <li><strong>A soft foreground.</strong> The rubble is close to the lens and out of focus. It frames the figure and never shows detail.</li>
+        <li><strong>One source of light.</strong> Pale fog lit from behind, brightest behind the hand. The figure is read by its outline.</li>
+        <li><strong>Ash in the air.</strong> Sparse streaks falling across the light, and large soft discs low in the frame.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Changed for the invitation</h3>
+      <ul>
+        <li><strong>The point of view.</strong> The guest looks up from under the stone. "Here to collect you" then has a literal meaning.</li>
+        <li><strong>A fourth step.</strong> The film frames end on a silhouette. Here the costume then comes up out of the dark: hood edge, half the mask, the clasps.</li>
+        <li><strong>The rune on his arm.</strong> The suit rune on the vambrace lights emerald while the stone lifts. It is the only emerald in the scene.</li>
+        <li><strong>The grade.</strong> The fog is tinted towards the gold-green of the hall's glass so the two scenes belong together.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Layout rules</h3>
+      <ul>
+        <li><strong>Wide screens.</strong> Scene fills the viewport. Name, line and actions are centred in the lowest third. Nothing sits in a left column.</li>
+        <li><strong>Phones.</strong> Figure in the upper 60 percent, message and actions below it on the rubble. The primary action stays within thumb reach.</li>
+        <li><strong>Between the two.</strong> The figure layer keeps its height and the rubble layers slide inwards, so the frame never shows an empty side.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== B ============================== -->
+<section class="board-sec" id="storyboard">
+  <h2>B. Animation storyboard</h2>
+  <p class="board-lede">Four beats, built from the same eleven layers as the frames above. The first row is the supplied reference sequence; the second is ours. Below them the sequence can be played.</p>
+
+  <h3 class="sub">Reference: the supplied frames, in order</h3>
+  <div class="refrow">
+    <figure><img src="[[REF]]inspiration/doom-reveal-1.png" alt="Reference frame 1: darkness with one small gap of pale light and the silhouette of a raised hand in it" width="2880" height="1240" loading="lazy">1. A gap, and a hand</figure>
+    <figure><img src="[[REF]]inspiration/doom-reveal-2.png" alt="Reference frame 2: the gap has widened to show a cloaked torso and the raised hand; the head is still hidden by rock" width="2880" height="1222" loading="lazy">2. The slab lifts; the head stays hidden</figure>
+    <figure><img src="[[REF]]inspiration/doom-reveal-3.png" alt="Reference frame 3: the hooded head is now visible as a silhouette against pale fog, with blurred rock at both edges" width="2880" height="1224" loading="lazy">3. The hood, in silhouette</figure>
+  </div>
+  <p class="src-note">Reference stills from the film, supplied in <code>references/inspiration/</code>. Shown for comparison only.</p>
+
+  <h3 class="sub">Ours</h3>
+  <div class="beats">
+    <figure class="beat"><div class="rvbox">[[reveal('d', 'closed', False)]]</div><strong>1. Concealment</strong><p>Near black. One gap of fog light, and fingers in it. Ash drifts through the gap and nothing else moves.</p><span class="when">0 to 1.4 s, held</span></figure>
+    <figure class="beat"><div class="rvbox">[[reveal('d', 'parting', False)]]</div><strong>2. Revelation</strong><p>The slab rises and the side masses draw back. Shoulders and the raised hand stand against the light. The head is still behind stone. The rune on the vambrace lights as the stone starts to move.</p><span class="when">1.4 to 4.2 s, slow start, long settle</span></figure>
+    <figure class="beat"><div class="rvbox">[[reveal('d', 'open', True)]]</div><strong>3. Recognition</strong><p>The slab clears the hood. The costume then comes up from silhouette over nearly two seconds: the lit edge of the hood, the near half of the mask, the clasps and chain.</p><span class="when">4.2 to 7.6 s; the cross-fade starts at 6.0 s</span></figure>
+    <figure class="beat"><div class="rvbox">[[reveal('d', 'open', True)]]<div class="rv-scrim"></div>[[reveal_copy()]]</div><strong>4. The summons</strong><p>The name appears, then the line after a pause, then the two actions together. The scene keeps its slow drift of ash behind them.</p><span class="when">Name at 7.6 s, line at 8.5 s, actions at 9.4 s</span></figure>
+  </div>
+
+  <h3 class="sub">Play it</h3>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--desktop">
+      <div class="frame frame--desktop">
+        [[reveal('d', 'closed', False, live=True, uid='reveal-live')]]
+        <div class="rv-scrim rv-scrim--live"></div>
+        [[reveal_copy(' rv-copy--live')]]
+      </div>
+      <figcaption class="play-row"><button type="button" class="board-btn" id="reveal-play">Play the reveal</button><span id="reveal-status" role="status">A motion sketch made with CSS transitions on the eleven layers. About ten seconds. With reduced motion switched on it shows the final frame after a short fade.</span></figcaption>
+    </figure>
+  </div>
+
+  <div class="notes" style="margin-top:28px">
+    <div>
+      <h3>How it is built</h3>
+      <ul>
+        <li><strong>Eleven flat layers.</strong> Fog, a glow behind the hand, the figure twice (silhouette and lit), low haze, ash, lens discs, and four pieces of rubble.</li>
+        <li><strong>Movement is translation.</strong> Each piece of rubble slides and turns by a degree or two. The figure and fog ease from 104 percent scale to 100, which reads as the camera settling.</li>
+        <li><strong>Light is a cross-fade.</strong> The lit figure fades in over the silhouette. No filter is animated.</li>
+        <li><strong>No 3D and no physics.</strong> The rubble is four images. Dust is one tiled image moving on a loop.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>For the build, later</h3>
+      <ul>
+        <li><strong>One timeline.</strong> A single GSAP timeline with five labels: dark, lift, clear, lit, summons. The sketch here uses plain CSS with timers.</li>
+        <li><strong>Pointer parallax.</strong> Rubble moves about 12 px against the pointer, the figure about 4 px, the fog not at all. Off on touch screens.</li>
+        <li><strong>Masked text.</strong> Each line is revealed by a clip that opens left to right in about 0.6 s. The letters themselves do not move.</li>
+        <li><strong>Weight.</strong> The desktop layers total about 0.4 MB as WebP and JPEG, and the phone set about the same. Rubble is stored at half size because it is out of focus.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Reduced motion and fallbacks</h3>
+      <ul>
+        <li><strong>Reduced motion.</strong> The final frame fades in over 0.2 s with the text already set. No drift, no ash, no parallax.</li>
+        <li><strong>Skipping.</strong> Any key or tap during the sequence jumps to the final frame. The actions are in the page from the start for assistive technology.</li>
+        <li><strong>Return visits.</strong> The sequence plays once per guest; later visits open on the final frame.</li>
+        <li><strong>Slow connections.</strong> Fog and silhouette load first and are enough for beats 1 and 2. The lit figure can arrive during beat 2.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== C ============================== -->
+<section class="board-sec" id="character">
+  <h2>C. Character study</h2>
+  <p class="board-lede">What the four character images show, and how much of it the new figure carries. The figure is a relief built from drawn outlines and lit by calculation. It is original artwork made from the references and is closer to the costume than version one, but it is still a concept render.</p>
+  <div class="sheet-grid">
+    <div class="sheet-block sheet-block--wide">
+      <div class="study">
+        <figure><img src="[[A]]study-head.jpg" alt="Close view of the new figure: a deep green hood with a pointed arch over a steel mask, lit from the left" width="600" height="600" loading="lazy"><strong>Hood and mask</strong>The hood overhangs the brow and puts the crown of the mask in shadow. Light reaches the near cheek, the nose and the mouth.</figure>
+        <figure><img src="[[A]]study-chest.jpg" alt="The chest of the new figure: two round steel clasps joined by a chain over rows of square armour tiles" width="700" height="460" loading="lazy"><strong>Clasps, chain, cuirass</strong>A rayed disc on his right, a squared knot on his left, a chain between. Each tile is a frame, an inner square and a raised diamond.</figure>
+        <figure><img src="[[A]]study-gauntlet.jpg" alt="The raised gauntlet of the new figure in silhouette against pale light, with a small green rune on the forearm plate" width="600" height="600" loading="lazy"><strong>The raised gauntlet</strong>Kept as a silhouette. The vambrace carries the suit rune on its own small plate.</figure>
+      </div>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>What the references show</h3>
+      <div class="ins-wrap">
+      <table class="ins ins--study">
+        <thead><tr><th>Part</th><th>Observed</th><th>Seen in</th><th>In the new figure</th></tr></thead>
+        <tbody>
+          <tr><td>Mask</td><td>Forged steel, satin and scratched. Two brow plates that fall towards the nose, wide low eye openings, a wedge nose with a flat ridge, a slotted mouth under a turned-down lip, riveted cheek and jaw plates.</td><td>doom-mask, doom-2, doom-4</td><td>Yes. Built from the measured master in section E.</td></tr>
+          <tr><td>Hood</td><td>Heavy green wool. Deep enough to shade the upper third of the mask. Reads as near black unless light falls on it.</td><td>doom-1 to doom-4</td><td>Yes. Colour shows only on the side facing the light.</td></tr>
+          <tr><td>Cowl</td><td>The hood runs into thick turns of cloth across the collar bones.</td><td>doom-2, doom-4</td><td>Yes, simplified to two turns.</td></tr>
+          <tr><td>Mail</td><td>Fine mail at the neck and at the elbow.</td><td>doom-2, doom-4</td><td>No. The neck is left dark.</td></tr>
+          <tr><td>Clasps and chain</td><td>Two steel discs on the collar bones joined by a chain. One carries a rayed star with a red stone, the other an interlaced square.</td><td>doom-1, doom-2, doom-4</td><td>Yes, without the stone.</td></tr>
+          <tr><td>Cuirass</td><td>Rows of square tiles. Each has a raised frame, an inner square and a diamond.</td><td>doom-2, doom-4</td><td>Yes.</td></tr>
+          <tr><td>Vambrace and gauntlet</td><td>A long smooth forearm plate with a raised rib and a row of small rivets, a banded cuff, a plated hand.</td><td>doom-3, doom-4</td><td>Partly. Plate, rivet row and cuff are modelled; the hand is an outline.</td></tr>
+          <tr><td>Belt, greaves, boots</td><td>A broad ribbed belt with a square buckle; segmented steel below the knee.</td><td>doom-3, doom-4</td><td>Out of frame in the opening. Indicated on the seated figure only.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>Version one and version two</h3>
+      <div class="cmp cmp--2">
+        <figure><img src="previews/direction-4-collection-desktop.png" alt="Version one opening: text on the left, a flat vector figure in a doorway on the right" width="1600" height="900" loading="lazy">Version one. Text on the left, a flat figure in a doorway, most of the frame empty.</figure>
+        <figure><img src="previews/direction-4-v2-reveal-desktop.png" alt="Version two opening: Doom fills the centre of the frame behind blurred rubble, with the message centred at the foot" width="1600" height="900" loading="lazy">Version two. The figure fills the frame and the message sits under it.</figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== D ============================== -->
+<section class="board-sec" id="hall">
+  <h2>D. The throne hall</h2>
+  <p class="board-lede">Rebuilt on the plan of the supplied wide shot. The Gothic lancets, clustered columns and rose window of version one are gone, because the reference has none of them.</p>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--desktop" id="hall-desktop">
+      <div class="frame frame--desktop frame--hall">
+        [[hall_frame('d')]]
+      </div>
+      <figcaption><strong>Desktop.</strong> One dark pier with a slit of amber behind the throne, a bay of leaded glass each side, slanted fins beyond, nine steps with lit edges, and the circle in the floor.</figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="hall-phone">
+      <div class="frame frame--phone frame--hall">
+        [[hall_frame('p')]]
+        <div class="hall-scrim"></div>
+        <div class="hall-copy">
+          <h3>The council is seated.</h3>
+          <p>Doom will set the day, the hour and the place before you.</p>
+        </div>
+      </div>
+      <figcaption><strong>Phone.</strong> Drawn again at a closer distance: the pier and its two bays fill the width, as in the supplied upright image.</figcaption>
+    </figure>
+  </div>
+
+  <h3 class="sub">Against the reference</h3>
+  <div class="cmp cmp--2">
+    <figure><img src="[[REF]]environment/doom-throme-wide.png" alt="Reference: the film's throne hall, with tall green and gold leaded windows, a central dark pier, a stepped dais and a floor glowing green" width="2880" height="1220" loading="lazy">Reference, supplied in <code>references/environment/</code>. Shown for comparison only.</figure>
+    <figure><img src="[[A]]hall-d-plate.jpg" alt="Ours: the same plan redrawn, with an empty throne" width="1920" height="1080" loading="lazy">Ours, with the throne empty. Doom is a separate layer.</figure>
+  </div>
+
+  <div class="notes" style="margin-top:8px">
+    <div>
+      <h3>Kept from the reference</h3>
+      <ul>
+        <li><strong>The axis.</strong> Throne, pier and slit on the centre line, everything else mirrored about it.</li>
+        <li><strong>The glass.</strong> Uprights that bend and part like stems, tied by short level bars. Pale yellow at mid height, green and dirtier near the floor.</li>
+        <li><strong>The fins.</strong> Dark slanted masses that widen as they climb, with more glass behind them.</li>
+        <li><strong>Amber in narrow strips.</strong> In the pillars and in the slit, and nowhere else.</li>
+        <li><strong>The dais.</strong> Nine shallow steps, canted at the sides, with a line of gold on the middle of each edge.</li>
+        <li><strong>The floor.</strong> Dark, polished, with a large inlaid circle that burns green along some of its lines.</li>
+        <li><strong>The lamps.</strong> Pale bowls on dark posts at the side walls.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Ours</h3>
+      <ul>
+        <li><strong>The circle carries Doomscript.</strong> "There is no promise of tomorro", the phrase the first board used for its floor ring.</li>
+        <li><strong>The lattice inside it.</strong> The hexagon and centre square of the suit rune, in place of the reference's star.</li>
+        <li><strong>The panel above his head.</strong> The suit rune in gold. The reference has an ornament there that cannot be read at this size.</li>
+        <li><strong>The seal has moved.</strong> Version one set the three-band seal in the wall as a rose window. It now belongs to the summons and to the scene change only.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Light and colour</h3>
+      <ul>
+        <li><strong>Direction.</strong> Sun high on the right. Shafts cross the right-hand bay and the steps.</li>
+        <li><strong>Three colours of light.</strong> Yellow-green from the glass, amber from the strips, emerald from the floor.</li>
+        <li><strong>Depth.</strong> The glass is far brighter than the structure, so it blooms over the leading. The floor mirrors the wall and fades with distance.</li>
+        <li><strong>Where it falls short.</strong> The structure is flat elevation with shading. It has no carved detail, and the fins have no thickness.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== E ============================== -->
+<section class="board-sec" id="mask">
+  <h2>E. The canonical mask</h2>
+  <p class="board-lede">One set of outlines, measured from the supplied mask image, is the source for every mask on this board. The three levels below are the same coordinates with detail removed or relief added. The mask image is in <code>references/inspiration/</code>, where it was found by looking; the brief placed it under <code>character/</code>.</p>
+  <div class="sheet-grid">
+    <div class="sheet-block sheet-block--wide">
+      <div class="masksheet">
+        <figure class="ms-ref"><img src="[[REF]]inspiration/doom-mask.png" alt="Reference: a dark steel mask seen from the front, with riveted brow plates, wide eye openings, a wedge nose and a slotted mouth" width="447" height="447" loading="lazy"><strong>Reference</strong>Supplied. Shown for comparison only.</figure>
+        <figure class="ms-master">[[mask_master_svg()]]<strong>Master</strong>Outlines in a 100 by 150 unit box. Green marks the openings, gold the rivets.</figure>
+        <figure class="ms-l3"><img src="[[A]]mask-level-3.png" alt="Level 3: the master outlines raised into a relief of dark worked steel and lit from the upper left" width="980" height="1430" loading="lazy"><strong>Level 3, full fidelity</strong>The master raised into relief and lit. For hero scenes and large artwork.</figure>
+        <figure class="ms-l2"><div class="plate-chip">[[mask_l2_svg('gold')]]</div><strong>Level 2, insignia</strong>Line only. For seals, the summons, panels.</figure>
+        <figure class="ms-l1"><div class="l1-row">[[mask_l1_svg(96)]][[mask_l1_svg(48)]][[mask_l1_svg(32)]][[mask_l1_svg(24)]][[mask_l1_svg(16)]]</div><strong>Level 1, icon</strong>One filled shape, shown at 96, 48, 32, 24 and 16 px.</figure>
+      </div>
+    </div>
+
+    <div class="sheet-block">
+      <h3>What was measured</h3>
+      <div class="ins-wrap">
+      <table class="ins ins--study">
+        <thead><tr><th>Feature</th><th>Measurement, in units of one hundredth of the width</th></tr></thead>
+        <tbody>
+          <tr><td>Proportion</td><td>100 wide, 150 tall. Widest at the eye line, exactly half way down.</td></tr>
+          <tr><td>Outline</td><td>A dome to the temples, fullest at the cheek (y 73 to 80), a step in of about 2 units at y 96 where the jaw plates begin, then a taper to a flat chin about 24 wide.</td></tr>
+          <tr><td>Crown</td><td>A hasp 10 wide on the centre line carrying the horned mark. A linked edging from temple to temple, ending in a tab at each side.</td></tr>
+          <tr><td>Brow</td><td>Two plates, each from x 2 to 40 and y 35 to 74. Their inner edges sweep down in a concave curve and stop 4 units apart at y 61. A lid plate is riveted over the lower third: 10 rivets each side. Five more rivets each side form a V on the forehead.</td></tr>
+          <tr><td>Eyes</td><td>Each about 27 wide and 16 tall. The top edge falls 7 units towards the nose; the bottom edge is level. Inner corners 15 apart.</td></tr>
+          <tr><td>Nose</td><td>A wedge from 5.6 wide at the bridge (y 74) to 21 at its base (y 97), with a flat ridge about 4 wide, ending at y 103.</td></tr>
+          <tr><td>Cheeks</td><td>A plate under each eye with 12 rivets along its upper edge. A deep crease runs from the flank of the nose down and out to the jaw.</td></tr>
+          <tr><td>Mouth</td><td>A slot 33 wide with splayed ends, crossed by a bar with a centre block. Under it a lip bar whose ends turn down, repeated by the line of the chin plate.</td></tr>
+          <tr><td>Jaw and chin</td><td>Side plates with a double strap line, 7 rivets inboard and 11 along the edge. A rounded boss 29 wide on the chin.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="sheet-block">
+      <h3>How the three levels stay one mask</h3>
+      <div class="notes notes--stack">
+        <div>
+          <ul>
+            <li><strong>Same coordinates.</strong> Level 1, level 2 and the relief are generated from one file of points. None of them is redrawn by hand.</li>
+            <li><strong>What every level keeps.</strong> The outline with its step at the jaw, the falling top edge of the eyes, the splayed mouth, and the two cheek creases. These four are what make it this mask.</li>
+            <li><strong>Level 1 drops.</strong> Rivets, plates, nose and chin. The eye openings use the frame line, 1.7 units larger, so they hold at 16 px.</li>
+            <li><strong>Level 2 adds.</strong> Brow and lid plates, nose with its ridge, lip and chin lines, jaw straps, and all 90 rivets as dots. The linked edging becomes a dotted line, which is the border the plates already use.</li>
+            <li><strong>Level 3 adds.</strong> Height, the wrap of the face, worked-steel surface, grime in the recesses and a cast shadow from each plate.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Where the master departs from the reference</h3>
+          <ul>
+            <li>The crown edging has 13 links a side; the reference count could not be read exactly.</li>
+            <li>The mouth grille is reduced to a bar, a block and two posts.</li>
+            <li>The base of the nose is rounder than the reference, which has a crisper lower edge.</li>
+            <li>The reference is lit from the upper left, so the far right edge is partly inferred by mirroring.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>In use</h3>
+      <div class="usage">
+        <figure><div class="use-chip use-chip--nav"><span class="navdemo">[[mask_l1_svg(18)]]<span>Council</span></span><span class="navdemo dim">[[rune_l1_svg(18)]]<span>Roster</span></span><span class="navdemo dim"><svg class="art" viewBox="-50 -50 100 100" style="height:18px;width:18px" aria-hidden="true"><use href="#mark" class="lib-steel"/></svg><span>Summons</span></span></div><strong>Level 1</strong>Navigation, status, list markers. 16 to 32 px.</figure>
+        <figure><div class="use-chip use-chip--plate">[[mask_l2_svg('gold', True)]]</div><strong>Level 2 at small size</strong>Under 80 px the rivets are left out and the lines are 1.7 times heavier.</figure>
+        <figure><div class="use-chip use-chip--em">[[mask_l2_svg('em')]]</div><strong>Level 2, lit</strong>Emerald when it marks something active.</figure>
+        <figure><div class="use-chip use-chip--l3"><img src="[[A]]mask-level-3.png" alt="" loading="lazy"></div><strong>Level 3</strong>Over 200 px, on dark grounds only.</figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== F ============================== -->
+<section class="board-sec" id="suitrune">
+  <h2>F. The suit rune</h2>
+  <p class="board-lede">The mark raised on the armour in the two rune views. Both views are small, angled and partly in shadow, so this is a reading. The parts that are certain and the part that is inferred are drawn differently on the master.</p>
+  <div class="sheet-grid">
+    <div class="sheet-block sheet-block--wide">
+      <div class="runesheet">
+        <figure><img src="[[REF]]inspiration/rune-view-2.png" alt="Reference view 2: a hexagonal mark with crossing lines raised on an armour plate, under blue light" width="996" height="704" loading="lazy"><strong>Reference, view 2</strong>The clearer view. Brackets show at the left, right and bottom.</figure>
+        <figure><img src="[[REF]]inspiration/rune-view-1.png" alt="Reference view 1: the same mark on a plate under green light, turned about 45 degrees" width="288" height="200" loading="lazy"><strong>Reference, view 1</strong>Smaller and turned. Brackets show at all four corners.</figure>
+        <figure>[[rune_master_svg()]]<strong>Master</strong>Solid lines appear in both views. The dashed bracket appears in view 1 only.</figure>
+        <figure><img class="contain" src="[[A]]suit-rune-level-3.png" alt="Level 3: the rune as raised bars on a chamfered plate of dark steel" width="640" height="640" loading="lazy"><strong>Level 3, relief</strong>Raised bars on a chamfered plate, in the same steel as the mask.</figure>
+        <figure><div class="plate-chip plate-chip--sq">[[rune_l2_svg('em')]]</div><strong>Level 2, insignia</strong>The full lattice in line.</figure>
+        <figure><div class="l1-row l1-row--rune">[[rune_l1_svg(96)]][[rune_l1_svg(48)]][[rune_l1_svg(32)]][[rune_l1_svg(24)]]</div><strong>Level 1, icon</strong>Hexagon, centre square and brackets, at 96, 48, 32 and 24 px.</figure>
+      </div>
+    </div>
+    <div class="sheet-block sheet-block--wide">
+      <div class="notes">
+        <div>
+          <h3>What can be read</h3>
+          <ul>
+            <li><strong>A hexagon with a doubled outline</strong>, standing on a point.</li>
+            <li><strong>Three lines through the centre</strong> joining opposite corners, and a fourth joining the middles of the two upright sides.</li>
+            <li><strong>A square on its corner at the centre</strong>, half the radius across each way.</li>
+            <li><strong>Brackets outside the hexagon</strong>: two strokes that leave at 45 degrees and turn back towards each other without meeting.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>What is uncertain</h3>
+          <ul>
+            <li><strong>The fourth bracket.</strong> View 2 has no room for it above the hexagon. View 1 seems to show four. The master draws it dashed; levels 1 and 2 include it for symmetry.</li>
+            <li><strong>Small strokes near the centre.</strong> View 2 has what may be a second, smaller square. It is left out.</li>
+            <li><strong>Where on the suit it sits.</strong> Neither view shows enough of the armour to say. The figure carries it on the forearm plate, which is our choice.</li>
+            <li><strong>Its meaning.</strong> Unknown. It is used as a mark and never as a letter.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Where it is used</h3>
+          <ul>
+            <li>On the vambrace in the opening, lit emerald while the stone lifts.</li>
+            <li>In gold on the panel above the throne.</li>
+            <li>As the lattice inside the floor circle.</li>
+            <li>At level 1 as the icon for the roster of guests.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== G ============================== -->
+<section class="board-sec" id="library">
+  <h2>G. The iconography library</h2>
+  <p class="board-lede">Everything graphic on the board, sorted by where it comes from. The three groups are kept apart on purpose.</p>
+  <div class="sheet-grid">
+    <div class="sheet-block sheet-block--wide">
+      <h3>Drawn from the supplied character references</h3>
+      <ul class="lib">
+        <li>[[lib('mask1')]]<strong>Mask, level 1</strong>Doom as a presence: navigation, status</li>
+        <li>[[lib('mask2')]]<strong>Mask, level 2</strong>Doom as issuer: seals, the summons</li>
+        <li>[[lib('rune1')]]<strong>Suit rune, level 1</strong>The roster, a seat taken</li>
+        <li>[[lib('rune2')]]<strong>Suit rune, level 2</strong>Throne panel, floor lattice, vambrace</li>
+        <li>[[lib('tile')]]<strong>Cuirass tile</strong>An item, a seat</li>
+        <li>[[lib('clasp-star')]]<strong>Rayed clasp</strong>Ornament only</li>
+        <li>[[lib('clasp-knot')]]<strong>Knot clasp</strong>Fastening, bolts</li>
+        <li>[[lib('horned')]]<strong>Horned mark</strong>Shown for reference. Not used yet</li>
+      </ul>
+      <p class="lib-note">These follow designs owned by the studio. They are redrawn here from the references for a private invitation. The horned mark is traced from <code>doom-logo.png</code>; it also sits on the hasp of the mask. Its source could not be checked, so it is held back from use until you say otherwise.</p>
+    </div>
+    <div class="sheet-block">
+      <h3>Doomscript, as read by fans</h3>
+      <ul class="lib lib--3">
+        <li>[[lib('runeword')]]<strong>Rune line</strong>Fixed phrases only</li>
+        <li><svg class="art lib-ic" viewBox="0 0 100 100" aria-hidden="true"><g class="lib-em-fill" transform="translate(50,50)">[[ring('doom . doom . doom . ', 35, 15)]]</g></svg><strong>Rune ring</strong>Floor circle, seal bands</li>
+        <li><svg class="art lib-ic" viewBox="0 0 100 100" aria-hidden="true"><g class="lib-steel-fill" transform="translate([[RUNE_D]],14) scale(.72)"><use href="#ds-d"/></g></svg><strong>A single rune</strong>Ornament only</li>
+      </ul>
+      <p class="lib-note">Traced from the fan-made decoder. Marvel has published no key. No letter value here is confirmed.</p>
+    </div>
+    <div class="sheet-block">
+      <h3>Made for this project</h3>
+      <ul class="lib lib--3">
+        <li>[[lib('seal')]]<strong>Three-band seal</strong>The summons, scene changes</li>
+        <li>[[lib('mark')]]<strong>Seal mark</strong>Primary action, progress</li>
+        <li>[[lib('square')]]<strong>Nested square</strong>Centre of the seal</li>
+        <li>[[lib('dots')]]<strong>Dotted line and rule</strong>Every plate border</li>
+        <li>[[lib('bolt')]]<strong>Corner bolt</strong>Where a border turns</li>
+      </ul>
+      <p class="lib-note">Ours. The nested square was taken from the cuirass tile in the first board and is unchanged.</p>
+    </div>
+    <div class="sheet-block sheet-block--wide">
+      <div class="notes">
+        <div>
+          <h3>What makes it one family</h3>
+          <ul>
+            <li><strong>Straight strokes and one circle.</strong> The mask is the only form with curves, which keeps it the most important mark.</li>
+            <li><strong>Two weights.</strong> A heavy outline and a light inner line, in the ratio the plate border uses.</li>
+            <li><strong>Dots.</strong> Rivets on the mask, the dotted border on the plates and the ticks on the seal are the same device.</li>
+            <li><strong>Colour by role.</strong> Gold when Doom issues something, emerald when something is active, steel otherwise.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Retired from version one</h3>
+          <ul>
+            <li><strong>The six-sided mask sketch.</strong> Replaced everywhere by level 1 or level 2.</li>
+            <li><strong>The seat icon.</strong> The suit rune takes its place for "a seat taken".</li>
+            <li><strong>The plain clasp icon.</strong> Replaced by the two clasps as they are on the costume.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== H ============================== -->
+<section class="board-sec" id="doomscript">
+  <h2>H. Doomscript, as integrated now</h2>
+  <p class="board-lede">The script and its rules are unchanged from the first board. Every rune is still traced from the decoder image, which is a fan's reading; Marvel has published no key. What has changed is where the runes appear.</p>
+  <div class="sheet-grid">
+    <div class="sheet-block sheet-block--wide">
+      <h3>Where the runes live now</h3>
+      <div class="tiles tiles--big">
+        <figure class="tile"><div class="tile__art"><img class="fill cover" src="[[A]]mat-floor.jpg" alt="The floor circle in the hall: a ring of green runes with a lattice inside it" loading="lazy"></div><strong>The floor circle</strong>New. The ring that lit under the guest in version one is now inlaid in the hall, in perspective, and burns along part of its length.</figure>
+        <figure class="tile"><div class="tile__art">[[ds_insignia()]]</div><strong>The seal</strong>Unchanged. Gold band with his name, steel scale, emerald band with the phrase.</figure>
+        <figure class="tile"><div class="tile__art">[[ds_border()]]</div><strong>Plate borders</strong>Unchanged. A dotted line, a band of runes, a ruled line, a bolt at the corner.</figure>
+        <figure class="tile"><div class="tile__art">[[ds_mechanism()]]</div><strong>The mechanism</strong>Unchanged. The bands turn until they align, and the runes light then.</figure>
+      </div>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>The twenty read runes and the two unread, as traced</h3>
+      <ul class="glyphs">[[decoder_tiles()]]</ul>
+      <p style="max-width:78ch;margin:16px 0 0;color:var(--board-dim)">The decoder has no rune for B, W, X, Y or Z. Those letters are never written. The two unread runes are shown for completeness and are used nowhere.</p>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>What is inscribed, and how sure it is</h3>
+      <div class="ins-wrap">
+      <table class="ins">
+        <thead><tr><th>Inscription</th><th>Reads</th><th>Standing</th><th>Where it is used</th></tr></thead>
+        <tbody>
+          <tr><td>[[rune_svg(DOC1)]]</td><td><strong>There is no promise of tomorro</strong></td><td>Read by fans on the lapel of the jacket worn at Comic-Con. The missing W is the script's own.</td><td>Floor circle in the hall, top edge of the plate</td></tr>
+          <tr><td>[[rune_svg(DOC2)]]</td><td><strong>To the victor go the spoils</strong></td><td>Read by fans on the cuffs of the same jacket.</td><td>Inner band of the seal, bottom edge of the plate</td></tr>
+          <tr><td>[[rune_svg('justice  revenge')]]</td><td><strong>Justice, Revenge</strong></td><td>Read by fans on the pockets of the same jacket.</td><td>Left and right edges of the plate</td></tr>
+          <tr><td>[[rune_svg('viktor von doom  latveria')]]</td><td><strong>Victor von Doom, Latveria</strong></td><td>Ours. Spelled letter for letter with the decoder; hard C takes the K rune. Not seen on any Marvel material.</td><td>Outer band of the seal, signature under the opening line</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="lib-note">The suit rune in section F is a different thing. It is a mark on the armour and has no letter value in the decoder.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== I ============================== -->
+<section class="board-sec" id="summons">
+  <h2>I. The royal summons</h2>
+  <p class="board-lede">Carried over. The plate, its dotted border, the four engraved phrases, the bolts, the seal, the wording and the type are as approved. One thing has changed: the mask above the seal is now the canonical mask at level 2.</p>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--sheet" id="summons-sheet">
+      <div class="frame frame--sheet frame--plate">
+        [[summons_desktop()]]
+        <div class="sm-copy">
+          <p class="sm-from">Victor von Doom</p>
+          <p class="sm-title">by his own hand and will Sovereign of Latveria, to</p>
+          <p class="sm-name">Mr. Anish</p>
+          <p class="sm-greet">greeting.</p>
+          <div class="sm-body">
+            <p>Be it known that Doom has weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing; and that you have been chosen.</p>
+            <p>You are therefore summoned to take your seat at the Council of Doom, where the day, the hour and the place shall be set before you.</p>
+            <p class="sm-sanction">Let none who is called fail to answer. The absent forfeit their voice.</p>
+            <p class="sm-date">Given at Castle Doom, the fifteenth day of November, MMXXVI.</p>
+          </div>
+          <div class="sm-act"><button type="button" class="btn-plate"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Take your seat</button></div>
+        </div>
+      </div>
+      <figcaption><strong>Wide.</strong> The mask is drawn in gold line with its rivets as dots, which matches the dotted border round the plate.</figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="summons-phone">
+      <div class="frame frame--phone frame--plate">
+        [[summons_phone()]]
+        <div class="sm-copy">
+          <p class="sm-from">Victor von Doom</p>
+          <p class="sm-title">by his own hand and will Sovereign of Latveria, to</p>
+          <p class="sm-name">Mr. Anish</p>
+          <p class="sm-greet">greeting.</p>
+          <div class="sm-body">
+            <p>Be it known that Doom has weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing; and that you have been chosen.</p>
+            <p>You are therefore summoned to take your seat at the Council of Doom, where the day, the hour and the place shall be set before you.</p>
+            <p class="sm-sanction">Let none who is called fail to answer. The absent forfeit their voice.</p>
+            <p class="sm-date">Given at Castle Doom, the fifteenth day of November, MMXXVI.</p>
+          </div>
+          <div class="sm-act"><button type="button" class="btn-plate"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Take your seat</button></div>
+        </div>
+      </div>
+      <figcaption><strong>Phone.</strong> Unchanged from version one.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================== J ============================== -->
+<section class="board-sec" id="materials">
+  <h2>J. Materials and lighting</h2>
+  <p class="board-lede">The first board showed materials as flat swatches. These samples are cut from the finished renders, so each one is the surface as it appears in a scene.</p>
+  <div class="sheet-grid">
+    <div class="sheet-block sheet-block--wide">
+      <h3>Scene materials, new</h3>
+      <div class="tiles">
+        <figure class="tile"><div class="tile__art"><img class="fill cover" src="[[A]]mat-steel.jpg" alt="" loading="lazy"></div><strong>Forged steel</strong>The mask. Dark, satin, scratched, with grime at the foot of each plate</figure>
+        <figure class="tile"><div class="tile__art"><img class="fill cover" src="[[A]]mat-wool.jpg" alt="" loading="lazy"></div><strong>Green wool</strong>Hood and cloak. Green only where the light strikes it</figure>
+        <figure class="tile"><div class="tile__art"><img class="fill cover" src="[[A]]mat-cuirass.jpg" alt="" loading="lazy"></div><strong>Tiled cuirass</strong>Dark bronze-green metal, read by its edges</figure>
+        <figure class="tile"><div class="tile__art"><img class="fill cover" src="[[A]]mat-glass.jpg" alt="" loading="lazy"></div><strong>Leaded glass</strong>Pale yellow-green, streaked, behind heavy dark leading</figure>
+        <figure class="tile"><div class="tile__art"><img class="fill cover" src="[[A]]mat-amber.jpg" alt="" loading="lazy"></div><strong>Amber strip</strong>The only warm orange in the hall</figure>
+        <figure class="tile"><div class="tile__art"><img class="fill cover" src="[[A]]mat-steps.jpg" alt="" loading="lazy"></div><strong>Dais stone and gilt edge</strong>Warm dark stone, a line of gold on each step</figure>
+        <figure class="tile"><div class="tile__art"><img class="fill cover" src="[[A]]mat-floor.jpg" alt="" loading="lazy"></div><strong>Polished floor</strong>A dark mirror with emerald inlay</figure>
+      </div>
+    </div>
+    <div class="sheet-block">
+      <h3>Issued objects, unchanged</h3>
+      <div class="tiles">
+        <figure class="tile"><div class="tile__art">[[mat('steel')]]</div><strong>Brushed steel</strong>Plates, panels, buttons</figure>
+        <figure class="tile"><div class="tile__art">[[mat('engraved')]]</div><strong>Engraving</strong>Cut in, lit on the lower edge</figure>
+        <figure class="tile"><div class="tile__art">[[mat('gold')]]</div><strong>Antique gold</strong>Bolts, dots, fine lines</figure>
+      </div>
+    </div>
+    <div class="sheet-block">
+      <h3>Lighting, by scene</h3>
+      <div class="notes notes--stack">
+        <div>
+          <ul>
+            <li><strong>The opening: one lamp behind him.</strong> Fog light from behind and to the left. It draws a thin line along every edge that faces it. A much weaker light from below and in front gives the mask its form. The far side of him is left dark.</li>
+            <li><strong>The hall: light through glass.</strong> The glass is the source. Structure in front of it is a silhouette picked out by spill. Shafts fall from high on the right.</li>
+            <li><strong>Emerald: from his own marks.</strong> The floor circle and the rune on his arm. It never lights a whole scene.</li>
+            <li><strong>Plates: studio light.</strong> Brushed steel under a soft light from above, as before.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>Palette</h3>
+      <p class="lib-note" style="margin:0 0 14px">The fourteen interface colours of the first board are unchanged. Four scene colours are added. They are used inside artwork only and never for text or controls.</p>
+      <ul class="swatches">
+        <li class="swatch"><div class="swatch__chip" style="background:#0A0D12"></div><span class="swatch__name">Night</span><span class="swatch__hex">#0A0D12</span></li>
+        <li class="swatch"><div class="swatch__chip" style="background:#1A2020"></div><span class="swatch__name">Plate</span><span class="swatch__hex">#1A2020</span></li>
+        <li class="swatch"><div class="swatch__chip" style="background:#96A19E"></div><span class="swatch__name">Steel</span><span class="swatch__hex">#96A19E</span></li>
+        <li class="swatch"><div class="swatch__chip" style="background:#D9DEDC"></div><span class="swatch__name">Silver</span><span class="swatch__hex">#D9DEDC</span></li>
+        <li class="swatch"><div class="swatch__chip" style="background:#1F8F63"></div><span class="swatch__name">Emerald</span><span class="swatch__hex">#1F8F63</span></li>
+        <li class="swatch"><div class="swatch__chip" style="background:#4FC395"></div><span class="swatch__name">Emerald light</span><span class="swatch__hex">#4FC395</span></li>
+        <li class="swatch"><div class="swatch__chip" style="background:#C6A75E"></div><span class="swatch__name">Antique gold</span><span class="swatch__hex">#C6A75E</span></li>
+        <li class="swatch"><div class="swatch__chip" style="background:#E4CB8C"></div><span class="swatch__name">Gold light</span><span class="swatch__hex">#E4CB8C</span></li>
+        <li class="swatch swatch--new"><div class="swatch__chip" style="background:#E2D874"></div><span class="swatch__name">Glass</span><span class="swatch__hex">#E2D874</span>Scene only: the hall's windows</li>
+        <li class="swatch swatch--new"><div class="swatch__chip" style="background:#EE9A2E"></div><span class="swatch__name">Amber</span><span class="swatch__hex">#EE9A2E</span>Scene only: strips and slit</li>
+        <li class="swatch swatch--new"><div class="swatch__chip" style="background:#A9B192"></div><span class="swatch__name">Fog</span><span class="swatch__hex">#A9B192</span>Scene only: the opening's light</li>
+        <li class="swatch swatch--new"><div class="swatch__chip" style="background:#3FE07F"></div><span class="swatch__name">Emerald fire</span><span class="swatch__hex">#3FE07F</span>Scene only: the floor circle</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== K ============================== -->
+<section class="board-sec" id="status">
+  <h2>K. Kept, changed and unfinished</h2>
+  <div class="notes">
+    <div>
+      <h3>Kept as approved</h3>
+      <ul>
+        <li>Doomscript: the traced runes, the decoder sheet, the inscription table and the rules for use.</li>
+        <li>The three-band seal and its mechanism.</li>
+        <li>The steel summons: plate, dotted border, engraved edges, bolts, wording.</li>
+        <li>Type: Bodoni Moda, Spectral, IBM Plex Sans.</li>
+        <li>The emerald and antique-gold palette and every interface colour.</li>
+        <li>Controls, panels and their states.</li>
+        <li>The two lines of the opening and the two actions.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Changed</h3>
+      <ul>
+        <li><strong>The opening.</strong> A doorway with text on the left became a reveal through rubble with the message at the foot.</li>
+        <li><strong>Doom.</strong> Flat vector shapes became a lit relief. The mask follows the measured master.</li>
+        <li><strong>The hall.</strong> Lancets, columns and rose window became the pier, bays and fins of the reference.</li>
+        <li><strong>Mask icons.</strong> One master and three levels replace the earlier sketch.</li>
+        <li><strong>The suit rune.</strong> New.</li>
+        <li><strong>Rules of motion.</strong> Version one said nothing drifts and Doom never moves. Ash now drifts in the opening, and the rubble moves. Doom himself still does not.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Still a placeholder</h3>
+      <ul>
+        <li><strong>The figure.</strong> A procedural render. The hood is too smooth, the cloak has little weight, the hand is an outline. It fixes pose, lighting and layering. It is short of film quality.</li>
+        <li><strong>The hall.</strong> A shaded elevation without carved detail. The seated figure is a small stand-in.</li>
+        <li><strong>The rubble.</strong> Soft dark shapes. They work because they are out of focus.</li>
+        <li><strong>Motion.</strong> A sketch in CSS, checked in a desktop browser. Pointer parallax, masked text and the skip control are described but not built.</li>
+        <li><strong>Sound.</strong> Described on the first board only.</li>
+        <li><strong>Phone frames.</strong> Simulated at 390 by 844 in a desktop browser.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="notes" style="margin-top:28px">
+    <div>
+      <h3>Finished enough to carry forward</h3>
+      <ul>
+        <li>The mask master, with level 1 and level 2 as vector files.</li>
+        <li>The suit rune master and its two vector levels, subject to the open question on the fourth bracket.</li>
+        <li>The composition and timing of the reveal.</li>
+        <li>The plan and colour of the hall.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>How the artwork was made</h3>
+      <ul>
+        <li>No image generator was available. Every scene is drawn as outlines in code, raised into a height map and lit by calculation.</li>
+        <li>No reference image is traced into the artwork or copied into the layers. The references appear on this board only where labelled, as links to the files in your library.</li>
+        <li>The generator is saved beside the assets so any layer can be re-rendered.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Close to Marvel's design by request</h3>
+      <ul>
+        <li>The mask, costume and hall now follow the film's designs more closely than version one did.</li>
+        <li>That suits a private invitation among friends. Anything public would need a second look first.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="board-foot">
+  Concept board, version 2. The scenes are procedural renders of original drawings made from the supplied references. Reference images appear only where labelled and are loaded from the project's own reference library. The rune shapes are traced from the fan-made decoder. The guest name, the date and the council details are placeholders.
+</footer>
+
+<script>
+(function () {
+  var el = document.getElementById('reveal-live');
+  var btn = document.getElementById('reveal-play');
+  var copy = document.querySelector('.rv-copy--live');
+  var scrim = document.querySelector('.rv-scrim--live');
+  if (!el || !btn) return;
+  var timers = [];
+  function set(state, lit, sum) {
+    el.classList.remove('is-closed', 'is-parting', 'is-open');
+    el.classList.add('is-' + state);
+    el.classList.toggle('is-lit', lit);
+    copy.classList.toggle('is-on', sum);
+    scrim.classList.toggle('is-on', sum);
+  }
+  function play() {
+    timers.forEach(clearTimeout); timers = [];
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { set('open', true, true); btn.textContent = 'Shown without motion'; return; }
+    el.classList.add('is-reset'); set('closed', false, false);
+    void el.offsetWidth; el.classList.remove('is-reset');
+    btn.textContent = 'Playing';
+    timers.push(setTimeout(function () { set('parting', false, false); }, 1400));
+    timers.push(setTimeout(function () { set('open', false, false); }, 4200));
+    timers.push(setTimeout(function () { set('open', true, false); }, 6000));
+    timers.push(setTimeout(function () { set('open', true, true); btn.textContent = 'Play again'; }, 7600));
+  }
+  btn.addEventListener('click', play);
+})();
+</script>
+
+</body>
+</html>

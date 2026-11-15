@@ -1,0 +1,71 @@
+/* Classes on drawn parts are deliberately unscoped: the parts are reused through <use>,
+   and Chrome does not match a selector whose ancestor lies outside the reused group. */
+/* ---------- drawn art: mask, figure, seal, hall ---------- */
+.dir-4 .art {
+  --mk0: #dfe4e2; --mk1: #b3bbb8; --mk2: #8b9491; --mk3: #5f6866; --mk4: #333b3a;
+  --cloth: #17392a; --cloth-hi: #1d4833; --cloth-lo: #0b2118; --void: #040705;
+  --fsteel: #59625f; --fsteel-lo: #262c2b; --tile: #1d4a33; --tile-in: #3f7d5c;
+  --rim: #c9a24a; --rim-o: .65; --under: 0;
+}
+.mk-edge { fill: #0a0d0c; stroke: #0a0d0c; stroke-width: 3; }
+.mk0 { fill: var(--mk0); } .mk1 { fill: var(--mk1); } .mk2 { fill: var(--mk2); }
+.mk3 { fill: var(--mk3); } .mk4 { fill: var(--mk4); }
+.mk-eye { fill: #030504; }
+.mk-seam { stroke: #151a19; stroke-width: 1.6; fill: none; }
+.mk-line { stroke: #f4f6f5; stroke-width: 1; fill: none; opacity: .55; }
+.mk-rivet { fill: #1f2625; }
+.mk-under { fill: url(#g-under); opacity: var(--under); mix-blend-mode: screen; }
+.mk-shade { fill: url(#g-shade); opacity: var(--shade, 0); }
+.hd-cloth { fill: var(--cloth); } .hd-cloth2 { fill: var(--cloth-hi); }
+.hd-void { fill: var(--void); }
+.hd-fold { stroke: var(--cloth-lo); stroke-width: 5; fill: none; }
+.hd-lip { stroke: var(--cloth-hi); stroke-width: 4; fill: none; }
+.hd-rim, .fg-rim { stroke: var(--rim); stroke-width: 2.4; fill: none; opacity: var(--rim-o); }
+.hd-rim--r { opacity: calc(var(--rim-o) * .5); }
+.fg-cloak { fill: var(--cloth-lo); } .fg-cloak-hi { fill: var(--cloth); }
+.fg-fold { stroke: #06130d; stroke-width: 3; fill: none; }
+.fg-steel { fill: var(--fsteel); } .fg-steel-lo { fill: var(--fsteel-lo); }
+.fg-line { stroke: #0c1012; stroke-width: 2; fill: none; }
+.fg-tunic { fill: #112b1d; }
+.fg-tile { fill: var(--tile); } .fg-tile-in { fill: none; stroke: var(--tile-in); stroke-width: 1.4; }
+.fg-belt { fill: #0e100f; } .fg-mail { fill: var(--mail, #353d3b); }
+.fg-gold { fill: #7d5f2c; } .fg-gold-line { fill: none; stroke: #e2c688; stroke-width: 1.4; }
+.fg-chain { fill: none; stroke: #c9a24a; stroke-width: 3; stroke-dasharray: 1 5; stroke-linecap: round; }
+
+/* the seal: three bands */
+.seal-base { fill: #0c100f; }
+.seal-gold { stroke: #b8964e; } .seal-gold-fill { fill: #c9a85e; }
+.seal-steel { stroke: #7f8a88; } .seal-steel-fill { fill: #9ba6a3; }
+.seal-em { stroke: #1f8f63; } .seal-em-fill { fill: #4fc395; } .seal-em-dim { fill: #1d4a3a; }
+.seal--dormant .seal-em { stroke: #39423f; }
+.seal--dormant .seal-em-fill { fill: #4a5552; }
+.seal--dormant .seal-gold { stroke: #6b6048; } .seal--dormant .seal-gold-fill { fill: #7a6e52; }
+.seal--waking .seal-core { stroke: #2b6e55; }
+.seal--waking .seal-core .seal-em-fill { fill: #2b6e55; }
+
+/* the hall */
+.hl-wall { fill: url(#g-wall); } .hl-apse { fill: url(#g-apse); } .hl-side { fill: url(#g-side); }
+.hl-glass { fill: url(#g-glass); } .hl-glass--side { opacity: .36; }
+.hl-glow { fill: #d9c078; opacity: .34; }
+.hl-lead { fill: none; stroke: #1b1f14; stroke-width: 5; }
+.hl-lead--thin { stroke-width: 2; opacity: .7; }
+.hl-stone-line { fill: none; stroke: #0a0c08; stroke-width: 9; }
+.hl-rib { fill: none; stroke: #2a2f1e; stroke-width: 5; opacity: .8; }
+.hl-floor { fill: url(#g-floor); }
+.hl-joint { fill: none; stroke: #6f6a3c; stroke-width: 1; opacity: .16; }
+.hl-refl { fill: #d9c078; opacity: .2; }
+.hl-rose-stone { fill: #070a08; stroke: #2a2f1e; stroke-width: 6; }
+.hl-rose-glow { fill: #1f8f63; opacity: .2; }
+.hl-step { fill: url(#g-step); }
+.hl-gilt-line { fill: none; stroke: #c9a24a; stroke-width: 1.5; opacity: .75; }
+.hl-gilt { fill: #c9a24a; opacity: .7; }
+.hl-throne { fill: url(#g-throne); } .hl-throne-side { fill: #0c0f0d; }
+.hl-throne-mark { stroke: #b8964e; opacity: .8; }
+.hl-col { fill: url(#g-col); } .hl-col-lit { fill: url(#g-col-lit); }
+.hl-col-line { fill: none; stroke: #000; stroke-width: 2; opacity: .45; }
+.hl-plinth { fill: #0a0c08; }
+.hl-floor-ring { fill: #2f9c74; stroke: #1f8f63; opacity: .8; }
+.hl-shaft { fill: url(#g-shaft); mix-blend-mode: screen; }
+.hl-pool { fill: #c9a24a; opacity: .16; mix-blend-mode: screen; }
+.hl-haze { fill: url(#g-haze); }
+.hl-vignette { fill: url(#g-vignette); }

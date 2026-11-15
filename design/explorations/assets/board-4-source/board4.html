@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IV. The Iron Throne: concept board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=IBM+Plex+Sans:wght@400;500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/board.css">
+<style>
+[[CSS]]
+</style>
+</head>
+<body class="board dir-4">
+
+<svg class="sprite" aria-hidden="true" focusable="false"><defs>
+[[rune_defs()]]
+[[DEFS]]
+[[sprite()]]
+</defs></svg>
+
+<nav class="board-nav" aria-label="Boards">
+  <a href="index.html">All directions</a>
+  <a href="direction-1-winter-chancery.html">I. The Winter Chancery</a>
+  <a href="direction-2-the-audience.html">II. The Audience</a>
+  <a href="direction-3-iron-protocol.html">III. The Iron Protocol</a>
+  <a href="direction-4-the-iron-throne.html" aria-current="page">IV. The Iron Throne</a>
+</nav>
+
+<header class="board-head">
+  <h1>IV. The Iron Throne</h1>
+  <p>Science, sorcery and sovereignty in one object: a ring of three bands that is a rose window, a lock and a seal. The hall and its light come from Direction II, the steel and its engraving from Direction III. Doom is now drawn as Doom, and the runes are traced from the decoder you supplied.</p>
+</header>
+
+<!-- ============================== A ============================== -->
+<section class="board-sec" id="collection">
+  <h2>A. The collection</h2>
+  <p class="board-lede">The opening. The screen cuts to black, a ring of runes lights under the guest, and a door stands open onto the hall with Doom already in it. He says two things. Only the name is large.</p>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--desktop" id="collection-desktop">
+      <div class="frame frame--desktop">
+        [[collection_desktop()]]
+        <div class="col-copy">
+          <p class="col-name">Mr. Anish.</p>
+          <p class="col-line">Doctor Doom is here to collect you.</p>
+          <div class="col-sig">[[rune_svg('viktor von doom')]]</div>
+          <div class="col-act">
+            <button type="button" class="btn-plate"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Go with him</button>
+            <a class="link-quiet" href="#collection">Go without sound</a>
+          </div>
+        </div>
+      </div>
+      <figcaption><strong>Desktop.</strong> His head sits inside the rose window, so the mechanism reads as a nimbus. The runes under the name spell his own.</figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="collection-phone">
+      <div class="frame frame--phone">
+        [[collection_phone()]]
+        <div class="col-copy">
+          <p class="col-name">Mr. Anish.</p>
+          <p class="col-line">Doctor Doom is here to collect you.</p>
+          <div class="col-sig">[[rune_svg('viktor von doom')]]</div>
+          <div class="col-act">
+            <button type="button" class="btn-plate"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Go with him</button>
+            <a class="link-quiet" href="#collection">Go without sound</a>
+          </div>
+        </div>
+      </div>
+      <figcaption><strong>Phone.</strong> One axis: door, Doom, ring, name.</figcaption>
+    </figure>
+  </div>
+  <div class="notes" style="margin-top:28px">
+    <div>
+      <h3>Taken from the Banner scene</h3>
+      <ul>
+        <li><strong>The lights go out.</strong> A hard cut to black, not a fade.</li>
+        <li><strong>The floor lights.</strong> Green symbols appear underfoot before anything else does.</li>
+        <li><strong>He is already there.</strong> No entrance and no walk.</li>
+        <li><strong>A name, then a purpose.</strong> Two short lines and nothing after them.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Added by us</h3>
+      <ul>
+        <li><strong>The door.</strong> A lancet standing open in the guest's own dark, with the hall behind it. The scene as reported has no door.</li>
+        <li><strong>Doom is seen.</strong> Reports describe a voice in the dark. Here he stands backlit, with the ring's light on the underside of the mask.</li>
+        <li><strong>The answer.</strong> The guest goes with him by choice.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Still open</h3>
+      <ul>
+        <li><strong>The title.</strong> "Mr." needs a per-guest field, or a fallback of the name alone.</li>
+        <li><strong>The quoted line.</strong> One published account gives it as "Dr. Banner, I'm here to collect you." I kept your wording.</li>
+        <li><strong>The voice.</strong> The lines are set as type. No voice is imitated.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== B ============================== -->
+<section class="board-sec" id="hall">
+  <h2>B. The throne hall</h2>
+  <p class="board-lede">The council chamber. Gothic lancets and clustered columns on one axis, gold light from the glass, and the three-band ring set in the wall where a rose window would be. Emerald appears in two places only: the ring above the throne and the ring in the floor.</p>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--desktop" id="hall-desktop">
+      <div class="frame frame--desktop frame--hall">
+        [[hall_desktop()]]
+      </div>
+      <figcaption><strong>Desktop.</strong> Seven steps, each edged in gold, under shafts of window light.</figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="hall-phone">
+      <div class="frame frame--phone frame--hall">
+        [[hall_phone()]]
+        <div class="hall-copy">
+          <h3>The council is seated.</h3>
+          <p>Doom will set the day, the hour and the place before you.</p>
+        </div>
+      </div>
+      <figcaption><strong>Phone.</strong> The hall keeps its full width at the top; the floor below is where the council's business would sit.</figcaption>
+    </figure>
+  </div>
+  <div class="notes" style="margin-top:28px">
+    <div>
+      <h3>How the room is his</h3>
+      <ul>
+        <li><strong>The rose window is a machine.</strong> Gold band, steel scale, emerald runes: the same ring as his seal.</li>
+        <li><strong>The throne carries the mark.</strong> The ring appears once more, small, above his head.</li>
+        <li><strong>The floor is inscribed.</strong> The ring that lit under the guest in the opening is inlaid here.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Light</h3>
+      <ul>
+        <li><strong>Gold is the room's light.</strong> It comes from glass and falls in shafts.</li>
+        <li><strong>Emerald is his.</strong> It comes only from runes that are active.</li>
+        <li><strong>Half the frame stays near black.</strong> The columns are read by their lit edges.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>What this drawing is</h3>
+      <ul>
+        <li>A vector stand-in that fixes the layout, the palette and where the light falls.</li>
+        <li>It is not film-quality artwork. A painted or rendered hall would replace it.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== C ============================== -->
+<section class="board-sec" id="summons">
+  <h2>C. The royal summons</h2>
+  <p class="board-lede">A steel plate, issued and sealed. The wording keeps the order of a royal charter; the object is engineered. The four phrases engraved round its edge are the four that have been read on the film's own material.</p>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--sheet" id="summons-sheet">
+      <div class="frame frame--sheet frame--plate">
+        [[summons_desktop()]]
+        <div class="sm-copy">
+          <p class="sm-from">Victor von Doom</p>
+          <p class="sm-title">by his own hand and will Sovereign of Latveria, to</p>
+          <p class="sm-name">Mr. Anish</p>
+          <p class="sm-greet">greeting.</p>
+          <div class="sm-body">
+            <p>Be it known that Doom has weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing; and that you have been chosen.</p>
+            <p>You are therefore summoned to take your seat at the Council of Doom, where the day, the hour and the place shall be set before you.</p>
+            <p class="sm-sanction">Let none who is called fail to answer. The absent forfeit their voice.</p>
+            <p class="sm-date">Given at Castle Doom, the fifteenth day of November, MMXXVI.</p>
+          </div>
+          <div class="sm-act"><button type="button" class="btn-plate"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Take your seat</button></div>
+        </div>
+      </div>
+      <figcaption><strong>Wide.</strong> Gold for the sovereign's name, silver for the guest's, emerald for the seal and the one line under the name.</figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="summons-phone">
+      <div class="frame frame--phone frame--plate">
+        [[summons_phone()]]
+        <div class="sm-copy">
+          <p class="sm-from">Victor von Doom</p>
+          <p class="sm-title">by his own hand and will Sovereign of Latveria, to</p>
+          <p class="sm-name">Mr. Anish</p>
+          <p class="sm-greet">greeting.</p>
+          <div class="sm-body">
+            <p>Be it known that Doom has weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing; and that you have been chosen.</p>
+            <p>You are therefore summoned to take your seat at the Council of Doom, where the day, the hour and the place shall be set before you.</p>
+            <p class="sm-sanction">Let none who is called fail to answer. The absent forfeit their voice.</p>
+            <p class="sm-date">Given at Castle Doom, the fifteenth day of November, MMXXVI.</p>
+          </div>
+          <div class="sm-act"><button type="button" class="btn-plate"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Take your seat</button></div>
+        </div>
+      </div>
+      <figcaption><strong>Phone.</strong> The same plate, upright. The mask gives way to the seal and the date moves into the text.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================== D ============================== -->
+<section class="board-sec" id="doomscript">
+  <h2>D. The Doomscript identity</h2>
+  <p class="board-lede">Every rune on this board is traced from the decoder image in <code>references/inspiration/</code>. The decoder is a fan's reading. Marvel has published no key, and none of these letter values is confirmed.</p>
+  <div class="sheet-grid">
+    <div class="sheet-block sheet-block--wide">
+      <h3>The twenty read runes and the two unread, as traced</h3>
+      <ul class="glyphs">[[decoder_tiles()]]</ul>
+      <p style="max-width:78ch;margin:16px 0 0;color:var(--board-dim)">The decoder has no rune for B, W, Y or Z, and none for X. Those letters are never written here. The two unread runes are shown for completeness and are used nowhere on the board.</p>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>What is inscribed, and how sure it is</h3>
+      <div class="ins-wrap">
+      <table class="ins">
+        <thead><tr><th>Inscription</th><th>Reads</th><th>Standing</th><th>Where it is used</th></tr></thead>
+        <tbody>
+          <tr><td>[[rune_svg(DOC1)]]</td><td><strong>There is no promise of tomorro</strong></td><td>Read by fans on the lapel of the jacket worn at Comic-Con. The missing W is the script's own.</td><td>Floor ring, top edge of the plate</td></tr>
+          <tr><td>[[rune_svg(DOC2)]]</td><td><strong>To the victor go the spoils</strong></td><td>Read by fans on the cuffs of the same jacket.</td><td>Inner band of the seal, bottom edge of the plate</td></tr>
+          <tr><td>[[rune_svg('justice  revenge')]]</td><td><strong>Justice, Revenge</strong></td><td>Read by fans on the pockets of the same jacket.</td><td>Left and right edges of the plate</td></tr>
+          <tr><td>[[rune_svg('viktor von doom  latveria')]]</td><td><strong>Victor von Doom, Latveria</strong></td><td>Ours. Spelled letter for letter with the decoder; hard C takes the K rune. Not seen on any Marvel material.</td><td>Outer band of the seal, signature under the greeting</td></tr>
+          <tr><td>[[rune_svg('doom')]]</td><td><strong>Doom</strong></td><td>Ours, on the same terms.</td><td>Material sample only</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>Where the runes live</h3>
+      <div class="tiles tiles--big">
+        <figure class="tile"><div class="tile__art">[[ds_insignia()]]</div><strong>Circular insignia</strong>Three bands. Gold for sovereignty carries his name. Steel for science carries a measured scale. Emerald for sorcery carries the phrase.</figure>
+        <figure class="tile"><div class="tile__art">[[ds_metal()]]</div><strong>Metal surface</strong>Cut into brushed steel, darker than the plate, with a lit lower edge. Unlit runes are plain engraving.</figure>
+        <figure class="tile"><div class="tile__art">[[ds_border()]]</div><strong>Border</strong>A dotted line, a band of runes, a ruled line. Runes run along an edge and turn the corner at a bolt.</figure>
+        <figure class="tile"><div class="tile__art">[[ds_mechanism()]]</div><strong>Mechanism</strong>The bands start out of register. They turn until they align, and only then do the runes light.</figure>
+      </div>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <div class="notes">
+        <div>
+          <h3>Rules for using it</h3>
+          <ul>
+            <li><strong>Inscription only.</strong> Runes are never the only carrier of something the guest must read.</li>
+            <li><strong>Fixed phrases.</strong> Guest names stay in Latin letters. Many names cannot be spelled, and half-spelled names would be invented.</li>
+            <li><strong>Light means active.</strong> A rune is engraved until a mechanism turns it on.</li>
+            <li><strong>No other symbols.</strong> No Norse runes, no alchemical signs, no circuit traces.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>What is still a guess</h3>
+          <ul>
+            <li>Whether one rune per letter is right. Fans describe the script as partly phonetic: the coffee packaging spells its word "kavi".</li>
+            <li>Whether the film's script has word dividers. The dot between words on the rings is our addition.</li>
+            <li>Which pocket of the jacket reads which word. Two published accounts disagree.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Not available to me</h3>
+          <ul>
+            <li>The two Reddit threads could not be opened from here. The facts above come from the decoder image and from news coverage of the same decoding.</li>
+            <li>I have not seen the jacket, the packaging or the film scene, only descriptions of them.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== E ============================== -->
+<section class="board-sec" id="language">
+  <h2>E. The design language</h2>
+  <p class="board-lede">These are proposals for you to react to. Each colour has one job.</p>
+  <div class="sheet-grid">
+    <div class="sheet-block sheet-block--wide">
+      <h3>Palette</h3>
+      <ul class="swatches">
+        <li class="swatch"><div class="swatch__chip" style="background:#0A0D12"></div><span class="swatch__name">Night</span><span class="swatch__hex">#0A0D12</span>The guest's world, before the hall</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#10130C"></div><span class="swatch__name">Olive black</span><span class="swatch__hex">#10130C</span>Inside the hall</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#1A2020"></div><span class="swatch__name">Plate</span><span class="swatch__hex">#1A2020</span>Every issued object</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#252C2C"></div><span class="swatch__name">Gunmetal</span><span class="swatch__hex">#252C2C</span>Raised steel</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#5A6462"></div><span class="swatch__name">Dark steel</span><span class="swatch__hex">#5A6462</span>Rules and borders</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#96A19E"></div><span class="swatch__name">Steel</span><span class="swatch__hex">#96A19E</span>Secondary text, 6.2:1 on Plate</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#D9DEDC"></div><span class="swatch__name">Silver</span><span class="swatch__hex">#D9DEDC</span>Text, 12.1:1 on Plate</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#0E5A40"></div><span class="swatch__name">Emerald deep</span><span class="swatch__hex">#0E5A40</span>Cloth, unlit glass</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#1F8F63"></div><span class="swatch__name">Emerald</span><span class="swatch__hex">#1F8F63</span>Lines of an active mechanism</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#4FC395"></div><span class="swatch__name">Emerald light</span><span class="swatch__hex">#4FC395</span>Lit runes only, 7.5:1 on Plate</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#7D5F2C"></div><span class="swatch__name">Bronze</span><span class="swatch__hex">#7D5F2C</span>Gold in shadow</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#C6A75E"></div><span class="swatch__name">Antique gold</span><span class="swatch__hex">#C6A75E</span>Sovereignty: his name, dots, bolts</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#E4CB8C"></div><span class="swatch__name">Gold light</span><span class="swatch__hex">#E4CB8C</span>Window light, 10.4:1 on Plate</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#E0806F"></div><span class="swatch__name">Signal</span><span class="swatch__hex">#E0806F</span>Errors only, 5.9:1 on Plate</li>
+      </ul>
+    </div>
+
+    <div class="sheet-block">
+      <h3>Typography</h3>
+      <div class="specimen spec-dark"><div class="spec-display">Mr. Anish. <em>Victor von Doom</em></div><span class="specimen__meta">Bodoni Moda, 500 and italic 400. Names, lines spoken by Doom, headings. A face cut for steel engraving, which is what state documents and banknotes were printed from.</span></div>
+      <div class="specimen spec-dark"><div class="spec-text">Be it known that Doom has weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing.</div><span class="specimen__meta">Spectral, 400, 500, 600 and italic. Everything read at length. Drawn for screens, and it holds on dark grounds.</span></div>
+      <div class="specimen spec-dark"><div class="spec-ui"><span>Take your seat</span><span class="dim">Go without sound</span><span class="dim">Seat 4 of 7</span></div><span class="specimen__meta">IBM Plex Sans, 400 to 600. Controls, counts and labels. No monospace anywhere.</span></div>
+      <div class="specimen spec-dark"><div class="spec-runes">[[rune_svg(DOC2)]]</div><span class="specimen__meta">Doomscript, used for inscriptions only.</span></div>
+    </div>
+
+    <div class="sheet-block">
+      <h3>Controls</h3>
+      <div class="ctl-row">
+        <div class="ctl"><button type="button" class="btn-plate"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Take your seat</button><small>At rest</small></div>
+        <div class="ctl"><button type="button" class="btn-plate is-hover"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Take your seat</button><small>Pointed at or focused</small></div>
+        <div class="ctl"><button type="button" class="btn-plate is-held"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Take your seat</button><small>Held: the plate fills</small></div>
+        <div class="ctl"><button type="button" class="btn-plate is-off" disabled><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Take your seat</button><small>Unavailable</small></div>
+        <div class="ctl"><a class="link-quiet" href="#language">Go without sound</a><small>The quiet choice</small></div>
+      </div>
+      <h3 style="margin-top:28px">Panels and borders</h3>
+      <div class="panel-plate">
+        <h4>Doom proposes</h4>
+        <p>Friday the eighteenth of December, at half past seven.</p>
+        <div class="panel-well"><strong>3 of 7</strong> seats have approved</div>
+        <div class="panel-acts">
+          <button type="button" class="btn-plate"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Approve</button>
+          <a class="link-quiet" href="#language">Propose another</a>
+        </div>
+      </div>
+      <p style="margin:10px 0 0;font-size:12.5px;color:var(--board-dim)">A plate with a dotted inner line, and a recessed well for counts. The content is a placeholder to show the styling; the council's features are planned separately.</p>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>Materials</h3>
+      <div class="tiles">
+        <figure class="tile"><div class="tile__art">[[mat('steel')]]</div><strong>Brushed steel</strong>Plates, panels, buttons</figure>
+        <figure class="tile"><div class="tile__art">[[mat('engraved')]]</div><strong>Engraving</strong>Cut in, lit on the lower edge</figure>
+        <figure class="tile"><div class="tile__art">[[mat('gold')]]</div><strong>Antique gold</strong>Bolts, clasps, fine lines. Never a surface for text</figure>
+        <figure class="tile"><div class="tile__art">[[mat('stone')]]</div><strong>Dark stone</strong>The hall, in large quiet blocks</figure>
+        <figure class="tile"><div class="tile__art">[[mat('cloth')]]</div><strong>Green wool</strong>Used for the hood and cloak only</figure>
+        <figure class="tile"><div class="tile__art">[[mat('glass')]]</div><strong>Pale glass</strong>The room's only light source</figure>
+      </div>
+    </div>
+
+    <div class="sheet-block">
+      <h3>Lighting</h3>
+      <div class="tiles">
+        <figure class="tile"><div class="tile__art">[[mat('light-gold')]]</div><strong>Gold shaft</strong>From glass, falling across the room</figure>
+        <figure class="tile"><div class="tile__art">[[mat('light-emerald')]]</div><strong>Emerald from below</strong>From active runes. The only light on the mask in the opening</figure>
+        <figure class="tile"><div class="tile__art">[[mat('light-rim')]]</div><strong>Gold rim</strong>Backlight on the hood's edge; the face stays dark</figure>
+      </div>
+    </div>
+
+    <div class="sheet-block">
+      <h3>Iconography</h3>
+      <ul class="icons">
+        <li>[[icon('seal')]]<strong>The seal</strong>Primary action, progress</li>
+        <li>[[icon('sigil')]]<strong>The mask</strong>Doom as issuer</li>
+        <li>[[icon('tile')]]<strong>The tile</strong>From the cuirass. A seat, an item</li>
+        <li>[[icon('clasp')]]<strong>The clasp</strong>Fastening, bolts</li>
+        <li>[[icon('approve')]]<strong>Approved</strong>The ring closing</li>
+        <li>[[icon('seat')]]<strong>The seat</strong>A place at the council</li>
+        <li>[[icon('sound')]]<strong>Sound</strong>On or off</li>
+        <li>[[icon('rune')]]<strong>A rune</strong>Ornament only</li>
+      </ul>
+      <p style="margin:12px 0 0;font-size:12.5px;color:var(--board-dim)">One stroke weight, square ends, no curves except the circle. The shapes come from three sources only: the ring, the mask and the armour tile.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== F ============================== -->
+<section class="board-sec" id="motion">
+  <h2>F. Motion and atmosphere</h2>
+  <p class="board-lede">Six beats, drawn as still frames. Nothing here moves yet. Mechanisms turn and lock; light switches on; Doom never moves at all.</p>
+  <div class="tiles tiles--beats">
+    <figure class="tile"><div class="tile__art">[[beat(1)]]</div><strong>1. Doom's arrival</strong><p>The page cuts to black with no fade. After a held beat, one rune on the floor catches, and the ring lights round from it, a rune at a time.</p><span class="when">Cut, 0.4 s hold, then about 90 ms per rune</span></figure>
+    <figure class="tile"><div class="tile__art">[[beat(2)]]</div><strong>2. The hall opens</strong><p>A seam of gold splits the dark and widens into the door. He is already standing in it.</p><span class="when">1.6 s, fast start and long settle</span></figure>
+    <figure class="tile"><div class="tile__art">[[beat(3)]]</div><strong>3. Emerald illumination</strong><p>The ring's light climbs him and reaches the underside of the mask. The name appears then, without movement, and the second line after a pause.</p><span class="when">0.6 s climb, name fades in 0.5 s, 0.9 s pause</span></figure>
+    <figure class="tile"><div class="tile__art">[[beat(4)]]</div><strong>4. Doomscript wakes</strong><p>The three bands turn to register, each at its own speed, with no bounce. Runes go from engraved to lit in reading order once the bands lock.</p><span class="when">Bands 0.7 to 1.1 s; runes 60 to 90 ms each</span></figure>
+    <figure class="tile"><div class="tile__art">[[beat(5)]]</div><strong>5. The summons is revealed</strong><p>The plate parts on a centre seam like a vault door, light in the gap, and closes again as one plate with the guest's name on it.</p><span class="when">1.2 s open, 0.8 s close</span></figure>
+    <figure class="tile"><div class="tile__art">[[beat(6)]]</div><strong>6. Between scenes</strong><p>The centre of the seal opens like an iris onto the next scene. Every scene change uses this one transition; going back runs it in reverse.</p><span class="when">0.9 s</span></figure>
+  </div>
+  <div class="notes" style="margin-top:32px">
+    <div>
+      <h3>Rules of motion</h3>
+      <ul>
+        <li><strong>Machines turn, light switches.</strong> Rotation, parting and locking for objects. On and off for light. Nothing floats, bounces or drifts in.</li>
+        <li><strong>He is still.</strong> Doom is never animated. The camera and the light move around him.</li>
+        <li><strong>One ambient movement.</strong> Slow haze in the gold shafts. No particles and no flicker.</li>
+        <li><strong>Reduced motion.</strong> Every beat becomes a 0.2 s cross-fade to its end state.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Sound, proposed</h3>
+      <ul>
+        <li><strong>Lights out.</strong> The room tone stops dead and leaves silence.</li>
+        <li><strong>The ring.</strong> A low electrical hum that rises as the runes light.</li>
+        <li><strong>Runes and bands.</strong> Dry metal ticks, one per rune; a heavier detent as each band locks.</li>
+        <li><strong>The door and the plate.</strong> Stone on stone, short and low. Steel parting on a seam.</li>
+        <li><strong>The hall.</strong> A large quiet room: long reverb, distant wind.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Limits on sound</h3>
+      <ul>
+        <li>Nothing plays before the guest's first tap. "Go without sound" is always offered.</li>
+        <li>No music bed and no voice. His lines appear as type.</li>
+        <li>Every sound is under two seconds except the hum and the room.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== G ============================== -->
+<section class="board-sec" id="compare">
+  <h2>Against Directions II and III</h2>
+  <p class="board-lede">What this board keeps, what it changes and what it drops.</p>
+  <div class="cmp">
+    <figure><img src="previews/direction-2-hero-desktop.png" alt="Direction II opening: a flat symmetrical throne hall with a small hooded figure" width="1136" height="639" loading="lazy">II. The Audience</figure>
+    <figure><img src="previews/direction-3-summons-sheet.png" alt="Direction III summons: a riveted steel plate with an emerald ring and Latin legend" width="1640" height="1230" loading="lazy">III. The Iron Protocol</figure>
+    <figure><img src="previews/direction-4-collection-desktop.png" alt="Direction IV opening: Doom backlit in a doorway onto the hall, a ring of runes on the floor" width="1600" height="900" loading="lazy">IV. The Iron Throne</figure>
+  </div>
+  <div class="notes">
+    <div>
+      <h3>Retained</h3>
+      <ul>
+        <li><strong>From II:</strong> the hall on one axis, seven gilded steps, gold light through tall glass, a figure who does not move.</li>
+        <li><strong>From III:</strong> the steel plate, the dotted border, the emerald ring with the nested square, silver type, Bodoni for names.</li>
+        <li><strong>From I:</strong> the charter order of the wording, and the idea that the summons is one sealed object.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Improved</h3>
+      <ul>
+        <li><strong>Doom.</strong> II drew a small hooded shape and III a faceless one. This is the mask, the hood, the clasps and chain, and the tiled cuirass.</li>
+        <li><strong>The hall.</strong> Columns in depth, lancets, a floor that reflects, shafts of light. II's hall was a flat elevation.</li>
+        <li><strong>The ring.</strong> III's ring carried a Latin legend in monospace. It now has three bands with a meaning each, and it is also the room's window.</li>
+        <li><strong>The plate.</strong> Brushed grain, engraved runes on all four edges, corner bolts, and the date under the seal.</li>
+        <li><strong>The opening.</strong> III said "Doom has identified you". This addresses the guest by name and tells them why he has come.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Discarded</h3>
+      <ul>
+        <li><strong>II's parchment and gilt seal.</strong> The summons is steel.</li>
+        <li><strong>III's monospace line and coordinates.</strong> They read as a game interface.</li>
+        <li><strong>III's hold-to-be-recognised gate.</strong> It read as a security scan.</li>
+        <li><strong>The eagle arms and the wax seal of I.</strong> The ring and the mask are the heraldry now.</li>
+        <li><strong>Castoro Titling, Cormorant, Crimson Pro.</strong> One display face and one text face remain.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== H ============================== -->
+<section class="board-sec" id="limits">
+  <h2>What this board cannot show</h2>
+  <div class="notes">
+    <div>
+      <h3>It is vector drawing</h3>
+      <ul>
+        <li>No image generator was available, so every scene is original vector drawing. The materials are approximations made with noise and gradients.</li>
+        <li>The figure is recognisable but stiff. Final artwork should replace it.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>It does not move</h3>
+      <ul>
+        <li>Motion and sound are described and storyboarded only.</li>
+        <li>The phone frames are simulated in a desktop browser and were not checked on a device.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>It is close to Marvel's design by request</h3>
+      <ul>
+        <li>The mask, hood, clasps and cuirass follow the film costume. The clasp emblems are replaced with the nested square.</li>
+        <li>Fine for a private invitation among friends. It would need a second look before anything public.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="board-foot">
+  Static concept board. Original vector drawing throughout; no reference image or studio asset is embedded. The rune shapes are traced from the fan-made decoder in the reference library. The guest name, the date and the council details are placeholders.
+</footer>
+
+</body>
+</html>

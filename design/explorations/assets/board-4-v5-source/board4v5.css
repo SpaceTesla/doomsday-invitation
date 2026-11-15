@@ -1,0 +1,138 @@
+/* =====================================================================
+   Revision 5: the "Two: Doomsday" typefaces applied to the approved frames.
+   Only type changes. Scoped under .v5; earlier boards are not touched.
+   ===================================================================== */
+.v5 {
+  --f-display: "Pirata One", "Times New Roman", serif;
+  --f-serif: "Cinzel", "Times New Roman", serif;
+  --f-tech: "Orbitron", "Segoe UI", sans-serif;
+  --f-body: "Cormorant Garamond", Georgia, serif;
+}
+
+/* phone frames are drawn at their real size, so type in them is the size a guest would see */
+.v5 .frame-wrap--phone { flex: 0 0 390px; width: 390px; }
+.v5 .solo { margin-left: 10px; color: var(--board-dim); white-space: nowrap; }
+
+/* ---------- controls ---------- */
+.v5 .btn-plate { font-family: var(--f-tech); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; }
+.v5 .link-quiet { font-family: var(--f-tech); font-weight: 600; font-size: .82em; text-transform: uppercase; letter-spacing: .08em; }
+
+/* ---------- A. opening ---------- */
+.v5 .rv-name { font: 500 4.2cqw/1.08 var(--f-serif); letter-spacing: .02em; text-wrap: balance; }
+.v5 .rv-line { margin-top: 1.1cqw; font: italic 500 2.05cqw/1.3 var(--f-body); }
+.v5 .rv-act { font-size: 1cqw; }
+.v5 .frame--phone .rv-name { font-size: 11.4cqw; }
+.v5 .frame--phone .rv-line { margin-top: 3cqw; font-size: 5.6cqw; }
+.v5 .frame--phone .rv-act { font-size: 3.6cqw; }
+/* long names: step down once, then wrap. The build needs a routine for this; here each case is set by hand. */
+.v5 .name-90 .rv-name { font-size: 3.8cqw; }
+.v5 .frame--phone.name-80 .rv-name { font-size: 9.1cqw; }
+
+/* ---------- B. summons ---------- */
+.v5 .sm-from { font: 500 3.9cqw/1.05 var(--f-serif); letter-spacing: .03em; }
+.v5 .sm-title, .v5 .sm-greet { font: italic 500 2.15cqw/1.3 var(--f-body); }
+.v5 .sm-title { text-wrap: balance; }
+.v5 .sm-name { font: 500 4.6cqw/1.08 var(--f-serif); letter-spacing: .02em; text-wrap: balance; }
+.v5 .sm-body { font: 500 2.12cqw/1.4 var(--f-body); }
+.v5 .sm-sanction { font-weight: 700; }
+.v5 .sm-date { font-style: italic; }
+.v5 .sm-act { display: flex; flex-wrap: wrap; align-items: center; gap: 2cqw; font-size: 1.55cqw; }
+.v5 .pl-caption { font: italic 500 19px/1.3 var(--f-body); }
+.v5 .frame--phone .sm-from { font-size: 7cqw; }
+.v5 .frame--phone .sm-title, .v5 .frame--phone .sm-greet { font-size: 4.4cqw; }
+.v5 .frame--phone .sm-name { font-size: 8.8cqw; }
+.v5 .frame--phone .sm-body { font-size: 4.5cqw; line-height: 1.36; }
+.v5 .frame--phone .sm-act { gap: 3cqw 4.5cqw; font-size: 3.6cqw; }
+.v5 .name-85 .sm-name { font-size: 3.9cqw; }
+.v5 .frame--phone.name-85 .sm-name { font-size: 7.5cqw; }
+/* long names: the proposed fit. Tighter leading and spacing, and on the phone a name size that takes two lines, not three. */
+.v5 .fit .sm-name { line-height: 1.04; }
+.v5 .frame--sheet.fit .sm-name { font-size: 3.9cqw; }
+.v5 .frame--sheet.fit .sm-body { font-size: 2cqw; line-height: 1.34; }
+.v5 .frame--sheet.fit .sm-body p + p { margin-top: .6cqw; }
+.v5 .frame--sheet.fit .sm-greet { margin-top: .7cqw; }
+.v5 .frame--sheet.fit .sm-act { margin-top: 1.7cqw; }
+.v5 .frame--phone.fit .sm-name { font-size: 6.9cqw; }
+.v5 .frame--phone.fit .sm-body { line-height: 1.32; }
+.v5 .frame--phone.fit .sm-body p + p { margin-top: 1.5cqw; }
+.v5 .frame--phone.fit .sm-act { margin-top: 3cqw; }
+/* the body treatment under review */
+.v5 .tx-i .sm-body { font-style: italic; }
+.v5 .tx-r .sm-body { font-style: normal; }
+.v5 .tx-r .sm-sanction { font-style: italic; }
+
+/* ---------- hall caption ---------- */
+.v5 .frame--phone .hall-copy h3 { font: 400 9.4cqw/1.08 var(--f-display); }
+.v5 .frame--phone .hall-copy p { margin-top: 2cqw; font: italic 500 5cqw/1.3 var(--f-body); }
+
+/* ---------- display specimen ---------- */
+.v5 .ladder { display: grid; gap: 2px; margin: 0; padding: 26px 28px; background: var(--night); border-radius: 4px; box-shadow: inset 0 0 0 1px var(--board-line); color: var(--gold-light); overflow: hidden; }
+.v5 .ladder div { display: grid; grid-template-columns: 64px 1fr; align-items: baseline; gap: 18px; }
+.v5 .ladder span { font: 12.5px/1 var(--board-font); color: var(--board-dim); font-variant-numeric: tabular-nums; }
+.v5 .ladder p { margin: 0; font-family: var(--f-display); line-height: 1.12; white-space: nowrap; }
+.v5 .ladder .fail { color: var(--signal); }
+.v5 .ladder .serif { font-family: var(--f-serif); font-weight: 500; letter-spacing: .03em; }
+
+/* ---------- C. council: first mock, built from the approved plate, well, button and marks ---------- */
+.v5 .cn { position: relative; background: var(--olive-black); color: var(--silver); }
+.v5 .cn-hall { position: relative; aspect-ratio: 16 / 5.2; overflow: hidden; }
+.v5 .cn-hall img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 36%; }
+.v5 .cn-hall::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(16, 19, 12, 0) 30%, rgba(16, 19, 12, .86) 78%, var(--olive-black)); }
+.v5 .cn-title { position: absolute; left: 0; right: 0; bottom: 14px; z-index: 1; margin: 0; text-align: center; font: 400 52px/1 var(--f-display); color: var(--gold-light); }
+.v5 .cn-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; padding: 28px 36px 40px; align-items: start; }
+.v5 .cn--phone .cn-hall { aspect-ratio: 390 / 250; }
+.v5 .cn--phone .cn-title { font-size: 40px; bottom: 10px; }
+.v5 .cn--phone .cn-body { grid-template-columns: 1fr; gap: 22px; padding: 20px 16px 30px; }
+.v5 .frame--free.cn { aspect-ratio: auto; }
+
+.v5 .cn h4, .v5 .cn-h { margin: 0 0 8px; font: 400 34px/1.05 var(--f-display); color: var(--gold-light); }
+.v5 .cn--phone .cn-h { font-size: 30px; }
+.v5 .cn .cn-procl { margin: 0; font: italic 500 22px/1.35 var(--f-body); color: var(--silver); }
+.v5 .cn .cn-procl + .cn-procl { margin-top: 2px; }
+.v5 .cn .cn-expl { margin: 16px 0 0; font: 500 19px/1.4 var(--f-body); color: var(--silver); max-width: 46ch; }
+.v5 .cn.cn--phone .cn-procl { font-size: 20px; }
+.v5 .cn.cn--phone .cn-expl { font-size: 18px; }
+.v5 .cn.tx-i .cn-expl, .v5 .cn.tx-i .cn-alt p, .v5 .cn.tx-i .panel-well { font-style: italic; }
+.v5 .cn .panel-well { margin-top: 16px; font: 500 18px/1.4 var(--f-body); color: var(--steel); }
+.v5 .fig { font: 500 1.02em/1 var(--f-serif); letter-spacing: .02em; color: var(--silver); }
+.v5 .cn .panel-acts { font-size: 14px; gap: 12px 20px; }
+.v5 .cn-label { display: block; margin: 0 0 8px; font: 600 11.5px/1 var(--f-tech); letter-spacing: .12em; text-transform: uppercase; color: var(--steel); }
+.v5 .cn-alt { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 16px; padding: 8px 0; border-top: 1px solid #1d2422; }
+.v5 .cn-alt:first-of-type { border-top: 0; padding-top: 0; }
+.v5 .cn-alt p { margin: 0; font: 500 18px/1.35 var(--f-body); color: var(--silver); }
+.v5 .cn-who { font: 500 15px/1.2 var(--f-serif); letter-spacing: .04em; color: var(--steel); }
+.v5 .cn-state { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 14px; padding-top: 14px; border-top: 1px dotted rgba(198, 167, 94, .4); font-size: 14px; }
+.v5 .cn-state .btn-plate.is-done { border-color: var(--emerald); color: var(--emerald-light); }
+.v5 .cn-state .btn-plate.is-done svg { stroke: var(--emerald-light); }
+
+/* character plates: the approved button plate, enlarged, one per character */
+.v5 .cn-chars { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 18px 0 0; padding: 0; list-style: none; }
+.v5 .cn-char { position: relative; display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: center; gap: 4px 12px; padding: 16px 18px 15px 16px; background: linear-gradient(#2a3232, #171c1c); border: 1px solid var(--dark-steel); border-radius: 2px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12); }
+.v5 .cn-char::after { content: ""; position: absolute; inset: 3px; border: 1px dotted rgba(198, 167, 94, .5); pointer-events: none; }
+.v5 .cn-cname { font: 500 22px/1.15 var(--f-serif); letter-spacing: .03em; color: var(--silver); }
+.v5 .cn-tag { font: 600 11.5px/1 var(--f-tech); letter-spacing: .12em; text-transform: uppercase; color: var(--steel); }
+.v5 .cn-holder { grid-column: 2 / 4; font: 500 15px/1.25 var(--f-serif); letter-spacing: .04em; color: #7f8a88; }
+.v5 .cn-char.is-yours { border-color: var(--emerald); }
+.v5 .cn-char.is-yours .cn-tag { color: var(--emerald-light); }
+.v5 .cn-char.is-taken { background: none; border-color: #333b3a; box-shadow: none; }
+.v5 .cn-char.is-taken::after { border-color: rgba(150, 161, 158, .2); }
+.v5 .cn-char.is-taken .cn-cname { color: #6c7674; }
+.v5 .st { display: block; width: 24px; height: 24px; }
+.v5 .st--em { color: var(--emerald-light); }
+.v5 .st--steel { stroke: var(--steel); }
+.v5 .is-taken .st--steel { stroke: #4c5553; }
+.v5 .cn-pagehead { grid-column: 1 / -1; }
+
+/* ---------- review tables and notes ---------- */
+.v5 .ins--sizes td:nth-child(2) { color: var(--board-text); white-space: nowrap; }
+.v5 .ins--sizes td:nth-child(3), .v5 .ins--sizes td:nth-child(4) { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.v5 .ins--sizes td:last-child { color: var(--board-dim); }
+.v5 .ok { color: var(--emerald-light); font-weight: 600; }
+.v5 .warn { color: #e4cb8c; font-weight: 600; }
+.v5 .bad { color: var(--signal); font-weight: 600; }
+.v5 .status-box { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 22px; }
+.v5 .status-box > div { padding: 18px 20px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--board-line); background: var(--board-panel); }
+.v5 .status-box h3 { margin: 0 0 8px; font: 600 19px/1.3 var(--board-font); }
+.v5 .status-box ul { margin: 0; padding-left: 18px; color: var(--board-dim); }
+.v5 .status-box li + li { margin-top: 5px; }
+@media (max-width: 800px) { .v5 .status-box, .v5 .cn-body { grid-template-columns: 1fr; } .v5 .cn-chars { grid-template-columns: 1fr; } }

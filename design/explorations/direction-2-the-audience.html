@@ -1,0 +1,1245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direction II: The Audience</title>
+<link rel="stylesheet" href="shared/board.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Castoro+Titling&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ---------- Direction II tokens ---------- */
+.dir-2 {
+  --hall: #0D0F0A;
+  --olive: #1B2417;
+  --velvet: #1C3324;
+  --haze: #48603F;
+  --sage: #AEB78D;
+  --cream: #E9DDC2;
+  --gold: #C9A24A;
+  --bronze: #8F6B34;
+  --parch: #E6D9B8;
+  --ink: #1C1712;
+  --ox: #8C2F23;
+  --glyph: #5ED12F;
+  --f-title: "Castoro Titling", "Times New Roman", serif;
+  --f-text: "Cormorant Garamond", Georgia, serif;
+  --f-ui: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --cy-gap: #E6D9B8;
+}
+.dir-2 .d2-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* ---------- hero copy ---------- */
+.dir-2 .hero-copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--cream);
+}
+.dir-2 .hero-copy h3 {
+  margin: 0;
+  text-wrap: balance;
+  font-family: var(--f-title);
+  font-weight: 400;
+  color: var(--cream);
+  text-shadow: 0 0 1.2cqw rgba(13, 15, 10, 0.9);
+}
+.dir-2 .hero-copy p {
+  margin: 0;
+  text-wrap: balance;
+  font-family: var(--f-text);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--sage);
+}
+.dir-2 .acts { display: flex; justify-content: center; align-items: center; }
+.dir-2 .act {
+  display: inline-block;
+  font-family: var(--f-ui);
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--cream);
+  border: 1px solid var(--gold);
+  background: rgba(13, 15, 10, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 74, 0.18);
+}
+.dir-2 .act--quiet {
+  border: 0;
+  background: none;
+  box-shadow: none;
+  font-weight: 400;
+  color: var(--sage);
+  text-decoration: underline;
+  text-decoration-color: rgba(174, 183, 141, 0.5);
+  text-underline-offset: 0.3em;
+}
+
+/* desktop hero */
+.dir-2 .hero-d .hero-copy { bottom: 4.6cqw; }
+.dir-2 .hero-d h3 { font-size: 2.55cqw; line-height: 1.15; letter-spacing: 0.2em; padding-left: 0.2em; }
+.dir-2 .hero-d .hero-copy p { margin-top: 0.9cqw; font-size: 1.62cqw; line-height: 1.3; }
+.dir-2 .hero-d .acts { gap: 2.4cqw; margin-top: 2cqw; }
+.dir-2 .hero-d .act { font-size: 1.14cqw; line-height: 1; padding: 1.05cqw 2.1cqw; border-radius: 0.2cqw; letter-spacing: 0.02em; }
+.dir-2 .hero-d .act--quiet { padding: 0; }
+
+/* phone hero */
+.dir-2 .hero-p .hero-copy { bottom: 10.5cqw; padding: 0 7cqw; }
+.dir-2 .hero-p h3 { font-size: 5.7cqw; line-height: 1.32; letter-spacing: 0.15em; padding-left: 0.15em; }
+.dir-2 .hero-p .hero-copy p { margin-top: 3.2cqw; font-size: 4.6cqw; line-height: 1.28; }
+.dir-2 .hero-p .acts { flex-direction: column; gap: 4.4cqw; margin-top: 7cqw; }
+.dir-2 .hero-p .act { font-size: 3.9cqw; line-height: 1; padding: 3.7cqw 8cqw; border-radius: 0.6cqw; letter-spacing: 0.02em; }
+.dir-2 .hero-p .act--quiet { padding: 0; font-size: 3.6cqw; }
+
+/* ---------- the patent (parchment sheet) ---------- */
+.dir-2 .patent {
+  position: absolute;
+  color: var(--ink);
+  background:
+    radial-gradient(120% 85% at 50% 30%, #F2E8CC 0%, #E6D9B8 46%, #D2C299 100%);
+  box-shadow:
+    0 0 0 1px rgba(60, 44, 18, 0.35),
+    0 1.6cqw 5cqw rgba(0, 0, 0, 0.7);
+}
+.dir-2 .patent::before,
+.dir-2 .patent::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+/* fine tooth */
+.dir-2 .patent::before {
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .32 0 0 0 0 .16 0 0 0 .55 -.08'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* slow mottling, the way a skin takes ink and light unevenly */
+.dir-2 .patent::after {
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.011' numOctaves='3' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .38 0 0 0 0 .18 0 0 0 1.1 -.42'/%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23m)'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+}
+.dir-2 .patent > * { position: relative; z-index: 1; }
+.dir-2 .patent__plica {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(246, 238, 212, 0.75) 0%, rgba(214, 200, 162, 0.7) 12%, rgba(196, 181, 141, 0.75) 100%);
+  box-shadow: 0 -0.25cqw 0.5cqw rgba(60, 44, 18, 0.28);
+}
+.dir-2 .patent__first {
+  margin: 0;
+  font-family: var(--f-title);
+  font-weight: 400;
+  color: var(--ink);
+}
+.dir-2 .patent__style {
+  margin: 0;
+  font-family: var(--f-text);
+  font-style: italic;
+  font-weight: 500;
+}
+.dir-2 .patent__to {
+  margin: 0;
+  font-family: var(--f-text);
+  font-weight: 500;
+}
+.dir-2 .patent__name {
+  display: block;
+  font-family: var(--f-text);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--ox);
+}
+.dir-2 .patent__body p {
+  margin: 0;
+  font-family: var(--f-text);
+  font-weight: 500;
+}
+.dir-2 .patent__body .sanction { font-style: italic; }
+.dir-2 .seal-hang { position: absolute; z-index: 3; }
+.dir-2 .seal-hang svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* phone summons */
+.dir-2 .sum-p .patent { left: 5.5cqw; right: 5.5cqw; top: 5cqw; padding: 4.2cqw 6.4cqw 9.6cqw; text-align: center; }
+.dir-2 .sum-p .patent__cypher { display: block; width: 13.5cqw; height: auto; margin: 0 auto 2cqw; color: var(--ink); }
+.dir-2 .sum-p .patent__first { font-size: 5.5cqw; line-height: 1.1; letter-spacing: 0.17em; padding-left: 0.17em; }
+.dir-2 .sum-p .patent__style { margin-top: 1.8cqw; font-size: 4.15cqw; line-height: 1.22; }
+.dir-2 .sum-p .patent__to { margin-top: 1.6cqw; font-size: 4.15cqw; line-height: 1.2; }
+.dir-2 .sum-p .patent__name { font-size: 9.8cqw; line-height: 1.1; }
+.dir-2 .sum-p .patent__body { margin-top: 2.4cqw; text-align: left; }
+.dir-2 .sum-p .patent__body p { font-size: 4.15cqw; line-height: 1.24; }
+.dir-2 .sum-p .patent__body p + p { margin-top: 1.7cqw; }
+.dir-2 .sum-p .patent__plica { height: 6cqw; }
+.dir-2 .sum-p .seal-hang { left: 50%; width: 23cqw; margin-left: -11.5cqw; top: calc(100% - 3.4cqw); }
+.dir-2 .sum-p .sum-act { position: absolute; left: 0; right: 0; bottom: 5cqw; text-align: center; }
+.dir-2 .sum-p .act { font-size: 3.9cqw; line-height: 1; padding: 3.5cqw 9cqw; border-radius: 0.6cqw; }
+
+/* landscape sheet */
+.dir-2 .sum-s .patent {
+  left: 4.5cqw; right: 4.5cqw; top: 3.4cqw; bottom: 16.4cqw;
+  display: grid;
+  grid-template-columns: 29% 1fr;
+  column-gap: 3.4cqw;
+  padding: 2.9cqw 4.2cqw 5.6cqw 3cqw;
+}
+.dir-2 .sum-s .patent__mark { align-self: center; color: var(--ink); }
+.dir-2 .sum-s .patent__mark svg { display: block; width: 100%; height: auto; overflow: visible; }
+.dir-2 .sum-s .patent__first { font-size: 3.05cqw; line-height: 1.1; letter-spacing: 0.2em; }
+.dir-2 .sum-s .patent__style { margin-top: 0.8cqw; font-size: 1.98cqw; line-height: 1.25; }
+.dir-2 .sum-s .patent__to { margin-top: 1cqw; font-size: 1.98cqw; line-height: 1.2; }
+.dir-2 .sum-s .patent__name { font-size: 4.9cqw; line-height: 1.08; }
+.dir-2 .sum-s .patent__body { margin-top: 1.2cqw; }
+.dir-2 .sum-s .patent__body p { font-size: 1.98cqw; line-height: 1.27; }
+.dir-2 .sum-s .patent__body p + p { margin-top: 0.75cqw; }
+.dir-2 .sum-s .patent__plica { height: 3.4cqw; }
+.dir-2 .sum-s .seal-hang { left: 50%; width: 11.6cqw; margin-left: -5.8cqw; top: calc(100% - 1.9cqw); }
+.dir-2 .sum-s .sum-act { position: absolute; right: 4.5cqw; bottom: 4.6cqw; }
+.dir-2 .sum-s .act { font-size: 1.6cqw; line-height: 1; padding: 1.35cqw 3cqw; border-radius: 0.25cqw; }
+
+/* ---------- identity sheet ---------- */
+.dir-2 .spec-title { background: var(--hall); }
+.dir-2 .spec-title .big { font: 400 34px/1.15 var(--f-title); letter-spacing: 0.19em; color: var(--cream); }
+.dir-2 .spec-title .small { margin-top: 10px; font: 400 15px/1.2 var(--f-title); letter-spacing: 0.26em; color: var(--sage); }
+.dir-2 .spec-text { background: var(--parch); color: var(--ink); }
+.dir-2 .spec-text .name { font: italic 500 46px/1.05 var(--f-text); color: var(--ox); }
+.dir-2 .spec-text .para { max-width: 46ch; margin-top: 8px; font: 500 20px/1.3 var(--f-text); }
+.dir-2 .spec-text .specimen__meta { color: #5d5340; }
+.dir-2 .spec-ui { background: var(--olive); }
+.dir-2 .spec-ui .row { display: flex; flex-wrap: wrap; gap: 18px 22px; align-items: center; }
+.dir-2 .spec-ui .act { font-size: 15px; line-height: 1; padding: 13px 26px; border-radius: 2px; }
+.dir-2 .spec-ui .act--quiet { padding: 0; font-size: 14px; }
+.dir-2 .spec-ui .line { margin-top: 16px; font: 400 14px/1.45 var(--f-ui); color: var(--cream); }
+.dir-2 .spec-ui .line span { color: var(--sage); }
+
+.dir-2 .insignia {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 18px;
+  align-items: stretch;
+}
+.dir-2 .insignia > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 26px 18px 18px;
+  border-radius: 4px;
+  background: radial-gradient(90% 80% at 50% 40%, #223a2a 0%, #16271b 60%, #0f1a12 100%);
+  font-size: 12.5px;
+  color: var(--board-dim);
+  text-align: center;
+}
+.dir-2 .insignia .on-parch { background: radial-gradient(90% 80% at 50% 40%, #F0E5C8 0%, #E6D9B8 55%, #D3C49D 100%); color: #5d5340; }
+.dir-2 .insignia svg { display: block; }
+.dir-2 .insignia .reduced { display: flex; align-items: center; gap: 22px; color: var(--gold); --cy-gap: #18291d; }
+.dir-2 .insignia .stack { display: grid; gap: 18px; padding: 0; background: none; }
+.dir-2 .insignia .stack > div {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  padding: 20px 14px 16px; border-radius: 4px;
+}
+.dir-2 .insignia .stack .dark { background: radial-gradient(90% 80% at 50% 40%, #223a2a 0%, #16271b 60%, #0f1a12 100%); }
+
+.dir-2 .tile__art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.dir-2 .tile__art--parch { background: radial-gradient(120% 90% at 40% 30%, #F2E8CC, #E6D9B8 50%, #D2C299); }
+.dir-2 .tile__art--parch span {
+  position: absolute; left: 12%; right: 10%; top: 26%;
+  font: italic 500 17px/1.25 var(--f-text); color: var(--ink);
+}
+
+.dir-2 .motifs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.dir-2 .motif { margin: 0; font-size: 12.5px; color: var(--board-dim); }
+.dir-2 .motif__art {
+  display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 16 / 9; margin-bottom: 8px; border-radius: 4px;
+  background: var(--hall);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.dir-2 .motif__art svg { display: block; width: 78%; height: 78%; }
+.dir-2 .motif strong { display: block; color: var(--board-text); font-weight: 600; }
+@media (max-width: 700px) {
+  .dir-2 .motifs, .dir-2 .insignia { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body class="board dir-2">
+
+<!-- ================= shared SVG definitions ================= -->
+<svg class="d2-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- blurs -->
+    <filter id="d2-blur8" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="d2-blur20" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="20"/></filter>
+    <filter id="d2-blur48" x="-60%" y="-40%" width="220%" height="180%"><feGaussianBlur stdDeviation="48"/></filter>
+    <filter id="d2-blur3" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+
+    <!-- film grain -->
+    <filter id="d2-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="11"/>
+      <feColorMatrix values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .9 -.2"/>
+    </filter>
+
+    <!-- vertical streaks in weathered glass -->
+    <filter id="d2-streak" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.055 0.0035" numOctaves="3" seed="5"/>
+      <feColorMatrix values="0 0 0 0 .13  0 0 0 0 .2  0 0 0 0 .11  1.5 1.1 0 0 -.92"/>
+    </filter>
+    <filter id="d2-mottle" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018 0.012" numOctaves="2" seed="9"/>
+      <feColorMatrix values="0 0 0 0 .95  0 0 0 0 .9  0 0 0 0 .66  0 1.6 0 0 -.72"/>
+    </filter>
+
+    <!-- hammered gilt surface -->
+    <filter id="d2-hammer" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="21" result="n"/>
+      <feDiffuseLighting in="n" surfaceScale="2.2" diffuseConstant="1.05" lighting-color="#E9D9A6" result="l">
+        <feDistantLight azimuth="225" elevation="58"/>
+      </feDiffuseLighting>
+      <feComposite in="l" in2="SourceAlpha" operator="in"/>
+    </filter>
+    <!-- irregular hand-cut edge -->
+    <filter id="d2-dent" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="d2-emboss" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0.9" dy="1.2" stdDeviation="0.55" flood-color="#33240C" flood-opacity=".85"/>
+      <feDropShadow dx="-0.5" dy="-0.7" stdDeviation="0.35" flood-color="#F5E9BE" flood-opacity=".7"/>
+    </filter>
+    <filter id="d2-engrave" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0.5" dy="0.7" stdDeviation="0.2" flood-color="#F2E4B4" flood-opacity=".75"/>
+    </filter>
+    <filter id="d2-sealshadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#000" flood-opacity=".55"/>
+    </filter>
+
+    <!-- gradients -->
+    <linearGradient id="d2-glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F3E9BC"/>
+      <stop offset=".3" stop-color="#DAD7A4"/>
+      <stop offset=".62" stop-color="#9CAB7E"/>
+      <stop offset=".86" stop-color="#587050"/>
+      <stop offset="1" stop-color="#2E4230"/>
+    </linearGradient>
+    <linearGradient id="d2-glassfoot" x1="0" y1="0" x2="0" y2="1">
+      <stop offset=".55" stop-color="#0D0F0A" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0D0F0A" stop-opacity=".78"/>
+    </linearGradient>
+    <linearGradient id="d2-pier" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0A0C08"/>
+      <stop offset=".6" stop-color="#171C12"/>
+      <stop offset="1" stop-color="#252E1E"/>
+    </linearGradient>
+    <linearGradient id="d2-throne" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0B0C08"/>
+      <stop offset=".6" stop-color="#17170E"/>
+      <stop offset="1" stop-color="#2A2616"/>
+    </linearGradient>
+    <linearGradient id="d2-slit" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F6E3A1"/>
+      <stop offset=".55" stop-color="#E0B453"/>
+      <stop offset="1" stop-color="#8F6B34"/>
+    </linearGradient>
+    <linearGradient id="d2-stepedge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#C9A24A" stop-opacity="0"/>
+      <stop offset=".3" stop-color="#C9A24A" stop-opacity=".55"/>
+      <stop offset=".5" stop-color="#EBCB7A" stop-opacity="1"/>
+      <stop offset=".7" stop-color="#C9A24A" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#C9A24A" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="d2-riser" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0D0F0A"/>
+      <stop offset=".22" stop-color="#14170F"/>
+      <stop offset=".5" stop-color="#2B2714"/>
+      <stop offset=".78" stop-color="#14170F"/>
+      <stop offset="1" stop-color="#0D0F0A"/>
+    </linearGradient>
+    <linearGradient id="d2-floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#161A10"/>
+      <stop offset=".35" stop-color="#0D0F0A"/>
+      <stop offset="1" stop-color="#070805"/>
+    </linearGradient>
+    <linearGradient id="d2-shaftsage" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C6CFA3" stop-opacity=".85"/>
+      <stop offset=".6" stop-color="#AEB78D" stop-opacity=".3"/>
+      <stop offset="1" stop-color="#AEB78D" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="d2-shaftgold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E7C672" stop-opacity=".9"/>
+      <stop offset=".6" stop-color="#C9A24A" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#C9A24A" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="d2-vig" cx=".5" cy=".42" r=".75">
+      <stop offset=".35" stop-color="#050604" stop-opacity="0"/>
+      <stop offset=".8" stop-color="#050604" stop-opacity=".72"/>
+      <stop offset="1" stop-color="#050604" stop-opacity=".94"/>
+    </radialGradient>
+    <linearGradient id="d2-lowfade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#090B07" stop-opacity="0"/>
+      <stop offset=".45" stop-color="#090B07" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#070805" stop-opacity=".93"/>
+    </linearGradient>
+    <linearGradient id="d2-bowl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF0CC"/>
+      <stop offset=".6" stop-color="#E6C77E"/>
+      <stop offset="1" stop-color="#9A7436"/>
+    </linearGradient>
+    <radialGradient id="d2-lampglow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#E9C977" stop-opacity=".6"/>
+      <stop offset=".5" stop-color="#C9A24A" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#C9A24A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="d2-pool" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#E7C672" stop-opacity=".5"/>
+      <stop offset=".55" stop-color="#C9A24A" stop-opacity=".13"/>
+      <stop offset="1" stop-color="#C9A24A" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- gilt -->
+    <radialGradient id="d2-gilt" cx=".34" cy=".28" r=".85">
+      <stop offset="0" stop-color="#E9DAA8"/>
+      <stop offset=".3" stop-color="#CDB26A"/>
+      <stop offset=".62" stop-color="#A88840"/>
+      <stop offset=".9" stop-color="#6E5324"/>
+      <stop offset="1" stop-color="#4A3716"/>
+    </radialGradient>
+    <linearGradient id="d2-relief" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EBDCA9"/>
+      <stop offset=".5" stop-color="#CBB069"/>
+      <stop offset="1" stop-color="#A5863F"/>
+    </linearGradient>
+    <radialGradient id="d2-sealhi" cx=".3" cy=".24" r=".55">
+      <stop offset="0" stop-color="#FFF6D2" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#FFF6D2" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="d2-sealrim" cx=".5" cy=".5" r=".5">
+      <stop offset=".8" stop-color="#2E2009" stop-opacity="0"/>
+      <stop offset="1" stop-color="#2E2009" stop-opacity=".55"/>
+    </radialGradient>
+
+    <pattern id="d2-stack" x="300" y="60" width="44" height="58" patternUnits="userSpaceOnUse">
+      <path d="M22 5 L33 22 L22 52 L11 22 Z" fill="#B88A36"/>
+      <path d="M22 13 L28 23 L22 40 L16 23 Z" fill="#F0D98A"/>
+    </pattern>
+    <pattern id="d2-lattice-lg" x="118" y="14" width="14" height="14" patternUnits="userSpaceOnUse">
+      <path d="M0 7 L7 0 L14 7 L7 14 Z" fill="none" stroke="#C9A24A" stroke-width="1.1"/>
+      <circle cx="7" cy="7" r="1.3" fill="#C9A24A"/>
+    </pattern>
+    <pattern id="d2-lattice" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M0 5 L5 0 L10 5 L5 10 Z" fill="none" stroke="#C9A24A" stroke-width=".9"/>
+      <circle cx="5" cy="5" r="1" fill="#C9A24A"/>
+    </pattern>
+
+    <clipPath id="d2-cy-over"><rect x="66" y="169" width="66" height="22"/></clipPath>
+    <path id="d2-legend-path" d="M100 20.5 A79.5 79.5 0 1 1 99.9 20.5"/>
+    <path id="d2-legend-path-s" d="M50 9 A41 41 0 1 1 49.95 9"/>
+  </defs>
+
+  <!-- seated, hooded, faceless -->
+  <symbol id="d2-figure" viewBox="0 0 100 130">
+    <path d="M50 1 C42 6 34 17 33 31 C32.5 38 34 42 36.5 45 L16 56 C9 59 6 65 6 74 L5 98 L11 102 L17 96 L22 100 L22 128 L42 128 L43 112 L57 112 L58 128 L78 128 L78 100 L83 96 L89 102 L95 98 L94 74 C94 65 91 59 84 56 L63.5 45 C66 42 67.5 38 67 31 C66 17 58 6 50 1 Z" fill="#050604"/>
+    <path d="M50 1 C42 6 34 17 33 31 C32.5 38 34 42 36.5 45 L16 56 C9 59 6 65 6 74" fill="none" stroke="#AEB78D" stroke-opacity=".6" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M50 1 C58 6 66 17 67 31 C67.5 38 66 42 63.5 45 L84 56 C91 59 94 65 94 74" fill="none" stroke="#C9A24A" stroke-opacity=".55" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M23 100.5 H41 M59 100.5 H77" stroke="#C9A24A" stroke-opacity=".5" stroke-width="1.5" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- V and D, interlaced -->
+  <symbol id="d2-cy-letters" viewBox="24 50 156 166" overflow="visible">
+    <g fill="currentColor">
+      <!-- D -->
+      <rect x="82" y="78" width="13" height="104"/>
+      <rect x="73" y="76" width="26" height="4.6"/>
+      <rect x="73" y="179.4" width="26" height="4.6"/>
+      <path d="M95 78 C150 78 176 104 176 130 C176 158 150 182 95 182 L95 175 C136 175 156 156 156 130 C156 106 136 85 95 85 Z"/>
+      <!-- V passes over the stem and the top of the bowl -->
+      <g stroke="var(--cy-gap, #E6D9B8)" stroke-width="5" paint-order="stroke" stroke-linejoin="round">
+        <path d="M36 58 L62 58 L108 194 L100 210 Z"/>
+        <path d="M156 58 L165 58 L108 194 L100 210 Z"/>
+        <rect x="27" y="54" width="44" height="5" stroke="none"/>
+        <rect x="146" y="54" width="29" height="5" stroke="none"/>
+      </g>
+      <!-- the foot of the D passes back over both strokes of the V -->
+      <g clip-path="url(#d2-cy-over)" stroke="var(--cy-gap, #E6D9B8)" stroke-width="5" paint-order="stroke">
+        <path d="M95 78 C150 78 176 104 176 130 C176 158 150 182 95 182 L95 175 C136 175 156 156 156 130 C156 106 136 85 95 85 Z"/>
+        <rect x="73" y="179.4" width="26" height="4.6"/>
+      </g>
+    </g>
+  </symbol>
+
+  <!-- the crowned cypher -->
+  <symbol id="d2-cypher" viewBox="0 0 200 222" overflow="visible">
+    <g fill="currentColor">
+      <path d="M58 30 Q100 38 142 30 L140 39 Q100 47 60 39 Z"/>
+      <path d="M100 32 C91 23 91 12 100 1 C109 12 109 23 100 32 Z"/>
+      <path d="M63 33 C53 26 51 16 55 6 C65 13 69 23 63 33 Z"/>
+      <path d="M137 33 C147 26 149 16 145 6 C135 13 131 23 137 33 Z"/>
+      <circle cx="81" cy="27.5" r="3.7"/>
+      <circle cx="119" cy="27.5" r="3.7"/>
+    </g>
+    <use href="#d2-cy-letters" x="22" y="50" width="156" height="166"/>
+  </symbol>
+
+  <!-- reduced: the cypher in a ring -->
+  <symbol id="d2-cy-ring" viewBox="0 0 100 100" overflow="visible">
+    <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="3.2"/>
+    <circle cx="50" cy="50" r="40.5" fill="none" stroke="currentColor" stroke-width=".9"/>
+    <use href="#d2-cy-letters" x="21.5" y="20" width="57" height="60.6"/>
+  </symbol>
+
+  <!-- engraver's rosette behind the cypher -->
+  <symbol id="d2-rosette" viewBox="-110 -110 220 220" overflow="visible">
+    <g fill="none" stroke="currentColor" stroke-width=".55">
+      <ellipse rx="104" ry="44"/>
+      <ellipse rx="104" ry="44" transform="rotate(15)"/>
+      <ellipse rx="104" ry="44" transform="rotate(30)"/>
+      <ellipse rx="104" ry="44" transform="rotate(45)"/>
+      <ellipse rx="104" ry="44" transform="rotate(60)"/>
+      <ellipse rx="104" ry="44" transform="rotate(75)"/>
+      <ellipse rx="104" ry="44" transform="rotate(90)"/>
+      <ellipse rx="104" ry="44" transform="rotate(105)"/>
+      <ellipse rx="104" ry="44" transform="rotate(120)"/>
+      <ellipse rx="104" ry="44" transform="rotate(135)"/>
+      <ellipse rx="104" ry="44" transform="rotate(150)"/>
+      <ellipse rx="104" ry="44" transform="rotate(165)"/>
+      <circle r="104"/>
+      <circle r="108" stroke-width="1.1"/>
+    </g>
+  </symbol>
+
+  <!-- the gilt seal, in majesty -->
+  <symbol id="d2-seal" viewBox="0 0 200 200" overflow="visible">
+    <g filter="url(#d2-sealshadow)">
+      <g filter="url(#d2-dent)">
+        <circle cx="100" cy="100" r="95" fill="url(#d2-gilt)"/>
+      </g>
+    </g>
+    <circle cx="100" cy="100" r="93" filter="url(#d2-hammer)" opacity=".42" style="mix-blend-mode:multiply"/>
+    <circle cx="100" cy="100" r="95" fill="url(#d2-sealrim)"/>
+    <!-- rim rings and beading -->
+    <g fill="none">
+      <circle cx="100" cy="100" r="90.5" stroke="#4A3716" stroke-opacity=".7" stroke-width="1.1"/>
+      <circle cx="100" cy="100" r="89.3" stroke="#F0E2B0" stroke-opacity=".55" stroke-width=".7"/>
+      <circle cx="100" cy="100" r="70.5" stroke="#4A3716" stroke-opacity=".7" stroke-width="1.1"/>
+      <circle cx="100" cy="100" r="69.3" stroke="#F0E2B0" stroke-opacity=".5" stroke-width=".7"/>
+      <circle cx="100" cy="100" r="66" stroke="#DEC98A" stroke-width="2.3" stroke-linecap="round" stroke-dasharray=".1 4.6" filter="url(#d2-emboss)"/>
+    </g>
+    <!-- legend, cut into the rim -->
+    <path d="M100 13.5 L103.4 20.5 L100 27.5 L96.6 20.5 Z" fill="#3E2D10" filter="url(#d2-engrave)"/>
+    <text font-family="'Castoro Titling', serif" font-size="10.4" fill="#3E2D10" filter="url(#d2-engrave)">
+      <textPath href="#d2-legend-path" startOffset="2.2%" textLength="478" lengthAdjust="spacing">VICTOR DEI NVLLIVS GRATIA DOMINVS LATVERIAE</textPath>
+    </text>
+    <!-- the field: the sovereign enthroned, frontal, hooded -->
+    <g fill="url(#d2-relief)" filter="url(#d2-emboss)">
+      <!-- throne back, stepped -->
+      <path d="M70 152 L70 74 L78 74 L78 62 L88 62 L88 50 L112 50 L112 62 L122 62 L122 74 L130 74 L130 152 Z" opacity=".78"/>
+      <!-- footstool -->
+      <path d="M76 152 H124 L128 159 H72 Z"/>
+      <!-- sceptre -->
+      <path d="M61.6 152 V64 H64.4 V152 Z"/>
+      <path d="M63 46 L68 55 L63 64 L58 55 Z"/>
+      <circle cx="63" cy="43" r="2.6"/>
+      <!-- shields at the shoulders -->
+      <path d="M36 84 H54 V95 C54 102 49 106 45 108 C41 106 36 102 36 95 Z"/>
+      <path d="M146 84 H164 V95 C164 102 159 106 155 108 C151 106 146 102 146 95 Z"/>
+      <!-- orb in the left hand -->
+      <circle cx="134" cy="112" r="6.2"/>
+    </g>
+    <g filter="url(#d2-emboss)">
+      <!-- robe -->
+      <path d="M84 84 L73 90 L68 113 L75 116 L78 152 L122 152 L125 116 L132 113 L127 90 L116 84 Z" fill="url(#d2-relief)"/>
+      <!-- hood -->
+      <path d="M100 57 C88 59 82 71 83 84 L117 84 C118 71 112 59 100 57 Z" fill="url(#d2-relief)"/>
+    </g>
+    <!-- the face is a void -->
+    <path d="M100 65.5 C93.5 66.5 90.5 73 91.3 84 L108.7 84 C109.5 73 106.5 66.5 100 65.5 Z" fill="#33240C"/>
+    <!-- cut detail -->
+    <g fill="none" stroke="#3E2D10" stroke-opacity=".75" stroke-width=".9" stroke-linecap="round">
+      <path d="M92 96 L90 150 M100 94 V150 M108 96 L110 150"/>
+      <path d="M78 121 Q100 128 122 121"/>
+      <path d="M45 88 V104 M41.5 88 V101 M48.5 88 V101"/>
+      <path d="M155 89 L160 95.5 L155 102 L150 95.5 Z"/>
+      <path d="M128 112 H140"/>
+    </g>
+    <!-- broad, soft light -->
+    <circle cx="100" cy="100" r="94" fill="url(#d2-sealhi)" style="mix-blend-mode:screen"/>
+  </symbol>
+
+  <!-- seal with its green cords, for hanging from the folded foot -->
+  <symbol id="d2-seal-hung" viewBox="0 -64 200 268" overflow="visible">
+    <g fill="none" stroke-linecap="round">
+      <path d="M86 -64 C82 -40 96 -24 94 8" stroke="#16271B" stroke-width="6.5"/>
+      <path d="M114 -64 C118 -40 104 -24 106 8" stroke="#16271B" stroke-width="6.5"/>
+      <path d="M86 -64 C82 -40 96 -24 94 8" stroke="#3F6B4B" stroke-width="2.2" stroke-dasharray="3.5 4"/>
+      <path d="M114 -64 C118 -40 104 -24 106 8" stroke="#3F6B4B" stroke-width="2.2" stroke-dasharray="3.5 4"/>
+    </g>
+    <use href="#d2-seal" x="0" y="0" width="200" height="200"/>
+  </symbol>
+</svg>
+
+<nav class="board-nav" aria-label="Concept boards">
+  <a href="index.html">All directions</a>
+  <a href="direction-1-winter-chancery.html">I. The Winter Chancery</a>
+  <a href="direction-2-the-audience.html" aria-current="page">II. The Audience</a>
+  <a href="direction-3-iron-protocol.html">III. The Iron Protocol</a>
+  <span class="board-nav__note">Static concept board</span>
+</nav>
+
+<header class="board-head">
+  <h1>Direction II: The Audience</h1>
+  <p>You are received at court: the first image is Doom's hall, and the summons is handed to you there as an open sheet of parchment under a pool of gold light, with a gilt seal hanging from it.</p>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="board-sec" id="hero">
+  <h2>Hero</h2>
+  <p class="board-lede">The hall as a still. Seven lit steps, a throne that rises out of frame, two shafts of light crossing in the haze, and a small hooded figure who does not get up. The phone version is its own composition, not a crop.</p>
+
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--desktop" id="hero-desktop">
+      <div class="frame frame--desktop hero-d">
+        <svg class="fill" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A dark audience hall seen on its axis: a tall throne on seven gold-edged steps between two great windows, crossed by a pale green and a gold shaft of light.">
+          <rect width="1600" height="900" fill="#0D0F0A"/>
+
+          <!-- bloom behind the glass -->
+          <g filter="url(#d2-blur48)" opacity=".5">
+            <rect x="530" y="-60" width="200" height="570" fill="#AEB78D"/>
+            <rect x="870" y="-60" width="200" height="570" fill="#DBCB86"/>
+          </g>
+
+          <!-- a main window: streaked glass, curved leading -->
+          <g id="d2-win">
+            <clipPath id="d2-winclip"><rect x="520" y="-30" width="220" height="592"/></clipPath>
+            <g clip-path="url(#d2-winclip)">
+              <rect x="520" y="-30" width="220" height="592" fill="url(#d2-glass)"/>
+              <path d="M566 330 C548 290 540 240 544 170 C547 120 560 60 556 -30 L520 -30 L520 452 Q545 440 566 430 Z" fill="#48603F" opacity=".3"/>
+              <path d="M704 400 C722 350 728 290 722 220 L740 222 L740 496 Q716 486 690 496 C700 470 704 440 704 400 Z" fill="#F3E9BC" opacity=".22"/>
+              <path d="M612 560 C612 470 566 430 566 330 Q620 312 668 300 C690 330 704 360 704 400 C704 470 676 500 676 560 Z" fill="#E9DDC2" opacity=".2"/>
+              <path d="M604 140 C600 70 620 20 628 -30 L636 -30 C640 0 652 40 648 90 C640 110 620 130 604 140 Z" fill="#48603F" opacity=".34"/>
+              <rect x="520" y="-30" width="220" height="592" filter="url(#d2-mottle)" opacity=".45"/>
+              <rect x="520" y="-30" width="220" height="592" filter="url(#d2-streak)"/>
+              <rect x="520" y="-30" width="220" height="592" fill="url(#d2-glassfoot)"/>
+              <g fill="none" stroke="#090B07" stroke-width="7" stroke-linecap="round">
+                <path d="M612 562 C612 470 566 430 566 330 C566 230 640 190 648 90 C652 40 640 0 636 -30"/>
+                <path d="M676 562 C676 500 704 470 704 400 C704 300 610 250 604 140 C600 70 620 20 628 -30"/>
+                <path d="M566 330 C548 290 540 240 544 170 C547 120 560 60 556 -30"/>
+                <path d="M704 400 C722 350 728 290 722 220 C716 150 700 80 706 -30"/>
+                <path d="M520 452 Q566 436 600 462" stroke-width="5"/>
+                <path d="M686 498 Q712 486 740 496" stroke-width="5"/>
+                <path d="M566 330 Q620 312 668 300" stroke-width="5"/>
+                <path d="M648 92 Q676 80 704 96" stroke-width="5"/>
+                <path d="M604 140 Q576 152 546 150" stroke-width="5"/>
+                <path d="M722 222 L740 222" stroke-width="5"/>
+                <path d="M520 246 Q532 240 543 236" stroke-width="5"/>
+                <path d="M520 118 H740 M520 388 H740" stroke-width="3"/>
+              </g>
+            </g>
+            <rect x="520" y="-30" width="220" height="592" fill="none" stroke="#080A06" stroke-width="13"/>
+          </g>
+          <use href="#d2-win" transform="translate(1600 0) scale(-1 1)"/>
+          <rect x="860" y="-30" width="220" height="592" fill="#C9A24A" opacity=".2" style="mix-blend-mode:screen"/>
+
+          <!-- narrow outer lights with stacked amber glass -->
+          <g id="d2-slitwin">
+            <rect x="300" y="60" width="44" height="430" fill="#1C3324"/>
+            <rect x="300" y="60" width="44" height="430" fill="url(#d2-stack)" opacity=".75"/>
+            <rect x="300" y="60" width="44" height="430" fill="url(#d2-glassfoot)"/>
+            <rect x="300" y="60" width="44" height="430" fill="none" stroke="#080A06" stroke-width="6"/>
+            <rect x="290" y="40" width="64" height="470" fill="#C9A24A" opacity=".18" filter="url(#d2-blur20)"/>
+          </g>
+          <use href="#d2-slitwin" transform="translate(1600 0) scale(-1 1)"/>
+
+          <!-- piers -->
+          <g id="d2-pierL">
+            <rect x="388" y="-30" width="124" height="604" fill="url(#d2-pier)"/>
+            <rect x="372" y="498" width="156" height="76" fill="#12160E"/>
+            <rect x="372" y="498" width="156" height="3" fill="#AEB78D" opacity=".16"/>
+            <rect x="508" y="-30" width="4" height="528" fill="#AEB78D" opacity=".28"/>
+          </g>
+          <use href="#d2-pierL" transform="translate(1600 0) scale(-1 1)"/>
+          <rect x="1088" y="-30" width="4" height="528" fill="#C9A24A" opacity=".3"/>
+          <rect x="0" y="-30" width="282" height="640" fill="#0A0C08"/>
+          <rect x="1318" y="-30" width="282" height="640" fill="#0A0C08"/>
+
+          <!-- the throne: a stepped monolith rising out of frame -->
+          <g>
+            <rect x="648" y="404" width="62" height="70" fill="#17170E"/>
+            <rect x="890" y="404" width="62" height="70" fill="#17170E"/>
+            <rect x="630" y="430" width="340" height="44" fill="#1E1C11"/>
+            <path d="M772 -30 L828 -30 L838 246 L858 246 L862 326 L884 326 L890 474 L710 474 L716 326 L738 326 L742 246 L762 246 Z" fill="url(#d2-throne)"/>
+            <path d="M772 -30 L762 246 L742 246 L738 326 L716 326 L710 474" fill="none" stroke="#AEB78D" stroke-opacity=".34" stroke-width="2"/>
+            <path d="M828 -30 L838 246 L858 246 L862 326 L884 326 L890 474" fill="none" stroke="#C9A24A" stroke-opacity=".42" stroke-width="2"/>
+            <path d="M630 430 H710 M890 430 H970 M648 404 H710 M890 404 H952" stroke="#C9A24A" stroke-opacity=".3" stroke-width="2"/>
+            <!-- the slit of amber glass -->
+            <rect x="786" y="-30" width="28" height="270" fill="#E0B453" opacity=".5" filter="url(#d2-blur8)"/>
+            <rect x="796.5" y="-30" width="7" height="262" fill="url(#d2-slit)"/>
+            <!-- one panel of dense ornament -->
+            <rect x="778" y="262" width="44" height="58" fill="#14140C"/>
+            <rect x="778" y="262" width="44" height="58" fill="url(#d2-lattice)" opacity=".8"/>
+            <rect x="778" y="262" width="44" height="58" fill="none" stroke="#C9A24A" stroke-width="2.2"/>
+          </g>
+          <use href="#d2-figure" x="752" y="350" width="96" height="125"/>
+
+          <!-- the seven steps -->
+          <g>
+            <rect x="158" y="572" width="1284" height="26" fill="url(#d2-riser)"/>
+            <rect x="240" y="550" width="1120" height="22" fill="url(#d2-riser)"/>
+            <rect x="322" y="530" width="956" height="20" fill="url(#d2-riser)"/>
+            <rect x="404" y="512" width="792" height="18" fill="url(#d2-riser)"/>
+            <rect x="486" y="496" width="628" height="16" fill="url(#d2-riser)"/>
+            <rect x="568" y="482" width="464" height="14" fill="url(#d2-riser)"/>
+            <rect x="650" y="470" width="300" height="12" fill="url(#d2-riser)"/>
+            <g fill="url(#d2-stepedge)">
+              <rect x="158" y="572" width="1284" height="2.4"/>
+              <rect x="240" y="550" width="1120" height="2.2"/>
+              <rect x="322" y="530" width="956" height="2.1"/>
+              <rect x="404" y="512" width="792" height="2"/>
+              <rect x="486" y="496" width="628" height="1.9"/>
+              <rect x="568" y="482" width="464" height="1.8"/>
+              <rect x="650" y="470" width="300" height="1.8"/>
+            </g>
+          </g>
+
+          <!-- the polished floor -->
+          <rect x="0" y="598" width="1600" height="302" fill="url(#d2-floor)"/>
+          <clipPath id="d2-floorclip"><rect x="0" y="598" width="1600" height="302"/></clipPath>
+          <g clip-path="url(#d2-floorclip)">
+            <g stroke="#232B1B" stroke-width="1.6" opacity=".8">
+              <path d="M800 440 L-500 900 M800 440 L60 900 M800 440 L500 900 M800 440 L1100 900 M800 440 L1540 900 M800 440 L2100 900"/>
+              <path d="M0 752 H1600"/>
+              <path d="M330 646 Q800 596 1270 646" fill="none"/>
+              <path d="M250 672 Q800 610 1350 672" fill="none" opacity=".6"/>
+            </g>
+            <g filter="url(#d2-blur20)" style="mix-blend-mode:screen">
+              <ellipse cx="630" cy="668" rx="120" ry="46" fill="#AEB78D" opacity=".2"/>
+              <ellipse cx="970" cy="668" rx="120" ry="46" fill="#D9C57E" opacity=".2"/>
+              <ellipse cx="800" cy="612" rx="330" ry="12" fill="#C9A24A" opacity=".3"/>
+            </g>
+            <!-- the one small accent: light in the floor inlay -->
+            <g>
+              <path d="M330 646 Q800 596 1270 646" fill="none" stroke="#5ED12F" stroke-width="5" stroke-dasharray="20 216" stroke-dashoffset="-98" opacity=".45" filter="url(#d2-blur3)"/>
+              <path d="M330 646 Q800 596 1270 646" fill="none" stroke="#5ED12F" stroke-width="1.7" stroke-dasharray="20 216" stroke-dashoffset="-98" stroke-linecap="round"/>
+            </g>
+          </g>
+
+          <!-- bowl lamps -->
+          <g id="d2-lamp">
+            <circle cx="150" cy="424" r="96" fill="url(#d2-lampglow)"/>
+            <rect x="142" y="446" width="16" height="158" fill="#070806"/>
+            <rect x="130" y="596" width="40" height="8" fill="#070806"/>
+            <path d="M114 428 H186 Q180 449 150 452 Q120 449 114 428 Z" fill="url(#d2-bowl)"/>
+            <path d="M114 428 H186" stroke="#FFF6D6" stroke-width="2"/>
+            <path d="M128 452 Q150 444 172 452 L164 458 H136 Z" fill="#070806"/>
+          </g>
+          <use href="#d2-lamp" transform="translate(1600 0) scale(-1 1)"/>
+
+          <!-- the two shafts, crossing in front of the throne -->
+          <g style="mix-blend-mode:screen">
+            <g filter="url(#d2-blur20)">
+              <polygon points="540,-40 720,-40 1180,900 800,900" fill="url(#d2-shaftsage)" opacity=".52"/>
+              <polygon points="330,-40 480,-40 1040,900 740,900" fill="url(#d2-shaftsage)" opacity=".5"/>
+              <polygon points="1010,-40 1190,-40 770,900 400,900" fill="url(#d2-shaftgold)" opacity=".52"/>
+            </g>
+            <g filter="url(#d2-blur8)">
+              <polygon points="596,-40 640,-40 960,900 880,900" fill="url(#d2-shaftsage)" opacity=".42"/>
+              <polygon points="404,-40 432,-40 900,900 836,900" fill="url(#d2-shaftsage)" opacity=".4"/>
+              <polygon points="668,-40 690,-40 1060,900 1010,900" fill="url(#d2-shaftsage)" opacity=".3"/>
+              <polygon points="1070,-40 1112,-40 690,900 610,900" fill="url(#d2-shaftgold)" opacity=".44"/>
+              <polygon points="1144,-40 1164,-40 800,900 752,900" fill="url(#d2-shaftgold)" opacity=".3"/>
+            </g>
+          </g>
+
+          <!-- vignette, a dark band for the words, grain -->
+          <rect width="1600" height="900" fill="url(#d2-vig)"/>
+          <rect x="0" y="600" width="1600" height="300" fill="url(#d2-lowfade)"/>
+          <rect width="1600" height="900" filter="url(#d2-grain)" opacity=".11" style="mix-blend-mode:overlay"/>
+        </svg>
+
+        <div class="hero-copy">
+          <h3>You are granted an audience.</h3>
+          <p>Victor von Doom, Sovereign of Latveria, will receive you.</p>
+          <div class="acts">
+            <a class="act" href="#summons">Approach the throne</a>
+            <a class="act act--quiet" href="#summons">Enter without sound</a>
+          </div>
+        </div>
+      </div>
+      <figcaption><strong>Desktop, 16:9.</strong> One vanishing point. About half the frame stays near-black, and the only saturated green is three short lines of floor inlay.</figcaption>
+    </figure>
+
+    <figure class="frame-wrap frame-wrap--phone" id="hero-phone">
+      <div class="frame frame--phone hero-p">
+        <svg class="fill" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The same hall composed for a phone: the throne and two tall windows fill the upper half and the steps form a base for the headline.">
+          <rect width="390" height="844" fill="#0D0F0A"/>
+          <g filter="url(#d2-blur20)" opacity=".55">
+            <rect x="44" y="-30" width="100" height="490" fill="#AEB78D"/>
+            <rect x="246" y="-30" width="100" height="490" fill="#DBCB86"/>
+          </g>
+          <g transform="translate(0 -36)">
+          <!-- windows, reusing the leading drawn for the wide hall -->
+          <use href="#d2-win" transform="translate(34 -4) scale(.545 .92) translate(-520 30)"/>
+          <use href="#d2-win" transform="translate(356 -4) scale(-.545 .92) translate(-520 30)"/>
+          <rect x="236" y="-4" width="120" height="545" fill="#C9A24A" opacity=".2" style="mix-blend-mode:screen"/>
+
+          <!-- piers closing the frame -->
+          <rect x="-6" y="-10" width="38" height="560" fill="url(#d2-pier)"/>
+          <rect x="358" y="-10" width="38" height="560" fill="url(#d2-pier)"/>
+          <rect x="30" y="-10" width="2.5" height="520" fill="#AEB78D" opacity=".3"/>
+          <rect x="357.5" y="-10" width="2.5" height="520" fill="#C9A24A" opacity=".32"/>
+
+          <!-- throne -->
+          <g>
+            <rect x="112" y="430" width="32" height="46" fill="#17170E"/>
+            <rect x="246" y="430" width="32" height="46" fill="#17170E"/>
+            <rect x="102" y="448" width="186" height="28" fill="#1E1C11"/>
+            <path d="M178 -10 L212 -10 L218 262 L230 262 L233 348 L247 348 L251 476 L139 476 L143 348 L157 348 L160 262 L172 262 Z" fill="url(#d2-throne)"/>
+            <path d="M178 -10 L172 262 L160 262 L157 348 L143 348 L139 476" fill="none" stroke="#AEB78D" stroke-opacity=".36" stroke-width="1.3"/>
+            <path d="M212 -10 L218 262 L230 262 L233 348 L247 348 L251 476" fill="none" stroke="#C9A24A" stroke-opacity=".44" stroke-width="1.3"/>
+            <path d="M102 448 H139 M251 448 H288 M112 430 H141 M249 430 H278" stroke="#C9A24A" stroke-opacity=".3" stroke-width="1.3"/>
+            <rect x="187" y="-10" width="16" height="262" fill="#E0B453" opacity=".5" filter="url(#d2-blur8)"/>
+            <rect x="193" y="-10" width="4" height="256" fill="url(#d2-slit)"/>
+            <rect x="182" y="274" width="26" height="38" fill="#14140C"/>
+            <rect x="182" y="274" width="26" height="38" fill="url(#d2-lattice)" opacity=".8"/>
+            <rect x="182" y="274" width="26" height="38" fill="none" stroke="#C9A24A" stroke-width="1.5"/>
+          </g>
+          <use href="#d2-figure" x="159" y="384" width="72" height="94"/>
+
+          <!-- seven steps; the lowest run past the edges of the frame -->
+          <g>
+            <rect x="-50" y="551" width="490" height="19" fill="url(#d2-riser)"/>
+            <rect x="-20" y="535" width="430" height="16" fill="url(#d2-riser)"/>
+            <rect x="12" y="520" width="366" height="15" fill="url(#d2-riser)"/>
+            <rect x="42" y="506" width="306" height="14" fill="url(#d2-riser)"/>
+            <rect x="72" y="494" width="246" height="12" fill="url(#d2-riser)"/>
+            <rect x="102" y="484" width="186" height="10" fill="url(#d2-riser)"/>
+            <rect x="132" y="476" width="126" height="8" fill="url(#d2-riser)"/>
+            <g fill="url(#d2-stepedge)">
+              <rect x="-50" y="551" width="490" height="1.6"/>
+              <rect x="-20" y="535" width="430" height="1.5"/>
+              <rect x="12" y="520" width="366" height="1.4"/>
+              <rect x="42" y="506" width="306" height="1.3"/>
+              <rect x="72" y="494" width="246" height="1.3"/>
+              <rect x="102" y="484" width="186" height="1.2"/>
+              <rect x="132" y="476" width="126" height="1.2"/>
+            </g>
+          </g>
+
+          </g>
+
+          <!-- floor -->
+          <rect x="0" y="534" width="390" height="310" fill="url(#d2-floor)"/>
+          <clipPath id="d2-pfloorclip"><rect x="0" y="534" width="390" height="310"/></clipPath>
+          <g clip-path="url(#d2-pfloorclip)">
+            <g stroke="#232B1B" stroke-width="1" opacity=".8" fill="none">
+              <path d="M195 414 L-300 844 M195 414 L10 844 M195 414 L380 844 M195 414 L690 844"/>
+              <path d="M-10 566 Q195 534 400 566"/>
+            </g>
+            <g filter="url(#d2-blur8)" style="mix-blend-mode:screen">
+              <ellipse cx="92" cy="574" rx="50" ry="22" fill="#AEB78D" opacity=".24"/>
+              <ellipse cx="298" cy="574" rx="50" ry="22" fill="#D9C57E" opacity=".24"/>
+              <ellipse cx="195" cy="542" rx="130" ry="6" fill="#C9A24A" opacity=".34"/>
+            </g>
+            <path d="M-10 566 Q195 534 400 566" fill="none" stroke="#5ED12F" stroke-width="3.4" stroke-dasharray="9 96" stroke-dashoffset="-52" opacity=".45" filter="url(#d2-blur3)"/>
+            <path d="M-10 566 Q195 534 400 566" fill="none" stroke="#5ED12F" stroke-width="1.2" stroke-dasharray="9 96" stroke-dashoffset="-52" stroke-linecap="round"/>
+          </g>
+
+          <!-- shafts -->
+          <g style="mix-blend-mode:screen">
+            <g filter="url(#d2-blur20)">
+              <polygon points="30,-30 150,-30 370,844 150,844" fill="url(#d2-shaftsage)" opacity=".34"/>
+              <polygon points="250,-30 370,-30 230,844 10,844" fill="url(#d2-shaftgold)" opacity=".38"/>
+            </g>
+            <g filter="url(#d2-blur8)">
+              <polygon points="70,-30 96,-30 270,844 220,844" fill="url(#d2-shaftsage)" opacity=".3"/>
+              <polygon points="-24,-30 30,-30 300,844 190,844" fill="url(#d2-shaftsage)" opacity=".34"/>
+              <polygon points="300,-30 324,-30 170,844 120,844" fill="url(#d2-shaftgold)" opacity=".3"/>
+            </g>
+          </g>
+
+          <rect width="390" height="844" fill="url(#d2-vig)"/>
+          <rect x="0" y="536" width="390" height="308" fill="url(#d2-lowfade)"/>
+          <rect width="390" height="844" filter="url(#d2-grain)" opacity=".11" style="mix-blend-mode:overlay"/>
+        </svg>
+
+        <div class="hero-copy">
+          <h3>You are granted<br>an audience.</h3>
+          <p>Victor von Doom, Sovereign of Latveria, will receive you.</p>
+          <div class="acts">
+            <a class="act" href="#summons">Approach the throne</a>
+            <a class="act act--quiet" href="#summons">Enter without sound</a>
+          </div>
+        </div>
+      </div>
+      <figcaption><strong>Phone, 390 by 844.</strong> Throne and glass run tall; the lowest steps leave the frame and the words sit on the dark floor.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= THE SUMMONS ================= -->
+<section class="board-sec" id="summons">
+  <h2>The summons</h2>
+  <p class="board-lede">Letters patent: an open sheet, read in the hall, with the seal hanging from a folded foot. Ink on parchment gives 12.69:1, the strongest reading contrast of the three directions. Gold is the seal and never the text.</p>
+
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--phone" id="summons-phone">
+      <div class="frame frame--phone sum-p">
+        <svg class="fill" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="390" height="844" fill="#0B0D08"/>
+          <g filter="url(#d2-blur20)" opacity=".34">
+            <rect x="30" y="-40" width="110" height="420" fill="#AEB78D"/>
+            <rect x="250" y="-40" width="110" height="420" fill="#DBCB86"/>
+            <rect x="170" y="-40" width="50" height="520" fill="#0B0D08"/>
+          </g>
+          <ellipse cx="195" cy="330" rx="330" ry="430" fill="url(#d2-pool)"/>
+          <polygon points="250,-30 390,-30 300,844 60,844" fill="url(#d2-shaftgold)" opacity=".22" filter="url(#d2-blur20)" style="mix-blend-mode:screen"/>
+          <rect width="390" height="844" fill="url(#d2-vig)"/>
+          <rect width="390" height="844" filter="url(#d2-grain)" opacity=".1" style="mix-blend-mode:overlay"/>
+        </svg>
+
+        <article class="patent">
+          <svg class="patent__cypher" viewBox="0 0 200 222" aria-hidden="true"><use href="#d2-cypher"/></svg>
+          <h3 class="patent__first">Victor von Doom</h3>
+          <p class="patent__style">by his own hand and will Sovereign of Latveria, Lord of Doomstadt and of all lands within the Carpathian ring,</p>
+          <p class="patent__to">to <span class="patent__name">Tara Menon</span> greeting.</p>
+          <div class="patent__body">
+            <p>Be it known that Doom has weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing; and that your name stands upon the roll.</p>
+            <p>You are therefore summoned to take your seat at the Council of Doom, where the matters set before it shall be weighed and approved.</p>
+            <p class="sanction">Let none who is called fail to answer. Doom keeps his word, and the absent forfeit their voice.</p>
+            <p>In witness whereof we have caused our seal to be set to these letters. Given at Castle Doom, in Doomstadt, the fifteenth day of November, MMXXVI.</p>
+          </div>
+          <div class="patent__plica"></div>
+          <div class="seal-hang"><svg viewBox="0 -64 200 268" role="img" aria-label="A gilt seal on green cords, showing the sovereign enthroned"><use href="#d2-seal-hung" x="0" y="-64" width="200" height="268"/></svg></div>
+        </article>
+        <div class="sum-act"><a class="act" href="#identity">Take your seat</a></div>
+      </div>
+      <figcaption><strong>Phone.</strong> The whole letter on one screen at 4.15cqw body, about 16px on a 390px phone. The guest's name is the only colour on the sheet.</figcaption>
+    </figure>
+
+    <figure class="frame-wrap frame-wrap--sheet" id="summons-sheet">
+      <div class="frame frame--sheet sum-s">
+        <svg class="fill" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="1200" height="900" fill="#0B0D08"/>
+          <g filter="url(#d2-blur48)" opacity=".3">
+            <rect x="120" y="-60" width="240" height="500" fill="#AEB78D"/>
+            <rect x="840" y="-60" width="240" height="500" fill="#DBCB86"/>
+          </g>
+          <ellipse cx="600" cy="380" rx="820" ry="520" fill="url(#d2-pool)"/>
+          <polygon points="820,-40 1100,-40 760,900 300,900" fill="url(#d2-shaftgold)" opacity=".2" filter="url(#d2-blur48)" style="mix-blend-mode:screen"/>
+          <rect width="1200" height="900" fill="url(#d2-vig)"/>
+          <rect width="1200" height="900" filter="url(#d2-grain)" opacity=".1" style="mix-blend-mode:overlay"/>
+        </svg>
+
+        <article class="patent">
+          <div class="patent__mark">
+            <svg viewBox="-112 -112 224 224" role="img" aria-label="The crowned cypher of Victor von Doom on an engraved rosette">
+              <use href="#d2-rosette" x="-112" y="-112" width="224" height="224" style="color:#8F6B34" opacity=".8"/>
+              <use href="#d2-cypher" x="-66" y="-80" width="132" height="146.5"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="patent__first">Victor von Doom</h3>
+            <p class="patent__style">by his own hand and will Sovereign of Latveria, Lord of Doomstadt and of all lands within the Carpathian ring,</p>
+            <p class="patent__to">to <span class="patent__name">Tara Menon</span> greeting.</p>
+            <div class="patent__body">
+              <p>Be it known that Doom has weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing; and that your name stands upon the roll.</p>
+              <p>You are therefore summoned to take your seat at the Council of Doom, where the matters set before it shall be weighed and approved.</p>
+              <p class="sanction">Let none who is called fail to answer. Doom keeps his word, and the absent forfeit their voice.</p>
+              <p>In witness whereof we have caused our seal to be set to these letters. Given at Castle Doom, in Doomstadt, the fifteenth day of November, MMXXVI.</p>
+            </div>
+          </div>
+          <div class="patent__plica"></div>
+          <div class="seal-hang"><svg viewBox="0 -64 200 268" aria-hidden="true"><use href="#d2-seal-hung" x="0" y="-64" width="200" height="268"/></svg></div>
+        </article>
+        <div class="sum-act"><a class="act" href="#identity">Take your seat</a></div>
+      </div>
+      <figcaption><strong>Landscape sheet.</strong> The cypher fills the left third, as a ruler's mark does on an Ottoman firman; the gilt seal hangs from the folded foot.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= IDENTITY ================= -->
+<section class="board-sec" id="identity">
+  <h2>Identity</h2>
+  <p class="board-lede">The greens are the olive and sage measured from the film frames, not emerald. Warmth comes from light, and gold is one object.</p>
+
+  <div class="sheet-grid">
+    <div class="sheet-block sheet-block--wide">
+      <h3>Palette</h3>
+      <ul class="swatches">
+        <li class="swatch"><div class="swatch__chip" style="background:#0D0F0A"></div><span class="swatch__name">Hall black</span><span class="swatch__hex">#0D0F0A</span>World base</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#1B2417"></div><span class="swatch__name">Olive shadow</span><span class="swatch__hex">#1B2417</span>Shadow, panels</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#1C3324"></div><span class="swatch__name">Velvet green</span><span class="swatch__hex">#1C3324</span>Cloth, cords, deep fields</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#48603F"></div><span class="swatch__name">Haze green</span><span class="swatch__hex">#48603F</span>Haze and glass tint; 2.77 on base, atmosphere only</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#AEB78D"></div><span class="swatch__name">Sage light</span><span class="swatch__hex">#AEB78D</span>Cool light, secondary text; 9.14 on base</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#E9DDC2"></div><span class="swatch__name">Glass cream</span><span class="swatch__hex">#E9DDC2</span>Text on dark; 14.30 on base</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#C9A24A"></div><span class="swatch__name">Amber gold</span><span class="swatch__hex">#C9A24A</span>Warm light, the seal; 8.03 on base</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#8F6B34"></div><span class="swatch__name">Bronze</span><span class="swatch__hex">#8F6B34</span>Ornament only; 3.96 on base</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#E6D9B8"></div><span class="swatch__name">Parchment</span><span class="swatch__hex">#E6D9B8</span>The sheet</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#1C1712"></div><span class="swatch__name">Ink</span><span class="swatch__hex">#1C1712</span>Text on the sheet; 12.69 on parchment</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#8C2F23"></div><span class="swatch__name">Oxblood</span><span class="swatch__hex">#8C2F23</span>The guest's name; 5.88 on parchment</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#0D0F0A;display:flex;align-items:center;justify-content:center"><i style="display:block;width:26px;height:3px;border-radius:2px;background:#5ED12F"></i></div><span class="swatch__name">Glyph green</span><span class="swatch__hex">#5ED12F</span>One small accent, shown at the size it is used</li>
+      </ul>
+    </div>
+
+    <div class="sheet-block">
+      <h3>Typography</h3>
+      <div class="specimen spec-title">
+        <div class="big">Victor von Doom</div>
+        <div class="small">Sovereign of Latveria</div>
+        <span class="specimen__meta">Castoro Titling. The engrossed first line and titles: inscriptional capitals, letterspaced. Chosen over Cinzel to stay off the luxury template.</span>
+      </div>
+      <div class="specimen spec-text">
+        <div class="name">Tara Menon</div>
+        <div class="para">Be it known that Doom has weighed the defenders of this world and found them wanting. <em>Let none who is called fail to answer.</em></div>
+        <span class="specimen__meta">Cormorant Garamond. The decree body at weight 500 on parchment, italic for the sanction, and italic at display size for the guest's name.</span>
+      </div>
+      <div class="specimen spec-ui">
+        <div class="row">
+          <span class="act">Approach the throne</span>
+          <span class="act">Take your seat</span>
+          <span class="act act--quiet">Enter without sound</span>
+        </div>
+        <div class="line">Three proposals are before the Council. <span>You have approved one.</span></div>
+        <span class="specimen__meta">Instrument Sans. Buttons, labels and the council interface, at small sizes only.</span>
+      </div>
+    </div>
+
+    <div class="sheet-block">
+      <h3>Insignia, at two levels of detail</h3>
+      <div class="insignia">
+        <div>
+          <svg width="250" height="250" viewBox="0 0 200 200" role="img" aria-label="The gilt seal: a hooded sovereign enthroned with a sceptre, two shields at the shoulders, a Latin legend around the rim"><use href="#d2-seal"/></svg>
+          <span>The gilt seal, in majesty. Legend: Victor, by no god's grace, Lord of Latveria.</span>
+        </div>
+        <div class="stack">
+          <div class="on-parch">
+            <svg width="104" height="115" viewBox="0 0 200 222" style="color:#1C1712" role="img" aria-label="The crowned cypher, V and D interlaced"><use href="#d2-cypher"/></svg>
+            <span>The crowned cypher</span>
+          </div>
+          <div class="dark">
+            <div class="reduced">
+              <svg width="72" height="72" viewBox="0 0 100 100" aria-hidden="true"><use href="#d2-cy-ring"/></svg>
+              <svg width="44" height="44" viewBox="0 0 100 100" aria-hidden="true"><use href="#d2-cy-ring"/></svg>
+              <svg width="26" height="26" viewBox="0 0 100 100" aria-hidden="true"><use href="#d2-cy-ring"/></svg>
+            </div>
+            <span>Reduced: the cypher in a ring, at 72, 44 and 26px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>Materials and light</h3>
+      <div class="tiles">
+        <figure class="tile">
+          <div class="tile__art">
+            <svg viewBox="0 0 240 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="240" height="180" fill="url(#d2-glass)"/>
+              <rect width="240" height="180" filter="url(#d2-mottle)" opacity=".45"/>
+              <rect width="240" height="180" filter="url(#d2-streak)"/>
+              <g fill="none" stroke="#090B07" stroke-width="6" stroke-linecap="round">
+                <path d="M70 190 C70 120 130 100 130 40 C130 10 116 -4 112 -10"/>
+                <path d="M130 40 C150 60 190 70 196 190"/>
+                <path d="M70 130 Q30 120 -6 134" stroke-width="4"/>
+              </g>
+            </svg>
+          </div>
+          <strong>Streaked glass</strong>Pale sage and cream, weathered, with curved leading.
+        </figure>
+        <figure class="tile">
+          <div class="tile__art">
+            <svg viewBox="0 0 240 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="240" height="180" fill="#0B0D08"/>
+              <rect x="0" y="46" width="240" height="30" fill="url(#d2-riser)"/>
+              <rect x="0" y="46" width="240" height="2.4" fill="url(#d2-stepedge)"/>
+              <rect x="0" y="76" width="240" height="104" fill="url(#d2-floor)"/>
+              <ellipse cx="120" cy="92" rx="100" ry="9" fill="#C9A24A" opacity=".5" filter="url(#d2-blur8)"/>
+              <ellipse cx="120" cy="130" rx="60" ry="26" fill="#AEB78D" opacity=".16" filter="url(#d2-blur20)"/>
+              <rect width="240" height="180" filter="url(#d2-grain)" opacity=".12" style="mix-blend-mode:overlay"/>
+            </svg>
+          </div>
+          <strong>Polished stone</strong>Dark, with the gold step edge returned in the floor.
+        </figure>
+        <figure class="tile">
+          <div class="tile__art">
+            <svg viewBox="0 0 240 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <linearGradient id="d2-velv" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#0F1C14"/><stop offset=".22" stop-color="#274A32"/><stop offset=".4" stop-color="#14261A"/>
+                  <stop offset=".62" stop-color="#22422D"/><stop offset=".8" stop-color="#101E15"/><stop offset="1" stop-color="#1C3324"/>
+                </linearGradient>
+              </defs>
+              <rect width="240" height="180" fill="url(#d2-velv)"/>
+              <rect width="240" height="180" filter="url(#d2-grain)" opacity=".3" style="mix-blend-mode:overlay"/>
+              <rect width="240" height="180" fill="url(#d2-glassfoot)" opacity=".7"/>
+            </svg>
+          </div>
+          <strong>Velvet green</strong>Heavy cloth: the cloak, the cords, the deep fields.
+        </figure>
+        <figure class="tile">
+          <div class="tile__art tile__art--parch">
+            <svg viewBox="0 0 240 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="mix-blend-mode:multiply">
+              <filter id="d2-tooth" x="0" y="0" width="100%" height="100%">
+                <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" seed="7"/>
+                <feColorMatrix values="0 0 0 0 .42 0 0 0 0 .32 0 0 0 0 .16 0 0 0 .55 -.08"/>
+              </filter>
+              <rect width="240" height="180" filter="url(#d2-tooth)" opacity=".6"/>
+              <rect x="0" y="146" width="240" height="34" fill="#B9A77C" opacity=".5"/>
+              <rect x="0" y="145" width="240" height="1.4" fill="#5d4a25" opacity=".4"/>
+            </svg>
+            <span>Given at Castle Doom</span>
+          </div>
+          <strong>Parchment</strong>A soft tooth, a folded foot, ink that sits on the skin.
+        </figure>
+        <figure class="tile">
+          <div class="tile__art">
+            <svg viewBox="0 0 240 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="240" height="180" fill="url(#d2-gilt)"/>
+              <rect width="240" height="180" filter="url(#d2-hammer)" opacity=".55" style="mix-blend-mode:multiply"/>
+              <g fill="none" stroke="#DEC98A" stroke-width="3" stroke-linecap="round" stroke-dasharray=".1 7" filter="url(#d2-emboss)">
+                <path d="M-10 150 Q120 110 250 150"/>
+              </g>
+              <path d="M-10 162 Q120 122 250 162" fill="none" stroke="#4A3716" stroke-opacity=".7" stroke-width="1.4"/>
+              <rect width="240" height="180" fill="url(#d2-sealhi)" style="mix-blend-mode:screen"/>
+            </svg>
+          </div>
+          <strong>Gilt metal</strong>Hammered, dented, low in saturation; never mirror-bright.
+        </figure>
+        <figure class="tile">
+          <div class="tile__art">
+            <svg viewBox="0 0 240 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="240" height="180" fill="#0B0D08"/>
+              <g style="mix-blend-mode:screen" filter="url(#d2-blur8)">
+                <polygon points="20,-10 80,-10 220,190 120,190" fill="url(#d2-shaftsage)" opacity=".6"/>
+                <polygon points="170,-10 228,-10 110,190 10,190" fill="url(#d2-shaftgold)" opacity=".65"/>
+              </g>
+              <rect width="240" height="180" filter="url(#d2-grain)" opacity=".14" style="mix-blend-mode:overlay"/>
+            </svg>
+          </div>
+          <strong>Crossing shafts</strong>Cool sage from the left, warm gold from the right.
+        </figure>
+      </div>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>Motifs</h3>
+      <div class="motifs">
+        <figure class="motif">
+          <div class="motif__art">
+            <svg viewBox="0 0 320 120" aria-hidden="true">
+              <g fill="url(#d2-stepedge)">
+                <rect x="118" y="18" width="84" height="1.6"/>
+                <rect x="100" y="30" width="120" height="1.7"/>
+                <rect x="82" y="43" width="156" height="1.8"/>
+                <rect x="64" y="57" width="192" height="1.9"/>
+                <rect x="46" y="72" width="228" height="2"/>
+                <rect x="28" y="88" width="264" height="2.1"/>
+                <rect x="10" y="105" width="300" height="2.2"/>
+              </g>
+            </svg>
+          </div>
+          <strong>The seven steps</strong>Seven lines, widening downward, used as the divider.
+        </figure>
+        <figure class="motif">
+          <div class="motif__art">
+            <svg viewBox="0 0 320 180" aria-hidden="true">
+              <g fill="none" stroke="#AEB78D" stroke-width="2.2" stroke-linecap="round">
+                <path d="M20 170 V20 H300"/>
+                <path d="M20 170 C20 110 70 100 76 62 C80 40 62 28 64 20"/>
+                <path d="M76 62 C110 70 150 54 190 20"/>
+                <path d="M20 96 Q40 90 58 96"/>
+              </g>
+              <path d="M76 62 C80 40 62 28 64 20 L186 20 C150 52 110 68 76 62 Z" fill="#AEB78D" opacity=".14"/>
+            </svg>
+          </div>
+          <strong>The leading curve</strong>One window curve, as a single corner device.
+        </figure>
+        <figure class="motif">
+          <div class="motif__art">
+            <svg viewBox="0 0 320 180" aria-hidden="true">
+              <rect x="118" y="14" width="84" height="152" fill="#14140C"/>
+              <rect x="118" y="14" width="84" height="152" fill="url(#d2-lattice-lg)" opacity=".85"/>
+              <rect x="118" y="14" width="84" height="152" fill="none" stroke="#C9A24A" stroke-width="3"/>
+              <rect x="124" y="20" width="72" height="140" fill="none" stroke="#C9A24A" stroke-width="1"/>
+              <ellipse cx="160" cy="90" rx="20" ry="34" fill="#14140C" stroke="#C9A24A" stroke-width="1.6"/>
+              <ellipse cx="160" cy="90" rx="9" ry="22" fill="none" stroke="#C9A24A" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <strong>The filigree panel</strong>The one piece of dense ornament, set above the throne.
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MOTION AND SOUND ================= -->
+<section class="board-sec" id="motion">
+  <h2>Motion and sound</h2>
+  <p class="board-lede">Described, not shown: this board is static. Three scenes, advanced by a tap.</p>
+  <div class="notes">
+    <div>
+      <h3>The five beats</h3>
+      <ol>
+        <li><strong>Opening.</strong> The hall resolves out of black, shafts first.</li>
+        <li><strong>The gate.</strong> "Approach the throne." A slow push toward the steps; nothing else moves.</li>
+        <li><strong>The sheet.</strong> It is laid into the light. The first line settles its letterspacing; the guest's name is written in oxblood, then takes one sheen.</li>
+        <li><strong>Entering the council.</strong> Tall doors part.</li>
+        <li><strong>Approval.</strong> The seal swings once and settles.</li>
+      </ol>
+    </div>
+    <div>
+      <h3>Sound</h3>
+      <ul>
+        <li>Stone-hall room tone and a low drone.</li>
+        <li>A single choir swell on the name.</li>
+        <li>A heavy door for the council.</li>
+        <li>Complete in silence: "Enter without sound" is always offered.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>What stays still</h3>
+      <ul>
+        <li>The figure on the throne. He never rises.</li>
+        <li>The letter while it is being read.</li>
+        <li>The council interface.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STRENGTHS AND RISKS ================= -->
+<section class="board-sec" id="verdict">
+  <h2>Strengths and risks</h2>
+  <div class="notes">
+    <div>
+      <h3>Strengths</h3>
+      <ul>
+        <li>The most cinematic of the three, and the closest to what guests will have seen in the trailer.</li>
+        <li>The parchment sheet gives the best reading contrast: 12.69:1.</li>
+        <li>The court gives the council a natural setting. You enter a room.</li>
+        <li>Warm and cool light carry meaning without extra ornament.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Risks</h3>
+      <ul>
+        <li>It needs a painted hall to reach its ceiling, the heaviest artwork of the three. This board draws it in vector.</li>
+        <li>It sits closest to studio-owned design, and details can change when the film opens on 18 December 2026.</li>
+        <li>A wide, symmetrical hall is the hardest composition to keep on a phone.</li>
+        <li>Gold and serif capitals can slide toward the luxury template.</li>
+        <li>The throne room is the image everyone expects.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="board-foot">
+  A static concept board, not the website. The guest name and the date are placeholders. Everything here is original vector drawing and type; no reference image or studio asset is used.
+</footer>
+
+</body>
+</html>

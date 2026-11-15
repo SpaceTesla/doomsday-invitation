@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IV. The Iron Throne, typography review: concept board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Orbitron:wght@600&family=Pirata+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/board.css">
+<style>
+[[CSS]]
+</style>
+</head>
+<body class="board dir-4 v2 v3 v5">
+
+<svg class="sprite" aria-hidden="true" focusable="false"><defs>
+[[rune_defs()]]
+[[DEFS]]
+[[sprite()]]
+</defs></svg>
+
+<nav class="board-nav" aria-label="Boards">
+  <a href="index.html">All directions</a>
+  <a href="direction-4-the-iron-throne.html">IV. The Iron Throne</a>
+  <a href="direction-4-the-iron-throne-v2.html">IV, refined</a>
+  <a href="direction-4-the-iron-throne-v3.html">IV, final art direction</a>
+  <a href="direction-4-the-iron-throne-v4.html">IV, final character pass</a>
+  <a href="direction-4-the-iron-throne-v5.html" aria-current="page">IV, typography review</a>
+</nav>
+
+<header class="board-head">
+  <h1>IV. The Iron Throne, typography review</h1>
+  <p>The approved typefaces, "Two: Doomsday", set into the opening, the summons and the council. The artwork, palette, wording and positions are those of revision 4. Only the type has changed, with the size changes the new faces need. Revision 4 is kept as it was for comparison.</p>
+  <ul class="jump" aria-label="Sections">
+    <li><a href="#opening">A. Opening</a></li>
+    <li><a href="#summons">B. Summons</a></li>
+    <li><a href="#council">C. Hall and council</a></li>
+    <li><a href="#findings">D. Findings</a></li>
+    <li><a href="direction-4-the-iron-throne-v4.html">Revision 4, for comparison</a></li>
+  </ul>
+  <div class="status-box">
+    <div>
+      <h3>Approved</h3>
+      <ul>
+        <li>Pirata One 400 for short display headings.</li>
+        <li>Cinzel 500 for names, titles and figures.</li>
+        <li>Orbitron 600 for short labels in capitals.</li>
+        <li>Cormorant Garamond 500 and italic for body text, 700 for emphasis.</li>
+        <li>The usage rules: no V in Pirata One, no numerals or names in Orbitron, body text at 17 px or more.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Under review on this board</h3>
+      <ul>
+        <li>Every font size and the hierarchy between them.</li>
+        <li>Regular against italic for body text.</li>
+        <li>How long names are fitted.</li>
+        <li>The council screens, which are a first mock made from approved parts. Their layout and wording are not approved.</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:18px">Phone frames are drawn at their real size, 390 by 844, so the type in them is the size a guest would see. Desktop frames are scaled to fit the board; "View alone" opens one at the width of your window. Sizes in the tables are given at a 1440 px desktop and a 390 px phone.</p>
+</header>
+
+<!-- ============================== A ============================== -->
+<section class="board-sec" id="opening">
+  <h2>A. Opening</h2>
+  <p class="board-lede">The end of the reveal. The name is in Cinzel, the line in Cormorant Garamond italic, both actions in Orbitron. The figure, rubble, light and the position of the text block are unchanged.</p>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--desktop" id="opening-desktop">
+      <div class="frame frame--desktop">
+        [[reveal('d', 'open', True)]]
+        <div class="rv-scrim"></div>
+        [[reveal_copy()]]
+      </div>
+      <figcaption><strong>Desktop.</strong> Cinzel has no lowercase, so the name is a capital M and A with small capitals. <a class="solo" href="#opening-desktop">View alone</a></figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="opening-phone">
+      <div class="frame frame--phone">
+        [[reveal('p', 'open', True)]]
+        <div class="rv-scrim"></div>
+        [[reveal_copy()]]
+      </div>
+      <figcaption><strong>Phone, real size.</strong> Name 44 px, line 22 px, primary action 14 px, quiet control 11 px.</figcaption>
+    </figure>
+  </div>
+
+  <h3 class="sub">Pirata One at display sizes</h3>
+  <p class="board-lede" style="margin-bottom:16px">The two titles, at real pixel sizes. The approved opening carries no title, so they are shown here as specimens. "Council of Doom" appears in place in section C.</p>
+  <div class="sheet-grid">
+    <div class="sheet-block">
+      <div class="ladder">
+        <div><span>96 px</span><p style="font-size:96px">The Iron Throne</p></div>
+        <div><span>64 px</span><p style="font-size:64px">The Iron Throne</p></div>
+        <div><span>48 px</span><p style="font-size:48px">The Iron Throne</p></div>
+        <div><span>34 px</span><p style="font-size:34px">The Iron Throne</p></div>
+        <div><span>24 px</span><p style="font-size:24px">The Iron Throne</p></div>
+      </div>
+    </div>
+    <div class="sheet-block">
+      <div class="ladder">
+        <div><span>96 px</span><p style="font-size:96px">Council of Doom</p></div>
+        <div><span>64 px</span><p style="font-size:64px">Council of Doom</p></div>
+        <div><span>48 px</span><p style="font-size:48px">Council of Doom</p></div>
+        <div><span>34 px</span><p style="font-size:34px">Council of Doom</p></div>
+        <div><span>24 px</span><p style="font-size:24px">Council of Doom</p></div>
+      </div>
+    </div>
+    <div class="sheet-block sheet-block--wide">
+      <div class="ladder">
+        <div><span>The rule</span><p class="fail" style="font-size:48px">Victor von Doom &nbsp; Latveria</p></div>
+        <div><span>In Cinzel</span><p class="serif" style="font-size:40px">Victor von Doom &nbsp; Latveria</p></div>
+      </div>
+      <p class="lib-note">Top line, in red: why Pirata One never sets a V. Its capital V reads as U and its lowercase v as o. Any heading containing one is set in Cinzel, as on the second line.</p>
+    </div>
+  </div>
+
+  <h3 class="sub">Long names in the opening</h3>
+  <p class="board-lede" style="margin-bottom:16px">Cinzel is wide. The name wraps before it shrinks: it breaks at a space or hyphen, and steps down once only if a single word is still too wide.</p>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--desktop" id="opening-long-desktop">
+      <div class="frame frame--desktop">
+        [[reveal('d', 'open', True)]]
+        <div class="rv-scrim"></div>
+        [[reveal_copy(name='Ms. Bhattacharya-Okonkwo.')]]
+      </div>
+      <figcaption><strong>Desktop, 25 characters.</strong> Fits on one line at full size. <a class="solo" href="#opening-long-desktop">View alone</a></figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="opening-long-phone">
+      <div class="frame frame--phone name-80">
+        [[reveal('p', 'open', True)]]
+        <div class="rv-scrim"></div>
+        [[reveal_copy(name='Ms. Bhattacharya-Okonkwo.')]]
+      </div>
+      <figcaption><strong>Phone, 25 characters.</strong> Stepped down to 35 px (80%) and broken at the hyphen.</figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="opening-longest-phone">
+      <div class="frame frame--phone name-80">
+        [[reveal('p', 'open', True)]]
+        <div class="rv-scrim"></div>
+        [[reveal_copy(name='Dr. Alexandria Montgomery-Fitzwilliam.')]]
+      </div>
+      <figcaption><strong>Phone, 38 characters.</strong> The hardest case tried.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================== B ============================== -->
+<section class="board-sec" id="summons">
+  <h2>B. Summons</h2>
+  <p class="board-lede">The complete invitation, wording unchanged. Doom's name and the guest's name are in Cinzel. The plate, its borders, the seal and the mask are untouched. The body is shown two ways so you can choose.</p>
+
+  <h3 class="sub">Treatment one: italic throughout</h3>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--sheet" id="summons-sheet">
+      <div class="frame frame--sheet frame--plate tx-i">
+        [[summons_desktop('s1')]]
+        [[summons_copy()]]
+      </div>
+      <figcaption><strong>Wide.</strong> Every line of body text in Cormorant Garamond italic 500. <a class="solo" href="#summons-sheet">View alone</a></figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="summons-phone">
+      <div class="frame frame--phone frame--plate tx-i">
+        [[summons_phone('p1')]]
+        [[summons_copy()]]
+      </div>
+      <figcaption><strong>Phone, real size.</strong> Body 17.6 px italic.</figcaption>
+    </figure>
+  </div>
+
+  <h3 class="sub">Treatment two: regular body, italic for the formal lines</h3>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--sheet" id="summons-sheet-r">
+      <div class="frame frame--sheet frame--plate tx-r">
+        [[summons_desktop('s2')]]
+        [[summons_copy()]]
+      </div>
+      <figcaption><strong>Wide.</strong> Body upright 500. Italic for the titling line, "greeting.", the sanction (700) and the dating clause. <a class="solo" href="#summons-sheet-r">View alone</a></figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="summons-phone-r">
+      <div class="frame frame--phone frame--plate tx-r">
+        [[summons_phone('p2')]]
+        [[summons_copy()]]
+      </div>
+      <figcaption><strong>Phone, real size.</strong> Body 17.6 px upright.</figcaption>
+    </figure>
+  </div>
+
+  <h3 class="sub">Long names, and the decline control</h3>
+  <p class="board-lede" style="margin-bottom:16px">A 25-character name, with the decline control that has been decided but not yet worded ("Decline" is a placeholder). First as the sizes above leave it, which does not fit. Then with a proposed fit.</p>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--sheet" id="summons-long-sheet">
+      <div class="frame frame--sheet frame--plate tx-r name-85">
+        [[summons_desktop('s3')]]
+        [[summons_copy('Ms. Bhattacharya-Okonkwo', True)]]
+      </div>
+      <figcaption><strong class="bad">Does not fit.</strong> The name takes two lines and pushes the actions onto the plate's lower border. <a class="solo" href="#summons-long-sheet">View alone</a></figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="summons-long-phone">
+      <div class="frame frame--phone frame--plate tx-r name-85">
+        [[summons_phone('p3')]]
+        [[summons_copy('Ms. Bhattacharya-Okonkwo', True)]]
+      </div>
+      <figcaption><strong class="bad">Does not fit.</strong> The name takes three lines and the actions run off the plate.</figcaption>
+    </figure>
+  </div>
+  <div class="stage" style="margin-top:28px">
+    <figure class="frame-wrap frame-wrap--sheet" id="summons-fit-sheet">
+      <div class="frame frame--sheet frame--plate tx-r fit">
+        [[summons_desktop('s4')]]
+        [[summons_copy('Ms. Bhattacharya-Okonkwo', True)]]
+      </div>
+      <figcaption><strong>Proposed fit, wide.</strong> When a name takes two lines: name at 85%, body at 2.0% with tighter leading and paragraph spacing. <a class="solo" href="#summons-fit-sheet">View alone</a></figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="summons-fit-phone">
+      <div class="frame frame--phone frame--plate tx-r fit">
+        [[summons_phone('p4')]]
+        [[summons_copy('Ms. Bhattacharya-Okonkwo', True)]]
+      </div>
+      <figcaption><strong class="warn">Closer, still one line over.</strong> Name at 27 px on two lines, tighter leading, body kept at 17.6 px. The decline control still lands on the border.</figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="summons-fit-short-phone">
+      <div class="frame frame--phone frame--plate tx-r fit">
+        [[summons_phone('p5')]]
+        [[summons_copy('Mr. Anish', True)]]
+      </div>
+      <figcaption><strong>Same spacing, short name.</strong> With the tighter leading, the decline control fits under the button.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================== C ============================== -->
+<section class="board-sec" id="council">
+  <h2>C. The hall and the council</h2>
+  <p class="board-lede">A first mock of the council, to see the four faces working together. It is assembled only from approved parts: the hall, the plate, the well, the button, the dotted line and the status marks. Its layout is not approved, and every line of wording apart from "Doom proposes", the date sentence, the count, "Approve" and "Propose another" is a placeholder.</p>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--phone" id="hall-phone">
+      <div class="frame frame--phone frame--hall">
+        [[hall_frame('p')]]
+        <div class="hall-scrim"></div>
+        <div class="hall-copy">
+          <h3>The council is seated.</h3>
+          <p>Doom will set the day, the hour and the place before you.</p>
+        </div>
+      </div>
+      <figcaption><strong>The approved hall frame, phone, real size.</strong> The caption heading in Pirata One at 37 px, the line beneath in italic at 20 px.</figcaption>
+    </figure>
+  </div>
+
+  <h3 class="sub">The council</h3>
+  <div class="stage">
+    <figure class="frame-wrap frame-wrap--desktop" id="council-desktop">
+      <div class="frame frame--free cn tx-r">
+        <div class="cn-hall"><img src="[[A]]hall-d-plate.jpg" alt=""><p class="cn-title">Council of Doom</p></div>
+        <div class="cn-body">
+          <div class="panel-plate">
+            <h4>Doom proposes</h4>
+            <p class="cn-procl">Friday the eighteenth of December, at half past seven.</p>
+            <p class="cn-procl">At the Grand Cinema, in the fourth hall.</p>
+            <div class="panel-well"><span class="fig">3</span> of <span class="fig">7</span> seats have approved</div>
+            <div class="panel-acts">
+              <button type="button" class="btn-plate"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Approve</button>
+              <a class="link-quiet" href="#council">Propose another</a>
+            </div>
+            <p class="cn-expl">Your approval is counsel. Doom alone decides, and may change the proposal at any time.</p>
+            <div class="panel-well">
+              <span class="cn-label">Alternatives</span>
+              <div class="cn-alt"><p>Saturday the nineteenth of December, at four o'clock.</p><span class="cn-who">Ms. Rao</span></div>
+              <div class="cn-alt"><p>Sunday the twentieth of December, at half past six.</p><span class="cn-who">Dr. Jos&eacute; Nu&ntilde;ez</span></div>
+            </div>
+            <div class="cn-state">
+              <span class="cn-label" style="margin:0">After approving</span>
+              <button type="button" class="btn-plate is-done"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Approved</button>
+              <a class="link-quiet" href="#council">Withdraw</a>
+            </div>
+          </div>
+          <div>
+            <h4 class="cn-h">Choose your name</h4>
+            <p class="cn-expl" style="margin-top:0">Each name may be held by one guest. You may choose again until the plan is final.</p>
+            <ul class="cn-chars">
+              <li class="cn-char is-yours">[[status_mark('seated')]]<span class="cn-cname">Loki</span><span class="cn-tag">Yours</span></li>
+              <li class="cn-char">[[status_mark('tile')]]<span class="cn-cname">Hulk</span><span class="cn-tag"></span></li>
+              <li class="cn-char is-taken">[[status_mark('tile')]]<span class="cn-cname">Thor</span><span class="cn-tag">Taken</span><span class="cn-holder">Ms. Rao</span></li>
+              <li class="cn-char is-taken">[[status_mark('tile')]]<span class="cn-cname">Scarlet Witch</span><span class="cn-tag">Taken</span><span class="cn-holder">Ms. Bhattacharya-Okonkwo</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <figcaption><strong>Desktop.</strong> Regular for explanation, italic for what Doom proclaims. The character names are the four examples from your brief. <a class="solo" href="#council-desktop">View alone</a></figcaption>
+    </figure>
+    <figure class="frame-wrap frame-wrap--phone" id="council-phone">
+      <div class="frame frame--free cn cn--phone tx-r">
+        <div class="cn-hall"><img src="[[A]]hall-d-plate.jpg" alt=""><p class="cn-title">Council of Doom</p></div>
+        <div class="cn-body">
+          <div class="panel-plate">
+            <h4 class="cn-h">Doom proposes</h4>
+            <p class="cn-procl">Friday the eighteenth of December, at half past seven.</p>
+            <p class="cn-procl">At the Grand Cinema, in the fourth hall.</p>
+            <div class="panel-well"><span class="fig">3</span> of <span class="fig">7</span> seats have approved</div>
+            <div class="panel-acts">
+              <button type="button" class="btn-plate"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Approve</button>
+              <a class="link-quiet" href="#council">Propose another</a>
+            </div>
+            <p class="cn-expl">Your approval is counsel. Doom alone decides, and may change the proposal at any time.</p>
+            <div class="panel-well">
+              <span class="cn-label">Alternatives</span>
+              <div class="cn-alt"><p>Saturday the nineteenth of December, at four o'clock.</p><span class="cn-who">Ms. Rao</span></div>
+              <div class="cn-alt"><p>Sunday the twentieth of December, at half past six.</p><span class="cn-who">Dr. Jos&eacute; Nu&ntilde;ez</span></div>
+            </div>
+          </div>
+          <div>
+            <h4 class="cn-h">Choose your name</h4>
+            <p class="cn-expl" style="margin-top:0">Each name may be held by one guest. You may choose again until the plan is final.</p>
+            <ul class="cn-chars">
+              <li class="cn-char is-yours">[[status_mark('seated')]]<span class="cn-cname">Loki</span><span class="cn-tag">Yours</span></li>
+              <li class="cn-char">[[status_mark('tile')]]<span class="cn-cname">Hulk</span><span class="cn-tag"></span></li>
+              <li class="cn-char is-taken">[[status_mark('tile')]]<span class="cn-cname">Thor</span><span class="cn-tag">Taken</span><span class="cn-holder">Ms. Rao</span></li>
+              <li class="cn-char is-taken">[[status_mark('tile')]]<span class="cn-cname">Scarlet Witch</span><span class="cn-tag">Taken</span><span class="cn-holder">Ms. Bhattacharya-Okonkwo</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <figcaption><strong>Phone, real width.</strong> This screen scrolls, as the council is meant to.</figcaption>
+    </figure>
+  </div>
+
+  <h3 class="sub">The same panel, italic throughout</h3>
+  <div class="sheet-grid">
+    <div class="sheet-block">
+      <div class="cn tx-i" style="padding:20px;border-radius:4px">
+        <div class="panel-plate">
+          <h4>Doom proposes</h4>
+          <p class="cn-procl">Friday the eighteenth of December, at half past seven.</p>
+          <p class="cn-procl">At the Grand Cinema, in the fourth hall.</p>
+          <div class="panel-well"><span class="fig">3</span> of <span class="fig">7</span> seats have approved</div>
+          <div class="panel-acts">
+            <button type="button" class="btn-plate"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Approve</button>
+            <a class="link-quiet" href="#council">Propose another</a>
+          </div>
+          <p class="cn-expl">Your approval is counsel. Doom alone decides, and may change the proposal at any time.</p>
+          <div class="panel-well">
+            <span class="cn-label">Alternatives</span>
+            <div class="cn-alt"><p>Saturday the nineteenth of December, at four o'clock.</p><span class="cn-who">Ms. Rao</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="lib-note">Treatment one. Doom's proposal, the count, the explanation and a guest's alternative are all italic, so nothing marks which words are his.</p>
+    </div>
+    <div class="sheet-block">
+      <div class="cn tx-r" style="padding:20px;border-radius:4px">
+        <div class="panel-plate">
+          <h4>Doom proposes</h4>
+          <p class="cn-procl">Friday the eighteenth of December, at half past seven.</p>
+          <p class="cn-procl">At the Grand Cinema, in the fourth hall.</p>
+          <div class="panel-well"><span class="fig">3</span> of <span class="fig">7</span> seats have approved</div>
+          <div class="panel-acts">
+            <button type="button" class="btn-plate"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#mark"/></svg>Approve</button>
+            <a class="link-quiet" href="#council">Propose another</a>
+          </div>
+          <p class="cn-expl">Your approval is counsel. Doom alone decides, and may change the proposal at any time.</p>
+          <div class="panel-well">
+            <span class="cn-label">Alternatives</span>
+            <div class="cn-alt"><p>Saturday the nineteenth of December, at four o'clock.</p><span class="cn-who">Ms. Rao</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="lib-note">Treatment two. Only the two lines Doom proclaims are italic. The count, the explanation and the alternative are upright.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== D ============================== -->
+<section class="board-sec" id="findings">
+  <h2>D. Findings</h2>
+  [[FINDINGS]]
+</section>
+
+<footer class="board-foot">
+  Concept board, revision 5: a typography review. The artwork is revision 4's, unchanged. Names of guests, the venue and the dates are placeholders, as is all council wording not shown on an earlier approved board.
+</footer>
+
+</body>
+</html>

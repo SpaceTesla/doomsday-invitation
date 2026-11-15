@@ -1,0 +1,444 @@
+# The Iron Throne: technical architecture and implementation plan
+
+How version 1 is built. What it does is in [`PRODUCT_SPEC.md`](PRODUCT_SPEC.md), how it looks in [`design/DESIGN.md`](../design/DESIGN.md), and what it says in [`COPY.md`](COPY.md). Those three, with the approved boards and artwork, are the source of truth. This document changes none of them.
+
+No code has been written. This is the final plan, set on 15 November 2026: **Next.js on Vercel with Neon PostgreSQL.** An earlier all-Cloudflare draft was dropped to avoid deployment-adapter risk.
+
+Figures marked **(verified)** were read from Vercel's and Neon's official pages on that date.
+
+## 1. System architecture
+
+```
+ Guest's browser                         Administrator's browser
+   |  /s/{token}                            |  /throne
+   |  artwork, fonts, audio, JS             |
+   v                                        v
+ +-----------------------------------------------------------+
+ |  Vercel                                                   |
+ |   CDN: web/public and built assets  (no function runs)    |
+ |   Next.js application (Node.js functions)                 |
+ |     Server Components   read state, render HTML           |
+ |     Route Handlers      validate, call the domain         |
+ |     Domain module       every rule, no framework imports  |
+ |     Data module         Drizzle over node-postgres        |
+ |   Vercel Cron, daily ---> /api/cron/retention             |
+ +----------------------------+------------------------------+
+                              |  pooled connection, TLS
+                       Neon PostgreSQL
+```
+
+One application, one database, one scheduled job. Everything a guest sees move runs in their browser.
+
+## 2. Technology stack
+
+| Layer | Choice | Note |
+|---|---|---|
+| Framework | Next.js, App Router, current stable release | Native Vercel deployment, no adapter |
+| UI | React, TypeScript in strict mode | Server Components for reads, Client Components for scenes and controls |
+| Styling | Tailwind CSS v4, CSS custom properties, hand-written CSS | Section 6 |
+| Motion | GSAP with its React hook; CSS for simple motion | Client only |
+| Sound | Howler | Client only |
+| Database | Neon PostgreSQL | |
+| Data access | Drizzle ORM over `pg` (node-postgres); Drizzle Kit migrations | Section 4.4 explains the driver choice |
+| Validation | Zod | |
+| Tests | Vitest against a real PostgreSQL; Playwright end to end | |
+| Tooling | Prettier; ESLint with the Next.js rules; GitHub Actions | |
+| Runtime | Node 22, npm | |
+
+Versions are pinned in the lock file when the project is created.
+
+## 3. Vercel hosting and deployment
+
+- **One Vercel project**, root directory `web/`. Nothing outside `web/` is built or deployed, so the reference images cannot ship.
+- **Rendering.** Guest and administrator pages are server-rendered on each request and never cached. Mutations are Route Handlers. All on the Node.js runtime; nothing uses the edge runtime.
+- **No middleware is needed.** Security headers come from `next.config` `headers()`. Authorisation is checked in the administrator layout and in every handler.
+- **Deployments.** Every pull request gets a preview deployment; `main` deploys to production. Preview and production have separate environment variables, so previews use a separate database branch.
+- **Cron.** One entry in `vercel.json`, daily. The Hobby plan allows cron jobs to run once a day, at a time accurate to within the hour **(verified)**, which is all retention needs.
+- **Function limits.** Up to 300 seconds on Hobby **(verified)**. Our handlers take milliseconds.
+- **Static assets.** Everything in `web/public/` and the built bundles is served from Vercel's CDN without running a function. No Blob or other storage is used.
+
+## 4. Database: schema and data integrity
+
+### 4.1 Schema
+
+```sql
+create table event (
+  id                int primary key check (id = 1),       -- one event
+  timezone          text not null,                        -- IANA name
+  proposal_at       timestamptz,
+  proposal_venue    text,
+  proposal_version  int not null default 0,               -- raised on each change
+  finalised_at      timestamptz,                          -- null until the decree
+  plan_version      int not null default 0,               -- raised when the decree is amended
+  created_at        timestamptz not null default now()
+);
+
+create table character (
+  id          uuid primary key default gen_random_uuid(),
+  name        text not null,
+  name_key    text not null unique,                       -- lower-cased, trimmed
+  created_at  timestamptz not null default now()
+);
+
+create table guest (
+  id                 uuid primary key default gen_random_uuid(),
+  token              text unique,                         -- null when the link is cancelled
+  title              text not null default '',
+  name               text not null,
+  status             text not null default 'summoned'
+                       check (status in ('summoned','seated','declined')),
+  character_id       uuid unique references character(id) on delete set null,
+  approved_version   int,                                 -- approves when equal to event.proposal_version
+  seen_proposal      int not null default 0,
+  seen_plan          int not null default 0,
+  character_removed  boolean not null default false,
+  opened_at          timestamptz,
+  opening_played_at  timestamptz,
+  invited_at         timestamptz not null default now(),
+  answered_at        timestamptz
+);
+
+create table alternative (
+  guest_id    uuid primary key references guest(id) on delete cascade,   -- one per guest
+  at          timestamptz not null,
+  created_at  timestamptz not null default now()
+);
+
+create table admin_session ( id uuid primary key, expires_at timestamptz not null );
+create table attempt ( key text not null, at timestamptz not null default now() );
+create index attempt_key_at on attempt (key, at);
+```
+
+### 4.2 How each requirement is enforced
+
+The database enforces the rules. The application reports the outcome.
+
+| Requirement | Mechanism | Why it is safe |
+|---|---|---|
+| One guest per character | `unique (character_id)` | PostgreSQL refuses a second holder whatever the application does. Any number of guests may hold none |
+| Simultaneous selection | One statement: `update guest set character_id = $1 where id = $2 and status = 'seated' and (character_id is null or (select finalised_at from event) is null)` | Two guests racing: one commits, the other receives unique-violation error 23505. The handler catches exactly that code and answers `409 taken` with the holder's name. There is no check before the write to go stale |
+| Changing is atomic | The same single statement | One column changes value. If it fails, the guest still holds the old character |
+| Removing a character | Transaction: `update guest set character_removed = true where character_id = $1`; `delete from character where id = $1` | The foreign key clears `character_id`. Both happen or neither |
+| Leaving the council | Transaction: `update guest set status = 'declined', character_id = null, approved_version = null where id = $1 and status = 'seated' and (select finalised_at from event) is null returning id`; if a row came back, `delete from alternative where guest_id = $1` | The cut-off is inside the write. Nothing is freed unless the status really changed |
+| Declining; removing a guest | The same transaction pattern; removal deletes the guest and the cascade removes the alternative | |
+| Changing the proposal resets approvals | `update event set proposal_at = $1, proposal_venue = $2, proposal_version = proposal_version + 1 where finalised_at is null` | No approval row is touched: none equals the new version |
+| One approval per guest | `update guest set approved_version = (select proposal_version from event) where id = $1 and status = 'seated' and (select finalised_at from event) is null` | Repeating it writes the same value |
+| The count | `select count(*) from guest where status = 'seated' and approved_version = (select proposal_version from event)` | |
+| One alternative per guest | `insert ... on conflict (guest_id) do update` | The primary key |
+| Finalising | `update event set finalised_at = now() where finalised_at is null and proposal_at is not null` | One statement |
+
+Multi-step operations use Drizzle's `db.transaction()`. Single-statement operations need none. After each write the handler checks the affected row count; zero means the rule in the `where` clause did not hold, and the handler reads the state to say why.
+
+### 4.3 State, cut-offs, links, retention
+
+```
+                accept                    leave (before the decree)
+  summoned ---------------> seated ----------------------------+
+      | decline                ^  accept (until the end of      |
+      +-----------------> declined <-------- the day) ----------+
+```
+
+- **"The day"** is the date of the decree, or of the current proposal while there is none, in the event's time zone. Cut-offs fall at its end.
+- **After the decree:** no approving, no alternatives, no change of character, no leaving. A guest who accepts late still makes a first choice.
+- **After the day:** no accepting. Summoned and declined guests see the closing screen.
+- **Tokens:** 32 random bytes from `crypto.randomBytes`, 43 URL-safe characters. Replacing writes a new one; cancelling sets it to null.
+- **Change notices:** shown when `seen_proposal` or `seen_plan` is behind the event, then recorded as seen.
+- **Retention:** section 7.5.
+
+### 4.4 Connection
+
+- The application connects with `pg` through **Neon's pooled connection string**, with a pool of at most a few connections per function instance. Neon's pooler absorbs the many short-lived connections that serverless functions create.
+- Migrations use the **direct** connection string.
+- Why `pg` and not Neon's HTTP driver: the HTTP mode supports only non-interactive transactions **(verified)**, and `pg` is also the driver that talks to an ordinary local or CI PostgreSQL. One driver everywhere means the tests exercise exactly the code that runs in production.
+- Neon's free database sleeps after five minutes idle and wakes in a few hundred milliseconds **(verified)**. The first request after a quiet spell is slightly slower; the opening covers it.
+
+## 5. Backend and API
+
+| Layer | Where | Rule |
+|---|---|---|
+| Pages | `app/` Server Components | Read through the domain. Hold no rules |
+| Route Handlers | `app/api/` | Parse with Zod, identify the caller, call one domain function, return JSON |
+| Domain | `src/domain/` | Every product rule. Plain TypeScript with no Next.js or Vercel imports. Takes a database handle as an argument |
+| Data | `src/db/` | Drizzle schema, the client, the statements of section 4.2 |
+
+The approval rules the product expects to change (`PRODUCT_SPEC.md`, section 5.9) sit in `domain/approval.ts` behind five named settings.
+
+`/s/{token}` renders the guest's stage:
+
+| Guest state | Rendered |
+|---|---|
+| Token unknown or cancelled, or the event deleted | Invalid-link screen, status 404 |
+| Summoned, before the end of the day | Opening (once), then summons |
+| Seated, no character | Character selection |
+| Seated | Council |
+| Declined, before the end of the day | Closing screen with "Take your seat" |
+| Summoned or declined, after the day | "The day has passed." |
+
+`/throne` is the sign-in; `/throne/guests`, `/throne/characters`, `/throne/proposal`, `/throne/council` are the sections of `COPY.md`.
+
+| Method and path | Does | Notable responses |
+|---|---|---|
+| `POST /api/g/{token}/opened` | Records first open and that the opening played | |
+| `POST /api/g/{token}/accept` | To seated | 409 after the day |
+| `POST /api/g/{token}/decline` | To declined | |
+| `POST /api/g/{token}/leave` | Seated to declined, freeing everything | 409 after the decree |
+| `PUT /api/g/{token}/character` | Claims or changes | 409 `taken` with the holder; 409 after the decree for a change |
+| `PUT`, `DELETE /api/g/{token}/approval` | Approves, withdraws | 409 after the decree |
+| `PUT`, `DELETE /api/g/{token}/alternative` | Sets, replaces, withdraws | 422 past date, missing part, same as the proposal |
+| `POST /api/g/{token}/seen` | Marks notices seen | |
+| `POST`, `DELETE /api/admin/session` | Sign in, sign out | 401; 429 |
+| `POST /api/admin/guests`; `PATCH`, `DELETE /api/admin/guests/{id}` | Add, edit, remove | |
+| `POST`, `DELETE /api/admin/guests/{id}/link` | Replace, cancel | |
+| `POST /api/admin/characters`; `DELETE /api/admin/characters/{id}` | Add, remove | 409 duplicate; 409 `held` unless `confirm` is sent |
+| `PUT /api/admin/proposal` | Set or change | Raises the proposal version |
+| `POST /api/admin/finalise`; `PUT /api/admin/plan` | Finalise; amend | |
+| `GET /api/admin/export` | The whole event as JSON | |
+| `GET /api/cron/retention` | Deletes the event thirty days after the day | 401 without the cron secret |
+
+Every mutation is idempotent.
+
+## 6. Front end and Tailwind
+
+Tailwind does layout. The identity stays in tokens and hand-written CSS.
+
+| Concern | Where | How |
+|---|---|---|
+| Design tokens | `src/styles/tokens.css` | The palette, four font roles, scale and spacing of `DESIGN.md` as CSS custom properties. The single source |
+| Tailwind theme | `src/styles/app.css` | Tailwind v4's `@theme` maps its colour, font and spacing names onto those properties, so `bg-plate` and `text-silver` are the approved values |
+| Tailwind's job | In components | Flex and grid, spacing, sizing, positioning, breakpoints, hover and focus states |
+| Hand-written CSS | `src/styles/surfaces.css`, `scenes.css`, `type.css` | Brushed steel, bevels, the dotted gold line, engraving, glows, scrims, vignettes, the frame-relative type scale of the opening and summons, and every keyframe |
+| Typography rules | Components | `Heading` falls back to Cinzel if its text contains a V. `Label` rejects numerals and names. `Figure` sets numerals in Cinzel |
+| Fonts | `public/fonts/` | The four families as local WOFF2, Latin subset, through `next/font/local`. No request leaves our origin |
+| Doomscript | `Runes` component | Draws from `doomscript-glyphs.json`, hidden from assistive technology, fails the build on a letter with no rune |
+| Copy | `src/copy/` | Every string, keyed by its line number in `COPY.md` |
+| Long names | `lib/fit.ts` | The approved rule: wrap, step to 80%, then scroll |
+
+The layer set is chosen by viewport shape, and the scenes size their type from the frame, not from Tailwind's breakpoints.
+
+## 7. Animation, assets, security, retention
+
+### 7.1 Animation
+
+The approved experience is built exactly as specified. The host delivers files and takes no part in it.
+
+| Concern | Approach |
+|---|---|
+| Where it runs | In the browser, in Client Components. The server sends HTML that already contains the two lines and both actions |
+| Opening | One GSAP timeline with five labels (dark, lift, clear, lit, summons) over the approved layers, using the approved rubble offsets |
+| Transitions | The seal iris, the plate parting and the seal waking: three small GSAP components |
+| Simpler motion | CSS: fades, the ash loop, button feedback |
+| Reduced motion | Every sequence becomes a 0.2 s cross-fade to its end state. The ash does not run |
+| Silent mode | Sound is off until the guest chooses. No animation waits on audio |
+| Skip | Any key or tap seeks the timeline to its end. "Played" is stored on the server against the link |
+| Static fallback | The final frame is plain HTML and images, so a slow or failed script still shows Doom, the name and the actions |
+
+### 7.2 Assets
+
+- Artwork, icons, fonts and audio live in `web/public/` and are served from Vercel's CDN with long cache lifetimes set in `next.config`.
+- The approved layers are served as they are. `next/image` optimisation is not used: each layout has its own approved render.
+- Only the first scene's layers and the name font are preloaded. Later scenes load after the first action. Audio loads only if sound is chosen.
+- About 0.4 MB of layers per layout. Hobby includes 100 GB of transfer a month **(verified)**.
+- Smoothness on phones is a browser matter: flat layers, transforms and opacity only, timing by elapsed time. Tested on real phones inside a messaging app's browser.
+
+### 7.3 Authentication and authorisation
+
+| Requirement | Implementation |
+|---|---|
+| Passphrase | Generated at setup, not chosen. Only its scrypt hash (`node:crypto`) is stored, as an environment variable |
+| Session cookie | A session id with an HMAC-SHA256 signature. `HttpOnly`, `Secure`, `SameSite=Strict`, seven days. The id must also exist, unexpired, in `admin_session`, so signing out really ends it |
+| Server-side checks | The administrator layout and every administrator handler verify the session. No client-side gate |
+| Cross-site requests | Administrator mutations check the `Origin` header |
+| Rate limiting | Failed sign-ins are counted in `attempt`: five in fifteen minutes locks sign-in for fifteen minutes. Unknown guest tokens are counted per address the same way |
+| Guest tokens | 256 bits. Stored as they are so a link can be copied again; a token can be replaced at will, and anyone able to read the database can read everything in it already |
+| Guest-specific access | A guest handler loads the guest by the token in its own path and acts only on that row. No handler accepts a guest id from the request |
+| What guests see | Never another guest's token or id, the opened status, or who approved |
+
+### 7.4 Privacy and headers
+
+- `Referrer-Policy: no-referrer`; a Content Security Policy limited to our own origin; `X-Content-Type-Options: nosniff`; `X-Frame-Options: DENY`.
+- `Cache-Control: private, no-store` on guest and administrator responses.
+- `X-Robots-Tag: noindex, nofollow` on everything, and a `robots.txt` that disallows all.
+- No external scripts, fonts, analytics or images. Vercel's own analytics stay off.
+- Link previews are identical for every link.
+- Logs record route, status and duration with the token removed from the path.
+- Secrets are environment variables in Vercel, never in the repository.
+
+### 7.5 Retention
+
+- `vercel.json` schedules `GET /api/cron/retention` once a day.
+- The endpoint requires `Authorization: Bearer <CRON_SECRET>` and answers 401 otherwise. Vercel sends that header when the `CRON_SECRET` variable is set; this is confirmed in milestone 0.
+- If the day plus thirty days has passed, one transaction deletes every alternative, guest, character, session and attempt and clears the event row. Otherwise it does nothing.
+- It is safe to retry: a second run finds nothing to delete.
+- Independently of the job, the same date check makes every link invalid from that moment.
+
+## 8. Local development and deployment
+
+### 8.1 Environments
+
+| Environment | Application | Database |
+|---|---|---|
+| Local | `next dev` | PostgreSQL in Docker, or a personal Neon branch |
+| Tests and CI | Vitest, Playwright | A throwaway PostgreSQL container, created per run |
+| Preview | Vercel preview deployments | Neon branch `preview` |
+| Production | Vercel production | Neon branch `main` |
+
+Tests never touch Neon's production branch: they use a container that exists only for the run.
+
+### 8.2 Environment variables
+
+| Name | Purpose |
+|---|---|
+| `DATABASE_URL` | Pooled Neon connection string, used by the application |
+| `DATABASE_URL_DIRECT` | Direct connection string, used only for migrations |
+| `ADMIN_PASSPHRASE_HASH` | scrypt hash of the generated passphrase |
+| `SESSION_KEY` | Signs the session cookie |
+| `CRON_SECRET` | Protects the retention endpoint |
+| `EVENT_TIMEZONE` | IANA time zone of the event |
+
+`web/.env.example` lists them. `web/.env.local` holds local values and is not committed. Preview and production values are set in Vercel's project settings.
+
+### 8.3 Commands
+
+Run from `web/`.
+
+| Task | Command |
+|---|---|
+| Start the local database | `docker compose up -d` |
+| Develop | `npm run dev` |
+| Create a migration from the schema | `npm run db:generate` (drizzle-kit) |
+| Apply migrations | `npm run db:migrate` against the database in `DATABASE_URL_DIRECT` |
+| Unit and integration tests | `npm test` |
+| End-to-end tests | `npm run e2e` |
+| Generate a passphrase and its hash | `npm run admin:passphrase` |
+| Back up | `npm run db:dump` (`pg_dump` to a dated file) |
+
+### 8.4 Deployment
+
+1. Open a pull request. GitHub Actions runs format, lint, type-check, Vitest and Playwright against a PostgreSQL container. Vercel builds a preview against the `preview` branch.
+2. Merge to `main`. The workflow applies migrations to production, then Vercel deploys.
+
+Migrations are written to be backward compatible, so the previous deployment keeps working while the new one goes live.
+
+## 9. Cost
+
+| Service | Free allowance (verified) | Our use |
+|---|---|---|
+| Vercel Hobby: data transfer | 100 GB a month | Well under 1 GB |
+| Vercel Hobby: function invocations | 1,000,000 a month | A few thousand |
+| Vercel Hobby: active CPU | 4 CPU-hours a month | Minutes |
+| Vercel Hobby: function duration | 300 seconds | Milliseconds |
+| Vercel Hobby: cron | Daily jobs, hour precision | One daily job |
+| Neon Free: storage | 1 GB per project | Under 1 MB |
+| Neon Free: compute | 100 CU-hours per project a month, sleeping after 5 idle minutes | A few hours |
+| Neon Free: branches | 10 per project | 2 or 3 |
+| Neon Free: restore history | 6 hours | See backups |
+
+**Expected cost: nothing**, or 10 to 15 dollars a year if you want a custom domain.
+
+**Vercel's terms.** The plan pages I could read did not state the usage restriction, so it was not verified. My understanding is that Hobby is for personal, non-commercial use. A free, private invitation among friends is that, but the Terms of Service are read at milestone 0 before anything is deployed. If the project ever became commercial, or needed a team, the Pro plan is 20 dollars a month **(verified)**.
+
+**When a paid plan would be needed.** Vercel Pro: only for commercial use or collaborators. Neon Launch: pay-as-you-go with no minimum **(verified)**, only if the database must not sleep or needs longer restore history. Neither is expected.
+
+**Backup and recovery.** Neon's free restore window is six hours, which is short. So: `npm run db:dump` before every migration and whenever the guest list changes materially, and the administrator panel's Export downloads the whole event as JSON. The data is a few kilobytes.
+
+## 10. Testing strategy
+
+| Area | Test | Runs against |
+|---|---|---|
+| Domain rules and transitions | Every row of section 4.2 and every arrow and cut-off of 4.3 | Vitest, real PostgreSQL |
+| Concurrent character selection | Twenty simultaneous claims on one character leave exactly one holder and nineteen conflicts. A change racing a claim leaves no guest with two characters, or with none by accident | Vitest, real PostgreSQL, parallel connections |
+| Character change and removal | The old character is freed only on success. Removal flags the holder and rolls back whole if any part fails | Vitest, real PostgreSQL |
+| Approval reset and amendments | Changing the proposal zeroes the count. Amending raises the plan version and the notice appears once | Vitest and Playwright |
+| Dates in words | All quarter hours, month ends, both sides of noon and five o'clock, the time zone | Table-driven unit tests |
+| Token security | Length and alphabet; an unknown token and a cancelled one get identical 404s; no token in another guest's response | Handler tests |
+| Authentication and authorisation | Wrong passphrase, lockout, forged or expired cookie, every administrator route without a session, a guest token on an administrator route | Handler tests |
+| Retention | Deletes everything at day plus thirty, nothing before, safe to run twice, 401 without the secret | Vitest with the clock set |
+| Typography restrictions | No V reaches Pirata One, no numeral or name reaches Orbitron, no missing rune; a scan of `src/copy/` | Unit tests |
+| Reduced motion | The opening ends on the final frame with no movement | Playwright, emulated |
+| Accessibility | Keyboard through every screen; axe on every screen | Playwright |
+| Layouts | Phone and desktop viewports for every screen, long names | Playwright |
+| Privacy and headers | Headers present, no third-party request, identical link previews | Playwright and handler tests |
+| Real devices | Phones, including a messaging app's browser and Low Power Mode; sound | A checklist by hand |
+
+No database behaviour is mocked.
+
+## 11. Repository structure
+
+```
+doomsday-invitation/
+  AGENTS.md  CLAUDE.md
+  docs/                     PRODUCT_SPEC.md, COPY.md, ARCHITECTURE.md, HANDOFF.md
+  design/                   specification, boards, generators (not deployed)
+  references/               reference images (never deployed)
+  research/
+  .github/workflows/ci.yml
+  web/                      the application; the only folder Vercel builds
+    package.json  next.config.ts  vercel.json  drizzle.config.ts  docker-compose.yml
+    drizzle/                SQL migrations
+    public/
+      art/  icons/  fonts/  audio/      approved assets, copied from design/explorations/assets
+      robots.txt
+    src/
+      app/
+        layout.tsx
+        s/[token]/          guest route
+        throne/             administrator panel
+        api/g/[token]/      guest handlers
+        api/admin/          administrator handlers
+        api/cron/retention/
+      domain/               guests, characters, approval, alternatives, plan, cutoffs, retention
+      db/                   schema.ts, client.ts
+      components/           Plate, Panel, Well, Button, Heading, Label, Figure, Runes, Seal, Mask
+      scenes/               Opening, Summons, Council, Hall, transitions
+      styles/               tokens.css, app.css, surfaces.css, scenes.css, type.css
+      copy/                 strings keyed by COPY.md line numbers
+      lib/                  words, tokens, session, rate-limit, fit
+    tests/
+      domain/  handlers/  e2e/
+```
+
+## 12. Milestones
+
+| # | Milestone | Contains | Done when |
+|---|---|---|---|
+| 0 | Foundations, Vercel and Neon | Git repository; `web/` scaffold with Next, Tailwind v4, Drizzle; Vercel project and Neon branches; CI; tokens, fonts, base components; exported icons and baked steel textures; Vercel's terms and the cron header confirmed | A styled page that reads the database deploys from `main` |
+| 1 | Schema and domain | Migrations, the domain module, date words, tokens, retention | Domain and concurrency tests pass against PostgreSQL |
+| 2 | Administrator panel | Sign-in, guests and links, characters, proposal, council view, finalise, amend, export | Doom can run an event end to end with no guest screens |
+| 3 | Guest journey, still | Summons, decline and leave, character selection, council, proposal and alternatives, decree, closing screens, invalid link, errors. Final type and copy, no motion | The journey passes end to end on phone and desktop, on a preview deployment |
+| 4 | Opening and motion | The reveal, the title, three transitions, reduced motion, skip, tablet layouts, long-name fitting | The opening matches the storyboard and the reduced-motion path works |
+| 5 | Sound | Source the sounds, wire them, controls | Plays only after a choice; silent mode loses nothing |
+| 6 | Hardening | Headers, rate limits, the cron job, accessibility and performance passes | All automated checks pass on preview |
+| 7 | Devices and launch | The real-phone checklist; production data; passphrase; links sent | Guests are in |
+
+Screens that were never drawn are built in milestones 2 to 4 from `DESIGN.md` and the approved council mock, and reviewed in the running product.
+
+## 13. Risks and limitations
+
+| Risk or limitation | Effect | Handling |
+|---|---|---|
+| Vercel Hobby's usage terms were not verified | The free plan might not be allowed | Read at milestone 0. A private, free invitation should qualify; Pro is the fallback at 20 dollars a month |
+| Neon's free restore window is six hours | A mistake noticed late cannot be rolled back by the host | A dump before every migration, and the JSON export |
+| Neon sleeps when idle | The first request after a quiet spell is a little slower | Acceptable; the opening covers it |
+| Serverless connections | Many short connections could exhaust the database | The pooled connection string and a small per-instance pool |
+| The opening on a weak phone in a messaging app | Slow or uneven | Flat layers, about 0.4 MB, static final frame as fallback, real-phone testing |
+| No audio exists | Milestone 5 has nothing to wire | Free sounds chosen then. Launch does not wait |
+| Free-tier terms change | A cost appears | Figures read on 15 November 2026, rechecked at milestone 0. The design needs only Node and PostgreSQL |
+| The artwork follows studio-owned designs | Unsuitable for public use | The site is private, unindexed and shares nothing in previews |
+
+## 14. Blockers and what is needed
+
+**Genuine blockers: none.** This stack meets every requirement without any change to product, design or copy.
+
+Needed from you before implementation begins:
+
+1. A GitHub repository, a Vercel account and a Neon account in your name.
+2. The event's time zone.
+
+Later, during the build: your ear on the sounds in milestone 5, and the content you enter yourself (guests, characters, the first proposal).
+
+## 15. Summary
+
+- **Architecture.** One Next.js application deployed natively on Vercel, one Neon PostgreSQL database, one daily Vercel Cron job. Assets are served from `web/public/`. Tailwind v4 for layout over CSS tokens; GSAP and Howler in the browser.
+- **Key decisions.** Character uniqueness is a database constraint, and a claim is a single statement whose conflict is returned as a 409. Multi-step changes are Drizzle transactions. One driver, `pg`, in production and in tests, over Neon's pooled connection. No middleware, no extra services. The domain module is free of framework code and tested against real PostgreSQL.
+- **Expected cost.** Nothing on Vercel Hobby and Neon Free, plus a domain if you want one.
+- **Blocking implementation.** Nothing. I need the three accounts and the time zone to start milestone 0.

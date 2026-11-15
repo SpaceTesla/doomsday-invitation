@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direction I: The Winter Chancery</title>
+<link rel="stylesheet" href="shared/board.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@500;600&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Direction I: The Winter Chancery
+   Every selector is scoped under .dir-1.
+   ============================================================ */
+.dir-1 {
+  --d1-night: #0B0F14;
+  --d1-vellum: #100F0E;
+  --d1-slate: #1B232B;
+  --d1-ridge: #2B3945;
+  --d1-silver: #DDDAD0;
+  --d1-pewter: #979F9F;
+  --d1-gold: #C8A85E;
+  --d1-verd: #5FA98A;
+  --d1-green: #1E5C45;
+  --d1-rubric: #D2604E;
+  --d1-red: #8A2E22;
+  --d1-amber: #E3A64B;
+  --d1-display: "IM Fell English", "EB Garamond", Georgia, serif;
+  --d1-sc: "IM Fell English SC", "IM Fell English", Georgia, serif;
+  --d1-body: "EB Garamond", Georgia, serif;
+  --d1-ui: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+  --d1-black: "Grenze Gotisch", "EB Garamond", serif;
+}
+
+.dir-1 .d1-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Preview helper: opening the page at #<frame id> shows that one frame edge to edge,
+   which is how the PNG previews in /previews are captured. */
+.dir-1 .frame-wrap:target {
+  position: fixed; left: 0; top: 0; z-index: 99;
+  width: 100vw; max-width: none; margin: 0; flex: none;
+  background: var(--d1-night);
+}
+.dir-1 .frame-wrap:target .frame { border-radius: 0; box-shadow: none; }
+.dir-1 .frame-wrap:target figcaption { display: none; }
+
+/* ---------- buttons inside compositions ---------- */
+.dir-1 button {
+  margin: 0; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer;
+}
+.dir-1 button:focus-visible { outline: 2px solid var(--d1-gold); outline-offset: 0.6cqw; }
+
+/* ---------- hero ---------- */
+.dir-1 .d1-hero { background: var(--d1-night); color: var(--d1-silver); }
+.dir-1 .d1-hero__copy {
+  position: absolute; left: 6.2cqw; top: 19%; width: 37cqw;
+}
+.dir-1 .d1-hero__title {
+  margin: 0;
+  font: 400 4.5cqw/1.12 var(--d1-display);
+  letter-spacing: -0.005em;
+  color: var(--d1-silver);
+  text-wrap: balance;
+}
+.dir-1 .d1-hero__actions {
+  display: flex; align-items: center; gap: 2.1cqw; margin-top: 3.6cqw;
+}
+.dir-1 .d1-sealbtn { display: block; width: 9.4cqw; flex: none; line-height: 0; border-radius: 50%; }
+.dir-1 .d1-sealbtn svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 0.5cqw 0.9cqw rgba(0, 0, 0, 0.7)); }
+.dir-1 .d1-hero__labels { display: flex; flex-direction: column; align-items: flex-start; gap: 0.7cqw; }
+.dir-1 .d1-act {
+  font: 500 1.42cqw/1.2 var(--d1-ui);
+  letter-spacing: 0.01em;
+  color: var(--d1-silver);
+}
+.dir-1 .d1-quiet {
+  font: 400 1.18cqw/1.2 var(--d1-ui);
+  color: var(--d1-pewter);
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.3em;
+}
+
+.dir-1 .d1-hero--phone .d1-hero__copy {
+  left: 8cqw; right: 8cqw; top: auto; bottom: 6.4cqw; width: auto; text-align: center;
+}
+.dir-1 .d1-hero--phone .d1-hero__title { font-size: 7.7cqw; line-height: 1.14; }
+.dir-1 .d1-hero--phone .d1-hero__actions { flex-direction: column; gap: 3.2cqw; margin-top: 6cqw; }
+.dir-1 .d1-hero--phone .d1-sealbtn { width: 26cqw; }
+.dir-1 .d1-hero--phone .d1-hero__labels { align-items: center; gap: 2.4cqw; }
+.dir-1 .d1-hero--phone .d1-act { font-size: 4.3cqw; }
+.dir-1 .d1-hero--phone .d1-quiet { font-size: 3.7cqw; }
+
+/* ---------- the letter (phone) ---------- */
+.dir-1 .d1-letter { background: linear-gradient(#0B0F14, #0d131a); color: var(--d1-silver); }
+.dir-1 .d1-letter__sheet {
+  position: absolute; left: 0; right: 0; top: 0; height: 143cqw;
+  background: var(--d1-vellum);
+  box-shadow: 0 1.6cqw 4cqw rgba(0, 0, 0, 0.75);
+}
+/* the scribe's frame ruling: two verticals and a head line that overshoot the block */
+.dir-1 .d1-letter__sheet::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.34;
+  background:
+    linear-gradient(var(--d1-gold), var(--d1-gold)) 5.6cqw 0 / 1px 136cqw no-repeat,
+    linear-gradient(var(--d1-gold), var(--d1-gold)) calc(100% - 5.6cqw) 0 / 1px 136cqw no-repeat,
+    linear-gradient(var(--d1-gold), var(--d1-gold)) 0 8.3cqw / 100% 1px no-repeat;
+}
+.dir-1 .d1-text {
+  position: absolute; left: 8cqw; right: 8cqw; top: 8.4cqw; margin: 0;
+  font: 500 4.2cqw/5.9cqw var(--d1-body);
+  color: var(--d1-silver);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(5.9cqw - 1px), rgba(200, 168, 94, 0.2) calc(5.9cqw - 1px), rgba(200, 168, 94, 0.2) 5.9cqw);
+  font-variant-numeric: oldstyle-nums;
+}
+.dir-1 .d1-text > span.d1-par { display: block; }
+.dir-1 .d1-versal {
+  float: left; width: 21cqw; height: 22.9cqw; margin: 0.2cqw 2.6cqw 0.5cqw 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(200, 168, 94, 0.22) 0.22cqw, transparent 0.3cqw) 0 0 / 2.1cqw 2.1cqw,
+    var(--d1-green);
+  box-shadow: inset 0 0 0 0.35cqw var(--d1-green), inset 0 0 0 0.5cqw var(--d1-gold);
+  font: 600 20.5cqw/22.4cqw var(--d1-black);
+  text-align: center;
+  color: var(--d1-gold);
+  text-shadow: 0.15cqw 0.2cqw 0 rgba(0, 0, 0, 0.45);
+}
+.dir-1 .d1-engross {
+  display: block; height: 11.8cqw; overflow: hidden;
+  font: 400 6.5cqw/11.8cqw var(--d1-sc);
+  letter-spacing: 0.03em;
+  color: var(--d1-silver);
+  background: var(--d1-vellum);
+  box-shadow: inset 0 -1px rgba(200, 168, 94, 0.2);
+  white-space: nowrap;
+}
+.dir-1 .d1-nameline {
+  display: block; height: 11.8cqw; clear: both;
+  background: var(--d1-vellum);
+  box-shadow: inset 0 -1px rgba(200, 168, 94, 0.2);
+  white-space: nowrap;
+}
+.dir-1 .d1-name {
+  font: italic 400 8.8cqw/11.8cqw var(--d1-display);
+  color: var(--d1-gold);
+}
+.dir-1 .d1-greet { font-style: italic; }
+.dir-1 .d1-pil { color: var(--d1-rubric); margin-right: 0.25em; }
+.dir-1 .d1-sanction { color: var(--d1-rubric); }
+
+.dir-1 .d1-plica {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 7.2cqw;
+  background: linear-gradient(#1a1917, #131211);
+  box-shadow: 0 -1px 0 rgba(221, 218, 208, 0.12), 0 -0.9cqw 1.4cqw rgba(0, 0, 0, 0.55);
+}
+.dir-1 .d1-plica::after { /* the two slits the cords pass through */
+  content: ""; position: absolute; top: 2.6cqw; left: 50%; width: 9cqw; height: 0.5cqw; margin-left: -4.5cqw;
+  background: linear-gradient(90deg, #000 0 2.6cqw, transparent 2.6cqw 6.4cqw, #000 6.4cqw);
+}
+.dir-1 .d1-pendant {
+  position: absolute; left: 50%; top: 138.2cqw; width: 35cqw; margin-left: -17.5cqw;
+  filter: drop-shadow(0 1.4cqw 1.6cqw rgba(0, 0, 0, 0.8));
+}
+.dir-1 .d1-pendant svg { display: block; width: 100%; height: auto; }
+.dir-1 .d1-cta {
+  position: absolute; left: 50%; bottom: 9.2cqw; transform: translateX(-50%);
+  padding: 3.3cqw 9.5cqw;
+  border: 1px solid var(--d1-gold);
+  font: 500 4.1cqw/1 var(--d1-ui);
+  letter-spacing: 0.02em;
+  color: var(--d1-silver);
+  white-space: nowrap;
+}
+
+/* vellum mottle laid over a sheet */
+.dir-1 .d1-mottle { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.085; pointer-events: none; mix-blend-mode: screen; }
+
+/* ---------- the landscape sheet ---------- */
+.dir-1 .d1-desk { background: radial-gradient(120% 90% at 50% 30%, #141b22, #0B0F14 70%); color: var(--d1-silver); }
+.dir-1 .d1-sheet {
+  position: absolute; left: 4.5cqw; right: 4.5cqw; top: 3.2cqw; height: 52cqw;
+  background: var(--d1-vellum);
+  box-shadow: 0 0 0 1px rgba(221, 218, 208, 0.06), 0 2cqw 5cqw rgba(0, 0, 0, 0.8);
+}
+.dir-1 .d1-sheet::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.32;
+  background:
+    linear-gradient(var(--d1-gold), var(--d1-gold)) 25.9cqw 0 / 1px 47.6cqw no-repeat,
+    linear-gradient(var(--d1-gold), var(--d1-gold)) calc(100% - 3.1cqw) 0 / 1px 47.6cqw no-repeat,
+    linear-gradient(var(--d1-gold), var(--d1-gold)) 0 4.1cqw / 100% 1px no-repeat;
+}
+.dir-1 .d1-sheet__arms { position: absolute; left: 2.6cqw; top: 7cqw; width: 20.6cqw; }
+.dir-1 .d1-sheet__arms svg { display: block; width: 100%; height: auto; }
+.dir-1 .d1-sheet .d1-text {
+  left: 27.6cqw; right: 4.7cqw; top: 4.2cqw;
+  font-size: 1.9cqw; line-height: 2.7cqw;
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(2.7cqw - 1px), rgba(200, 168, 94, 0.2) calc(2.7cqw - 1px), rgba(200, 168, 94, 0.2) 2.7cqw);
+}
+.dir-1 .d1-sheet .d1-versal {
+  width: 9.6cqw; height: 10.4cqw; margin: 0.12cqw 1.3cqw 0.28cqw 0;
+  font-size: 9.3cqw; line-height: 10.2cqw;
+  background-size: 1.05cqw 1.05cqw, auto;
+  box-shadow: inset 0 0 0 0.18cqw var(--d1-green), inset 0 0 0 0.27cqw var(--d1-gold);
+}
+.dir-1 .d1-sheet .d1-engross { height: 5.4cqw; font-size: 3.8cqw; line-height: 5.4cqw; }
+.dir-1 .d1-sheet .d1-nameline { height: 5.4cqw; }
+.dir-1 .d1-sheet .d1-name { font-size: 4.2cqw; line-height: 5.4cqw; }
+.dir-1 .d1-sheet .d1-plica { height: 3.4cqw; }
+.dir-1 .d1-sheet .d1-plica::after { top: 1.3cqw; width: 4.6cqw; height: 0.26cqw; margin-left: -2.3cqw; background: linear-gradient(90deg, #000 0 1.3cqw, transparent 1.3cqw 3.3cqw, #000 3.3cqw); }
+.dir-1 .d1-desk .d1-pendant { top: 53.1cqw; width: 13.8cqw; margin-left: -6.9cqw; filter: drop-shadow(0 0.8cqw 1cqw rgba(0, 0, 0, 0.8)); }
+.dir-1 .d1-desk .d1-cta { left: auto; right: 4.5cqw; bottom: 6.4cqw; transform: none; padding: 1.5cqw 3.6cqw; font-size: 1.75cqw; }
+.dir-1 .d1-desk__note { position: absolute; left: 4.5cqw; bottom: 6.6cqw; width: 30cqw; font: italic 400 1.75cqw/1.4 var(--d1-display); color: var(--d1-pewter); }
+
+/* ---------- identity sheet ---------- */
+.dir-1 .d1-spec { background: var(--d1-vellum); color: var(--d1-silver); }
+.dir-1 .d1-spec--versal { display: flex; align-items: center; gap: 22px; }
+.dir-1 .d1-spec__versal {
+  flex: none; width: 96px; height: 104px;
+  background: radial-gradient(circle, rgba(200, 168, 94, 0.22) 1px, transparent 1.4px) 0 0 / 10px 10px, var(--d1-green);
+  box-shadow: inset 0 0 0 2px var(--d1-green), inset 0 0 0 3px var(--d1-gold);
+  font: 600 92px/102px var(--d1-black); text-align: center; color: var(--d1-gold);
+}
+.dir-1 .d1-spec__sc { font: 400 40px/1.1 var(--d1-sc); letter-spacing: 0.03em; }
+.dir-1 .d1-spec__it { font: italic 400 30px/1.25 var(--d1-display); color: var(--d1-gold); margin-top: 6px; }
+.dir-1 .d1-spec__ro { font: 400 26px/1.2 var(--d1-display); margin-top: 6px; }
+.dir-1 .d1-spec__body { max-width: 34em; margin: 0; font: 500 19px/1.48 var(--d1-body); font-variant-numeric: oldstyle-nums; }
+.dir-1 .d1-spec__body em { font-style: italic; }
+.dir-1 .d1-spec__ui { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
+.dir-1 .d1-spec__btn { padding: 12px 30px; border: 1px solid var(--d1-gold); font: 500 15px/1 var(--d1-ui); letter-spacing: 0.02em; }
+.dir-1 .d1-spec__lbl { font: 500 15px/1 var(--d1-ui); }
+.dir-1 .d1-spec__lbl--quiet { font-weight: 400; color: var(--d1-pewter); text-decoration: underline; text-underline-offset: 0.3em; }
+
+.dir-1 .d1-insignia {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: 26px 34px;
+  padding: 28px; background: var(--d1-vellum); border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgba(221, 218, 208, 0.06);
+}
+.dir-1 .d1-insignia figure { margin: 0; font-size: 12.5px; color: var(--board-dim); }
+.dir-1 .d1-insignia figure svg { display: block; margin-bottom: 10px; }
+.dir-1 .d1-insignia__row { display: flex; align-items: flex-end; gap: 18px; margin-bottom: 10px; }
+.dir-1 .d1-insignia__row svg { margin: 0; }
+
+.dir-1 .tile__art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.dir-1 .d1-tile-vellum {
+  position: absolute; inset: 0; padding: 14px 16px 0 22px;
+  background: var(--d1-vellum);
+  font: 500 14px/20px var(--d1-body); color: var(--d1-silver);
+  background-image:
+    linear-gradient(var(--d1-gold), var(--d1-gold)),
+    repeating-linear-gradient(to bottom, transparent 0, transparent 19px, rgba(200, 168, 94, 0.28) 19px, rgba(200, 168, 94, 0.28) 20px);
+  background-size: 1px 100%, 100% 20px;
+  background-position: 14px 0, 0 14px;
+  background-repeat: no-repeat, repeat;
+}
+
+.dir-1 .d1-motifs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.dir-1 .d1-motif { margin: 0; font-size: 12.5px; color: var(--board-dim); }
+.dir-1 .d1-motif strong { display: block; color: var(--board-text); font-weight: 600; }
+.dir-1 .d1-motif__art {
+  display: grid; place-items: center; height: 170px; margin-bottom: 8px; padding: 16px;
+  background: var(--d1-vellum); border-radius: 4px; box-shadow: inset 0 0 0 1px rgba(221, 218, 208, 0.06);
+}
+.dir-1 .d1-motif__art svg { display: block; max-width: 100%; max-height: 100%; }
+.dir-1 .d1-ruling {
+  width: 100%; align-self: center;
+  font: 500 15px/22px var(--d1-body); color: var(--d1-silver);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 21px, rgba(200, 168, 94, 0.3) 21px, rgba(200, 168, 94, 0.3) 22px);
+}
+.dir-1 .d1-ruling .d1-pil { color: var(--d1-rubric); }
+</style>
+</head>
+<body class="board dir-1">
+
+<!-- ============================================================
+     Shared drawings: gradients, filters, the eagle, the seal, the
+     arms, the castle. All original vector work.
+     ============================================================ -->
+<svg class="d1-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- sky and light -->
+    <linearGradient id="d1-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#07090D"/>
+      <stop offset=".38" stop-color="#0B0F14"/>
+      <stop offset=".7" stop-color="#131B23"/>
+      <stop offset="1" stop-color="#1B232B"/>
+    </linearGradient>
+    <radialGradient id="d1-moon" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#A9C0CE" stop-opacity=".46"/>
+      <stop offset=".3" stop-color="#7D97A8" stop-opacity=".22"/>
+      <stop offset=".65" stop-color="#4E6677" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#4E6677" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="d1-ridgeA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2B3945"/>
+      <stop offset=".5" stop-color="#1D2832"/>
+      <stop offset="1" stop-color="#151D25"/>
+    </linearGradient>
+    <linearGradient id="d1-ridgeB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1B252E"/>
+      <stop offset="1" stop-color="#0E141A"/>
+    </linearGradient>
+    <linearGradient id="d1-crag" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#131A21"/>
+      <stop offset=".6" stop-color="#0C1116"/>
+      <stop offset="1" stop-color="#090C10"/>
+    </linearGradient>
+    <linearGradient id="d1-hazeV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8FA5B3" stop-opacity="0"/>
+      <stop offset=".55" stop-color="#8FA5B3" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#8FA5B3" stop-opacity=".04"/>
+    </linearGradient>
+    <linearGradient id="d1-floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0B0F14" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0B0F14" stop-opacity=".96"/>
+    </linearGradient>
+    <linearGradient id="d1-scrimL" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0B0F14" stop-opacity=".9"/>
+      <stop offset=".6" stop-color="#0B0F14" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#0B0F14" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="d1-winglow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#E3A64B" stop-opacity=".75"/>
+      <stop offset=".35" stop-color="#E3A64B" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#E3A64B" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="d1-blur4"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="d1-blur8"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="d1-blur30" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="30"/></filter>
+    <filter id="d1-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 .8  0 0 0 0 .84  0 0 0 0 .88  0 0 0 .55 0"/>
+    </filter>
+    <filter id="d1-mottle" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".011 .017" numOctaves="3" seed="11"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 .8  0 0 0 0 .76  0 0 0 0 .68  1.1 0 0 0 -.42"/>
+    </filter>
+
+    <!-- snow: two sparse tiles at different pitches so the repeat does not show -->
+    <pattern id="d1-snowA" width="430" height="390" patternUnits="userSpaceOnUse">
+      <g fill="#E4EAEE">
+        <circle cx="34" cy="48" r="1.6" opacity=".7"/><circle cx="118" cy="210" r="1.2" opacity=".5"/>
+        <circle cx="176" cy="92" r="2" opacity=".55"/><circle cx="242" cy="318" r="1.3" opacity=".6"/>
+        <circle cx="301" cy="150" r="1.7" opacity=".45"/><circle cx="377" cy="62" r="1.1" opacity=".6"/>
+        <circle cx="398" cy="266" r="1.9" opacity=".5"/><circle cx="72" cy="338" r="1.4" opacity=".55"/>
+        <circle cx="214" cy="22" r="1.1" opacity=".5"/><circle cx="330" cy="356" r="1.5" opacity=".4"/>
+        <circle cx="150" cy="284" r="1" opacity=".5"/><circle cx="20" cy="190" r="1.2" opacity=".45"/>
+      </g>
+    </pattern>
+    <pattern id="d1-snowB" width="610" height="530" patternUnits="userSpaceOnUse">
+      <g fill="#E4EAEE" filter="url(#d1-blur4)" opacity=".3">
+        <circle cx="80" cy="120" r="3.6"/><circle cx="330" cy="60" r="3"/><circle cx="520" cy="300" r="4"/>
+        <circle cx="210" cy="410" r="3.2"/><circle cx="450" cy="470" r="2.8"/><circle cx="30" cy="350" r="2.6"/>
+      </g>
+    </pattern>
+    <pattern id="d1-snowA-s" href="#d1-snowA" patternTransform="scale(.55)"/>
+    <pattern id="d1-snowB-s" href="#d1-snowB" patternTransform="scale(.5)"/>
+
+    <!-- heraldic hatching: diagonal lines from upper left to lower right mean green -->
+    <pattern id="d1-hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+      <line x1="0" y1="0" x2="0" y2="5" stroke="#C8A85E" stroke-width=".8"/>
+    </pattern>
+    <pattern id="d1-torse" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)">
+      <rect width="4.5" height="9" fill="#1E5C45"/><rect x="4.5" width="4.5" height="9" fill="#DDDAD0"/>
+    </pattern>
+
+    <!-- wax -->
+    <radialGradient id="d1-wax" cx=".36" cy=".3" r=".82">
+      <stop offset="0" stop-color="#34896A"/>
+      <stop offset=".42" stop-color="#1E5C45"/>
+      <stop offset="1" stop-color="#0E3324"/>
+    </radialGradient>
+    <radialGradient id="d1-waxdish" cx=".4" cy=".34" r=".78">
+      <stop offset="0" stop-color="#246C51"/>
+      <stop offset="1" stop-color="#143F2F"/>
+    </radialGradient>
+    <linearGradient id="d1-rimshade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#04120C" stop-opacity=".9"/>
+      <stop offset=".5" stop-color="#04120C" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#8FD0B2" stop-opacity=".55"/>
+    </linearGradient>
+    <filter id="d1-relief" x="-5%" y="-5%" width="110%" height="110%">
+      <feOffset in="SourceAlpha" dx="1.3" dy="1.6" result="o1"/>
+      <feGaussianBlur in="o1" stdDeviation=".7" result="b1"/>
+      <feFlood flood-color="#04130D" flood-opacity=".95"/>
+      <feComposite in2="b1" operator="in" result="shadow"/>
+      <feOffset in="SourceAlpha" dx="-1" dy="-1.1" result="o2"/>
+      <feGaussianBlur in="o2" stdDeviation=".45" result="b2"/>
+      <feFlood flood-color="#9BDCBD" flood-opacity=".6"/>
+      <feComposite in2="b2" operator="in" result="light"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="light"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <path id="d1-legendpath" d="M120 47 a73 73 0 1 1 -0.01 0"/>
+
+    <!-- The eagle of Latveria: displayed, head to dexter, perched on a sceptre.
+         Paths inherit fill; the sceptre takes --d1-sceptre. -->
+    <symbol id="d1-eagle" viewBox="0 0 200 200">
+      <path d="M100 132 C94 146 86 160 79 178 L90 171 L94 187 L100 176 L106 187 L110 171 L121 178 C114 160 106 146 100 132Z"/>
+      <g fill="var(--d1-sceptre, currentColor)" stroke="none">
+        <rect x="36" y="151.5" width="130" height="5" rx="2.5"/>
+        <circle cx="31" cy="154" r="5.6"/>
+        <circle cx="22.5" cy="154" r="3.2"/><circle cx="28" cy="146.6" r="3"/><circle cx="28" cy="161.4" r="3"/>
+        <rect x="38" y="149.5" width="3" height="9"/>
+        <circle cx="169" cy="154" r="4"/>
+      </g>
+      <path d="M100 56 C88 62 82 84 84 104 C85 121 92 134 100 144 C108 134 115 121 116 104 C118 84 112 62 100 56Z"/>
+      <path d="M90 66 C87 56 87 46 91 38 C95 30 104 27 109 32 C113 36 113 44 110 50 C107 56 108 61 111 66Z"/>
+      <path d="M94 35 L74 40 C79 46 86 48 94 46Z"/>
+      <path d="M91 74 C78 60 60 42 40 20 C35 32 33 46 36 61 L45 51 C42 66 43 80 48 93 L56 80 C54 94 57 107 64 117 L68 102 C68 114 72 124 79 130 L81 114 C83 122 86 128 90 132 L90 104Z"/>
+      <path transform="translate(200 0) scale(-1 1)" d="M91 74 C78 60 60 42 40 20 C35 32 33 46 36 61 L45 51 C42 66 43 80 48 93 L56 80 C54 94 57 107 64 117 L68 102 C68 114 72 124 79 130 L81 114 C83 122 86 128 90 132 L90 104Z"/>
+      <path d="M88 120 L97 128 L88 150 L79 147Z"/>
+      <path d="M112 120 L103 128 L112 150 L121 147Z"/>
+      <g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
+        <path d="M78 148 q-3 8 1 12"/><path d="M84 150 q-1 8 3 11"/><path d="M90 149 q1 8 6 10"/>
+        <path d="M122 148 q3 8 -1 12"/><path d="M116 150 q1 8 -3 11"/><path d="M110 149 q-1 8 -6 10"/>
+      </g>
+    </symbol>
+
+    <!-- The seal: green wax, the eagle in low relief, the legend on the rim. -->
+    <symbol id="d1-seal" viewBox="0 0 240 240">
+      <path d="M233 120 C233 152 219 181 196 197 S152 236 120 235 S61 219 43 197 S5 153 6 120 S21 65 44 44 S89 7 120 8 S181 15 202 38 S233 89 233 120Z" fill="url(#d1-wax)"/>
+      <path d="M233 120 C233 152 219 181 196 197 S152 236 120 235 S61 219 43 197 S5 153 6 120 S21 65 44 44 S89 7 120 8 S181 15 202 38 S233 89 233 120Z" fill="none" stroke="#06170F" stroke-opacity=".7" stroke-width="1.5"/>
+      <circle cx="120" cy="120" r="97" fill="url(#d1-waxdish)"/>
+      <circle cx="120" cy="120" r="97" fill="none" stroke="url(#d1-rimshade)" stroke-width="3.2"/>
+      <g filter="url(#d1-relief)" fill="#2D795C" style="color:#2D795C; --d1-sceptre:#2D795C">
+        <circle cx="120" cy="120" r="90.5" fill="none" stroke="#2D795C" stroke-width="2.2"/>
+        <circle cx="120" cy="120" r="66" fill="none" stroke="#2D795C" stroke-width="1.8"/>
+        <text font-family="'IM Fell English SC','IM Fell English',Georgia,serif" font-size="15.5" letter-spacing="1.5"><textPath href="#d1-legendpath" startOffset="2" textLength="448" lengthAdjust="spacing">+ SIGILLVM VICTORIS DOMINI LATVERIAE</textPath></text>
+        <use href="#d1-eagle" x="65" y="62" width="110" height="110"/>
+      </g>
+      <ellipse cx="84" cy="66" rx="50" ry="24" transform="rotate(-32 84 66)" fill="#D6F2E3" opacity=".13" filter="url(#d1-blur8)"/>
+    </symbol>
+
+    <!-- The seal hanging on red and green silk cords. -->
+    <symbol id="d1-pendant" viewBox="0 0 240 336">
+      <g fill="none" stroke-linecap="round">
+        <path d="M100 0 C96 34 116 56 117 104" stroke="#050505" stroke-width="10"/>
+        <path d="M140 0 C144 34 124 56 123 104" stroke="#050505" stroke-width="10"/>
+        <path d="M100 0 C96 34 116 56 117 104" stroke="#8A2E22" stroke-width="8"/>
+        <path d="M140 0 C144 34 124 56 123 104" stroke="#1E5C45" stroke-width="8"/>
+        <path d="M100 0 C96 34 116 56 117 104" stroke="#2A7557" stroke-width="8" stroke-dasharray="5 6" stroke-linecap="butt"/>
+        <path d="M140 0 C144 34 124 56 123 104" stroke="#A53C2C" stroke-width="8" stroke-dasharray="5 6" stroke-linecap="butt"/>
+      </g>
+      <use href="#d1-seal" x="0" y="96" width="240" height="240"/>
+    </symbol>
+
+    <!-- The arms of Latveria: Vert, an eagle displayed argent perched on a sceptre or.
+         Crested helm repeating the eagle, in the German and Nordic manner. -->
+    <symbol id="d1-arms" viewBox="0 0 300 430">
+      <g fill="#17493A" stroke="#C8A85E" stroke-width="1.4" stroke-linejoin="round">
+        <path d="M125 116 C108 96 84 90 62 100 C74 103 82 110 85 120 C68 113 48 120 36 138 C49 134 59 139 63 148 C46 147 28 158 20 180 C33 170 45 169 54 176 C42 184 33 198 33 218 C42 203 54 196 66 194 C80 188 93 174 103 158 C111 146 118 136 123 127Z"/>
+        <path transform="translate(300 0) scale(-1 1)" d="M125 116 C108 96 84 90 62 100 C74 103 82 110 85 120 C68 113 48 120 36 138 C49 134 59 139 63 148 C46 147 28 158 20 180 C33 170 45 169 54 176 C42 184 33 198 33 218 C42 203 54 196 66 194 C80 188 93 174 103 158 C111 146 118 136 123 127Z"/>
+      </g>
+      <g fill="none" stroke="#C8A85E" stroke-width=".9" opacity=".75" stroke-linecap="round">
+        <path d="M118 120 C104 108 88 104 74 106"/><path d="M110 138 C92 128 70 130 52 138"/><path d="M100 154 C82 150 60 156 40 168"/><path d="M92 170 C74 174 58 184 46 198"/>
+        <path d="M182 120 C196 108 212 104 226 106"/><path d="M190 138 C208 128 230 130 248 138"/><path d="M200 154 C218 150 240 156 260 168"/><path d="M208 170 C226 174 242 184 254 198"/>
+      </g>
+      <path d="M40 184H260V288C260 352 216 398 150 424C84 398 40 352 40 288Z" fill="#143F31"/>
+      <path d="M40 184H260V288C260 352 216 398 150 424C84 398 40 352 40 288Z" fill="url(#d1-hatch)" opacity=".5"/>
+      <path d="M40 184H260V288C260 352 216 398 150 424C84 398 40 352 40 288Z" fill="none" stroke="#C8A85E" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M49 193H251V288C251 345 211 388 150 413C89 388 49 345 49 288Z" fill="none" stroke="#C8A85E" stroke-width=".8" opacity=".7"/>
+      <use href="#d1-eagle" x="68" y="204" width="164" height="164" fill="#DDDAD0" style="color:#DDDAD0; --d1-sceptre:#C8A85E"/>
+      <path d="M110 200 Q150 180 190 200 L186 184 Q150 168 114 184Z" fill="#262B2E" stroke="#C8A85E" stroke-width="1.4" stroke-linejoin="round"/>
+      <path d="M119 186 L122 144 C122 123 136 111 150 111 C164 111 178 123 178 144 L181 186 Q150 172 119 186Z" fill="#20252A" stroke="#C8A85E" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M128 147 H172" stroke="#050606" stroke-width="5.5" stroke-linecap="round"/>
+      <path d="M126 143.5 H174 M126 150.5 H174" stroke="#C8A85E" stroke-width=".8" opacity=".8"/>
+      <path d="M150 111 V178" stroke="#C8A85E" stroke-width=".9" opacity=".8"/>
+      <g fill="#C8A85E" opacity=".85"><circle cx="160" cy="160" r="1.2"/><circle cx="166" cy="160" r="1.2"/><circle cx="160" cy="166" r="1.2"/><circle cx="166" cy="166" r="1.2"/><circle cx="172" cy="163" r="1.2"/></g>
+      <rect x="123" y="102" width="54" height="10" rx="5" fill="url(#d1-torse)" stroke="#C8A85E" stroke-width="1"/>
+      <use href="#d1-eagle" x="103" y="10" width="94" height="94" fill="#DDDAD0" style="color:#DDDAD0; --d1-sceptre:#C8A85E"/>
+    </symbol>
+
+    <!-- Town pieces -->
+    <symbol id="d1-house" viewBox="0 0 40 52" preserveAspectRatio="none">
+      <path d="M3 52 V25 L20 2 L37 25 V52Z" fill="#07090C"/>
+      <path d="M1 27 L20 1 L24 6 L8 29Z" fill="#27333E"/>
+      <path d="M20 1 L39 27 L36 29 L20 7Z" fill="#141B22"/>
+    </symbol>
+    <symbol id="d1-pine" viewBox="-16 0 32 70">
+      <path d="M0 0 L-8 22 L-4 22 L-12 44 L-5 44 L-15 68 L15 68 L5 44 L12 44 L4 22 L8 22Z" fill="#06080B"/>
+      <path d="M0 0 L-8 22 L-4 22 L-12 44 L-5 44 L-15 68 L-9 68 L-1 44 L-6 44 L1 22 L-2 22Z" fill="#1A232B" opacity=".8"/>
+    </symbol>
+    <symbol id="d1-gate" viewBox="0 0 30 46">
+      <path d="M3 44 V18 C3 9 10 5 15 1 C20 5 27 9 27 18 V44" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M3 44 H27" stroke="currentColor" stroke-width="2.2"/>
+    </symbol>
+
+    <!-- The crag, the castle, the bridge. Drawn in the desktop scene's coordinates. -->
+    <g id="d1-rock">
+      <!-- bridge piers stand behind the crag's shoulder -->
+      <g fill="#090C10">
+        <path d="M712 553 L728 551 L737 900 L703 900Z"/>
+        <path d="M792 541 L808 539 L818 900 L782 900Z"/>
+        <path d="M872 529 L888 527 L899 900 L861 900Z"/>
+      </g>
+      <g fill="#1F2A33" opacity=".8">
+        <path d="M712 553 L716 552.5 L712 900 L703 900Z"/>
+        <path d="M792 541 L796 540.5 L792 900 L782 900Z"/>
+      </g>
+      <!-- the far bank the bridge leaves from -->
+      <path d="M430 900 L520 772 L575 702 L612 620 L640 574 L660 566 L688 612 L714 732 L752 900Z" fill="#090C10"/>
+      <path d="M640 574 L612 620 L575 702 L520 772" fill="none" stroke="#3A4956" stroke-width="2" opacity=".5"/>
+      <use href="#d1-pine" x="536" y="672" width="30" height="66"/>
+      <use href="#d1-pine" x="568" y="622" width="26" height="56"/>
+      <use href="#d1-pine" x="498" y="730" width="34" height="74"/>
+      <use href="#d1-pine" x="596" y="580" width="20" height="44"/>
+      <use href="#d1-pine" x="690" y="640" width="24" height="52"/>
+      <!-- the crag -->
+      <path d="M700 900 L760 800 L800 760 L830 690 L880 650 L905 590 L950 560 L965 530 L1340 530 L1365 570 L1400 600 L1420 660 L1470 720 L1500 800 L1560 900Z" fill="url(#d1-crag)"/>
+      <g fill="none" stroke="#51626F" stroke-width="2.2" stroke-linecap="round" opacity=".6">
+        <path d="M966 532 L950 560 L905 590"/><path d="M880 650 L830 690"/><path d="M800 760 L760 800"/>
+      </g>
+      <g opacity=".95">
+        <path d="M966 532 L950 560 L905 590 L880 650 L936 628 L992 560Z" fill="#1A232C"/>
+        <path d="M880 650 L830 690 L800 760 L760 800 L850 770 L916 690Z" fill="#161E26"/>
+        <path d="M992 560 L936 628 L916 690 L850 770 L900 900 L1010 900 L1040 720 L1020 610Z" fill="#10171D"/>
+        <path d="M1020 610 L1040 720 L1010 900 L1210 900 L1190 700 L1160 590 L1080 548Z" fill="#0D1318"/>
+        <path d="M1340 532 L1365 570 L1400 600 L1420 660 L1360 640 L1310 580Z" fill="#0B0F14"/>
+      </g>
+      <g fill="none" stroke="#C9D5DC" stroke-width="1.5" stroke-linecap="round" opacity=".22">
+        <path d="M907 590 L948 562"/><path d="M834 689 L878 652"/><path d="M764 799 L798 762"/>
+        <path d="M938 628 L990 562"/><path d="M1022 610 L1078 550"/>
+      </g>
+      <!-- bridge deck and rail -->
+      <path d="M646 562 L962 514 L962 524 L646 572Z" fill="#07090C"/>
+      <path d="M646 552 L962 504" fill="none" stroke="#07090C" stroke-width="2.4"/>
+      <path d="M660 550 V560 M690 545.5 V555.5 M720 541 V551 M750 536.4 V546.4 M780 532 V542 M810 527.3 V537.3 M840 522.7 V532.7 M870 518.2 V528.2 M900 513.6 V523.6 M930 509 V519" stroke="#07090C" stroke-width="2"/>
+      <path d="M646 551 L962 503" fill="none" stroke="#B9C7D0" stroke-width="1.1" opacity=".32"/>
+
+      <!-- the castle -->
+      <g fill="#07090C">
+        <!-- gatehouse -->
+        <path d="M962 532 V446 H1012 V532Z"/>
+        <path d="M954 448 L987 376 L1020 448Z"/>
+        <!-- hall -->
+        <path d="M1012 532 V470 H1026 V428 H1124 V532Z"/>
+        <path d="M1016 430 L1040 366 L1108 366 L1132 430Z"/>
+        <rect x="1070" y="348" width="9" height="22"/>
+        <!-- stair turret -->
+        <path d="M1118 532 V378 H1142 V532Z"/>
+        <path d="M1113 380 L1130 330 L1147 380Z"/>
+        <!-- great tower -->
+        <path d="M1141 532 L1146 250 L1204 250 L1209 532Z"/>
+        <path d="M1133 258 V234 H1217 V258 L1209 268 H1141Z"/>
+        <path d="M1138 236 L1175 102 L1212 236Z"/>
+        <path d="M1174 104 V80 H1176 V104Z"/>
+        <path d="M1125 252 V206 H1143 V252Z"/><path d="M1121 208 L1134 166 L1147 208Z"/>
+        <path d="M1207 252 V206 H1225 V252Z"/><path d="M1203 208 L1216 166 L1229 208Z"/>
+        <!-- curtain wall, east -->
+        <path d="M1206 532 V492 h12 v-9 h11 v9 h11 v-9 h11 v9 h11 v-9 h11 v9 h11 v-9 h11 v9 h11 v-9 h11 v9 h11 v-9 h11 v9 V532Z"/>
+        <!-- mid tower -->
+        <path d="M1238 532 L1240 362 H1286 L1288 532Z"/>
+        <path d="M1232 364 L1263 286 L1294 364Z"/>
+        <!-- chapel -->
+        <path d="M1288 532 V444 H1336 V532Z"/>
+        <path d="M1282 446 L1312 396 L1342 446Z"/>
+        <path d="M1311 398 V366 H1313 V398Z"/>
+        <!-- east bastion -->
+        <path d="M1330 532 V480 H1354 V532Z"/><path d="M1326 482 L1342 450 L1358 482Z"/>
+      </g>
+      <!-- snow on the moon-side roofs -->
+      <g fill="#222D37">
+        <path d="M954 448 L987 376 L987 448Z"/>
+        <path d="M1016 430 L1040 366 L1074 366 L1058 430Z"/>
+        <path d="M1113 380 L1130 330 L1130 380Z"/>
+        <path d="M1138 236 L1175 102 L1175 236Z"/>
+        <path d="M1121 208 L1134 166 L1134 208Z"/><path d="M1203 208 L1216 166 L1216 208Z"/>
+        <path d="M1232 364 L1263 286 L1263 364Z"/>
+        <path d="M1282 446 L1312 396 L1312 446Z"/>
+        <path d="M1326 482 L1342 450 L1342 482Z"/>
+      </g>
+      <!-- rim light -->
+      <g fill="none" stroke="#9FB4C1" stroke-linecap="round">
+        <path d="M1138 236 L1175 102" stroke-width="1.6" opacity=".7"/>
+        <path d="M1212 236 L1175 102" stroke-width="1.2" opacity=".4"/>
+        <path d="M1146 252 L1142 520" stroke-width="1.2" opacity=".22"/>
+        <path d="M1204 252 L1208 492" stroke-width="1.2" opacity=".3"/>
+        <path d="M954 448 L987 376" stroke-width="1.3" opacity=".5"/>
+        <path d="M1016 430 L1040 366 L1108 366" stroke-width="1.3" opacity=".45"/>
+        <path d="M1113 380 L1130 330" stroke-width="1.2" opacity=".5"/>
+        <path d="M1121 208 L1134 166" stroke-width="1.1" opacity=".6"/><path d="M1203 208 L1216 166" stroke-width="1.1" opacity=".6"/>
+        <path d="M1232 364 L1263 286 L1294 364" stroke-width="1.3" opacity=".5"/>
+        <path d="M1282 446 L1312 396 L1342 446" stroke-width="1.2" opacity=".4"/>
+        <path d="M1326 482 L1342 450" stroke-width="1.1" opacity=".4"/>
+        <path d="M1133 234 H1217" stroke-width="1" opacity=".3"/>
+      </g>
+      <g fill="#0E141A">
+        <path d="M996 534 L1016 512 L1044 522 L1066 534Z"/>
+        <path d="M1206 534 L1230 514 L1256 524 L1270 534Z"/>
+        <path d="M1296 534 L1320 518 L1350 534Z"/>
+        <path d="M1090 534 L1108 520 L1136 534Z"/>
+      </g>
+      <!-- the one lit window -->
+      <circle cx="1175" cy="306" r="46" fill="url(#d1-winglow)"/>
+      <path d="M1170.5 318 V302 a4.5 4.5 0 0 1 9 0 V318Z" fill="#E3A64B"/>
+      <path d="M1175 298 V318" stroke="#7A5220" stroke-width="1"/>
+    </g>
+
+    <!-- The town under the castle -->
+    <g id="d1-town">
+      <use href="#d1-house" x="786" y="800" width="54" height="72"/>
+      <use href="#d1-house" x="834" y="778" width="66" height="94"/>
+      <use href="#d1-house" x="894" y="806" width="50" height="66"/>
+      <use href="#d1-house" x="940" y="786" width="62" height="86"/>
+      <use href="#d1-house" x="998" y="812" width="46" height="60"/>
+      <!-- fortified church -->
+      <path d="M1086 872 V742 H1114 V872Z" fill="#07090C"/>
+      <path d="M1080 744 L1100 648 L1120 744Z" fill="#07090C"/>
+      <path d="M1080 744 L1100 648 L1100 744Z" fill="#27333E"/>
+      <path d="M1100 650 V626 M1094 636 H1106" stroke="#07090C" stroke-width="2.4"/>
+      <path d="M1114 872 V792 H1186 V872Z" fill="#07090C"/>
+      <path d="M1109 794 L1150 756 L1191 794Z" fill="#07090C"/>
+      <path d="M1109 794 L1150 756 L1155 761 L1119 796Z" fill="#27333E"/>
+      <path d="M1030 872 V838 h11 v-8 h10 v8 h10 v-8 h10 v8 h15 V872Z M1191 872 V838 h11 v-8 h10 v8 h10 v-8 h10 v8 h11 V872Z" fill="#07090C"/>
+      <use href="#d1-house" x="1246" y="794" width="60" height="78"/>
+      <use href="#d1-house" x="1300" y="810" width="48" height="62"/>
+      <use href="#d1-house" x="1344" y="784" width="66" height="88"/>
+      <use href="#d1-house" x="1404" y="814" width="46" height="58"/>
+      <path d="M760 872 H1470 V900 H760Z" fill="#07090C"/>
+      <g fill="#C99245">
+        <rect x="862" y="828" width="5" height="6.5" opacity=".85"/><rect x="966" y="832" width="5" height="6.5" opacity=".7"/>
+        <rect x="808" y="842" width="4.5" height="6" opacity=".55"/><rect x="1146" y="822" width="5" height="9" opacity=".8"/>
+        <rect x="1270" y="836" width="5" height="6.5" opacity=".7"/><rect x="1372" y="828" width="5" height="6.5" opacity=".8"/>
+        <rect x="1016" y="846" width="4.5" height="6" opacity=".55"/><rect x="1320" y="846" width="4.5" height="6" opacity=".5"/>
+        <rect x="1098" y="800" width="4" height="8" opacity=".6"/>
+      </g>
+    </g>
+    </g>
+  </defs>
+</svg>
+
+<nav class="board-nav" aria-label="Concept boards">
+  <a href="index.html">All directions</a>
+  <a href="direction-1-winter-chancery.html" aria-current="page">I. The Winter Chancery</a>
+  <a href="direction-2-the-audience.html">II. The Audience</a>
+  <a href="direction-3-iron-protocol.html">III. The Iron Protocol</a>
+  <span class="board-nav__note">Static concept board</span>
+</nav>
+
+<header class="board-head">
+  <h1>Direction I: The Winter Chancery</h1>
+  <p>A letter has come from a real place: black vellum written in silver and sealed shut in green wax, sent down from a castle above a snowbound Carpathian town where nothing modern is in sight.</p>
+</header>
+
+<!-- ============================================================ HERO -->
+<section class="board-sec" id="hero">
+  <h2>Hero</h2>
+  <p class="board-lede">The first screen is the approach. The valley is dark, one window is lit, and the only thing to do is break the seal.</p>
+  <div class="stage">
+
+    <figure class="frame-wrap frame-wrap--desktop" id="hero-desktop">
+      <div class="frame frame--desktop d1-hero">
+        <svg class="fill" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="1600" height="900" fill="url(#d1-sky)"/>
+          <ellipse cx="1210" cy="290" rx="640" ry="470" fill="url(#d1-moon)"/>
+          <ellipse cx="1190" cy="260" rx="240" ry="200" fill="#B7CBD6" opacity=".11" filter="url(#d1-blur30)"/>
+          <!-- far ridges -->
+          <path d="M0 520 L120 468 L210 500 L330 418 L430 470 L540 396 L640 452 L760 378 L860 432 L980 356 L1100 420 L1230 346 L1340 412 L1460 366 L1600 430 V900 H0Z" fill="url(#d1-ridgeA)" opacity=".85"/>
+          <rect y="430" width="1600" height="260" fill="url(#d1-hazeV)"/>
+          <path d="M0 640 L110 596 L230 632 L350 566 L470 618 L600 560 L700 610 L820 572 L940 628 L1090 590 L1600 640 V900 H0Z" fill="url(#d1-ridgeB)"/>
+          <rect y="560" width="1600" height="220" fill="url(#d1-hazeV)" opacity=".7"/>
+          <use href="#d1-rock"/>
+          <use href="#d1-town"/>
+          <!-- snow haze in the valley -->
+          <g fill="#93A8B5" filter="url(#d1-blur30)">
+            <ellipse cx="1110" cy="884" rx="470" ry="30" opacity=".36"/>
+            <ellipse cx="780" cy="840" rx="240" ry="26" opacity=".14"/>
+            <ellipse cx="1420" cy="770" rx="220" ry="26" opacity=".12"/>
+            <ellipse cx="600" cy="890" rx="320" ry="26" opacity=".2"/>
+          </g>
+          <rect y="850" width="1600" height="50" fill="url(#d1-floor)" opacity=".8"/>
+          <rect width="760" height="900" fill="url(#d1-scrimL)"/>
+          <rect width="1600" height="900" fill="url(#d1-snowB)"/>
+          <rect width="1600" height="900" fill="url(#d1-snowA)"/>
+          <rect width="1600" height="900" filter="url(#d1-grain)" opacity=".07"/>
+        </svg>
+        <div class="d1-hero__copy">
+          <p class="d1-hero__title">A letter has come for you from Latveria.</p>
+          <div class="d1-hero__actions">
+            <button type="button" class="d1-sealbtn" aria-label="Break the seal">
+              <svg viewBox="0 0 240 240" aria-hidden="true"><use href="#d1-seal"/></svg>
+            </button>
+            <div class="d1-hero__labels">
+              <span class="d1-act">Break the seal</span>
+              <button type="button" class="d1-quiet">Open without sound</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption><strong>Desktop, 16:9.</strong> Text holds the dark left third; the seal is the button.</figcaption>
+    </figure>
+
+    <figure class="frame-wrap frame-wrap--phone" id="hero-phone">
+      <div class="frame frame--phone d1-hero d1-hero--phone">
+        <svg class="fill" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="390" height="844" fill="url(#d1-sky)"/>
+          <ellipse cx="270" cy="180" rx="330" ry="270" fill="url(#d1-moon)"/>
+          <ellipse cx="266" cy="176" rx="130" ry="110" fill="#B7CBD6" opacity=".11" filter="url(#d1-blur30)"/>
+          <path d="M0 300 L50 268 L96 290 L150 236 L200 274 L250 226 L300 262 L350 232 L390 258 V844 H0Z" fill="url(#d1-ridgeA)" opacity=".85"/>
+          <rect y="250" width="390" height="150" fill="url(#d1-hazeV)"/>
+          <path d="M0 384 L60 350 L120 376 L170 344 L230 372 L390 392 V844 H0Z" fill="url(#d1-ridgeB)"/>
+          <g transform="translate(-394 36) scale(.56)">
+            <use href="#d1-rock"/>
+            <use href="#d1-town"/>
+          </g>
+          <rect y="524" width="390" height="320" fill="#090C10"/>
+          <g fill="#93A8B5" filter="url(#d1-blur30)">
+            <ellipse cx="210" cy="536" rx="250" ry="20" opacity=".36"/>
+            <ellipse cx="50" cy="500" rx="130" ry="18" opacity=".16"/>
+          </g>
+          <rect y="524" width="390" height="70" fill="url(#d1-floor)"/>
+          <rect y="593" width="390" height="251" fill="#0B0F14" opacity=".96"/>
+          <rect width="390" height="844" fill="url(#d1-snowB-s)"/>
+          <rect width="390" height="844" fill="url(#d1-snowA-s)"/>
+          <rect width="390" height="844" filter="url(#d1-grain)" opacity=".07"/>
+        </svg>
+        <div class="d1-hero__copy">
+          <p class="d1-hero__title">A letter has come for you from Latveria.</p>
+          <div class="d1-hero__actions">
+            <button type="button" class="d1-sealbtn" aria-label="Break the seal">
+              <svg viewBox="0 0 240 240" aria-hidden="true"><use href="#d1-seal"/></svg>
+            </button>
+            <div class="d1-hero__labels">
+              <span class="d1-act">Break the seal</span>
+              <button type="button" class="d1-quiet">Open without sound</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption><strong>Phone.</strong> Castle above, letter below.</figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ============================================================ SUMMONS -->
+<section class="board-sec" id="summons">
+  <h2>The summons</h2>
+  <p class="board-lede">A letter close, built on the page of a black book of hours: ruled in gold, written in silver, one initial, one seal.</p>
+  <div class="stage">
+
+    <figure class="frame-wrap frame-wrap--phone" id="summons-phone">
+      <div class="frame frame--phone d1-letter">
+        <div class="d1-letter__sheet">
+          <p class="d1-text">
+            <span class="d1-par"><span class="d1-versal">V</span><span class="d1-engross">ictor von Doom,</span>by his own hand and will Sovereign of Latveria, Lord of Doomstadt and of all lands within the Carpathian ring, to</span>
+            <span class="d1-nameline"><span class="d1-name">Tara Menon,</span> <span class="d1-greet">greeting.</span></span>
+            <span class="d1-par"><span class="d1-pil">¶</span>Be it known that Doom has weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing; and that your name stands upon the roll.</span>
+            <span class="d1-par"><span class="d1-pil">¶</span>You are therefore summoned to take your seat at the Council of Doom, where the matters set before it shall be weighed and approved.</span>
+            <span class="d1-par d1-sanction"><span class="d1-pil">¶</span>Let none who is called fail to answer. Doom keeps his word, and the absent forfeit their voice.</span>
+            <span class="d1-par"><span class="d1-pil">¶</span>In witness whereof we have caused our seal to be set to these letters. Given at Castle Doom, in Doomstadt, the fifteenth day of November, MMXXVI.</span>
+          </p>
+          <div class="d1-plica"></div>
+          <svg class="d1-mottle" aria-hidden="true"><rect width="100%" height="100%" filter="url(#d1-mottle)"/></svg>
+        </div>
+        <div class="d1-pendant"><svg viewBox="0 0 240 336" role="img" aria-label="The green wax seal of Latveria, hanging on red and green cords"><use href="#d1-pendant"/></svg></div>
+        <button type="button" class="d1-cta">Take your seat</button>
+      </div>
+      <figcaption><strong>Phone, opened.</strong> The guest's name is the only gold line; the sanction is the only red one.</figcaption>
+    </figure>
+
+    <figure class="frame-wrap frame-wrap--sheet" id="summons-sheet">
+      <div class="frame frame--sheet d1-desk">
+        <div class="d1-sheet">
+          <div class="d1-sheet__arms"><svg viewBox="0 0 300 430" role="img" aria-label="The arms of Latveria: a silver eagle on a gold sceptre, on a green shield, under a crested helm"><use href="#d1-arms"/></svg></div>
+          <p class="d1-text">
+            <span class="d1-par"><span class="d1-versal">V</span><span class="d1-engross">ictor von Doom,</span>by his own hand and will Sovereign of Latveria, Lord of Doomstadt and of all lands within the Carpathian ring, to</span>
+            <span class="d1-nameline"><span class="d1-name">Tara Menon,</span> <span class="d1-greet">greeting.</span></span>
+            <span class="d1-par"><span class="d1-pil">¶</span>Be it known that Doom has weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing; and that your name stands upon the roll.</span>
+            <span class="d1-par"><span class="d1-pil">¶</span>You are therefore summoned to take your seat at the Council of Doom, where the matters set before it shall be weighed and approved.</span>
+            <span class="d1-par d1-sanction"><span class="d1-pil">¶</span>Let none who is called fail to answer. Doom keeps his word, and the absent forfeit their voice.</span>
+            <span class="d1-par"><span class="d1-pil">¶</span>In witness whereof we have caused our seal to be set to these letters. Given at Castle Doom, in Doomstadt, the fifteenth day of November, MMXXVI.</span>
+          </p>
+          <div class="d1-plica"></div>
+          <svg class="d1-mottle" aria-hidden="true"><rect width="100%" height="100%" filter="url(#d1-mottle)"/></svg>
+        </div>
+        <div class="d1-pendant"><svg viewBox="0 0 240 336" aria-hidden="true"><use href="#d1-pendant"/></svg></div>
+        <p class="d1-desk__note">Sealed for one reader. Break it and it cannot be sealed again.</p>
+        <button type="button" class="d1-cta">Take your seat</button>
+      </div>
+      <figcaption><strong>Landscape sheet.</strong> The same letter as a charter: arms in the margin, the seal hanging from the folded foot.</figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ============================================================ IDENTITY -->
+<section class="board-sec" id="identity">
+  <h2>Identity</h2>
+  <p class="board-lede">Blue-black, silver and gold do nearly all the work. Green is wax and the ground of the initial. Red is the state's rubric.</p>
+
+  <div class="sheet-grid">
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>Palette</h3>
+      <ul class="swatches">
+        <li class="swatch"><div class="swatch__chip" style="background:#0B0F14"></div><span class="swatch__name">Night slate</span><span class="swatch__hex">#0B0F14</span>World base</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#100F0E"></div><span class="swatch__name">Vellum black</span><span class="swatch__hex">#100F0E</span>Document ground</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#1B232B"></div><span class="swatch__name">Slate</span><span class="swatch__hex">#1B232B</span>Rock, panels</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#2B3945"></div><span class="swatch__name">Ridge blue</span><span class="swatch__hex">#2B3945</span>Far ridges. Shape only, 1.62:1</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#DDDAD0"></div><span class="swatch__name">Snow silver</span><span class="swatch__hex">#DDDAD0</span>Primary text, silver ink. 13.74:1</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#979F9F"></div><span class="swatch__name">Pewter</span><span class="swatch__hex">#979F9F</span>Secondary text. 7.12:1</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#C8A85E"></div><span class="swatch__name">Leaf gold</span><span class="swatch__hex">#C8A85E</span>Initials, ruling, the name. 8.44:1</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#5FA98A"></div><span class="swatch__name">Verdigris</span><span class="swatch__hex">#5FA98A</span>Small green text. 6.89:1</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#1E5C45"></div><span class="swatch__name">Chancery green</span><span class="swatch__hex">#1E5C45</span>Wax, initial ground. Fill only, 2.45:1</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#D2604E"></div><span class="swatch__name">Rubric</span><span class="swatch__hex">#D2604E</span>Rubric text. 5.06:1</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#8A2E22"></div><span class="swatch__name">Banner red</span><span class="swatch__hex">#8A2E22</span>Banner field, cords. Fill only, 2.28:1</li>
+        <li class="swatch"><div class="swatch__chip" style="background:#E3A64B"></div><span class="swatch__name">Window amber</span><span class="swatch__hex">#E3A64B</span>The lit window. 8.99:1</li>
+      </ul>
+    </div>
+
+    <div class="sheet-block">
+      <h3>Typography</h3>
+      <div class="specimen d1-spec d1-spec--versal">
+        <div class="d1-spec__versal">V</div>
+        <div>
+          <svg width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="The monogram D in a ring"><circle cx="32" cy="32" r="30" fill="none" stroke="#C8A85E" stroke-width="1.6"/><circle cx="32" cy="32" r="26.5" fill="none" stroke="#C8A85E" stroke-width=".6"/><text x="32" y="45" text-anchor="middle" font-family="'Grenze Gotisch',serif" font-weight="600" font-size="38" fill="#C8A85E">D</text></svg>
+          <span class="specimen__meta">Grenze Gotisch 600. One glyph at a time: the versal and the seal monogram. Never a word, never capitals in a row.</span>
+        </div>
+      </div>
+      <div class="specimen d1-spec">
+        <div class="d1-spec__sc">Victor von Doom</div>
+        <div class="d1-spec__it">Tara Menon, greeting.</div>
+        <div class="d1-spec__ro">A letter has come for you from Latveria.</div>
+        <span class="specimen__meta">IM Fell English SC for the engrossed first line; IM Fell English italic for the name; roman for display lines.</span>
+      </div>
+      <div class="specimen d1-spec">
+        <p class="d1-spec__body">Be it known that Doom has weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing; and that <em>your name stands upon the roll.</em></p>
+        <span class="specimen__meta">EB Garamond 500 for the decree body, set a weight up because it is light on dark. Italic for the salutation.</span>
+      </div>
+      <div class="specimen d1-spec">
+        <div class="d1-spec__ui">
+          <span class="d1-spec__btn">Take your seat</span>
+          <span class="d1-spec__lbl">Break the seal</span>
+          <span class="d1-spec__lbl d1-spec__lbl--quiet">Open without sound</span>
+        </div>
+        <span class="specimen__meta">Hanken Grotesk 400 and 500 for buttons, labels and the council interface. Small sizes only.</span>
+      </div>
+    </div>
+
+    <div class="sheet-block">
+      <h3>Insignia, at two levels of detail</h3>
+      <div class="d1-insignia">
+        <figure>
+          <svg width="196" height="281" viewBox="0 0 300 430" role="img" aria-label="Full arms of Latveria"><use href="#d1-arms"/></svg>
+          Full arms. Hatching reads as green.
+        </figure>
+        <figure>
+          <svg width="190" height="190" viewBox="0 0 240 240" role="img" aria-label="The seal"><use href="#d1-seal"/></svg>
+          The seal, with its rim legend.
+        </figure>
+        <figure>
+          <div class="d1-insignia__row">
+            <svg width="76" height="76" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="#C8A85E" stroke-width="2"/><circle cx="50" cy="50" r="42.5" fill="none" stroke="#C8A85E" stroke-width=".7"/><use href="#d1-eagle" x="17" y="16" width="66" height="66" fill="#DDDAD0" style="color:#DDDAD0; --d1-sceptre:#C8A85E"/></svg>
+            <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46.5" fill="none" stroke="#C8A85E" stroke-width="3"/><use href="#d1-eagle" x="15" y="14" width="70" height="70" fill="#DDDAD0" style="color:#DDDAD0; --d1-sceptre:#C8A85E"/></svg>
+            <svg width="22" height="22" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45.5" fill="none" stroke="#C8A85E" stroke-width="5"/><use href="#d1-eagle" x="13" y="12" width="74" height="74" fill="#DDDAD0" style="color:#DDDAD0; --d1-sceptre:#DDDAD0"/></svg>
+          </div>
+          Reduced: the eagle in a ring, down to 22 pixels.
+        </figure>
+      </div>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>Materials and light</h3>
+      <div class="tiles">
+        <figure class="tile">
+          <div class="tile__art"><div class="d1-tile-vellum">weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing; and that your name stands upon the roll of those</div></div>
+          <strong>Black vellum, gold ruling</strong>Flat page, silver ink. No lighting effect inside the letter.
+        </figure>
+        <figure class="tile">
+          <div class="tile__art" style="background:#0d131a"><svg viewBox="26 22 132 99" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#d1-seal" width="240" height="240"/></svg></div>
+          <strong>Green wax</strong>The hero material. Soft edge, low relief, one dull highlight.
+        </figure>
+        <figure class="tile">
+          <div class="tile__art"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="400" height="300" fill="url(#d1-sky)"/>
+            <path d="M0 150 L60 118 L110 142 L180 92 L240 132 L310 96 L400 140 V300 H0Z" fill="url(#d1-ridgeA)"/>
+            <rect y="110" width="400" height="120" fill="url(#d1-hazeV)"/>
+            <path d="M0 220 L80 190 L170 216 L260 184 L400 214 V300 H0Z" fill="url(#d1-ridgeB)"/>
+            <ellipse cx="200" cy="262" rx="230" ry="26" fill="#93A8B5" opacity=".32" filter="url(#d1-blur30)"/>
+            <rect width="400" height="300" fill="url(#d1-snowB-s)"/><rect width="400" height="300" fill="url(#d1-snowA-s)"/>
+            <rect width="400" height="300" filter="url(#d1-grain)" opacity=".07"/>
+          </svg></div>
+          <strong>Snow haze over slate</strong>Cold light from above; the valley dissolves.
+        </figure>
+        <figure class="tile">
+          <div class="tile__art" style="background:#100F0E"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <svg x="0" y="0" width="400" height="300" viewBox="30 176 128 96" preserveAspectRatio="xMidYMid slice"><use href="#d1-arms" width="300" height="430"/></svg>
+          </svg></div>
+          <strong>Hatched engraving line</strong>One gold line, after the armorials. Diagonal hatching is green.
+        </figure>
+        <figure class="tile">
+          <div class="tile__art" style="background:#07090C"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="400" height="300" fill="#080B0F"/>
+            <g stroke="#10161C" stroke-width="2" fill="none"><path d="M0 60 H400 M0 130 H400 M0 200 H400 M0 270 H400"/><path d="M70 0 V60 M210 0 V60 M330 0 V60 M130 60 V130 M290 60 V130 M50 130 V200 M350 130 V200 M120 200 V270 M300 200 V270"/></g>
+            <circle cx="200" cy="150" r="170" fill="url(#d1-winglow)" opacity=".8"/>
+            <path d="M170 232 V132 C170 104 188 92 200 78 C212 92 230 104 230 132 V232Z" fill="#E3A64B"/>
+            <path d="M200 80 V232 M170 160 H230" stroke="#5A3B14" stroke-width="3.5"/>
+            <path d="M162 234 H238" stroke="#C9D5DC" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+            <rect width="400" height="300" filter="url(#d1-grain)" opacity=".08"/>
+          </svg></div>
+          <strong>The lit window</strong>The one warm point on any screen, and the one pointed arch.
+        </figure>
+        <figure class="tile">
+          <div class="tile__art" style="background:#100F0E"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g fill="none">
+              <path d="M-20 70 C100 40 180 150 420 110" stroke="#030303" stroke-width="30"/>
+              <path d="M-20 70 C100 40 180 150 420 110" stroke="#8A2E22" stroke-width="24"/>
+              <path d="M-20 70 C100 40 180 150 420 110" stroke="#B04434" stroke-width="24" stroke-dasharray="16 22"/>
+              <path d="M-20 64 C100 34 180 144 420 104" stroke="#E08B78" stroke-width="2" stroke-dasharray="10 28" opacity=".5"/>
+              <path d="M-20 200 C120 250 220 130 420 210" stroke="#030303" stroke-width="30"/>
+              <path d="M-20 200 C120 250 220 130 420 210" stroke="#1E5C45" stroke-width="24"/>
+              <path d="M-20 200 C120 250 220 130 420 210" stroke="#2F8061" stroke-width="24" stroke-dasharray="16 22"/>
+              <path d="M-20 194 C120 244 220 124 420 204" stroke="#8FD0B2" stroke-width="2" stroke-dasharray="10 28" opacity=".45"/>
+            </g>
+          </svg></div>
+          <strong>Silk cords</strong>Red and green, as on charters granted in perpetuity.
+        </figure>
+      </div>
+    </div>
+
+    <div class="sheet-block sheet-block--wide">
+      <h3>Motifs</h3>
+      <div class="d1-motifs">
+        <figure class="d1-motif">
+          <div class="d1-motif__art"><div class="d1-spec__versal">V</div></div>
+          <strong>The versal</strong>Gold on a green ground, four lines tall. The page's one enlarged element.
+        </figure>
+        <figure class="d1-motif">
+          <div class="d1-motif__art"><div class="d1-ruling">summoned to take your seat at the Council of Doom. <span class="d1-pil">¶</span> Let none who is called fail to answer. Doom keeps his word.</div></div>
+          <strong>Ruling and the rubric mark</strong>A fine gold line under every row; paragraphs open with a red pilcrow.
+        </figure>
+        <figure class="d1-motif">
+          <div class="d1-motif__art"><svg width="250" height="134" viewBox="0 0 250 134" role="img" aria-label="A calendar lunette carrying the date, the fifteenth of November">
+            <path d="M5 128 A120 120 0 0 1 245 128Z" fill="#141B22"/>
+            <g fill="none" stroke="#C8A85E">
+              <path d="M5 128 A120 120 0 0 1 245 128" stroke-width="1.6"/>
+              <path d="M21 128 A104 104 0 0 1 229 128" stroke-width=".8"/>
+              <path d="M45 128 A80 80 0 0 1 205 128" stroke-width=".8"/>
+              <path d="M61 128 A64 64 0 0 1 189 128" stroke-width="1.2"/>
+              <path d="M2 128 H248" stroke-width="1.6"/>
+            </g>
+            <g stroke="#C8A85E" stroke-width=".8" opacity=".8">
+              <path d="M13.0 128.0 L21.0 128.0 M13.6 116.4 L21.6 117.3 M15.5 105.0 L23.3 106.6 M18.6 93.8 L26.2 96.3 M22.9 83.0 L30.2 86.4 M28.3 72.8 L35.3 76.9 M34.9 63.2 L41.3 68.0 M42.4 54.4 L48.3 59.8 M50.9 46.5 L56.1 52.6 M60.1 39.5 L64.7 46.1 M70.1 33.6 L73.8 40.7 M80.6 28.8 L83.6 36.2 M91.6 25.2 L93.7 32.9 M102.9 22.9 L104.2 30.8 M114.4 21.9 L114.9 29.9 M125.0 21.0 L125.0 29.0"/>
+              <path d="M237.0 128.0 L229.0 128.0 M236.4 116.4 L228.4 117.3 M234.5 105.0 L226.7 106.6 M231.4 93.8 L223.8 96.3 M227.1 83.0 L219.8 86.4 M221.7 72.8 L214.7 76.9 M215.1 63.2 L208.7 68.0 M207.6 54.4 L201.7 59.8 M199.1 46.5 L193.9 52.6 M189.9 39.5 L185.3 46.1 M179.9 33.6 L176.2 40.7 M169.4 28.8 L166.4 36.2 M158.4 25.2 L156.3 32.9 M147.1 22.9 L145.8 30.8 M135.6 21.9 L135.1 29.9"/>
+            </g>
+            <circle cx="125" cy="16.5" r="4.2" fill="#C8A85E"/>
+            <path id="d1-lunpath" d="M33 128 A92 92 0 0 1 217 128" fill="none"/>
+            <text font-family="'IM Fell English SC',Georgia,serif" font-size="13" letter-spacing="2.4" fill="#DDDAD0"><textPath href="#d1-lunpath" startOffset="50%" text-anchor="middle">xv November mmxxvi</textPath></text>
+            <path d="M117 96 a17 17 0 1 0 22 22 a14 14 0 1 1 -22 -22Z" fill="#DDDAD0" opacity=".85"/>
+            <g fill="#DDDAD0" opacity=".7"><circle cx="92" cy="112" r="1.2"/><circle cx="158" cy="102" r="1.2"/><circle cx="104" cy="88" r="1"/><circle cx="148" cy="120" r="1"/><circle cx="80" cy="122" r="1"/><circle cx="168" cy="120" r="1.1"/></g>
+          </svg></div>
+          <strong>The calendar lunette</strong>Carries a date: the day marked on the rim, the month on the band.
+        </figure>
+        <figure class="d1-motif">
+          <div class="d1-motif__art"><svg width="230" height="60" viewBox="0 0 230 60" role="img" aria-label="Five gates in a row, two passed">
+            <g style="color:#C8A85E"><use href="#d1-gate" x="6" y="8" width="30" height="46"/><use href="#d1-gate" x="52" y="8" width="30" height="46"/></g>
+            <path d="M9 52 V26 C9 17 16 13 21 9 C26 13 33 17 33 26 V52Z M55 52 V26 C55 17 62 13 67 9 C72 13 79 17 79 26 V52Z" fill="#C8A85E" opacity=".9"/>
+            <g style="color:#979F9F" opacity=".7"><use href="#d1-gate" x="98" y="8" width="30" height="46"/><use href="#d1-gate" x="144" y="8" width="30" height="46"/><use href="#d1-gate" x="190" y="8" width="30" height="46"/></g>
+          </svg></div>
+          <strong>Gates in sequence</strong>Progress through the summons, one gate at a time. Never colour alone: passed gates are filled.
+        </figure>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================ MOTION -->
+<section class="board-sec" id="motion">
+  <h2>Motion and sound</h2>
+  <p class="board-lede">Five beats, with stillness between them. This board is static; the beats are described, not shown.</p>
+  <div class="notes">
+    <div>
+      <h3>The five beats</h3>
+      <ol>
+        <li><strong>Opening.</strong> The valley in darkness. The window lights. Snow drifts.</li>
+        <li><strong>The gate.</strong> Press and hold the seal; it cracks and the halves part.</li>
+        <li><strong>The page.</strong> Lines ink in from left to right, quickly, then hold still. The guest's name is written last, after a held beat.</li>
+        <li><strong>Entering the council.</strong> A fade through black, as a gate.</li>
+        <li><strong>Approval.</strong> The seal is pressed.</li>
+      </ol>
+    </div>
+    <div>
+      <h3>Sound</h3>
+      <ul>
+        <li>Wind in a valley.</li>
+        <li>One distant bell.</li>
+        <li>The wax crack, caused by the guest.</li>
+        <li>The dry sound of vellum.</li>
+        <li>No music. Complete in silence, with "Open without sound" always offered.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Structure</h3>
+      <ul>
+        <li>Tap-advanced, one gate at a time.</li>
+        <li>With reduced motion, every beat becomes a cross-fade and the snow stops.</li>
+        <li>All of the letter is real text in reading order.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ STRENGTHS -->
+<section class="board-sec" id="assessment">
+  <h2>Strengths and risks</h2>
+  <div class="notes">
+    <div>
+      <h3>Strengths</h3>
+      <ul>
+        <li>The most original and the most Latverian. Nothing in it can be overturned by the film's release.</li>
+        <li>The document is the hero, which is where the research puts the centre of gravity.</li>
+        <li>Built almost entirely from type and line, so it is light and sharp on any phone.</li>
+        <li>Fills every gap in the reference library: exterior, heraldry, document, typography.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Risks</h3>
+      <ul>
+        <li>The least recognisably Doom at a glance: no figure, no green light, no steel.</li>
+        <li>A castle in the snow can read as generic vampire country.</li>
+        <li>Blackletter carries a real risk for a fictional authoritarian state, even at one glyph.</li>
+        <li>The cool blue-black departs from the film's olive grade.</li>
+        <li>Long passages of light text on black need care.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="board-foot">
+  This is a static concept board, not the website. The guest name and the date are placeholders, and no reference image or studio asset is used: every drawing here is original vector work.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+.pnp.*
+
+# Next.js and build output
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel
+.vercel/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Tests
+coverage/
+playwright-report/
+test-results/
+blob-report/
+
+# Database dumps and local data
+*.dump
+*.sql.gz
+backups/
+pgdata/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Python (board generators)
+__pycache__/
+*.pyc
+.venv/
+
+# Tool caches and local settings
+.playwright/
+.playwright-cli/
+.impeccable/hook.cache.json
+.impeccable/config.local.json
+.claude/settings.local.json
+
+# Editors and operating system
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
