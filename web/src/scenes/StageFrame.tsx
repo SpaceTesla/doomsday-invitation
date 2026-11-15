@@ -1,7 +1,14 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useRef, type ReactNode } from "react";
-import { Seal } from "@/components/Mark";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { SoundControl } from "@/components/guest/SoundControl";
 import { REDUCED, gsap, prefersReducedMotion } from "@/lib/motion";
 import { initSound, play } from "@/lib/sound";
@@ -27,6 +34,25 @@ export function StageFrame({ stage, children }: { stage: string; children: React
   const shown = useRef(stage);
   const covered = useRef(false);
   const fallback = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // The iris's seal comes from its SVG file, fetched once the first scene has loaded,
+  // so it costs the first scene nothing.
+  const [sealReady, setSealReady] = useState(false);
+  useEffect(() => {
+    const arm = () => setTimeout(() => setSealReady(true), 1500);
+    if (document.readyState === "complete") {
+      const timer = arm();
+      return () => clearTimeout(timer);
+    }
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const onLoad = () => {
+      timer = arm();
+    };
+    window.addEventListener("load", onLoad, { once: true });
+    return () => {
+      window.removeEventListener("load", onLoad);
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
 
   const reveal = useCallback(() => {
     const el = iris.current;
@@ -104,7 +130,8 @@ export function StageFrame({ stage, children }: { stage: string; children: React
       {stage === "opening" ? null : <SoundControl />}
       <div ref={iris} className="iris" aria-hidden="true">
         <div ref={seal} className="iris-seal">
-          <Seal state="active" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- a static SVG, served as it is */}
+          {sealReady ? <img src="/icons/seal-active.svg" alt="" decoding="async" /> : null}
         </div>
       </div>
     </Context.Provider>

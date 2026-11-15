@@ -1,5 +1,5 @@
 import { copy, fill } from "@/copy";
-import { Seal } from "@/components/Mark";
+import { Seal } from "@/components/Seal";
 import { SummonsActions } from "./SummonsActions";
 import { FitName } from "./FitName";
 import { SummonsMotion } from "./SummonsMotion";

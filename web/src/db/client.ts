@@ -1,5 +1,6 @@
 import { drizzle, type NodePgDatabase } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
+import { withFullVerification } from "./tls";
 
 /**
  * The application's database handle.
@@ -7,7 +8,7 @@ import { Pool } from "pg";
  * It connects lazily, on first use, so importing this module (for example during
  * `next build`) never opens a connection. In production DATABASE_URL is Neon's
  * pooled connection string; the pool here is kept small because each serverless
- * instance has its own.
+ * instance has its own. TLS always checks the certificate in full (see tls.ts).
  */
 type Holder = { pool?: Pool; db?: NodePgDatabase };
 
@@ -22,7 +23,7 @@ export function getPool(): Pool {
       throw new Error("DATABASE_URL is not set.");
     }
     state.pool = new Pool({
-      connectionString,
+      connectionString: withFullVerification(connectionString),
       max: 3,
       idleTimeoutMillis: 10_000,
       connectionTimeoutMillis: 10_000,

@@ -2,7 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import { copy } from "@/copy";
-import { EASE, REDUCED, gsap, isUpright, prefersReducedMotion, useGSAP } from "@/lib/motion";
+import { EASE, gsap, isUpright, prefersReducedMotion, useGSAP } from "@/lib/motion";
 import { markOpeningPlayed } from "./opening-played";
 
 // The reveal, as one GSAP timeline with five labels (design/DESIGN.md, sections 6.2 to 6.4):
@@ -32,27 +32,36 @@ export function OpeningMotion({ token, children }: { token: string; children: Re
       const frame = q(".op-frame");
       const copyLines = q(".op-name, .op-line, .op-sig, .op-act");
 
+      // The lit figure is held back until the first scene has loaded (see Opening.tsx).
+      const arm = () => {
+        scope.dataset.lit = "";
+      };
       const finish = () => {
+        arm();
         scope.dataset.motion = "done";
         markOpeningPlayed(token);
       };
 
       if (prefersReducedMotion()) {
-        // The final frame, faded in, with everything already in place. No ash.
-        gsap.fromTo(
-          [frame, q(".op-scrim"), q(".op-copy")],
-          { autoAlpha: 0 },
-          { autoAlpha: 1, duration: REDUCED, ease: "none", onComplete: finish },
-        );
+        // The final frame is already drawn by the server and faded in by CSS over 0.2 s
+        // (the CSS first beat applies only to full motion). Nothing moves; no ash.
         scope.dataset.motion = "still";
+        finish();
         return;
       }
+
+      if (document.readyState === "complete") arm();
+      else window.addEventListener("load", arm, { once: true });
 
       const set = isUpright() ? "p" : "d";
       const rocks = q(".op-rock");
       const stateOf = (el: Element, state: "closed" | "parting") =>
         (JSON.parse((el as HTMLElement).dataset.states ?? "{}") as RockStates)[set][state];
+      // x and y are zeroed: GSAP would otherwise read the CSS first beat's translate()
+      // back as pixel offsets and keep them on top of the percentages.
       const place = (el: Element, [xPercent, yPercent, rotation]: State) => ({
+        x: 0,
+        y: 0,
         xPercent,
         yPercent,
         rotation,
@@ -136,6 +145,7 @@ export function OpeningMotion({ token, children }: { token: string; children: Re
       // Any key or tap skips to the final frame. Actions still work at once: the buttons
       // are in the page from the start, and skipping never swallows the press.
       const skip = contextSafe!(() => {
+        arm();
         if (tl.progress() < 1) tl.progress(1);
         gsap.set(dust, { opacity: 0 });
         drift.kill();
@@ -165,6 +175,7 @@ export function OpeningMotion({ token, children }: { token: string; children: Re
       }
 
       return () => {
+        window.removeEventListener("load", arm);
         window.removeEventListener("keydown", skip);
         window.removeEventListener("pointerdown", skip);
         if (parallax) window.removeEventListener("pointermove", parallax);

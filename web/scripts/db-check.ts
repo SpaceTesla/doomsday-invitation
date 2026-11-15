@@ -1,8 +1,10 @@
 // Check that each configured database answers. Usage: npm run db:check
 // Read-only: it runs one select per database. It prints the kind of host and the
-// server version, and never a connection string or any part of one.
+// server version, and never a connection string or any part of one. It connects the way
+// the application does: TLS with the certificate checked in full (src/db/tls.ts).
 import { Client } from "pg";
 import { isPooledConnectionString } from "../src/db/migrate";
+import { withFullVerification } from "../src/db/tls";
 
 type Target = { label: string; variable: string; required: boolean };
 
@@ -39,7 +41,10 @@ async function check(target: Target): Promise<boolean> {
     );
     return !target.required;
   }
-  const client = new Client({ connectionString, connectionTimeoutMillis: 15_000 });
+  const client = new Client({
+    connectionString: withFullVerification(connectionString),
+    connectionTimeoutMillis: 15_000,
+  });
   try {
     await client.connect();
     const { rows } = await client.query<{ version: string; one: number }>(

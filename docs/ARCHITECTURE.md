@@ -161,6 +161,7 @@ Rules the domain module settled in milestone 1, each covered by a test in `web/t
 
 - The application connects with `pg` through **Neon's pooled connection string**, with a pool of at most a few connections per function instance. Neon's pooler absorbs the many short-lived connections that serverless functions create.
 - Migrations use the **direct** connection string.
+- **TLS checks the certificate in full.** Neon's strings say `sslmode=require`, which `pg` 8 treats as a full check but its next major version will treat as encryption only, as libpq does. Every connection (the application's pool, the migration runner, `db:check`) passes its string through `src/db/tls.ts`, which raises `require`, `prefer` and `verify-ca` to `verify-full` and leaves a string without `sslmode` (the local database) alone. The production backup's `pg_dump` is raised the same way in the workflow (section 8.4). Verified against both Neon hosts and the `preview` branch on 16 November 2026.
 - Why `pg` and not Neon's HTTP driver: the HTTP mode supports only non-interactive transactions **(verified)**, and `pg` is also the driver that talks to an ordinary local or CI PostgreSQL. One driver everywhere means the tests exercise exactly the code that runs in production.
 - **The migration runner** (`src/db/migrate.ts`) serialises runs with a session-level advisory lock. The lock and Drizzle's migrator use one connection, because such a lock belongs to the connection that took it. The lock is released in a `finally` block and the connection is closed after it, so a failed run cannot leave it held. A second runner waits its turn, then gives up at a deadline without applying anything. A pooled connection string is refused: a session lock does not survive transaction pooling. `tests/db/migrate.test.ts` proves each of these against a real PostgreSQL.
 - Neon's free database sleeps after five minutes idle and wakes in a few hundred milliseconds **(verified)**. The first request after a quiet spell is slightly slower; the opening covers it.
@@ -239,16 +240,18 @@ The approved experience is built exactly as specified. The host delivers files a
 | Opening | One GSAP timeline with five labels (dark, lift, clear, lit, summons) over the approved layers, using the approved rubble offsets |
 | Transitions | The seal iris, the plate parting and the seal waking: three small GSAP components |
 | Simpler motion | CSS: fades, the ash loop, button feedback |
-| Reduced motion | Every sequence becomes a 0.2 s cross-fade to its end state. The ash does not run |
+| Reduced motion | Every sequence becomes a 0.2 s cross-fade to its end state. The ash does not run. The opening's fade is CSS, so it plays from first paint without waiting for the script |
 | Silent mode | Sound is off until the guest chooses. No animation waits on audio |
 | Skip | Any key or tap seeks the timeline to its end. "Played" is stored on the server against the link |
-| Static fallback | The final frame is plain HTML and images, so a slow or failed script still shows Doom, the name and the actions. A one-line script in the page's head marks that script will run, so the opening and the summons hold their final frame back instead of flashing it; if the script never arrives, CSS shows the final frame after 2.5 s (2 s for the summons) |
+| Static fallback | The final frame is plain HTML and images, so a slow or failed script still shows Doom, the name and the actions. A one-line script in the page's head marks that script will run. Then CSS draws the opening's first beat itself (the rubble closed by the layout data's own offsets, the camera pushed in, the lit figure, scrim and lines hidden), so the first scene paints as soon as its images arrive and the timeline starts from exactly that state; the summons is drawn with its doors closed. If the script never arrives, CSS shows the final frame after 6 s (4 s for the summons). Built in milestone 6, for the performance budget |
 
 ### 7.2 Assets
 
 - Artwork, icons, fonts and audio live in `web/public/` and are served from Vercel's CDN with long cache lifetimes set in `next.config`.
 - The approved layers are served as they are. `next/image` optimisation is not used: each layout has its own approved render.
 - Only the first scene's layers and the name font are preloaded. Later scenes load after the first action. Audio loads only if sound is chosen.
+- Within the first scene (milestone 6): the sky, the silhouette and the rubble load at high priority, the haze and lens discs at low. The lit figure, unseen until six seconds in, is a lazy image the page keeps undisplayed until the first scene has loaded, so it never competes with the first beat; without script it loads at once. The marks are one generated module each (`src/marks/`), so a page carries only the drawings it uses; the seal at the centre of the iris is its SVG file, fetched after the page has loaded.
+- Measured by `tests/e2e/performance.spec.ts` on a production build, with Chrome throttled to slow 4G (150 ms, 1.6 Mbit/s) and a CPU four times slower: largest contentful paint about 1.0 to 1.3 s on the phone layout and 1.6 to 2.0 s on the desktop one (budget 2.5 s), layout shift 0, a key press answered within 200 ms during the reveal. Before these changes the same test measured 5.0 s and 6.2 s.
 - About 0.4 MB of layers per layout. Hobby includes 100 GB of transfer a month **(verified)**.
 - Smoothness on phones is a browser matter: flat layers, transforms and opacity only, timing by elapsed time. Tested on real phones inside a messaging app's browser.
 
@@ -342,7 +345,7 @@ Built and proven on 16 November 2026 (milestone 0B). The workflow is `.github/wo
 2. **A pull request** then gets a preview, one at a time (they share the database): `vercel pull` and `vercel build` on the Linux runner, migrate the Neon `preview` branch, `vercel deploy --prebuilt`, and a smoke test.
 3. **A push to `main`** goes to production, one run at a time, never cancelled midway:
    1. `vercel build --prod`, then `vercel deploy --prebuilt --prod --skip-domain`. The deployment is staged: it exists and is ready, but the production domain still points at the previous one.
-   2. `pg_dump` of production, kept as a workflow artifact for seven days. It contains guest data and tokens; artifacts of this private repository are visible only to its owner.
+   2. `pg_dump` of production, kept as a workflow artifact for seven days. It contains guest data and tokens; artifacts of this private repository are visible only to its owner. libpq's `require` only encrypts, so the step raises the string to `verify-full` and checks it against the runner's CA bundle, mounted read-only into the `postgres:18` container (which has none of its own). Tested by hand against the `preview` branch.
    3. The migration runner applies pending migrations under its advisory lock (section 4.4).
    4. `scripts/smoke-test.mjs` asks the staged deployment, through Vercel's protection bypass (`vercel curl`), whether it reads the database and has every migration in this commit's journal. If not, the run stops and the live deployment is untouched.
    5. `vercel promote` moves the production domain to the new deployment.
@@ -365,7 +368,7 @@ Migrations are written to be backward compatible, so the previous deployment kee
 - **Vercel's cron sends the secret.** The job is registered (`vercel crons list`: `/api/cron/retention`, `30 21 * * *`). A run triggered through Vercel (`vercel crons run /api/cron/retention`) logged "retention: nothing due", which the endpoint writes only after `Authorization: Bearer <CRON_SECRET>` has matched. On Hobby a scheduled run fires within the hour of its time, not at the minute.
 - **Hobby keeps runtime logs for less than an hour.** A log query for the last hour is refused ("The hobby plan does not retain runtime logs for the requested time range"); the last 30 minutes are available. So a request path carrying a token is gone from Vercel's logs within the hour (section 7.3).
 
-**Still to confirm:** Vercel's Hobby terms (the owner's reading). Also noted for milestone 6: `pg` warns that `sslmode=require` will mean less in its next major version; setting `sslmode=verify-full` in the connection strings keeps today's full certificate check.
+**Still to confirm:** Vercel's Hobby terms (the owner's reading). The `sslmode` warning noted here earlier is resolved in code (section 4.4); the connection strings themselves are unchanged.
 
 ## 9. Cost
 
@@ -403,9 +406,11 @@ Migrations are written to be backward compatible, so the previous deployment kee
 | Retention | Deletes everything at day plus thirty, nothing before, safe to run twice, 401 without the secret | Vitest with the clock set |
 | Typography restrictions | No V reaches Pirata One, no numeral or name reaches Orbitron, no missing rune; a scan of `src/copy/` | Unit tests |
 | Reduced motion | The opening ends on the final frame with no movement | Playwright, emulated |
-| Accessibility | Keyboard through every screen; axe on every screen | Playwright |
+| Accessibility | Keyboard through every screen (`keyboard.spec.ts`: the whole guest journey and the panel, with a visible focus ring at each stop); axe against WCAG 2.2 A and AA on every screen and dialog, guest and panel (`accessibility.spec.ts`) | Playwright |
+| Performance | The first scene under slow 4G and a slowed CPU: largest contentful paint, layout shift, nothing beyond the first scene fetched, one layer set only; a key press during the reveal (`performance.spec.ts`) | Playwright, Chromium |
+| Errors | A page that fails while rendering shows copy 9.9 and a reload, with status 500, `no-store`, and no error detail | Checked by hand on a production build (milestone 6) |
 | Layouts | Phone and desktop viewports for every screen, long names | Playwright |
-| Privacy and headers | Headers present, no third-party request, identical link previews | Playwright and handler tests |
+| Privacy and headers | Headers and `no-store` on every kind of route, no request to another origin on any screen, the session cookie `HttpOnly` and `SameSite=Strict` (`privacy.spec.ts`); identical link previews | Playwright and handler tests |
 | Real devices | Phones, including a messaging app's browser and Low Power Mode; sound | A checklist by hand |
 | Copy | Every line in `src/copy` appears word for word in the matching row of `COPY.md` | Unit test |
 | End-to-end setup | `npm run e2e` builds, creates a fresh `iron_throne_e2e` database in the local container, serves the build on port 3311 and runs the journey at 1440×900 and 390×844 | Playwright |
@@ -437,10 +442,10 @@ doomsday-invitation/
         api/admin/          administrator handlers
         api/cron/retention/
       domain/               guests, characters, approval, alternatives, plan, cutoffs, retention
-      db/                   schema.ts, client.ts
-      components/           Panel, Well, Button, QuietControl, Heading, Label, Figure, Runes, Mark (Seal, Mask, SuitRune)
+      db/                   schema.ts, client.ts, migrate.ts, tls.ts
+      components/           Panel, Well, Button, QuietControl, Heading, Label, Figure, Runes, Mark (Mask, SuitRune), MaskInsignia, Seal, FailedToLoad
       fonts/                the four families as WOFF2, with their licences
-      marks/                generated.ts, exported from the board generator
+      marks/                one module per mark, exported from the board generator
       data/                 Doomscript glyphs and the opening's layout data
       scenes/               Opening, Summons, Council, Hall, transitions
       styles/               tokens.css, app.css, surfaces.css, scenes.css, type.css
@@ -461,7 +466,7 @@ doomsday-invitation/
 | 3 | Guest journey, still | Summons, decline and leave, character selection, council, proposal and alternatives, decree, closing screens, invalid link, errors. Final type and copy, no motion. **Done on 16 November 2026**, verified locally; the preview check waits for 0B | The journey passes end to end on phone and desktop, on a preview deployment |
 | 4 | Opening and motion | The reveal, the title, three transitions, reduced motion, skip, tablet layouts, long-name fitting. **Done on 16 November 2026**; judged by eye on screenshots, not yet on real phones | The opening matches the storyboard and the reduced-motion path works |
 | 5 | Sound | Source the sounds, wire them, controls. **Done on 16 November 2026**; the sounds are synthesised (`scripts/make-sounds.py`, `scripts/encode-sounds.sh`) and await approval by ear | Plays only after a choice; silent mode loses nothing |
-| 6 | Hardening | Headers, rate limits, the cron job, accessibility and performance passes | All automated checks pass on preview |
+| 6 | Hardening | Headers, rate limits, the cron job, accessibility and performance passes. **Done on 16 November 2026**, verified locally on a production build: axe and keyboard on every screen, privacy and headers on every kind of route, the performance budget met, the error screens, full TLS verification. The preview check runs when it is pushed | All automated checks pass on preview |
 | 7 | Devices and launch | The real-phone checklist; production data; passphrase; links sent | Guests are in |
 
 Screens that were never drawn are built in milestones 2 to 4 from `DESIGN.md` and the approved council mock, and reviewed in the running product.

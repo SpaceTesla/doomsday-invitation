@@ -11,7 +11,9 @@ function sourceFiles(dir: string): string[] {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) return sourceFiles(full);
-    return /\.(ts|tsx)$/.test(entry.name) && !entry.name.endsWith("generated.ts") ? [full] : [];
+    return /\.(ts|tsx)$/.test(entry.name) && !full.includes(`${path.sep}marks${path.sep}`)
+      ? [full]
+      : [];
   });
 }
 

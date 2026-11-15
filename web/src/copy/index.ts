@@ -126,6 +126,7 @@ export const copy = {
   "9.6": "The council has changed since you arrived. Reload to see it as it stands.",
   "9.7": "RELOAD",
   "9.8": "One moment.",
+  "9.9": "The hall will not open. Reload, or return in a while.",
   "9.10": "Close",
 
   // 10. Administrator panel

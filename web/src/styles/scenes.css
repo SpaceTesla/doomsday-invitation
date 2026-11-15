@@ -141,17 +141,83 @@
   .op-act {
     will-change: clip-path;
   }
-  /* Before the reveal's script takes over, show the night, not the final frame. If the
-     script never arrives, the final frame appears after 2.5 s regardless. */
-  html.js .op[data-motion="pending"] .op-frame,
-  html.js .op[data-motion="pending"] .op-scrim,
-  html.js .op[data-motion="pending"] .op-copy {
-    opacity: 0;
-    animation: op-fallback 0s linear 2.5s forwards;
+  /* Before the reveal's script arrives, CSS draws its first beat, concealment: rubble
+     closed (the layout data's own offsets, as --dc* and --pc*), the camera pushed in, the
+     lit figure, scrim and lines hidden. So the first scene paints as soon as its images
+     do, and the timeline starts from exactly this state. If the script never arrives,
+     the final frame appears after 6 s. Under reduced motion none of this applies: the
+     final frame is drawn from the start. */
+  @media (prefers-reduced-motion: no-preference) {
+    html.js .op[data-motion="pending"] .op-rock {
+      transform: translate(var(--dcx), var(--dcy)) rotate(var(--dcr));
+      animation: op-unpend 0s linear 6s forwards;
+    }
+    html.js .op[data-motion="pending"] :is(.op-sky, .op-fig) {
+      transform: scale(1.045);
+      transform-origin: 50% 40%;
+      animation: op-unpend 0s linear 6s forwards;
+    }
+    html.js .op[data-motion="pending"] .op-fig--lit {
+      opacity: 0;
+      animation:
+        op-unpend 0s linear 6s forwards,
+        op-show 0s linear 6s forwards;
+    }
+    html.js .op[data-motion="pending"] .op-scrim {
+      opacity: 0;
+      animation: op-show 0s linear 6s forwards;
+    }
+    html.js .op[data-motion="pending"] .op-glow {
+      opacity: 0.3;
+    }
+    html.js .op[data-motion="pending"] :is(.op-name, .op-line, .op-sig, .op-act) {
+      clip-path: inset(0% 100% 0% 0%);
+      animation: op-unclip 0s linear 6s forwards;
+    }
   }
-  @keyframes op-fallback {
+  @media (prefers-reduced-motion: no-preference) and (max-aspect-ratio: 5/6) {
+    html.js .op[data-motion="pending"] .op-rock {
+      transform: translate(var(--pcx), var(--pcy)) rotate(var(--pcr));
+    }
+  }
+  /* Under reduced motion the final frame fades in over 0.2 s with the text already in
+     place (design/DESIGN.md, 6.10). CSS plays it from first paint, so it never waits for
+     the script. */
+  @media (prefers-reduced-motion: reduce) {
+    .op :is(.op-frame, .op-scrim, .op-copy) {
+      animation: op-fade-in 0.2s linear both;
+    }
+  }
+  @keyframes op-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  /* The lit figure's file waits until the script arms it after the page has loaded (a
+     lazy image that is not displayed is not fetched). If the script never runs, it is
+     released with the rest of the final frame at 6 s. */
+  html.js .op:not([data-lit]) .op-fig--lit img {
+    display: none;
+    animation: op-arm 0s linear 6s forwards;
+  }
+  @keyframes op-arm {
+    to {
+      display: block;
+    }
+  }
+  @keyframes op-unpend {
+    to {
+      transform: none;
+    }
+  }
+  @keyframes op-show {
     to {
       opacity: 1;
+    }
+  }
+  @keyframes op-unclip {
+    to {
+      clip-path: inset(0%);
     }
   }
   .op-sig svg {
@@ -453,11 +519,28 @@
     );
     visibility: hidden;
   }
-  /* Before the script takes over, the plate is shown without its words, so the reveal
-     never flashes; if the script never arrives they appear after 2 s regardless. */
-  html.js .sm-plate:not([data-motion]) :is(.sm-copy, .sm-caption, .sm-seal) {
-    opacity: 0;
-    animation: op-fallback 0s linear 2s forwards;
+  /* The doors are rendered by the server, closed over the words, so the plate paints at
+     once and the reveal never flashes. Without script they are never shown; if script
+     is expected but never arrives, they step aside after 4 s. Under reduced motion they
+     are not used. */
+  .sm-doors {
+    display: none;
+  }
+  html.js .sm-doors {
+    display: block;
+  }
+  html.js .sm-plate:not([data-motion]) .sm-doors {
+    animation: sm-doors-away 0s linear 4s forwards;
+  }
+  @keyframes sm-doors-away {
+    to {
+      visibility: hidden;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html.js .sm-doors {
+      display: none;
+    }
   }
 
   /* =========================================================== the sound control */
@@ -498,6 +581,12 @@
   }
   .iris-seal {
     width: min(36vmin, 18rem);
+    aspect-ratio: 1;
+  }
+  .iris-seal img {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   /* =========================================================== closing screens */
@@ -676,8 +765,11 @@
   .cn-char.is-taken::after {
     border-color: rgba(150, 161, 158, 0.2);
   }
+  /* Dimmer than an available name, but readable: who holds what is information, so it
+     meets WCAG AA (5.3:1 on the hall). The unavailable grey of 6.5 (#6C7674, 4.0:1) is
+     for disabled controls, which the contrast rule exempts. */
   .cn-char.is-taken .cn-cname {
-    color: var(--c-off-text);
+    color: var(--c-holder);
   }
 
   /* the guest list */

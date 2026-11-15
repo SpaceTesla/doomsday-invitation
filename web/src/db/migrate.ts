@@ -3,6 +3,7 @@ import path from "node:path";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Client } from "pg";
+import { withFullVerification } from "./tls";
 
 /**
  * Key of the session-level advisory lock that serialises migration runs.
@@ -68,7 +69,7 @@ export async function runMigrations(options: MigrateOptions): Promise<MigrateRes
 
   const hasMigrations = fs.existsSync(path.join(migrationsFolder, "meta", "_journal.json"));
 
-  const client = new Client({ connectionString });
+  const client = new Client({ connectionString: withFullVerification(connectionString) });
   await client.connect();
 
   let locked = false;

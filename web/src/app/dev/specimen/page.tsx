@@ -4,7 +4,9 @@ import { Button } from "@/components/Button";
 import { Figure } from "@/components/Figure";
 import { Heading } from "@/components/Heading";
 import { Label } from "@/components/Label";
-import { CuirassTile, Mask, Seal, SealMark, SuitRune } from "@/components/Mark";
+import { CuirassTile, Mask, SealMark, SuitRune } from "@/components/Mark";
+import { MaskInsignia } from "@/components/MaskInsignia";
+import { Seal } from "@/components/Seal";
 import { Panel, PanelActions, Well } from "@/components/Panel";
 import { QuietControl } from "@/components/QuietControl";
 import { Runes } from "@/components/Runes";
@@ -195,8 +197,8 @@ export default function Specimen() {
           <SealMark className="!h-8 !w-8" />
           <SealMark tone="emerald" className="!h-8 !w-8" />
           <Mask tone="silver" className="!h-8 !w-auto" />
-          <Mask level={2} plain tone="gold" className="!h-16 !w-auto" />
-          <Mask level={2} tone="gold" className="!h-40 !w-auto" />
+          <MaskInsignia plain tone="gold" className="!h-16 !w-auto" />
+          <MaskInsignia tone="gold" className="!h-40 !w-auto" />
           <SuitRune tone="emerald" className="!h-8 !w-8" />
           <SuitRune level={2} tone="emerald" className="!h-16 !w-16" />
           <CuirassTile tone="dim" className="!h-8 !w-8" />

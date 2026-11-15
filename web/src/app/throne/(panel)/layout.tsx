@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { copy } from "@/copy";
 import { Heading } from "@/components/Heading";
-import { Mask } from "@/components/Mark";
+import { MaskInsignia } from "@/components/MaskInsignia";
 import { ThroneNav } from "@/components/throne/ThroneNav";
 import { ensureEvent } from "@/domain/event";
 import { isSignedIn, serverDomain } from "@/lib/admin";
@@ -17,7 +17,7 @@ export default async function ThronePanelLayout({ children }: LayoutProps<"/thro
     <div className="mx-auto max-w-3xl px-4 pb-20 pt-8 wide:px-8">
       <header className="mb-8 grid gap-4">
         <div className="flex items-center gap-4">
-          <Mask level={2} plain tone="gold" className="!h-12 !w-auto" />
+          <MaskInsignia plain tone="gold" className="!h-12 !w-auto" />
           <Heading as="p" size="title">
             {copy["10.1"]}
           </Heading>

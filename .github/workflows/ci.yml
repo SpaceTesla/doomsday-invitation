@@ -135,9 +135,22 @@ jobs:
         run: |
           vercel deploy --prebuilt --prod --skip-domain --yes --token "$VERCEL_TOKEN" > deploy.out
           echo "url=$(node scripts/deployment-url.mjs deploy.out)" >> "$GITHUB_OUTPUT"
+      # pg_dump uses libpq, where sslmode=require only encrypts. The string is raised to
+      # verify-full and checked against the runner's CA bundle, mounted read-only (the
+      # postgres image has none of its own). The string is never echoed.
       - name: Back up the production database
         run: |
-          docker run --rm -e PGURL postgres:18 sh -c 'pg_dump --format=custom "$PGURL"' > backup.dump
+          docker run --rm -e PGURL \
+            -v /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro \
+            postgres:18 sh -c '
+              u=$(printf %s "$PGURL" | sed -e "s/sslmode=[a-z-]*/sslmode=verify-full/")
+              case "$u" in
+                *sslmode=*) ;;
+                *\?*) u="$u&sslmode=verify-full" ;;
+                *) u="$u?sslmode=verify-full" ;;
+              esac
+              pg_dump --format=custom "$u&sslrootcert=/etc/ssl/certs/ca-certificates.crt"
+            ' > backup.dump
           test -s backup.dump
         env:
           PGURL: ${{ secrets.PRODUCTION_DATABASE_URL_DIRECT }}

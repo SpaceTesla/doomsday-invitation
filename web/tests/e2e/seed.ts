@@ -3,7 +3,7 @@ import { Pool } from "pg";
 import { addCharacter, claimCharacter } from "@/domain/characters";
 import { ensureEvent } from "@/domain/event";
 import { accept, addGuest, decline, recordOpeningPlayed, type Title } from "@/domain/guests";
-import { approve, setProposal } from "@/domain/proposal";
+import { approve, finalise, setProposal } from "@/domain/proposal";
 import { zonedInstant } from "@/domain/time";
 
 const URL =
@@ -19,8 +19,19 @@ type GuestSpec = {
   approves?: boolean;
 };
 
+type EventSpec = {
+  /** Doom has decreed the plan. */
+  decreed?: boolean;
+  /** The day of the screening is behind us (set directly; the panel refuses past days). */
+  dayPassed?: boolean;
+};
+
 /** Empty the end-to-end database and fill it with an event, a roster and the given guests. */
-export async function seed(guests: GuestSpec[], roster = ["Thor", "Loki", "Scarlet Witch"]) {
+export async function seed(
+  guests: GuestSpec[],
+  roster = ["Thor", "Loki", "Scarlet Witch"],
+  eventSpec: EventSpec = {},
+) {
   const pool = new Pool({ connectionString: URL });
   const domain = { db: drizzle(pool) };
   try {
@@ -50,6 +61,10 @@ export async function seed(guests: GuestSpec[], roster = ["Thor", "Loki", "Scarl
         await recordOpeningPlayed(domain, added.id);
         await decline(domain, added.id);
       }
+    }
+    if (eventSpec.decreed) await finalise(domain);
+    if (eventSpec.dayPassed) {
+      await pool.query("update event set proposal_at = now() - interval '2 days' where id = 1");
     }
     return links;
   } finally {

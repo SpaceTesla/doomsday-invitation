@@ -34,11 +34,34 @@ function relative(layout: Layout, side: Side, state: "closed" | "parting"): Stat
   return [(dx / w) * 100, (dy / h) * 100, rotation];
 }
 
-function Layer({ name, className }: { name: string; className: string }) {
+/**
+ * One layer. The lit figure is not seen until six seconds into the reveal, so it loads
+ * lazily: with script, the page holds it back (display: none) until the first scene has
+ * loaded, so it never competes with the first beat's files. Without script it loads at
+ * once, as part of the final frame. The haze and the lens discs are faint overlays; they
+ * load at low priority, after the sky, the silhouette and the rubble.
+ */
+function Layer({
+  name,
+  className,
+  later = false,
+  quiet = false,
+}: {
+  name: string;
+  className: string;
+  later?: boolean;
+  quiet?: boolean;
+}) {
   return (
     <picture className={`op-l ${className}`}>
       <source media={UPRIGHT} srcSet={`/art/hero-p-${name}`} />
-      <img src={`/art/hero-d-${name}`} alt="" decoding="async" />
+      <img
+        src={`/art/hero-d-${name}`}
+        alt=""
+        decoding="async"
+        loading={later ? "lazy" : "eager"}
+        fetchPriority={later || quiet ? "low" : "high"}
+      />
     </picture>
   );
 }
@@ -46,7 +69,15 @@ function Layer({ name, className }: { name: string; className: string }) {
 function Rock({ side }: { side: Side }) {
   const [dx, dy, dw] = D[side].box;
   const [px, py, pw] = P[side].box;
+  const [dcx, dcy, dcr] = relative(D, side, "closed");
+  const [pcx, pcy, pcr] = relative(P, side, "closed");
   const style = {
+    "--dcx": `${dcx.toFixed(3)}%`,
+    "--dcy": `${dcy.toFixed(3)}%`,
+    "--dcr": `${dcr}deg`,
+    "--pcx": `${pcx.toFixed(3)}%`,
+    "--pcy": `${pcy.toFixed(3)}%`,
+    "--pcr": `${pcr}deg`,
     "--dl": pct(dx, D._frame.w),
     "--dt": pct(dy, D._frame.h),
     "--dw": pct(dw, D._frame.w),
@@ -66,7 +97,7 @@ function Rock({ side }: { side: Side }) {
       data-states={JSON.stringify(states)}
     >
       <source media={UPRIGHT} srcSet={`/art/hero-p-rock-${side}.webp`} />
-      <img src={`/art/hero-d-rock-${side}.webp`} alt="" decoding="async" />
+      <img src={`/art/hero-d-rock-${side}.webp`} alt="" decoding="async" fetchPriority="high" />
     </picture>
   );
 }
@@ -85,10 +116,10 @@ export function Opening({ token, address }: { token: string; address: string }) 
         <Layer name="sky.jpg" className="op-sky" />
         <div className="op-glow" style={glow} />
         <Layer name="figure-dark.webp" className="op-fig op-fig--dark" />
-        <Layer name="figure-lit.webp" className="op-fig op-fig--lit" />
-        <Layer name="haze.webp" className="op-haze" />
+        <Layer name="figure-lit.webp" className="op-fig op-fig--lit" later />
+        <Layer name="haze.webp" className="op-haze" quiet />
         <div className="op-l op-dust" style={{ backgroundImage: "url(/art/hero-dust.webp)" }} />
-        <Layer name="bokeh.webp" className="op-bokeh" />
+        <Layer name="bokeh.webp" className="op-bokeh" quiet />
         <Rock side="right" />
         <Rock side="left" />
         <Rock side="bottom" />

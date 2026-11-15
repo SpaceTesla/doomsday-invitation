@@ -25,7 +25,7 @@ Written on 15 November 2026 for a new Claude session taking over this project. R
 | Design specification | Complete and approved |
 | Copy deck | Complete and approved |
 | Technical architecture | Complete and final: Next.js on Vercel with Neon PostgreSQL |
-| Application code | Milestone 0A is built: `web/` holds the Next.js application with the design tokens, fonts, base components, approved assets, local database, migration runner and security headers. No product screen exists yet |
+| Application code | Milestones 0A to 6 are built: the administrator panel, the whole guest journey with motion and sound, and the hardening pass (accessibility, privacy, performance, error screens, full TLS verification). Deployed by the workflow from `main` |
 | Version control | A Git repository on `main`. The specifications live in `docs/`; `AGENTS.md` and `CLAUDE.md` at the root point to them |
 | Accounts | The GitHub repository (private), the Vercel account (Hobby) and the Neon project (PostgreSQL 18) exist. No Vercel project has been created yet; that is milestone 0B |
 
@@ -177,14 +177,14 @@ Follow the milestones in `ARCHITECTURE.md` section 12, in order. Each ends with 
 | 3 | Guest journey, without motion (done locally) | The journey passes end to end on phone and desktop |
 | 4 | Opening and motion (done) | The reveal matches the storyboard; reduced motion works |
 | 5 | Sound (done; awaiting the owner's ear) | Plays only after a choice; silent mode loses nothing |
-| 6 | Hardening | Headers, rate limits, cron, accessibility, performance |
+| 6 | Hardening (done) | Headers, rate limits, cron, accessibility, performance |
 | 7 | Devices and launch | Real-phone checklist passes; links sent |
 
 **Immediate next steps**
 
 Milestone 0A is done (15 November 2026). Next:
 
-1. Milestone 1, schema and domain, is done (15 November 2026): the first migration, the domain module in `web/src/domain/` and its tests against PostgreSQL. Milestone 2, the administrator panel, is done and verified locally (16 November 2026). Milestone 3, the guest journey without motion, is done and verified locally (16 November 2026). Milestone 4, the opening and motion, is done (16 November 2026). Milestone 5, sound, is done (16 November 2026); the owner approves the sounds by ear on `/dev/specimen`. Milestone 6, hardening, is next.
+1. Milestone 1, schema and domain, is done (15 November 2026): the first migration, the domain module in `web/src/domain/` and its tests against PostgreSQL. Milestone 2, the administrator panel, is done and verified locally (16 November 2026). Milestone 3, the guest journey without motion, is done and verified locally (16 November 2026). Milestone 4, the opening and motion, is done (16 November 2026). Milestone 5, sound, is done (16 November 2026); the owner approves the sounds by ear on `/dev/specimen`. Milestone 6, hardening, is done (16 November 2026); one colour changed for contrast, recorded in `DESIGN.md`, section 6.5. Milestone 7, devices and launch, is next: the real-phone checklist, then production data, the passphrase and the links.
 2. Milestone 0B, the deployment foundation, once the owner has added the Vercel token and the `preview` branch. Its first step is a manual trial of a staged production deploy and promotion on the Hobby plan, which decides how the workflow is built (`ARCHITECTURE.md`, section 8.4).
 3. Two pieces of the foundation were left for milestone 3, where they are used and can be checked in place: the summons plate (the board's `_plate` drawing, exported as artwork) and the baked brushed-steel texture it carries. Panels and buttons use plain gradients on the boards and need neither.
 
