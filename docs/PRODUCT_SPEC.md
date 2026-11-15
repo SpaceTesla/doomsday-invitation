@@ -330,7 +330,7 @@ Removing a guest who has already answered frees their character and removes thei
 - A guest sees every character on the roster, with taken ones marked unavailable and showing who holds them, and can choose only one that is free.
 - Adding a character makes it available at once.
 - Removing a character that no one holds takes it off the list.
-- **Removing a character that a guest holds:** you are warned first, naming the guest. If you go ahead, the character is removed and that guest is returned to character selection, with a message explaining why.
+- **Removing a character that a guest holds:** you are warned first, naming the guest. If you go ahead, the character is removed. That guest stays on the council: their mantle list shows a message explaining why, and they may choose again whenever they wish.
 - The panel prevents two roster entries with the same name.
 
 ---

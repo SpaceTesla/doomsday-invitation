@@ -68,6 +68,7 @@ Run from `web/`. Docker Desktop must be running for the database and the tests.
 | Format, lint, type-check | `npm run format`, `npm run lint`, `npm run typecheck` |
 | Tests (need the local database) | `npm test` |
 | Production build | `npm run build` |
+| Create a migration after changing `src/db/schema.ts` | `npm run db:generate` |
 | Apply migrations | `npm run db:migrate` |
 | Copy approved assets and fonts into the application | `npm run assets:sync` |
 | Re-export the marks from the board generator | `python scripts/export-marks.py` |

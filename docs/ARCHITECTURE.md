@@ -143,8 +143,19 @@ Multi-step operations use Drizzle's `db.transaction()`. Single-statement operati
 - **After the decree:** no approving, no alternatives, no change of character, no leaving. A guest who accepts late still makes a first choice.
 - **After the day:** no accepting. Summoned and declined guests see the closing screen.
 - **Tokens:** 32 random bytes from `crypto.randomBytes`, 43 URL-safe characters. Replacing writes a new one; cancelling sets it to null.
-- **Change notices:** shown when `seen_proposal` or `seen_plan` is behind the event, then recorded as seen.
+- **Change notices:** shown when `seen_proposal` or `seen_plan` is behind the event, then recorded as seen. `seen_plan` stores the plan version plus one, so 0 always means "never saw a decree" and a guest who first arrives after an amendment is not told of a change they never saw. The same holds for `seen_proposal`, whose version 0 means no proposal.
 - **Retention:** section 7.5.
+
+Rules the domain module settled in milestone 1, each covered by a test in `web/tests/domain/`:
+
+- Choosing a character is optional. No council action checks whether the guest holds one.
+- Claiming a character also clears `character_removed`. A first choice is allowed after the decree; a change is not. A claim that loses the race is answered with the holder's name; if the holder let go in the same instant, it is answered as an unknown character and the guest simply chooses again.
+- Doom's proposal and any amendment must be a future quarter hour with a venue. Setting the same date, time and venue again changes nothing and clears no approval.
+- An alternative must be a future quarter hour and differ from the proposal. Withdrawing one, like suggesting one, is refused after the decree.
+- Declining is for a guest who has not accepted. A seated guest leaves the council instead.
+- Retention deletes the event row with everything else. With no event, every link is invalid.
+- The approval rules of `PRODUCT_SPEC.md` section 5.9 are the five named settings in `src/domain/approval.ts`, read by the rest of the domain.
+- Drizzle's query errors carry the query's parameters, which can include a token. No log may receive a raw error, a token or a request URL; a test scans `src/` for it.
 
 ### 4.4 Connection
 
@@ -415,7 +426,7 @@ doomsday-invitation/
 |---|---|---|---|
 | 0A | Local foundation | `web/` scaffold with Next, Tailwind v4, Drizzle; tokens, fonts, base components; approved assets copied and marks exported; Docker database; the migration runner; security headers. **Done on 15 November 2026** | A styled specimen page runs locally, the health route reads the local database, and `db:check` reaches Neon |
 | 0B | Deployment foundation | Vercel project, GitHub Actions, CI, the deployment workflow, the `preview` database branch; Vercel's terms, the cron header and log retention confirmed | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
-| 1 | Schema and domain | Migrations, the domain module, date words, tokens, retention | Domain and concurrency tests pass against PostgreSQL |
+| 1 | Schema and domain | Migrations, the domain module, date words, tokens, retention. **Done on 15 November 2026** | Domain and concurrency tests pass against PostgreSQL |
 | 2 | Administrator panel | Sign-in, guests and links, characters, proposal, council view, finalise, amend, export | Doom can run an event end to end with no guest screens |
 | 3 | Guest journey, still | Summons, decline and leave, character selection, council, proposal and alternatives, decree, closing screens, invalid link, errors. Final type and copy, no motion | The journey passes end to end on phone and desktop, on a preview deployment |
 | 4 | Opening and motion | The reveal, the title, three transitions, reduced motion, skip, tablet layouts, long-name fitting | The opening matches the storyboard and the reduced-motion path works |

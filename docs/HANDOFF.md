@@ -172,7 +172,7 @@ Follow the milestones in `ARCHITECTURE.md` section 12, in order. Each ends with 
 |---|---|---|
 | 0A | Local foundation (done) | A styled specimen page runs locally and reads the local database |
 | 0B | Deployment foundation | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
-| 1 | Schema and domain | Domain and concurrency tests pass against PostgreSQL |
+| 1 | Schema and domain (done) | Domain and concurrency tests pass against PostgreSQL |
 | 2 | Administrator panel | Doom can run an event end to end with no guest screens |
 | 3 | Guest journey, without motion | The journey passes end to end on phone and desktop |
 | 4 | Opening and motion | The reveal matches the storyboard; reduced motion works |
@@ -184,7 +184,7 @@ Follow the milestones in `ARCHITECTURE.md` section 12, in order. Each ends with 
 
 Milestone 0A is done (15 November 2026). Next:
 
-1. Milestone 1, schema and domain. It needs nothing from the owner and does not wait for 0B.
+1. Milestone 1, schema and domain, is done (15 November 2026): the first migration, the domain module in `web/src/domain/` and its tests against PostgreSQL. Milestone 2, the administrator panel, is next and needs nothing from the owner.
 2. Milestone 0B, the deployment foundation, once the owner has added the Vercel token and the `preview` branch. Its first step is a manual trial of a staged production deploy and promotion on the Hobby plan, which decides how the workflow is built (`ARCHITECTURE.md`, section 8.4).
 3. Two pieces of the foundation were left for milestone 3, where they are used and can be checked in place: the summons plate (the board's `_plate` drawing, exported as artwork) and the baked brushed-steel texture it carries. Panels and buttons use plain gradients on the boards and need neither.
 
