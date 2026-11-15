@@ -7,7 +7,7 @@ import { GuestMessageLine, useGuestAction } from "@/components/guest/useGuestAct
 
 /** "Take your seat" again: the same label as on the summons, because it does the same thing. */
 export function ClosingActions({ token }: { token: string }) {
-  const action = useGuestAction(token);
+  const action = useGuestAction(token, { changesStage: true });
   return (
     <>
       <PanelActions>

@@ -2,6 +2,7 @@ import { copy, fill } from "@/copy";
 import { Seal } from "@/components/Mark";
 import { SummonsActions } from "./SummonsActions";
 import { FitName } from "./FitName";
+import { SummonsMotion } from "./SummonsMotion";
 
 // The royal summons: a steel plate bearing the guest's name (design/DESIGN.md, 8.4).
 // The plate is baked artwork; every word on it is real text, in reading order.
@@ -49,6 +50,7 @@ export function Summons({
           </div>
           <SummonsActions token={token} />
         </div>
+        <SummonsMotion />
       </FitName>
     </main>
   );

@@ -12,6 +12,7 @@ export const copy = {
   "2.4": "GO WITH HIM",
   "2.5": "GO WITHOUT SOUND",
   "2.7": "Doctor Doom, hooded and masked, lifts the rubble from over you and raises one hand.",
+  "2.8": "Press any key to skip.",
   "2.9": "The Iron Throne",
   "2.10": "A summons",
   "2.11": "You have been summoned.",

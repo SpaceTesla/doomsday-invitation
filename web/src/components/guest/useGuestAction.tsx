@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { copy } from "@/copy";
 import { Button } from "@/components/Button";
+import { useStageTransition } from "@/scenes/StageFrame";
 
 export type GuestResult =
   | { ok: true; status: number; data: unknown }
@@ -19,10 +20,13 @@ export type GuestMessage = {
 /**
  * Send one of the guest's actions and, when it lands, re-render the page from the
  * server. Failures are told plainly in the deck's words (COPY.md, section 9); the
- * caller can replace the message with a more specific one.
+ * caller can replace the message with a more specific one. An action that changes the
+ * scene (`changesStage`) closes the seal's iris before the new scene is shown.
  */
-export function useGuestAction(token: string) {
+export function useGuestAction(token: string, options: { changesStage?: boolean } = {}) {
   const router = useRouter();
+  const { cover } = useStageTransition();
+  const changesStage = options.changesStage ?? false;
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<GuestMessage | null>(null);
 
@@ -42,6 +46,7 @@ export function useGuestAction(token: string) {
           : null;
         const error = (data as { error?: string } | null)?.error;
         if (response.ok) {
+          if (changesStage) await cover();
           router.refresh();
           return { ok: true, status: response.status, data };
         }
@@ -61,7 +66,7 @@ export function useGuestAction(token: string) {
         setBusy(false);
       }
     },
-    [router, token],
+    [router, token, changesStage, cover],
   );
 
   return { run, busy, message, setMessage };

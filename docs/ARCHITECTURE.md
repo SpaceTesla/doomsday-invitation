@@ -242,7 +242,7 @@ The approved experience is built exactly as specified. The host delivers files a
 | Reduced motion | Every sequence becomes a 0.2 s cross-fade to its end state. The ash does not run |
 | Silent mode | Sound is off until the guest chooses. No animation waits on audio |
 | Skip | Any key or tap seeks the timeline to its end. "Played" is stored on the server against the link |
-| Static fallback | The final frame is plain HTML and images, so a slow or failed script still shows Doom, the name and the actions |
+| Static fallback | The final frame is plain HTML and images, so a slow or failed script still shows Doom, the name and the actions. A one-line script in the page's head marks that script will run, so the opening and the summons hold their final frame back instead of flashing it; if the script never arrives, CSS shows the final frame after 2.5 s (2 s for the summons) |
 
 ### 7.2 Assets
 
@@ -459,7 +459,7 @@ doomsday-invitation/
 | 1 | Schema and domain | Migrations, the domain module, date words, tokens, retention. **Done on 15 November 2026** | Domain and concurrency tests pass against PostgreSQL |
 | 2 | Administrator panel | Sign-in, guests and links, characters, proposal, council view, finalise, amend, export. **Done on 16 November 2026**, verified locally; review on a preview waits for 0B | Doom can run an event end to end with no guest screens |
 | 3 | Guest journey, still | Summons, decline and leave, character selection, council, proposal and alternatives, decree, closing screens, invalid link, errors. Final type and copy, no motion. **Done on 16 November 2026**, verified locally; the preview check waits for 0B | The journey passes end to end on phone and desktop, on a preview deployment |
-| 4 | Opening and motion | The reveal, the title, three transitions, reduced motion, skip, tablet layouts, long-name fitting | The opening matches the storyboard and the reduced-motion path works |
+| 4 | Opening and motion | The reveal, the title, three transitions, reduced motion, skip, tablet layouts, long-name fitting. **Done on 16 November 2026**; judged by eye on screenshots, not yet on real phones | The opening matches the storyboard and the reduced-motion path works |
 | 5 | Sound | Source the sounds, wire them, controls | Plays only after a choice; silent mode loses nothing |
 | 6 | Hardening | Headers, rate limits, the cron job, accessibility and performance passes | All automated checks pass on preview |
 | 7 | Devices and launch | The real-phone checklist; production data; passphrase; links sent | Guests are in |

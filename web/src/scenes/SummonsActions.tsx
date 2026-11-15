@@ -9,12 +9,13 @@ import { GuestMessageLine, useGuestAction } from "@/components/guest/useGuestAct
 
 /** "Take your seat", and the quiet control to decline, confirmed first. */
 export function SummonsActions({ token }: { token: string }) {
-  const action = useGuestAction(token);
+  const action = useGuestAction(token, { changesStage: true });
   const [confirming, setConfirming] = useState(false);
 
   async function decline() {
-    await action.run("POST", "decline");
+    // Close the dialog first: it sits in the top layer, above the iris that follows.
     setConfirming(false);
+    await action.run("POST", "decline");
   }
 
   return (

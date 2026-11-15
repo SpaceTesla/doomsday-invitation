@@ -8,12 +8,13 @@ import { GuestMessageLine, useGuestAction } from "@/components/guest/useGuestAct
 
 /** Leaving the council, until the decree: a quiet control, confirmed first. */
 export function LeaveControl({ token }: { token: string }) {
-  const action = useGuestAction(token);
+  const action = useGuestAction(token, { changesStage: true });
   const [confirming, setConfirming] = useState(false);
 
   async function leave() {
-    await action.run("POST", "leave");
+    // Close the dialog first: it sits in the top layer, above the iris that follows.
     setConfirming(false);
+    await action.run("POST", "leave");
   }
 
   return (

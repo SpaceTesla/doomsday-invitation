@@ -4,32 +4,46 @@ import { Runes } from "@/components/Runes";
 import desktopLayout from "@/data/hero-d-layout.json";
 import phoneLayout from "@/data/hero-p-layout.json";
 import { OpeningActions } from "./OpeningActions";
+import { OpeningMotion } from "./OpeningMotion";
+import { FitName } from "./FitName";
 
-// The opening, as its final frame: Doom revealed, the rubble open, the two lines and
-// the two actions. In milestone 3 nothing moves; the reveal is milestone 4. The layers,
-// their order and positions are the approved ones (design/DESIGN.md, section 6.2), and
-// the layer set follows the shape of the screen: the phone composition when upright.
+// The opening (design/DESIGN.md, sections 6.2 to 6.4). The server renders the final
+// frame: Doom revealed, the rubble open, the lines and both actions in place. That is
+// what a guest sees without script, and what the reveal ends on. OpeningMotion plays
+// the reveal over these same layers.
 
+type Side = "top" | "left" | "right" | "bottom";
+type State = [number, number, number];
 type Layout = {
   _frame: { w: number; h: number; hand: [number, number] };
-} & Record<"top" | "left" | "right" | "bottom", { box: [number, number, number, number] }>;
+} & Record<Side, { box: [number, number, number, number]; states: Record<string, State> }>;
 
 const D = desktopLayout as unknown as Layout;
 const P = phoneLayout as unknown as Layout;
+const UPRIGHT = "(max-aspect-ratio: 5/6)"; // keep in step with UPRIGHT_QUERY in src/lib/motion.ts
 
 const pct = (value: number, total: number) => `${((value / total) * 100).toFixed(3)}%`;
 
-/** One layer of the frame: the phone file when the screen is upright, the desktop file otherwise. */
+/**
+ * A rubble state as a transform relative to the piece's own size, so it holds at any
+ * frame size: [xPercent, yPercent, rotation].
+ */
+function relative(layout: Layout, side: Side, state: "closed" | "parting"): State {
+  const [, , w, h] = layout[side].box;
+  const [dx, dy, rotation] = layout[side].states[state];
+  return [(dx / w) * 100, (dy / h) * 100, rotation];
+}
+
 function Layer({ name, className }: { name: string; className: string }) {
   return (
     <picture className={`op-l ${className}`}>
-      <source media="(orientation: portrait)" srcSet={`/art/hero-p-${name}`} />
+      <source media={UPRIGHT} srcSet={`/art/hero-p-${name}`} />
       <img src={`/art/hero-d-${name}`} alt="" decoding="async" />
     </picture>
   );
 }
 
-function Rock({ side }: { side: "top" | "left" | "right" | "bottom" }) {
+function Rock({ side }: { side: Side }) {
   const [dx, dy, dw] = D[side].box;
   const [px, py, pw] = P[side].box;
   const style = {
@@ -40,9 +54,18 @@ function Rock({ side }: { side: "top" | "left" | "right" | "bottom" }) {
     "--pt": pct(py, P._frame.h),
     "--pw": pct(pw, P._frame.w),
   } as CSSProperties;
+  const states = {
+    d: { closed: relative(D, side, "closed"), parting: relative(D, side, "parting") },
+    p: { closed: relative(P, side, "closed"), parting: relative(P, side, "parting") },
+  };
   return (
-    <picture className="op-rock" style={style}>
-      <source media="(orientation: portrait)" srcSet={`/art/hero-p-rock-${side}.webp`} />
+    <picture
+      className={`op-rock op-rock--${side}`}
+      style={style}
+      data-side={side}
+      data-states={JSON.stringify(states)}
+    >
+      <source media={UPRIGHT} srcSet={`/art/hero-p-rock-${side}.webp`} />
       <img src={`/art/hero-d-rock-${side}.webp`} alt="" decoding="async" />
     </picture>
   );
@@ -57,12 +80,12 @@ export function Opening({ token, address }: { token: string; address: string }) 
   } as CSSProperties;
 
   return (
-    <main className="op">
+    <OpeningMotion token={token}>
       <div className="op-frame" role="img" aria-label={copy["2.7"]}>
         <Layer name="sky.jpg" className="op-sky" />
         <div className="op-glow" style={glow} />
-        <Layer name="figure-dark.webp" className="op-fig" />
-        <Layer name="figure-lit.webp" className="op-fig" />
+        <Layer name="figure-dark.webp" className="op-fig op-fig--dark" />
+        <Layer name="figure-lit.webp" className="op-fig op-fig--lit" />
         <Layer name="haze.webp" className="op-haze" />
         <div className="op-l op-dust" style={{ backgroundImage: "url(/art/hero-dust.webp)" }} />
         <Layer name="bokeh.webp" className="op-bokeh" />
@@ -72,15 +95,19 @@ export function Opening({ token, address }: { token: string; address: string }) 
         <Rock side="top" />
         <div className="op-l op-vignette" />
       </div>
+      {/* The name of the experience, shown in the opening only, while the rubble is still closed. */}
+      <p className="op-title" aria-hidden="true">
+        {copy["2.1"]}
+      </p>
       <div className="op-scrim" />
-      <div className="op-copy">
+      <FitName className="op-copy" nameSelector=".op-name" steps={["step"]}>
         <h1 className="op-name">{fill(copy["2.2"], { "[Title] [Name]": address })}</h1>
         <p className="op-line">{copy["2.3"]}</p>
         <div className="op-sig">
           <Runes inscription="viktor von doom" />
         </div>
         <OpeningActions token={token} />
-      </div>
-    </main>
+      </FitName>
+    </OpeningMotion>
   );
 }

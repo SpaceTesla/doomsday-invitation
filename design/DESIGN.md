@@ -644,8 +644,10 @@ No 3D, no physics, no animated filter. Movement is translation with a small scal
 
 Described on the board and not yet built or tested (**Planned**):
 
-- One GSAP timeline with five labels (dark, lift, clear, lit, summons) in place of the sketch's CSS transitions and timers.
-- Pointer parallax: rubble about 12 px, figure about 4 px, fog none. Off on touch screens.
+- One GSAP timeline with five labels (dark, lift, clear, lit, summons) in place of the sketch's CSS transitions and timers. **Built in milestone 4** (`web/src/scenes/OpeningMotion.tsx`), with the approved timings and curves.
+- Pointer parallax: rubble about 12 px, figure about 4 px, fog none. Off on touch screens. **Built in milestone 4**, on screens with a fine pointer only.
+
+Not built: the rune on the forearm lighting at 1.4 s. The approved figure has no separate layer for it, and drawing one would mean changing the approved artwork.
 
 ### 6.3 Doom's appearance
 
@@ -1155,11 +1157,11 @@ Not questions. Each is done during the build, from this document and the approve
 | Council screens | Approved in layout: the proposal panel and character selection. **Built in milestone 3 (16 November 2026)** from that mock, to be reviewed in the running product: the guest list (a panel with a well, Doom first as sovereign, guests by name without their titles); the alternative entry as a second panel under the proposal, opened by "Propose another"; the decline and leave dialogs as panels with a Pirata One heading; the closing and "day has passed" screens as a single panel on Night; notices as a line at the top of the panel they concern; the invalid-link screen as a heading and one line. On the council the hall is a banner over the title on every screen, cropped from the wide plate as in the mock; the hall caption ("The council is seated." and its line) shows under the banner only while Doom has proposed nothing, which is when its line is true | 13 |
 | Administrator panel | Guests and links, the character roster, the proposal, approvals and alternatives, finalising. Not designed | 13 |
 | Copy | Approved in `COPY.md`. The placeholder wording on the review board is replaced by that deck; guests see "mantle" where the board says "name" | 14 |
-| Tablet and intermediate layouts | No composition was drawn. The ratio at which to switch between the two layer sets is to be set by eye | 11 |
-| Motion never seen in motion | The seal waking, the plate parting and the iris between scenes exist only as stills. Their timings are starting values | 15 |
+| Tablet and intermediate layouts | **Set in milestone 4 (16 November 2026), by eye and by measurement.** The upright layer set is used below a ratio of 5:6 (width to height), the wide set above. The wide frame covers the screen and is cropped evenly unless that would cut the raised hand; then the crop is taken from the other side, keeping the hand 2vw from the left edge. The upright frame is anchored to the top, so on screens wider than a phone the lower rubble is what is cropped. On very wide screens at most 5% of the frame's height goes from the top, keeping the hood's headroom. Checked at 390×844, 768×1024, 820×1000, 900×900, 1024×768, 1440×900 and 2560×1080: the hand is always on screen and the lines always start below the mask | 11 |
+| Motion never seen in motion | **Built in milestone 4** with the starting timings, to be judged in the running product. The iris closes in 0.45 s once the guest's action has been answered and opens in 0.45 s on the new scene, with the active seal at its centre. The plate's halves (its own artwork, cut at the seam) part 34% each in 1.2 s with light in the gap and close in 0.8 s, and the words appear as they meet. The seal then wakes: its bands turn from 38°, −24° and 61° to register in 0.7, 0.9 and 1.1 s, and its runes light in reading order 75 ms apart. The ash drifts down and to the left and fades out over 1 s, three seconds after the actions appear. Under reduced motion each is a 0.2 s cross-fade | 15 |
 | Device checks | Nothing has been checked on a real phone or tablet. The research calls this the most valuable next step | 16 |
-| Long names | The approved rule needs a fitting routine in the build; the board set each case by hand | new |
-| The title in the opening | "The Iron Throne" is approved for the opening only. Where it sits and when it appears has not been drawn | new |
+| Long names | **Built** (`web/src/lib/fit.ts`, measured in the browser): on the summons the two-line fit and the single 80% step; in the opening the name may take three lines and only steps down | new |
+| The title in the opening | **Set in milestone 4, by eye:** centred at the top of the frame, it fades in at 0.3 s over the closed rubble and is gone before the slab clears the hood (by 4.1 s), so it never sits over Doom. It is not part of the final frame, so a guest who skips or asks for reduced motion does not see it; the page's title in the browser carries it. Overrule if it should stay | new |
 | Display strings | Every new heading set in Pirata One must be checked by eye (section 2.2) | new |
 | Assets to export | The seal mark, nested square, corner bolt, cuirass tile, clasps and the seal's dormant and waking states (section 9.1). Font files for self-hosting. Brushed-steel textures baked to images | section 9 |
 

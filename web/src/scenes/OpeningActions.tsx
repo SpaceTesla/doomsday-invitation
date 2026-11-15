@@ -13,7 +13,7 @@ import { rememberSound } from "./sound-choice";
  * sound is kept for the visit; nothing plays yet (sound is milestone 5).
  */
 export function OpeningActions({ token }: { token: string }) {
-  const action = useGuestAction(token);
+  const action = useGuestAction(token, { changesStage: true });
 
   // Doom sees that the link was opened. A link-preview robot runs no script, so it
   // never counts as opening.
