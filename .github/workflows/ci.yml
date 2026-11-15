@@ -1,0 +1,157 @@
+# Checks, previews and production. docs/ARCHITECTURE.md, section 8.4.
+#
+# This workflow is the only way anything reaches Vercel: web/vercel.json switches off
+# Vercel's own Git deployments. Production is never served by a deployment until its
+# migrations have finished and it has answered a smoke test:
+#
+#   build -> staged deploy (no traffic) -> back up -> migrate -> smoke test -> promote
+#
+# Secrets (names only; values live in GitHub): VERCEL_TOKEN, VERCEL_ORG_ID,
+# VERCEL_PROJECT_ID, PRODUCTION_DATABASE_URL_DIRECT, PREVIEW_DATABASE_URL_DIRECT.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "22"
+  VERCEL_CLI: "65.16.0"
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: web
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: throne
+          POSTGRES_PASSWORD: throne
+          POSTGRES_DB: iron_throne
+        # The same port as the local container, so the tests need no other settings.
+        ports: ["54329:5432"]
+        options: >-
+          --health-cmd "pg_isready -U throne -d iron_throne"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: web/test-results
+          retention-days: 7
+
+  preview:
+    if: github.event_name == 'pull_request'
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # One preview at a time: they share the preview database.
+    concurrency:
+      group: preview
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: web
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm install --global vercel@${{ env.VERCEL_CLI }}
+      - run: vercel pull --yes --environment=preview --token "$VERCEL_TOKEN"
+      - run: vercel build --token "$VERCEL_TOKEN"
+      - name: Migrate the preview database
+        run: npx tsx scripts/migrate.ts
+        env:
+          DATABASE_URL_DIRECT: ${{ secrets.PREVIEW_DATABASE_URL_DIRECT }}
+      - name: Deploy the preview
+        id: deploy
+        run: |
+          vercel deploy --prebuilt --yes --token "$VERCEL_TOKEN" > deploy.out
+          echo "url=$(node scripts/deployment-url.mjs deploy.out)" >> "$GITHUB_OUTPUT"
+      - name: Smoke test
+        run: node scripts/smoke-test.mjs "${{ steps.deploy.outputs.url }}"
+      - run: echo "Preview ready at ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
+
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    # Production runs one after another, and a run in progress is never cancelled.
+    concurrency:
+      group: production
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: web
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm install --global vercel@${{ env.VERCEL_CLI }}
+      - run: vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
+      - run: vercel build --prod --token "$VERCEL_TOKEN"
+      - name: Stage the deployment (it takes no traffic yet)
+        id: deploy
+        run: |
+          vercel deploy --prebuilt --prod --skip-domain --yes --token "$VERCEL_TOKEN" > deploy.out
+          echo "url=$(node scripts/deployment-url.mjs deploy.out)" >> "$GITHUB_OUTPUT"
+      - name: Back up the production database
+        run: |
+          docker run --rm -e PGURL postgres:18 sh -c 'pg_dump --format=custom "$PGURL"' > backup.dump
+          test -s backup.dump
+        env:
+          PGURL: ${{ secrets.PRODUCTION_DATABASE_URL_DIRECT }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: production-backup-${{ github.sha }}
+          path: web/backup.dump
+          retention-days: 7
+      - name: Migrate the production database
+        run: npx tsx scripts/migrate.ts
+        env:
+          DATABASE_URL_DIRECT: ${{ secrets.PRODUCTION_DATABASE_URL_DIRECT }}
+      - name: Smoke test the staged deployment
+        run: node scripts/smoke-test.mjs "${{ steps.deploy.outputs.url }}"
+      - name: Promote it (traffic moves now)
+        run: vercel promote "${{ steps.deploy.outputs.url }}" --yes --token "$VERCEL_TOKEN"
+      - run: echo "Production promoted to ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"

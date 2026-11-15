@@ -53,7 +53,7 @@ Versions are pinned in the lock file when the project is created.
 - **One Vercel project**, root directory `web/`. Nothing outside `web/` is built or deployed, so the reference images cannot ship.
 - **Rendering.** Guest and administrator pages are server-rendered on each request and never cached. Mutations are Route Handlers. All on the Node.js runtime; nothing uses the edge runtime.
 - **No middleware is needed.** Security headers come from `next.config` `headers()`. Authorisation is checked in the administrator layout and in every handler.
-- **Deployments.** Every pull request gets a preview deployment; `main` deploys to production. Preview and production have separate environment variables, so previews use a separate database branch.
+- **Deployments.** Only the GitHub Actions workflow deploys; `web/vercel.json` switches Vercel's own Git deployments off. Every pull request gets a preview deployment; `main` deploys to production through a staged deployment that is promoted only after its migrations and a smoke test (section 8.4). Preview and production have separate environment variables and separate secrets, so previews use the `preview` database branch.
 - **Cron.** One entry in `vercel.json`, daily. The Hobby plan allows cron jobs to run once a day, at a time accurate to within the hour **(verified)**, which is all retention needs.
 - **Function limits.** Up to 300 seconds on Hobby **(verified)**. Our handlers take milliseconds.
 - **Static assets.** Everything in `web/public/` and the built bundles is served from Vercel's CDN without running a function. No Blob or other storage is used.
@@ -336,10 +336,29 @@ Run from `web/`.
 
 ### 8.4 Deployment
 
-1. Open a pull request. GitHub Actions runs format, lint, type-check, Vitest and Playwright against a PostgreSQL container. Vercel builds a preview against the `preview` branch.
-2. Merge to `main`. The workflow applies migrations to production, then Vercel deploys.
+Built and proven on 16 November 2026 (milestone 0B). The workflow is `.github/workflows/ci.yml`.
 
-Migrations are written to be backward compatible, so the previous deployment keeps working while the new one goes live.
+1. **Every pull request and push to `main`:** format, lint, type-check, Vitest, and the Playwright journey, against a PostgreSQL 18 service container.
+2. **A pull request** then gets a preview, one at a time (they share the database): `vercel pull` and `vercel build` on the Linux runner, migrate the Neon `preview` branch, `vercel deploy --prebuilt`, and a smoke test.
+3. **A push to `main`** goes to production, one run at a time, never cancelled midway:
+   1. `vercel build --prod`, then `vercel deploy --prebuilt --prod --skip-domain`. The deployment is staged: it exists and is ready, but the production domain still points at the previous one.
+   2. `pg_dump` of production, kept as a workflow artifact for seven days. It contains guest data and tokens; artifacts of this private repository are visible only to its owner.
+   3. The migration runner applies pending migrations under its advisory lock (section 4.4).
+   4. `scripts/smoke-test.mjs` asks the staged deployment, through Vercel's protection bypass (`vercel curl`), whether it reads the database and has every migration in this commit's journal. If not, the run stops and the live deployment is untouched.
+   5. `vercel promote` moves the production domain to the new deployment.
+
+What the trial established, by hand from the CLI, before the workflow was written:
+
+- **Staging and promotion work on Hobby.** Before promotion the production domain answered 404 (no deployment yet held it); after `vercel promote` it served the staged deployment at once.
+- **Deployment URLs are protected** (Vercel Authentication answers 302); the production domain is public. `vercel curl` reaches a protected deployment without a separate bypass secret.
+- **`--prebuilt` cannot be uploaded from Windows**: the local build writes function links Vercel cannot take. The workflow builds on Linux, where it works; a deployment from a Windows machine by hand must let Vercel build (`vercel deploy` without `--prebuilt`).
+- `web/.vercelignore` keeps every `.env` file, tests and caches out of any upload.
+
+Settings: Vercel holds `DATABASE_URL` (the pooled string), `EVENT_TIMEZONE`, `SESSION_KEY` and `CRON_SECRET` for production and for preview, each environment with its own secrets; `ADMIN_PASSPHRASE_HASH` is set by the owner (milestone 7, or earlier to use the panel). GitHub holds `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, `PRODUCTION_DATABASE_URL_DIRECT` and `PREVIEW_DATABASE_URL_DIRECT`.
+
+Migrations are written to be backward compatible, so the previous deployment keeps working while the new one goes live, and `vercel rollback` stays safe after a promotion.
+
+**Still to confirm:** that Vercel's daily cron sends `Authorization: Bearer <CRON_SECRET>` (the retention endpoint logs only whether the header matched; check the logs after its first run at 03:00 India time), how long Hobby keeps runtime logs, and Vercel's Hobby terms.
 
 ## 9. Cost
 
@@ -429,7 +448,7 @@ doomsday-invitation/
 | # | Milestone | Contains | Done when |
 |---|---|---|---|
 | 0A | Local foundation | `web/` scaffold with Next, Tailwind v4, Drizzle; tokens, fonts, base components; approved assets copied and marks exported; Docker database; the migration runner; security headers. **Done on 15 November 2026** | A styled specimen page runs locally, the health route reads the local database, and `db:check` reaches Neon |
-| 0B | Deployment foundation | Vercel project, GitHub Actions, CI, the deployment workflow, the `preview` database branch; Vercel's terms, the cron header and log retention confirmed | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
+| 0B | Deployment foundation | Vercel project, GitHub Actions, CI, the deployment workflow, the `preview` database branch; Vercel's terms, the cron header and log retention confirmed. **Staging and promotion proven by hand on 16 November 2026**; the workflow's first runs wait for the push | A styled page that reads the database deploys from `main`, with migrations finished before traffic moves |
 | 1 | Schema and domain | Migrations, the domain module, date words, tokens, retention. **Done on 15 November 2026** | Domain and concurrency tests pass against PostgreSQL |
 | 2 | Administrator panel | Sign-in, guests and links, characters, proposal, council view, finalise, amend, export. **Done on 16 November 2026**, verified locally; review on a preview waits for 0B | Doom can run an event end to end with no guest screens |
 | 3 | Guest journey, still | Summons, decline and leave, character selection, council, proposal and alternatives, decree, closing screens, invalid link, errors. Final type and copy, no motion. **Done on 16 November 2026**, verified locally; the preview check waits for 0B | The journey passes end to end on phone and desktop, on a preview deployment |

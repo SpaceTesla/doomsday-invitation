@@ -5,13 +5,13 @@ import { Mask } from "@/components/Mark";
 import { ThroneNav } from "@/components/throne/ThroneNav";
 import { ensureEvent } from "@/domain/event";
 import { isSignedIn, serverDomain } from "@/lib/admin";
-import { serverEnv } from "@/lib/env";
+import { eventTimeZone } from "@/lib/env";
 
 // Every section of the panel checks the session here, on the server, before anything
 // renders. Each API handler checks it again for itself.
 export default async function ThronePanelLayout({ children }: LayoutProps<"/throne">) {
   if (!(await isSignedIn())) redirect("/throne");
-  await ensureEvent(serverDomain(), serverEnv().EVENT_TIMEZONE);
+  await ensureEvent(serverDomain(), eventTimeZone());
 
   return (
     <div className="mx-auto max-w-3xl px-4 pb-20 pt-8 wide:px-8">

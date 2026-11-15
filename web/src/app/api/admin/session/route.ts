@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { BadRequest, json, liveSessionId, parseBody, sameOrigin, serverDomain } from "@/lib/admin";
-import { serverEnv } from "@/lib/env";
+import { passphraseHash, sessionKey } from "@/lib/env";
 import { verifyPassphrase } from "@/lib/passphrase";
 import { clearFailures, clientAddress, isLocked, recordFailure } from "@/lib/rate-limit";
 import {
@@ -20,12 +20,12 @@ export async function POST(request: Request) {
   try {
     if (!sameOrigin(request)) return json({ error: "forbidden" }, 403);
     const domain = serverDomain();
-    const env = serverEnv();
     const key = `signin:${clientAddress(request)}`;
     if (await isLocked(domain, key)) return json({ error: "locked" }, 429);
 
     const { passphrase } = await parseBody(request, signIn);
-    if (!(await verifyPassphrase(passphrase, env.ADMIN_PASSPHRASE_HASH))) {
+    const hash = passphraseHash();
+    if (!hash || !(await verifyPassphrase(passphrase, hash))) {
       await recordFailure(domain, key);
       return (await isLocked(domain, key))
         ? json({ error: "locked" }, 429)
@@ -37,10 +37,7 @@ export async function POST(request: Request) {
     return new Response(null, {
       status: 204,
       headers: {
-        "Set-Cookie": sessionCookieHeader(
-          sealSession(session.id, env.SESSION_KEY),
-          session.expiresAt,
-        ),
+        "Set-Cookie": sessionCookieHeader(sealSession(session.id, sessionKey()), session.expiresAt),
       },
     });
   } catch (failure) {

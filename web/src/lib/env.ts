@@ -1,20 +1,21 @@
-// Server-side settings, read and checked when first needed. Values are never logged.
-import { z } from "zod";
+// Server-side settings, each read and checked where it is used, so a missing one only
+// stops what needs it. Values are never logged; messages name the variable only.
 import { isTimeZone } from "@/domain/time";
 
-const schema = z.object({
-  EVENT_TIMEZONE: z.string().refine(isTimeZone, "EVENT_TIMEZONE must be an IANA time zone"),
-  SESSION_KEY: z.string().min(32, "SESSION_KEY must be at least 32 characters"),
-  ADMIN_PASSPHRASE_HASH: z.string().startsWith("scrypt:", "ADMIN_PASSPHRASE_HASH is not set"),
-});
+export function eventTimeZone(): string {
+  const value = process.env.EVENT_TIMEZONE ?? "";
+  if (!isTimeZone(value)) throw new Error("EVENT_TIMEZONE must be an IANA time zone.");
+  return value;
+}
 
-export type ServerEnv = z.infer<typeof schema>;
+export function sessionKey(): string {
+  const value = process.env.SESSION_KEY ?? "";
+  if (value.length < 32) throw new Error("SESSION_KEY must be at least 32 characters.");
+  return value;
+}
 
-export function serverEnv(): ServerEnv {
-  const parsed = schema.safeParse(process.env);
-  if (!parsed.success) {
-    // Names only: the messages above never contain a value.
-    throw new Error(parsed.error.issues.map((issue) => issue.message).join("; "));
-  }
-  return parsed.data;
+/** Null until the owner has set it: sign-in then always fails, and nothing else breaks. */
+export function passphraseHash(): string | null {
+  const value = process.env.ADMIN_PASSPHRASE_HASH ?? "";
+  return value.startsWith("scrypt:") ? value : null;
 }

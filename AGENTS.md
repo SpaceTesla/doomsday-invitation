@@ -77,5 +77,6 @@ Run from `web/`. Docker Desktop must be running for the database and the tests.
 | Re-export the summons plates (then bake them to WebP in a browser) | `python scripts/export-plates.py <folder>` |
 | Fill the local database with a sample event and print its local links | `npm run seed:local` |
 | End-to-end tests (build, fresh database, desktop and phone) | `npm run e2e` |
+| Deploying | Never by hand: push to `main` or open a pull request; `.github/workflows/ci.yml` does the rest (`docs/ARCHITECTURE.md`, section 8.4) |
 
 Tests never read `.env.local`, so they cannot reach Neon. Never print a connection string or any other secret.

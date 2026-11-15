@@ -6,7 +6,7 @@ import { z } from "zod";
 import { getDb } from "@/db/client";
 import type { Domain } from "@/domain/context";
 import { ensureEvent } from "@/domain/event";
-import { serverEnv } from "@/lib/env";
+import { eventTimeZone, sessionKey } from "@/lib/env";
 import { readCookie, SESSION_COOKIE, sessionIsLive, unsealSession } from "@/lib/session";
 
 export function serverDomain(): Domain {
@@ -15,7 +15,7 @@ export function serverDomain(): Domain {
 
 /** The live session id behind a cookie value, or null. */
 export async function liveSessionId(domain: Domain, cookieValue: string | undefined) {
-  const id = unsealSession(cookieValue, serverEnv().SESSION_KEY);
+  const id = unsealSession(cookieValue, sessionKey());
   if (!id) return null;
   return (await sessionIsLive(domain, id)) ? id : null;
 }
@@ -70,7 +70,7 @@ export async function asAdmin(request: Request, handler: Handler): Promise<Respo
       readCookie(request.headers.get("cookie"), SESSION_COOKIE),
     );
     if (!sessionId) return json({ error: "signed_out" }, 401);
-    await ensureEvent(domain, serverEnv().EVENT_TIMEZONE);
+    await ensureEvent(domain, eventTimeZone());
     return await handler(domain, sessionId);
   } catch (failure) {
     if (failure instanceof BadRequest) return json({ error: "bad_request" }, 400);
