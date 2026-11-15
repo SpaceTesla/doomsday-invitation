@@ -24,7 +24,11 @@ export type MigrateOptions = {
 export type MigrateResult = {
   /** False when the folder holds no migrations yet. */
   ran: boolean;
-  /** Clock times, for callers that want to show or test ordering. */
+  /**
+   * Clock times, for callers that want to show or test ordering. `lockedAt` is taken just
+   * after the lock was granted; `releasedAt` just before the unlock is sent, so the lock
+   * is certainly held from one to the other, and no other runner can hold it in between.
+   */
   lockedAt: number;
   releasedAt: number;
 };
@@ -69,6 +73,7 @@ export async function runMigrations(options: MigrateOptions): Promise<MigrateRes
 
   let locked = false;
   let lockedAt = 0;
+  let releasedAt = 0;
   try {
     const deadline = Date.now() + waitMs;
     for (;;) {
@@ -96,6 +101,7 @@ export async function runMigrations(options: MigrateOptions): Promise<MigrateRes
   } finally {
     try {
       if (locked) {
+        releasedAt = Date.now();
         await client.query("select pg_advisory_unlock($1)", [MIGRATION_LOCK_KEY]);
       }
     } finally {
@@ -103,5 +109,5 @@ export async function runMigrations(options: MigrateOptions): Promise<MigrateRes
     }
   }
 
-  return { ran: hasMigrations, lockedAt, releasedAt: Date.now() };
+  return { ran: hasMigrations, lockedAt, releasedAt };
 }

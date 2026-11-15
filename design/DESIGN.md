@@ -698,7 +698,21 @@ These three have never been built or seen in motion. Treat the timings as starti
 
 ### 6.8 Sound (Carried over; proposals written for the first board's opening)
 
-No audio files exist in the project. Everything below is description.
+**Built in milestone 5 (16 November 2026), awaiting the owner's approval by ear.** The sounds are synthesised from noise and sine waves by `web/scripts/make-sounds.py`: no recordings and no sample libraries, so there is no licence to track. Encoded as WebM/Opus with an MP3 fallback, about 350 KB in all, loaded only once the guest has chosen sound. They can be heard one by one on the development specimen page (`/dev/specimen`).
+
+| Sound | Length | Where it plays |
+|---|---|---|
+| `seal-turn` | 0.9 s | The iris between scenes: bands turning, slowing ratchet clicks, a soft stop |
+| `plate-part` | 1.2 s | The summons plate parting: steel sliding on steel, a low draw of air |
+| `plate-close` | 0.8 s | The halves meeting: a short slide and a heavy close |
+| `detent` | 0.35 s | Each band of the seal locking into register, one after another |
+| `rune-tick` | 0.08 s | Each rune lighting, in reading order |
+| `hum` | 2.2 s | The low electrical hum rising as the seal wakes |
+| `hall-room` | 60 s, looped | The council: a large quiet room, distant wind |
+
+The opening has no sound, by the rule below: it plays before the guest's first action, and "Go with him" is that action.
+
+Below is the description the sounds were made from.
 
 | Moment | Sound |
 |---|---|
@@ -718,7 +732,7 @@ Limits, all in force:
 ### 6.9 Audio controls and silent mode
 
 - The opening offers two actions: "Go with him" and "Go without sound". The second continues in silence.
-- A sound on/off control must stay reachable on every later screen. Its design is **Derived**: a quiet control using a sound icon in Steel. The first board drew one such icon; no placement is approved.
+- A sound on/off control must stay reachable on every later screen. Its design is **Derived**: a quiet control using a sound icon in Steel. The first board drew one such icon; no placement is approved. **Built in milestone 5** as the quiet control alone, labelled with the current state (COPY.md 2.6), fixed at the top right of every screen after the opening, above the scene and below the iris.
 - **Silent mode** means every sound is off and nothing else changes. No animation depends on audio, and no information is given by sound alone.
 - The guest's choice should be remembered for the rest of their visit, and sound must never restart by itself.
 - Sound fades out when the tab is hidden.
@@ -1045,8 +1059,8 @@ Also reference only, and not for the build:
 
 | Needed | Why |
 |---|---|
-| All audio | None exists (section 6.8) |
-| Sound design for the new opening | Not specified |
+| All audio | Synthesised in milestone 5 (section 6.8); awaiting approval by ear |
+| Sound design for the new opening | None needed: the opening plays before the guest's first action, when nothing may sound |
 | Tablet and intermediate compositions | Not drawn (section 7.3) |
 | Final figure and hall artwork | Only if the render style is not accepted |
 | A detailed seated Doom | The present layer is a small stand-in |
@@ -1153,7 +1167,7 @@ Not questions. Each is done during the build, from this document and the approve
 
 | Work | Notes | Was |
 |---|---|---|
-| Sound | No audio exists. A sound map for the rubble opening has not been written. Everything must be designed, sourced and produced within the limits of section 6.8 | 8 |
+| Sound | **Built in milestone 5**: seven synthesised sounds, wired to the iris, the plate, the seal and the hall (section 6.8). The owner approves them by ear on `/dev/specimen`; any can be remade by changing `web/scripts/make-sounds.py` | 8 |
 | Council screens | Approved in layout: the proposal panel and character selection. **Built in milestone 3 (16 November 2026)** from that mock, to be reviewed in the running product: the guest list (a panel with a well, Doom first as sovereign, guests by name without their titles); the alternative entry as a second panel under the proposal, opened by "Propose another"; the decline and leave dialogs as panels with a Pirata One heading; the closing and "day has passed" screens as a single panel on Night; notices as a line at the top of the panel they concern; the invalid-link screen as a heading and one line. On the council the hall is a banner over the title on every screen, cropped from the wide plate as in the mock; the hall caption ("The council is seated." and its line) shows under the banner only while Doom has proposed nothing, which is when its line is true | 13 |
 | Administrator panel | Guests and links, the character roster, the proposal, approvals and alternatives, finalising. Not designed | 13 |
 | Copy | Approved in `COPY.md`. The placeholder wording on the review board is replaced by that deck; guests see "mantle" where the board says "name" | 14 |

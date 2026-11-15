@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { REDUCED, gsap, prefersReducedMotion, useGSAP } from "@/lib/motion";
+import { play } from "@/lib/sound";
 
 // The summons revealed (design/DESIGN.md, section 6.6), then the seal waking:
 //
@@ -63,6 +64,7 @@ export function SummonsMotion() {
       const tl = gsap.timeline({ onComplete: done });
       tl.addLabel("part", 0).addLabel("close", 1.2).addLabel("wake", 2.15);
 
+      tl.call(() => play("plate-part"), [], "part");
       tl.to(".sm-door--left", { xPercent: -34, duration: 1.2, ease: "power3.inOut" }, "part");
       tl.to(".sm-door--right", { xPercent: 34, duration: 1.2, ease: "power3.inOut" }, "part");
       tl.fromTo(
@@ -71,6 +73,7 @@ export function SummonsMotion() {
         { autoAlpha: 1, scaleX: 1, duration: 1.0, ease: "power2.out" },
         "part+=0.1",
       );
+      tl.call(() => play("plate-close"), [], "close");
       tl.to(".sm-door--left", { xPercent: 0, duration: 0.8, ease: "power3.in" }, "close");
       tl.to(".sm-door--right", { xPercent: 0, duration: 0.8, ease: "power3.in" }, "close");
       tl.to(".sm-light", { autoAlpha: 0, duration: 0.6, ease: "power1.in" }, "close+=0.2");
@@ -78,7 +81,13 @@ export function SummonsMotion() {
       tl.set(content, { autoAlpha: 1 }, "close+=0.8");
       tl.to(".sm-door", { autoAlpha: 0, duration: 0.15, ease: "none" }, "close+=0.8");
 
+      tl.call(() => play("hum"), [], "wake");
       bands.forEach((band, i) => {
+        tl.call(
+          () => play("detent", { rate: 1 + i * 0.06 }),
+          [],
+          `wake+=${(BAND_TIME[i] ?? 0.9) - 0.05}`,
+        );
         tl.to(
           band,
           { rotation: 0, duration: BAND_TIME[i] ?? 0.9, ease: "power3.out", svgOrigin: "0 0" },
@@ -92,6 +101,13 @@ export function SummonsMotion() {
         { fill: DORMANT.gold },
         { fill: "#c9a85e", duration: 0.25, stagger: 0.075, ease: "none" },
         locked,
+      );
+      emeraldRunes.forEach((_, i) =>
+        tl.call(
+          () => play("rune-tick", { rate: 0.94 + (i % 5) * 0.03 }),
+          [],
+          `${locked}+=${i * 0.075}`,
+        ),
       );
       tl.fromTo(
         emeraldRunes,

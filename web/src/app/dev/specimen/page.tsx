@@ -211,6 +211,28 @@ export default function Specimen() {
         </div>
       </Section>
 
+      <Section title="Sound, for approval by ear">
+        <ul className="grid gap-4 wide:grid-cols-2">
+          {[
+            ["seal-turn", "The iris between scenes, 0.9 s"],
+            ["plate-part", "The summons plate parting, 1.2 s"],
+            ["plate-close", "The plate closing, 0.8 s"],
+            ["detent", "A band of the seal locking, 0.35 s"],
+            ["rune-tick", "A rune lighting, 0.08 s"],
+            ["hum", "The hum as the runes light, 2.2 s"],
+            ["hall-room", "The hall, 60 s loop"],
+          ].map(([name, what]) => (
+            <li key={name}>
+              <p className="t-expl">{what}</p>
+              <audio controls preload="none" loop={name === "hall-room"} className="mt-2 w-full">
+                <source src={`/audio/${name}.webm`} type="audio/webm" />
+                <source src={`/audio/${name}.mp3`} type="audio/mpeg" />
+              </audio>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
       <Section title="Doomscript, decoration only">
         <div className="grid gap-4 text-[1.375rem] text-emerald-light">
           {INSCRIPTIONS.map((inscription) => (

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { copy } from "@/copy";
+import { room } from "@/lib/sound";
 import { Heading } from "@/components/Heading";
 import { GuestList } from "./GuestList";
 import { LeaveControl } from "./LeaveControl";
@@ -16,6 +17,12 @@ import type { CouncilData } from "./types";
  */
 export function CouncilScreen({ data }: { data: CouncilData }) {
   const marked = useRef(false);
+
+  // The hall's room tone while the council is on screen, if the guest chose sound.
+  useEffect(() => {
+    room(true);
+    return () => room(false);
+  }, []);
 
   // The notices on this load have been seen: they will not show again.
   useEffect(() => {

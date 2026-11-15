@@ -5,7 +5,7 @@ import { copy } from "@/copy";
 import { Button } from "@/components/Button";
 import { QuietControl } from "@/components/QuietControl";
 import { GuestMessageLine, useGuestAction } from "@/components/guest/useGuestAction";
-import { rememberSound } from "./sound-choice";
+import { setSound } from "@/lib/sound";
 
 /**
  * "Go with him" and "Go without sound". Neither is acceptance: both lead to the
@@ -26,7 +26,7 @@ export function OpeningActions({ token }: { token: string }) {
   }, [token]);
 
   async function go(sound: boolean) {
-    rememberSound(sound);
+    setSound(sound);
     await action.run("POST", "opened", { played: true });
   }
 

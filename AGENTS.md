@@ -76,6 +76,7 @@ Run from `web/`. Docker Desktop must be running for the database and the tests.
 | Re-export the marks from the board generator | `python scripts/export-marks.py` |
 | Re-export the summons plates (then bake them to WebP in a browser) | `python scripts/export-plates.py <folder>` |
 | Fill the local database with a sample event and print its local links | `npm run seed:local` |
+| Remake the sounds (synthesised; then encode them with Docker's ffmpeg) | `python scripts/make-sounds.py <folder>`, then `bash scripts/encode-sounds.sh <folder>` |
 | End-to-end tests (build, fresh database, desktop and phone) | `npm run e2e` |
 | Deploying | Never by hand: push to `main` or open a pull request; `.github/workflows/ci.yml` does the rest (`docs/ARCHITECTURE.md`, section 8.4) |
 

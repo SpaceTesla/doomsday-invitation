@@ -11,6 +11,8 @@ export const copy = {
   "2.3": "Doctor Doom is here to collect you.",
   "2.4": "GO WITH HIM",
   "2.5": "GO WITHOUT SOUND",
+  "2.6.on": "SOUND ON",
+  "2.6.off": "SOUND OFF",
   "2.7": "Doctor Doom, hooded and masked, lifts the rubble from over you and raises one hand.",
   "2.8": "Press any key to skip.",
   "2.9": "The Iron Throne",

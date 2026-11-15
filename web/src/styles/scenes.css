@@ -460,6 +460,20 @@
     animation: op-fallback 0s linear 2s forwards;
   }
 
+  /* =========================================================== the sound control */
+  /* Every screen after the opening; above the scene, below the iris. */
+  .sound-control {
+    position: fixed;
+    top: max(8px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+    z-index: 50;
+  }
+  .sound-control .link-quiet {
+    padding: 0 6px;
+    background: rgba(10, 13, 18, 0.55);
+    border-radius: 2px;
+  }
+
   /* =========================================================== the seal iris between scenes */
   .iris {
     --iris: 150vmax;

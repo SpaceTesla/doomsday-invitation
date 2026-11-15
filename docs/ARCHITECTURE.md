@@ -460,7 +460,7 @@ doomsday-invitation/
 | 2 | Administrator panel | Sign-in, guests and links, characters, proposal, council view, finalise, amend, export. **Done on 16 November 2026**, verified locally; review on a preview waits for 0B | Doom can run an event end to end with no guest screens |
 | 3 | Guest journey, still | Summons, decline and leave, character selection, council, proposal and alternatives, decree, closing screens, invalid link, errors. Final type and copy, no motion. **Done on 16 November 2026**, verified locally; the preview check waits for 0B | The journey passes end to end on phone and desktop, on a preview deployment |
 | 4 | Opening and motion | The reveal, the title, three transitions, reduced motion, skip, tablet layouts, long-name fitting. **Done on 16 November 2026**; judged by eye on screenshots, not yet on real phones | The opening matches the storyboard and the reduced-motion path works |
-| 5 | Sound | Source the sounds, wire them, controls | Plays only after a choice; silent mode loses nothing |
+| 5 | Sound | Source the sounds, wire them, controls. **Done on 16 November 2026**; the sounds are synthesised (`scripts/make-sounds.py`, `scripts/encode-sounds.sh`) and await approval by ear | Plays only after a choice; silent mode loses nothing |
 | 6 | Hardening | Headers, rate limits, the cron job, accessibility and performance passes | All automated checks pass on preview |
 | 7 | Devices and launch | The real-phone checklist; production data; passphrase; links sent | Guests are in |
 
