@@ -411,7 +411,7 @@ Migrations are written to be backward compatible, so the previous deployment kee
 | Errors | A page that fails while rendering shows copy 9.9 and a reload, with status 500, `no-store`, and no error detail | Checked by hand on a production build (milestone 6) |
 | Layouts | Phone and desktop viewports for every screen, long names | Playwright |
 | Privacy and headers | Headers and `no-store` on every kind of route, no request to another origin on any screen, the session cookie `HttpOnly` and `SameSite=Strict` (`privacy.spec.ts`); identical link previews | Playwright and handler tests |
-| Real devices | Phones, including a messaging app's browser and Low Power Mode; sound | A checklist by hand |
+| Real devices | Phones, including a messaging app's browser and Low Power Mode; sound | A checklist by hand: `docs/LAUNCH.md`, section 3. Before it, the end-to-end suite was run once in Playwright's WebKit as an iPhone (16 November 2026): the guest journey passes. What failed there is the test browser, not the site: Tab does not reach buttons in WebKit, the Windows build has no Web Audio and draws about 2.5 frames a second (so the reveal crawls), it will not send a secure cookie to `http://localhost`, and the performance tests need Chromium |
 | Copy | Every line in `src/copy` appears word for word in the matching row of `COPY.md` | Unit test |
 | End-to-end setup | `npm run e2e` builds, creates a fresh `iron_throne_e2e` database in the local container, serves the build on port 3311 and runs the journey at 1440×900 and 390×844 | Playwright |
 
@@ -422,7 +422,7 @@ No database behaviour is mocked.
 ```
 doomsday-invitation/
   AGENTS.md  CLAUDE.md
-  docs/                     PRODUCT_SPEC.md, COPY.md, ARCHITECTURE.md, HANDOFF.md
+  docs/                     PRODUCT_SPEC.md, COPY.md, ARCHITECTURE.md, HANDOFF.md, LAUNCH.md
   design/                   specification, boards, generators (not deployed)
   references/               reference images (never deployed)
   research/
@@ -467,7 +467,7 @@ doomsday-invitation/
 | 4 | Opening and motion | The reveal, the title, three transitions, reduced motion, skip, tablet layouts, long-name fitting. **Done on 16 November 2026**; judged by eye on screenshots, not yet on real phones | The opening matches the storyboard and the reduced-motion path works |
 | 5 | Sound | Source the sounds, wire them, controls. **Done on 16 November 2026**; the sounds are synthesised (`scripts/make-sounds.py`, `scripts/encode-sounds.sh`) and await approval by ear | Plays only after a choice; silent mode loses nothing |
 | 6 | Hardening | Headers, rate limits, the cron job, accessibility and performance passes. **Done on 16 November 2026**, verified locally on a production build: axe and keyboard on every screen, privacy and headers on every kind of route, the performance budget met, the error screens, full TLS verification. The preview check runs when it is pushed | All automated checks pass on preview |
-| 7 | Devices and launch | The real-phone checklist; production data; passphrase; links sent | Guests are in |
+| 7 | Devices and launch | The real-phone checklist; production data; passphrase; links sent. The owner's runbook is `docs/LAUNCH.md` | Guests are in |
 
 Screens that were never drawn are built in milestones 2 to 4 from `DESIGN.md` and the approved council mock, and reviewed in the running product.
 
