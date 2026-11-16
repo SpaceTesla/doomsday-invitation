@@ -903,7 +903,16 @@
   .cn-guest {
     position: relative;
     display: grid;
-    grid-template-columns: 24px minmax(0, 1fr) auto;
+    grid-template-columns: 24px minmax(0, 1fr);
+    align-items: center;
+    gap: 2px 12px;
+  }
+  /* The name and its status words share a line while the whole name fits beside them.
+     A longer name keeps the line to itself and the words drop beneath it, still at the
+     right, so a long surname breaks at its hyphen or space instead of mid-word. */
+  .cn-guest-head {
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 2px 12px;
   }
@@ -924,8 +933,11 @@
     display: flex;
     gap: 10px;
     align-items: center;
+    margin-left: auto;
   }
   .cn-guest-name {
+    flex: 1 1 auto;
+    min-width: 0;
     font: 500 1.125rem / 1.2 var(--f-serif);
     letter-spacing: 0.03em;
     color: var(--c-silver);

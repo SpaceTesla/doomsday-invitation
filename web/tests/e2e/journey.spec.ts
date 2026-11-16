@@ -42,6 +42,10 @@ test("a new guest: the opening, the summons, then the council without a mantle",
   await page.reload();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Mr. Anish.");
 
+  // Press only once the opening is live: a press before hydration does nothing.
+  await expect(page.locator(".op")).toHaveAttribute("data-motion", /done|still/, {
+    timeout: 15_000,
+  });
   await page.getByRole("button", { name: "GO WITHOUT SOUND" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Mr. Anish");
   await expect(page.getByText("Victor von Doom")).toBeVisible();
@@ -50,6 +54,9 @@ test("a new guest: the opening, the summons, then the council without a mantle",
   // Once one is pressed, the link opens on the summons.
   await page.reload();
   await expect(page.locator(".sm-name")).toBeVisible();
+  await expect(page.locator(".sm-plate")).toHaveAttribute("data-motion", /done|still/, {
+    timeout: 15_000,
+  });
 
   await page.getByRole("button", { name: "TAKE YOUR SEAT" }).click();
   await expect(page.getByRole("heading", { name: "Council of Doom" })).toBeVisible();

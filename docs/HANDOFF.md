@@ -1,6 +1,6 @@
 # The Iron Throne: project handoff
 
-Written on 15 November 2026 for a new Claude session taking over this project. Read this first, then the four source-of-truth documents it names. Planning is finished. The next work is building.
+Written on 15 November 2026 for a new Claude session taking over this project, and brought up to date on 16 November 2026. Read this first, then the four source-of-truth documents it names. Planning and building are finished for version 1. What remains is the launch (`docs/LAUNCH.md`). Fix defects. Do not add scope.
 
 ## 1. Project overview
 
@@ -18,18 +18,18 @@ Written on 15 November 2026 for a new Claude session taking over this project. R
 
 | Area | State |
 |---|---|
-| Research | Complete. Background only |
+| Research | Complete. Background only. The character emblem research (`research/research_notes/character_visual_identity_research.md`) is kept for a possible later version; version 1 shows characters by name only (`design/DESIGN.md`, sections 4.7 and 8.6) |
 | Creative direction | Complete and approved: Direction IV, "The Iron Throne" |
 | Design boards and artwork | Complete and approved (section 5) |
 | Product specification | Complete and approved |
 | Design specification | Complete and approved |
 | Copy deck | Complete and approved |
 | Technical architecture | Complete and final: Next.js on Vercel with Neon PostgreSQL |
-| Application code | Milestones 0A to 6 are built: the administrator panel, the whole guest journey with motion and sound, and the hardening pass (accessibility, privacy, performance, error screens, full TLS verification). Deployed by the workflow from `main` |
+| Application code | **Version 1 is code-complete and live** at https://iron-throne.vercel.app (16 November 2026). Milestones 0A to 6 are built: the administrator panel, the whole guest journey with motion and sound, the three-step council with the mantle search, the Doomsday roster seeded by migration, and the hardening pass (accessibility, privacy, performance, error screens, full TLS verification). Deployed by the workflow from `main`. The scope is frozen: what remains is milestone 7, run by the owner from `docs/LAUNCH.md` |
 | Version control | A Git repository on `main`. The specifications live in `docs/`; `AGENTS.md` and `CLAUDE.md` at the root point to them |
-| Accounts | The GitHub repository (private), the Vercel account (Hobby) and the Neon project (PostgreSQL 18) exist. No Vercel project has been created yet; that is milestone 0B |
+| Accounts | The GitHub repository (private), the Vercel project (Hobby) and the Neon project (PostgreSQL 18). Production deploys from `main` through `.github/workflows/ci.yml` |
 
-The only code in the project is the Python that generated the concept boards, under `design/explorations/assets/board-4-*-source/`. It is drawing code, not application code.
+The application is in `web/`. The Python under `design/explorations/assets/board-4-*-source/` generated the concept boards and is drawing code, not application code.
 
 ## 3. Source of truth
 

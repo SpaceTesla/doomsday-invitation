@@ -34,8 +34,12 @@ export function GuestList({ guests }: { guests: CouncilData["guests"] }) {
         <ul className="row-list" aria-label={listName}>
           <li className="cn-guest">
             <Mask tone="gold" className="!h-[22px] !w-auto" />
-            <span className="cn-guest-name">{copy["6.4.name"]}</span>
-            <Label>{copy["6.4.tag"]}</Label>
+            <span className="cn-guest-head">
+              <span className="cn-guest-name">{copy["6.4.name"]}</span>
+              <span className="cn-guest-tags">
+                <Label>{copy["6.4.tag"]}</Label>
+              </span>
+            </span>
           </li>
           {guests.map((guest, index) => (
             <li
@@ -47,10 +51,12 @@ export function GuestList({ guests }: { guests: CouncilData["guests"] }) {
               ].join(" ")}
             >
               <StatusMark status={guest.status} />
-              <span className="cn-guest-name">{guest.name}</span>
-              <span className="cn-guest-tags">
-                {guest.isYou ? <Label className="text-gold-light">{copy["6.8"]}</Label> : null}
-                <Label>{statusWord[guest.status]}</Label>
+              <span className="cn-guest-head">
+                <span className="cn-guest-name">{guest.name}</span>
+                <span className="cn-guest-tags">
+                  {guest.isYou ? <Label className="text-gold-light">{copy["6.8"]}</Label> : null}
+                  <Label>{statusWord[guest.status]}</Label>
+                </span>
               </span>
               {guest.status === "seated" ? (
                 guest.character ? (

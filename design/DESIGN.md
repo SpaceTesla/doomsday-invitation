@@ -495,6 +495,7 @@ There is **no rune for B, W, X, Y or Z**.
 | Drawn from the supplied character references | Mask levels 1 to 3, suit rune levels 1 to 3, cuirass tile, the two clasps, the horned mark | Follow studio-owned designs. Redrawn for a private invitation |
 | Community interpretation | Doomscript: rune lines, rune rings, single runes | Traced from a fan-made decoder. Unconfirmed |
 | Original to this project | The three-band seal, the seal mark, the nested square, the dotted line and rule, the corner bolt | Ours |
+| Character emblems (added 16 November 2026; none drawn yet) | One mark per mantle on the roster | Our own drawings of the characters' costume elements and props, following section 4.7. Never traced from studio logos or artwork. Kept apart from Doom's marks |
 
 ### 4.3 The three-band seal (original)
 
@@ -548,10 +549,40 @@ The eagle arms and wax seal of an earlier direction were discarded and must not 
 
 ### 4.6 Icon rules
 
-- Straight strokes and one circle. The mask is the only form with curves, which keeps it the most important mark.
+These govern the project's own marks: Doom's, Latveria's and the interface's. Character emblems follow section 4.7.
+
+- Straight strokes and one circle. Among the project's marks, the mask is the only form with curves, which keeps it the most important mark.
 - Two weights: a heavy outline and a light inner line.
 - Colour by role: gold when Doom issues something, emerald when something is active, steel otherwise.
 - Icons shown in use on the board: mask level 1 for the council, suit rune level 1 for the roster, the seal mark for the summons and for primary actions.
+
+### 4.7 Character emblems (Approved rules, 16 November 2026; no emblem drawn yet)
+
+Rules for the marks of the characters a guest can claim. You set them in your brief of 16 November 2026. The research behind each character's concept is in `research/research_notes/character_visual_identity_research.md`. Characters are still shown by name only in the first version (section 8.6). These rules apply if emblems are made.
+
+**Form**
+
+- **Level 1 only.** Each emblem is one filled silhouette, with its features cut out as negative space, as on mask level 1. There are no strokes, no inner lines, no shading and no texture. Aim for one to three cut-outs, and never more than the mask's five. Every emblem must read at 16 px.
+- **Simple curves are allowed.** Circles, arcs, ellipses, rounded outlines and simple organic shapes are allowed where they make the character easier to recognise: a shield, a horn, a flame, a tail. Each curve should be a single sweep or a part of a circle.
+- **Doom's is the only ornament.** Complex ornamental curves, scrollwork, filigree and decorative linework stay exclusive to Doom's marks. So do the mask's level 2 and level 3 detail: rivet lines, dotted borders, raised lattices.
+
+**No typography inside a mark.** Characters are shown by symbols. No emblem contains a letter, a numeral, a name or any lettering, even when the character's costume carries one (Sentry's S, the Fantastic Four's 4, the Avengers' A, the X-Men's X). The character's name is always set beside the mark in Cinzel (section 8.6). The typography system is unchanged.
+
+**Keeping Doom distinct.** Curves no longer set the mask apart, so these rules do instead:
+
+1. **No emblem borrows Doom's marks:**
+   - the mask's outline, a hood over a faceplate, or eye slots shaped like his;
+   - the riveted plate, the clasps, the horned mark, the cuirass tile, the nested square, the seal or Doomscript.
+2. **Character emblems are steel.** Gold belongs to Doom's issuing and emerald to active things, as in section 4.6. The one exception is the claimed state of section 8.6, where a guest's own mark turns Emerald light. No emblem is ever drawn at level 2.
+3. **Doom comes first.** Wherever emblems and the mask appear together, Doom's mask leads and is never smaller than an emblem. On the guest list it is the sovereign's mark.
+4. **No lit eyes.** No emblem has glowing or lit eyes (section 10).
+
+**As a set**
+
+- **Outline first.** At 16 px an emblem is recognised by its outline before its cut-outs. Two emblems that share an outline must not rely on their cut-outs to tell them apart.
+- **Few plain discs and front-facing faces.** Use a plain disc, or a face seen from the front, only where it is the character's own object, and prefer a profile or an object otherwise.
+- **The Fantastic Four as a family.** They share one geometric insignia, and each member alters it in a single way. No other faction is given a shared device.
+- **One colour.** Every emblem must work in a single colour. None may depend on colour to be recognised.
 
 ---
 
@@ -870,7 +901,7 @@ The invitation itself. Layout in section 7; measures in section 2.3; wording in 
 The rules are confirmed (`PRODUCT_SPEC.md`, Stage 3) and the layout is approved as drawn on the review board: a screen heading in Pirata One, a line of explanatory text, then one plate per character in a single column. Each plate carries a mark, the character's name in Cinzel at 22 px, a status tag in Orbitron at the right, and for a taken character the holder's name beneath in Cinzel at 15 px. No character artwork and no roster exist in the project. Constraints:
 
 - Each choice is a plate (section 8.3), not an illustrated card. No character artwork has been approved or sourced, and studio images must not be used.
-- A character is shown by name in Cinzel 500, and by name only in the first version (**Decided**). Marks or artwork for characters are a could-have and would need an agreed source.
+- A character is shown by name in Cinzel 500, and by name only in the first version (**Decided**). Marks or artwork for characters are a could-have and would need an agreed source. If character emblems are made, they follow section 4.7 (rules approved 16 November 2026; none drawn).
 - The list shows every character on the roster. It can be any length, since the administrator sets it, so it must reflow and scroll natively; it is not a fixed grid.
 - **Factions (added 16 November 2026).** The plates are grouped under their factions (`PRODUCT_SPEC.md`, section 3.9), each group headed by its name in Cinzel 500 at the explanatory size (18 px, 19 px wide), Antique gold, tracking 0.04em; Cinzel because the names carry figures. 24 px above a heading, 12 px between it and its plates. The panel's roster uses the same headings.
 
@@ -951,6 +982,7 @@ Because the mechanism may change after the first version (`PRODUCT_SPEC.md`, sec
 - A panel headed "Council of Doom" in Pirata One, with one row per guest inside a well.
 - Everyone summoned is listed, including guests who declined and guests who have not answered, each with their status (**Decided**).
 - Each row: status mark, name in Cinzel, character in Cinzel in Steel, status word in Orbitron capitals at the right.
+- A name too long to sit whole beside its status words takes the line to itself, and the words drop beneath it, still at the right, so a long surname breaks at its hyphen or space and never mid-word (added 16 November 2026, after the phone check).
 - Rows are separated by the well's own edges. No cards inside the panel.
 - The guest's own row is marked with a Gold light rule at its left edge and the word "You".
 - Doom heads the list as its sovereign, with the mask at level 1, and is not counted among the seats.
@@ -1079,7 +1111,7 @@ Also reference only, and not for the build:
 | A detailed seated Doom | The present layer is a small stand-in |
 | Council screens not yet drawn: the guest list, the alternative entry, confirmation, decline and its closing screen, the invalid link | No mocks exist. They follow the approved council mock (section 8) |
 | Administrator panel: guests and links, the character roster, the proposal, approvals and alternatives, finalising | No mocks exist |
-| Character marks or artwork | None exists. A could-have, not part of the first version |
+| Character marks or artwork | None drawn. A could-have, not part of the first version. The rules for emblems are in section 4.7, and each character's researched concept is in `research/research_notes/character_visual_identity_research.md`. No artwork |
 | Draft copy for every unwritten screen | None exists. To be prepared for your approval |
 | Exported icon files | Section 9.1 |
 | Font files for self-hosting | The boards use Google Fonts |
@@ -1167,6 +1199,7 @@ Recommendations you accepted on 15 November 2026. The "Was" column gives the num
 | "The Iron Throne" appears in the opening experience only | review |
 | The council layout of the typography review board is the design direction for the first version: structure, hierarchy, character states, proposal panel, approval count, alternatives. Its placeholder wording is not approved | review |
 | Pirata One never renders an individual word containing V or v. Only that word is set in Cinzel; the heading is not switched to Cinzel as a whole and keeps its place in the hierarchy. Stated by you on 15 November 2026, correcting the earlier wording of sections 2.2 and 8.3 | build |
+| Character emblems (16 November 2026, your brief): simple curves are allowed and ornament stays Doom's; no letters, numerals or names inside a mark. Rules in section 4.7. Doom's mask and the project's own icon rules (section 4.6) are unchanged | emblems |
 
 Product decisions that shaped section 8 (taken characters show their holder, approvals reset when the proposal changes, the count is against seated guests, the council updates on reload) are logged in `PRODUCT_SPEC.md`, section 7.
 
