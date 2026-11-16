@@ -6,12 +6,13 @@ import { Heading } from "@/components/Heading";
 import { Label } from "@/components/Label";
 import { CuirassTile, SuitRune } from "@/components/Mark";
 import { GuestMessageLine, useGuestAction } from "@/components/guest/useGuestAction";
+import { byFaction, factionName } from "@/domain/factions";
 import type { CouncilData } from "./types";
 
 /**
- * The mantles, one plate each. Choosing is optional and gates nothing; a guest may
- * claim a free mantle whenever they wish, and change it until the decree. Taken
- * mantles stay in place, marked, with who holds them.
+ * The mantles, one plate each, grouped under their factions. Choosing is optional and
+ * gates nothing; a guest may claim a free mantle whenever they wish, and change it until
+ * the decree. Taken mantles stay in place, marked, with who holds them.
  */
 export function MantleSection({ data }: { data: CouncilData }) {
   const action = useGuestAction(data.token);
@@ -20,7 +21,64 @@ export function MantleSection({ data }: { data: CouncilData }) {
   const mine = data.you.characterId;
   // After the decree a guest who holds a mantle keeps it; one who holds none may still choose.
   const locked = decreed && mine !== null;
+  const groups = byFaction(mantles);
   const allTaken = mantles.length > 0 && !mine && mantles.every((m) => m.holder !== null);
+
+  function plate(mantle: CouncilData["mantles"][number]) {
+    const taken = mantle.holder !== null && !mantle.isYours;
+    const content = (
+      <>
+        {mantle.isYours ? (
+          <SuitRune tone="emerald" />
+        ) : (
+          <CuirassTile tone={taken ? "dim" : "steel"} />
+        )}
+        <span className="cn-cname">{mantle.name}</span>
+        {mantle.isYours ? (
+          <Label>{copy["5.4"]}</Label>
+        ) : taken ? (
+          <Label>{copy["5.5"]}</Label>
+        ) : (
+          <span />
+        )}
+        {taken ? <span className="cn-holder">{mantle.holder}</span> : null}
+      </>
+    );
+    const state = mantle.isYours ? "is-yours" : taken ? "is-taken" : "";
+    // A free mantle is a button, unless choosing is closed. Taken and held mantles
+    // are announced, not offered.
+    if (!taken && !mantle.isYours && !locked) {
+      return (
+        <li key={mantle.id}>
+          <button
+            type="button"
+            className={`cn-char ${state}`}
+            aria-label={fill(copy["5.6"], { "[Character]": mantle.name })}
+            disabled={action.busy}
+            onClick={() => claim(mantle.id, mantle.name)}
+          >
+            {content}
+          </button>
+        </li>
+      );
+    }
+    return (
+      <li
+        key={mantle.id}
+        className={`cn-char ${state}`}
+        aria-label={
+          taken && mantle.holder
+            ? fill(copy["5.7"], {
+                "[Character]": mantle.name,
+                "[Title] [Name]": mantle.holder,
+              })
+            : undefined
+        }
+      >
+        {content}
+      </li>
+    );
+  }
 
   async function claim(id: string, name: string) {
     setChosen(null);
@@ -54,65 +112,14 @@ export function MantleSection({ data }: { data: CouncilData }) {
       {allTaken ? <p className="notice">{copy["5.11"]}</p> : null}
       {locked ? <p className="notice">{copy["5.13"]}</p> : null}
 
-      {mantles.length > 0 ? (
-        <ul className="cn-chars">
-          {mantles.map((mantle) => {
-            const taken = mantle.holder !== null && !mantle.isYours;
-            const content = (
-              <>
-                {mantle.isYours ? (
-                  <SuitRune tone="emerald" />
-                ) : (
-                  <CuirassTile tone={taken ? "dim" : "steel"} />
-                )}
-                <span className="cn-cname">{mantle.name}</span>
-                {mantle.isYours ? (
-                  <Label>{copy["5.4"]}</Label>
-                ) : taken ? (
-                  <Label>{copy["5.5"]}</Label>
-                ) : (
-                  <span />
-                )}
-                {taken ? <span className="cn-holder">{mantle.holder}</span> : null}
-              </>
-            );
-            const state = mantle.isYours ? "is-yours" : taken ? "is-taken" : "";
-            // A free mantle is a button, unless choosing is closed. Taken and held mantles
-            // are announced, not offered.
-            if (!taken && !mantle.isYours && !locked) {
-              return (
-                <li key={mantle.id}>
-                  <button
-                    type="button"
-                    className={`cn-char ${state}`}
-                    aria-label={fill(copy["5.6"], { "[Character]": mantle.name })}
-                    disabled={action.busy}
-                    onClick={() => claim(mantle.id, mantle.name)}
-                  >
-                    {content}
-                  </button>
-                </li>
-              );
-            }
-            return (
-              <li
-                key={mantle.id}
-                className={`cn-char ${state}`}
-                aria-label={
-                  taken && mantle.holder
-                    ? fill(copy["5.7"], {
-                        "[Character]": mantle.name,
-                        "[Title] [Name]": mantle.holder,
-                      })
-                    : undefined
-                }
-              >
-                {content}
-              </li>
-            );
-          })}
-        </ul>
-      ) : null}
+      {groups.map((group) => (
+        <div key={group.faction ?? "none"} className="cn-faction">
+          {group.faction ? (
+            <h3 className="cn-faction-name t-faction">{factionName(group.faction)}</h3>
+          ) : null}
+          <ul className="cn-chars">{group.rows.map(plate)}</ul>
+        </div>
+      ))}
 
       {chosen ? (
         <p className="t-procl mt-4" role="status">

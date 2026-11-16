@@ -36,6 +36,7 @@ export function councilData(token: string, council: GuestCouncil, now: Date): Co
     mantles: council.mantles.map((mantle) => ({
       id: mantle.id,
       name: mantle.name,
+      faction: mantle.faction,
       holder: mantle.holder ? addressOf(mantle.holder) : null,
       isYours: mantle.isYours,
     })),

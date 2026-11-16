@@ -162,8 +162,8 @@ Once seated, a guest may choose a character from *Avengers: Doomsday* at any poi
 
 The roster:
 
+- It starts filled. The roster you gave on 16 November 2026 (38 characters of *Avengers: Doomsday*, in seven factions) is put in place when the site is deployed (section 3.9).
 - You manage it from the administrator panel, adding and removing characters (section 3.9).
-- Examples you gave: Thor, Loki, Scarlet Witch, Hulk, and other relevant characters. The actual roster is yours to enter; this document does not assume the film's cast.
 
 Presentation is in `design/DESIGN.md`, section 8.6. No character artwork exists, and studio images must not be used.
 
@@ -332,6 +332,8 @@ Removing a guest who has already answered frees their character and removes thei
 - Removing a character that no one holds takes it off the list.
 - **Removing a character that a guest holds:** you are warned first, naming the guest. If you go ahead, the character is removed. That guest stays on the council: their mantle list shows a message explaining why, and they may choose again whenever they wish.
 - The panel prevents two roster entries with the same name.
+- **Factions.** The roster is grouped, for guests and in the panel, under seven factions, in this order: The Avengers (Earth-616); The New Avengers / Thunderbolts; The Fantastic Four (Earth-828); The X-Men (Earth-10005); Wakanda & Talokan; The Multiverse & TVA; Doom's Rumoured Team. A character you add is placed at the end of the faction you choose for it.
+- **The starting roster** is yours (16 November 2026), entered once when the site is first deployed with it, so a character you later remove stays removed. Doctor Doom is left out of Doom's Rumoured Team, because Doom is never a mantle (Stage 3). Some appearances are rumoured (Wolverine, Deadpool, Spider-Man / Peter 2, and Doom's team); guests are not told which (**Decided** by the owner).
 
 ---
 

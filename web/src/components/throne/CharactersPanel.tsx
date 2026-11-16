@@ -7,11 +7,13 @@ import { Label } from "@/components/Label";
 import { Panel, Well } from "@/components/Panel";
 import { QuietControl } from "@/components/QuietControl";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { FACTIONS, byFaction, factionName, isFaction, type Faction } from "@/domain/factions";
 import { ActionMessage, useAdminAction } from "./useAdminAction";
 
 export type CharacterRow = {
   id: string;
   name: string;
+  faction: string | null;
   holder: { title: string; name: string } | null;
 };
 
@@ -21,14 +23,16 @@ export function CharactersPanel({ characters }: { characters: CharacterRow[] }) 
   const add = useAdminAction();
   const remove = useAdminAction();
   const fieldId = useId();
+  const factionId = useId();
   const [name, setName] = useState("");
+  const [faction, setFaction] = useState<Faction>(FACTIONS[0]);
   const [pending, setPending] = useState<CharacterRow | null>(null);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
     const trimmed = name.trim();
     if (!trimmed) return;
-    const result = await add.run("POST", "/api/admin/characters", { name: trimmed });
+    const result = await add.run("POST", "/api/admin/characters", { name: trimmed, faction });
     if (result.ok) setName("");
     else if (result.status === 409) {
       add.setMessage({ text: fill(copy["10.21"], { "[Character]": trimmed }), error: true });
@@ -69,6 +73,25 @@ export function CharactersPanel({ characters }: { characters: CharacterRow[] }) 
               onChange={(event) => setName(event.target.value)}
             />
           </div>
+          <div className="field-row">
+            <label htmlFor={factionId}>
+              <Label>{copy["10.49"]}</Label>
+            </label>
+            <select
+              id={factionId}
+              className="field field--serif"
+              value={faction}
+              onChange={(event) => {
+                if (isFaction(event.target.value)) setFaction(event.target.value);
+              }}
+            >
+              {FACTIONS.map((key) => (
+                <option key={key} value={key}>
+                  {factionName(key)}
+                </option>
+              ))}
+            </select>
+          </div>
           <div>
             <Button type="submit" disabled={add.busy || !name.trim()}>
               {copy["10.20"]}
@@ -81,35 +104,46 @@ export function CharactersPanel({ characters }: { characters: CharacterRow[] }) 
           {characters.length === 0 ? (
             <p className="m-0">{copy["10.26"]}</p>
           ) : (
-            <ul className="row-list">
-              {characters.map((character) => (
-                <li
-                  key={character.id}
-                  className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1"
-                >
-                  <div className="min-w-0">
-                    <span className="t-name">{character.name}</span>
-                    <p className="mt-1 flex flex-wrap items-baseline gap-x-2">
-                      {character.holder ? (
-                        <>
-                          <Label>{copy["10.23"]}</Label>
-                          <span className="t-holder">{address(character.holder)}</span>
-                        </>
-                      ) : (
-                        <Label>{copy["10.22"]}</Label>
-                      )}
-                    </p>
-                  </div>
-                  <QuietControl
-                    onClick={() =>
-                      character.holder ? setPending(character) : removeCharacter(character, false)
-                    }
-                  >
-                    {copy["10.24"]}
-                  </QuietControl>
-                </li>
+            <div className="grid gap-6">
+              {byFaction(characters).map((group) => (
+                <div key={group.faction ?? "none"}>
+                  {group.faction ? (
+                    <h3 className="t-faction">{factionName(group.faction)}</h3>
+                  ) : null}
+                  <ul className="row-list">
+                    {group.rows.map((character) => (
+                      <li
+                        key={character.id}
+                        className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1"
+                      >
+                        <div className="min-w-0">
+                          <span className="t-name">{character.name}</span>
+                          <p className="mt-1 flex flex-wrap items-baseline gap-x-2">
+                            {character.holder ? (
+                              <>
+                                <Label>{copy["10.23"]}</Label>
+                                <span className="t-holder">{address(character.holder)}</span>
+                              </>
+                            ) : (
+                              <Label>{copy["10.22"]}</Label>
+                            )}
+                          </p>
+                        </div>
+                        <QuietControl
+                          onClick={() =>
+                            character.holder
+                              ? setPending(character)
+                              : removeCharacter(character, false)
+                          }
+                        >
+                          {copy["10.24"]}
+                        </QuietControl>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </Well>
         <p className="t-expl mt-4">{copy["10.27"]}</p>

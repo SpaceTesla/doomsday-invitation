@@ -43,6 +43,7 @@ export type GuestCouncil = {
   mantles: {
     id: string;
     name: string;
+    faction: string | null;
     holder: { title: string; name: string } | null;
     isYours: boolean;
   }[];
@@ -81,13 +82,14 @@ export async function councilForGuest(
     .select({
       id: character.id,
       name: character.name,
+      faction: character.faction,
       holderId: guest.id,
       holderTitle: guest.title,
       holderName: guest.name,
     })
     .from(character)
     .leftJoin(guest, eq(guest.characterId, character.id))
-    .orderBy(asc(character.createdAt), asc(character.name));
+    .orderBy(asc(character.position), asc(character.createdAt), asc(character.name));
 
   const alternativeRows = await domain.db
     .select({
@@ -138,6 +140,7 @@ export async function councilForGuest(
     mantles: roster.map((row) => ({
       id: row.id,
       name: row.name,
+      faction: row.faction,
       holder:
         row.holderId && row.holderName !== null
           ? { title: row.holderTitle ?? "", name: row.holderName }
@@ -171,7 +174,12 @@ export type AdminCouncil = {
     approves: boolean;
     alternativeAt: Date | null;
   }[];
-  characters: { id: string; name: string; holder: { title: string; name: string } | null }[];
+  characters: {
+    id: string;
+    name: string;
+    faction: string | null;
+    holder: { title: string; name: string } | null;
+  }[];
 };
 
 /** The whole event as Doom sees it. */
@@ -198,12 +206,13 @@ export async function councilForAdmin(domain: Domain): Promise<AdminCouncil> {
     .select({
       id: character.id,
       name: character.name,
+      faction: character.faction,
       holderTitle: guest.title,
       holderName: guest.name,
     })
     .from(character)
     .leftJoin(guest, eq(guest.characterId, character.id))
-    .orderBy(asc(character.createdAt), asc(character.name));
+    .orderBy(asc(character.position), asc(character.createdAt), asc(character.name));
 
   return {
     timeZone: eventRow?.timezone ?? null,
@@ -227,6 +236,7 @@ export async function councilForAdmin(domain: Domain): Promise<AdminCouncil> {
     characters: roster.map((row) => ({
       id: row.id,
       name: row.name,
+      faction: row.faction,
       holder:
         row.holderName !== null ? { title: row.holderTitle ?? "", name: row.holderName } : null,
     })),

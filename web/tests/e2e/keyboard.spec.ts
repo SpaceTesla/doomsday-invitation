@@ -103,6 +103,11 @@ test("Doom runs the panel by keyboard", async ({ page }) => {
   await page.waitForURL("**/throne/characters");
   await tabTo(page, "CHARACTER");
   await page.keyboard.type("Hulk");
+  // The faction is a native select: End picks the last, Doom's Rumoured Team.
+  await tabTo(page, "FACTION");
+  await page.keyboard.press("End");
+  await tabTo(page, "ADD CHARACTER");
   await page.keyboard.press("Enter");
-  await expect(page.locator(".row-list")).toContainText("Hulk");
+  const team = page.getByRole("heading", { name: "Doom's Rumoured Team" }).locator("xpath=..");
+  await expect(team).toContainText("Hulk");
 });

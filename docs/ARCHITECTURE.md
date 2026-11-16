@@ -78,8 +78,13 @@ create table character (
   id          uuid primary key default gen_random_uuid(),
   name        text not null,
   name_key    text not null unique,                       -- lower-cased, trimmed
+  faction     text check (faction is null or faction in (...)),  -- src/domain/factions.ts
+  position    integer not null default 1000,              -- order within the faction
   created_at  timestamptz not null default now()
 );
+-- Migration 0002 also inserts the owner's roster (38 characters, positions from 1), once
+-- per database: a data migration, so a character Doom removes is not put back by a later
+-- deploy. A character of the same name already present is moved into its faction.
 
 create table guest (
   id                 uuid primary key default gen_random_uuid(),

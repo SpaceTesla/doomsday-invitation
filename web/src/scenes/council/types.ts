@@ -16,7 +16,13 @@ export type CouncilData = {
     removedCharacter: string | null;
   };
   alternatives: { when: string; who: string; isYours: boolean }[];
-  mantles: { id: string; name: string; holder: string | null; isYours: boolean }[];
+  mantles: {
+    id: string;
+    name: string;
+    faction: string | null;
+    holder: string | null;
+    isYours: boolean;
+  }[];
   guests: {
     name: string;
     status: "summoned" | "seated" | "declined";

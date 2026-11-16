@@ -67,6 +67,13 @@ export const copy = {
   "5.11": "Every mantle is claimed. Doom may yet add to the roster.",
   "5.12": "Doom has not yet named the mantles. Return in a while.",
   "5.13": "The day is decreed. Mantles can no longer change.",
+  "5.14.avengers": "The Avengers (Earth-616)",
+  "5.14.new-avengers": "The New Avengers / Thunderbolts",
+  "5.14.fantastic-four": "The Fantastic Four (Earth-828)",
+  "5.14.x-men": "The X-Men (Earth-10005)",
+  "5.14.wakanda-talokan": "Wakanda & Talokan",
+  "5.14.multiverse-tva": "The Multiverse & TVA",
+  "5.14.dooms-team": "Doom's Rumoured Team",
 
   // 6. The council
   "6.1": "Council of Doom",
@@ -215,6 +222,7 @@ export const copy = {
   "10.46": "NO LINK",
   "10.47": "Name a venue.",
   "10.48": "EXPORT",
+  "10.49": "FACTION",
 } as const;
 
 export type CopyKey = keyof typeof copy;

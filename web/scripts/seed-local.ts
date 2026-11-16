@@ -1,7 +1,8 @@
 // Fill the LOCAL database with a sample event, for trying the guest journey by hand.
 // Usage: npm run seed:local
-// It empties the local database first, and refuses any database that is not on this
-// machine. The links it prints work only against the local database.
+// It empties the local database first, except the roster (seeded by migration 0002), and
+// refuses any database that is not on this machine. The links it prints work only against
+// the local database.
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import { addCharacter, claimCharacter } from "../src/domain/characters";
@@ -21,7 +22,7 @@ async function main() {
   const tz = process.env.EVENT_TIMEZONE ?? "Asia/Kolkata";
 
   await pool.query(
-    "truncate alternative, guest, character, event, admin_session, attempt restart identity cascade",
+    "truncate alternative, guest, event, admin_session, attempt restart identity cascade",
   );
   await ensureEvent(domain, tz);
 
@@ -32,10 +33,15 @@ async function main() {
     "the Grand Cinema, in the fourth hall",
   );
 
+  // The sample guests use Thor from the seeded roster; he is added back if removed.
   const roster: Record<string, string> = {};
-  for (const name of ["Thor", "Loki", "Scarlet Witch", "Hulk"]) {
-    const added = await addCharacter(domain, name);
-    if (added.ok) roster[name] = added.id;
+  const found = await pool.query<{ id: string }>(
+    "select id from character where name_key = 'thor'",
+  );
+  if (found.rows[0]) roster.Thor = found.rows[0].id;
+  else {
+    const added = await addCharacter(domain, "Thor", "avengers");
+    if (added.ok) roster.Thor = added.id;
   }
 
   const guests: [string, Title, string][] = [

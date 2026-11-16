@@ -872,6 +872,7 @@ The rules are confirmed (`PRODUCT_SPEC.md`, Stage 3) and the layout is approved 
 - Each choice is a plate (section 8.3), not an illustrated card. No character artwork has been approved or sourced, and studio images must not be used.
 - A character is shown by name in Cinzel 500, and by name only in the first version (**Decided**). Marks or artwork for characters are a could-have and would need an agreed source.
 - The list shows every character on the roster. It can be any length, since the administrator sets it, so it must reflow and scroll natively; it is not a fixed grid.
+- **Factions (added 16 November 2026).** The plates are grouped under their factions (`PRODUCT_SPEC.md`, section 3.9), each group headed by its name in Cinzel 500 at the explanatory size (18 px, 19 px wide), Antique gold, tracking 0.04em; Cinzel because the names carry figures. 24 px above a heading, 12 px between it and its plates. The panel's roster uses the same headings.
 
 Three states, each told apart by more than colour:
 

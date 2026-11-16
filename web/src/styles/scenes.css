@@ -696,6 +696,17 @@
     padding: 0;
     list-style: none;
   }
+  /* A faction: its name, then its mantles. Cinzel, because the names carry figures
+     (design/DESIGN.md, 8.6). */
+  .cn-faction + .cn-faction {
+    margin-top: 30px;
+  }
+  .cn-faction-name {
+    margin: 24px 0 0;
+  }
+  .cn-faction-name + .cn-chars {
+    margin-top: 12px;
+  }
   .cn-char {
     position: relative;
     display: grid;

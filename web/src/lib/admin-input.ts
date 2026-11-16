@@ -1,6 +1,7 @@
 // Input shapes for the administrator's requests, and the conversion of the panel's
 // day-and-hour fields into an instant in the event's time zone.
 import { z } from "zod";
+import { FACTIONS } from "@/domain/factions";
 import { TITLES } from "@/domain/guests";
 import { zonedInstant } from "@/domain/time";
 
@@ -11,7 +12,10 @@ export const guestInput = z.object({
   title: z.enum(TITLES),
 });
 
-export const characterInput = z.object({ name: z.string().max(120) });
+export const characterInput = z.object({
+  name: z.string().max(120),
+  faction: z.enum(FACTIONS).nullable().optional(),
+});
 
 /** DAY as YYYY-MM-DD and HOUR as HH:MM on a quarter hour, as the panel's controls send them. */
 export const whenInput = z.object({

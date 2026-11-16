@@ -33,13 +33,26 @@ export const event = pgTable(
   (table) => [check("event_single_row", sql`${table.id} = 1`)],
 );
 
-export const character = pgTable("character", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  name: text("name").notNull(),
-  /** Lower-cased and trimmed, so the roster cannot hold the same name twice. */
-  nameKey: text("name_key").notNull().unique(),
-  createdAt: instant("created_at").notNull().defaultNow(),
-});
+export const character = pgTable(
+  "character",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    /** Lower-cased and trimmed, so the roster cannot hold the same name twice. */
+    nameKey: text("name_key").notNull().unique(),
+    /** The faction it is listed under (src/domain/factions.ts). Null lists it last. */
+    faction: text("faction"),
+    /** Its place within the faction. The seeded roster counts from 1; additions go after. */
+    position: integer("position").notNull().default(1000),
+    createdAt: instant("created_at").notNull().defaultNow(),
+  },
+  (table) => [
+    check(
+      "character_faction_known",
+      sql`${table.faction} is null or ${table.faction} in ('avengers', 'new-avengers', 'fantastic-four', 'x-men', 'wakanda-talokan', 'multiverse-tva', 'dooms-team')`,
+    ),
+  ],
+);
 
 export const guestStatuses = ["summoned", "seated", "declined"] as const;
 export type GuestStatus = (typeof guestStatuses)[number];

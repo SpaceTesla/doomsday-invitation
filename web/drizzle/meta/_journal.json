@@ -15,6 +15,13 @@
       "when": 1794772415824,
       "tag": "0001_removed_character_name",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794818502791,
+      "tag": "0002_doomsday_roster",
+      "breakpoints": true
     }
   ]
 }

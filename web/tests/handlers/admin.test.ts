@@ -335,6 +335,30 @@ describe("running an event from the panel", () => {
       ).status,
     ).toBe(409);
 
+    // A character is added under the faction chosen; an unknown faction is refused.
+    const namora = await charactersRoute.POST(
+      request("/api/admin/characters", {
+        method: "POST",
+        body: { name: "Namora", faction: "wakanda-talokan" },
+        cookie,
+      }),
+    );
+    expect(namora.status).toBe(201);
+    const {
+      rows: [namoraRow],
+    } = await sql.query<{ faction: string }>("select faction from character where id = $1", [
+      (await namora.json()).id,
+    ]);
+    expect(namoraRow.faction).toBe("wakanda-talokan");
+    const unknown = await charactersRoute.POST(
+      request("/api/admin/characters", {
+        method: "POST",
+        body: { name: "Kang", faction: "council-of-kangs" },
+        cookie,
+      }),
+    );
+    expect(unknown.status).toBe(400);
+
     // A guest takes Thor; removing it now needs confirmation that names them.
     await sql.query("update guest set status = 'seated', character_id = $1 where id = $2", [
       thorId,

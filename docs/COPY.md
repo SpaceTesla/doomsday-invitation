@@ -168,6 +168,7 @@ After confirming, the guest sees the closing screen, 4.5 to 4.7.
 | 5.11 | Every character taken | Body | Every mantle is claimed. Doom may yet add to the roster. | Approved |
 | 5.12 | Roster empty | Body | Doom has not yet named the mantles. Return in a while. | Approved |
 | 5.13 | After the decree | Body | The day is decreed. Mantles can no longer change. | Approved |
+| 5.14 | Faction headings, in this order | Cinzel | The Avengers (Earth-616); The New Avengers / Thunderbolts; The Fantastic Four (Earth-828); The X-Men (Earth-10005); Wakanda & Talokan; The Multiverse & TVA; Doom's Rumoured Team | The owner's names, 16 November 2026. The roster is grouped under them (`PRODUCT_SPEC.md`, section 3.9) |
 
 ## 6. The council
 
@@ -344,6 +345,7 @@ States the deck did not foresee, written under section 1 and the rule in section
 | 10.46 | A guest whose link was cancelled | Orbitron | NO LINK | Added in the build. REPLACE LINK then issues a new one |
 | 10.47 | Proposal, venue missing | Body | Name a venue. | Added in the build. A missing or past day reuses 7.26 and 7.25 |
 | 10.48 | Download the whole event | Orbitron | EXPORT | Added in the build. The panel's Export button (`ARCHITECTURE.md`, section 9) |
+| 10.49 | Field label, the faction of a new character | Orbitron | FACTION | Added in the build, with the factions (16 November 2026) |
 
 ## 11. What changed from the placeholders
 

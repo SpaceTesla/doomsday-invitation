@@ -13,6 +13,7 @@ import {
   type Domain,
   type Refused,
 } from "./context";
+import type { Faction } from "./factions";
 
 export type Holder = { title: string; name: string };
 
@@ -21,13 +22,14 @@ const nameKey = (name: string) => name.trim().toLowerCase();
 export async function addCharacter(
   domain: Domain,
   rawName: string,
+  faction: Faction | null = null,
 ): Promise<{ ok: true; id: string } | Refused<"no_name" | "duplicate">> {
   const name = rawName.trim();
   if (!name) return refuse("no_name");
   try {
     const [row] = await domain.db
       .insert(character)
-      .values({ name, nameKey: nameKey(name) })
+      .values({ name, nameKey: nameKey(name), faction })
       .returning({ id: character.id });
     return { ok: true, id: row.id };
   } catch (error) {

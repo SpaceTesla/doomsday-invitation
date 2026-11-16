@@ -33,6 +33,16 @@
     letter-spacing: 0.03em;
     color: var(--c-silver);
   }
+  /* Faction headings over the roster: Cinzel, because the names carry figures. */
+  .t-faction {
+    margin: 0 0 8px;
+    font-family: var(--f-serif);
+    font-weight: 500;
+    font-size: var(--t-expl);
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    color: var(--c-gold);
+  }
   .t-holder {
     font-family: var(--f-serif);
     font-weight: 500;
