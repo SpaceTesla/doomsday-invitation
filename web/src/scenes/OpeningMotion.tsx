@@ -3,7 +3,6 @@
 import { useRef, type ReactNode } from "react";
 import { copy } from "@/copy";
 import { EASE, gsap, isUpright, prefersReducedMotion, useGSAP } from "@/lib/motion";
-import { markOpeningPlayed } from "./opening-played";
 
 // The reveal, as one GSAP timeline with five labels (design/DESIGN.md, sections 6.2 to 6.4):
 //
@@ -39,7 +38,6 @@ export function OpeningMotion({ token, children }: { token: string; children: Re
       const finish = () => {
         arm();
         scope.dataset.motion = "done";
-        markOpeningPlayed(token);
       };
 
       if (prefersReducedMotion()) {

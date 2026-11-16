@@ -9,6 +9,15 @@ import { seed } from "./seed";
 test.use({ reducedMotion: "reduce" });
 
 async function scan(page: Page, label: string) {
+  // Measure the screen at rest: let any finite animation (a step fading in) finish first.
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((a) => a.effect?.getTiming().iterations !== Infinity)
+        .map((a) => a.finished.catch(() => null)),
+    ),
+  );
   const results = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
     .analyze();
@@ -44,9 +53,18 @@ test("guest screens", async ({ page }) => {
   await page.getByRole("button", { name: "GO BACK" }).click();
 
   await page.goto(links["José Nuñez"]);
-  await scan(page, "council, no mantle");
+  await scan(page, "council, step one");
   await page.getByRole("button", { name: "PROPOSE ANOTHER" }).click();
   await scan(page, "council, alternative entry open");
+  await page.getByRole("button", { name: "CANCEL" }).click();
+  await page.getByRole("button", { name: "APPROVE", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Choose your mantle" })).toBeVisible();
+  await scan(page, "council, step two");
+  await page.getByRole("searchbox", { name: "FIND A MANTLE" }).fill("nobody");
+  await scan(page, "council, step two, nothing found");
+  await page.getByRole("button", { name: "CHOOSE LATER" }).click();
+  await expect(page.getByRole("heading", { name: "Those summoned" })).toBeVisible();
+  await scan(page, "council, step three, no mantle");
   await page.getByRole("button", { name: "LEAVE THE COUNCIL" }).click();
   await scan(page, "leave dialog");
   await page.getByRole("button", { name: "REMAIN" }).click();

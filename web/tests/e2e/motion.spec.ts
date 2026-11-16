@@ -46,18 +46,21 @@ test("the reveal plays, and any key skips to the final frame", async ({ page }) 
   expect(skipped.actions).toMatch(/^inset\(0(%|px)?\)$/);
 });
 
-test("the opening plays once: after it, the link opens on the summons", async ({ page }) => {
+test("the opening returns until an action is pressed, then the link opens on the summons", async ({
+  page,
+}) => {
   const links = await seed([{ name: "Anish", title: "Mr." }]);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(links.Anish);
   await expect.poll(async () => (await finalFrame(page)).motion).toBe("done");
-  // The record is sent when the opening ends; give it a moment to land.
-  await expect
-    .poll(async () => {
-      await page.reload();
-      return page.locator(".sm-name").count();
-    })
-    .toBe(1);
+  // Watching the reveal to its end is not enough: the link opens on the opening again.
+  await page.reload();
+  await expect(page.locator(".op")).toBeVisible();
+  await expect(page.locator(".sm-name")).toHaveCount(0);
+  await page.getByRole("button", { name: "GO WITHOUT SOUND" }).click();
+  await expect(page.locator(".sm-name")).toBeVisible();
+  await page.reload();
+  await expect(page.locator(".sm-name")).toBeVisible();
 });
 
 test("the summons settles, and changing scene leaves nothing covering the page", async ({

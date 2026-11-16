@@ -639,14 +639,130 @@
     z-index: 1;
     text-align: center;
   }
+  /* The council's three steps (design/DESIGN.md, 8.12): one column, one step at a time. */
   .cn-body {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     gap: 28px;
-    max-width: 75rem;
+    max-width: 46rem;
     margin: 0 auto;
     padding: 28px 36px 40px;
     align-items: start;
+    scroll-margin-top: 64px; /* below the fixed sound control */
+  }
+  .cn-steps ol {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .cn-step-tab {
+    display: grid;
+    justify-items: center;
+    gap: 7px;
+    width: 100%;
+    min-height: var(--tap);
+    padding: 10px 4px 12px;
+    background: none;
+    border: 0;
+    border-bottom: 2px solid var(--c-off-border);
+    color: var(--c-steel);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cn-step-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cn-step-tab .mk {
+    width: 22px;
+    height: 22px;
+  }
+  /* The step's figure, in Cinzel like every figure. */
+  .cn-step-n {
+    font-family: var(--f-serif);
+    font-weight: 500;
+    font-size: var(--t-expl);
+    line-height: 1;
+    color: inherit;
+  }
+  .cn-step-tab.is-done {
+    border-bottom-color: var(--c-emerald);
+  }
+  .cn-step-tab.is-current {
+    border-bottom-color: var(--c-gold);
+    color: var(--c-gold-light);
+  }
+  .cn-step-tab.is-current .lbl {
+    color: var(--c-gold-light);
+  }
+  .cn-step-tab:hover:not(:disabled) .lbl {
+    color: var(--c-silver);
+  }
+  .cn-step-tab:disabled {
+    cursor: default;
+  }
+  .cn-step-tab:disabled .lbl {
+    color: var(--c-off-text);
+  }
+  .cn-step {
+    display: grid;
+    gap: 28px;
+    min-width: 0;
+    outline: none;
+    animation: cn-step-in 0.2s ease-out both;
+  }
+  @keyframes cn-step-in {
+    from {
+      opacity: 0;
+    }
+  }
+  .cn-step-next {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* The mantle search: a well-coloured field with the seeker mark inside it. */
+  .cn-search {
+    display: grid;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .cn-search-field {
+    position: relative;
+  }
+  .cn-search-field .mk {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    width: 22px;
+    height: 22px;
+    color: var(--c-steel);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .cn-search-field:focus-within .mk {
+    color: var(--c-gold);
+  }
+  .cn-search-field input {
+    width: 100%;
+    padding-left: 46px;
+  }
+  .cn-search-field input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    margin-left: 10px;
+    background: var(--c-steel);
+    -webkit-mask: url("/ui/clear.svg") center / contain no-repeat;
+    mask: url("/ui/clear.svg") center / contain no-repeat;
+    cursor: pointer;
+  }
+  .cn-search-field input::-webkit-search-cancel-button:hover {
+    background: var(--c-gold-light);
   }
   .cn-col {
     display: grid;

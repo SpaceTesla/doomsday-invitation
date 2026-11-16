@@ -7,10 +7,13 @@ import { seed, YEAR } from "./seed";
 
 test.use({ reducedMotion: "reduce", locale: "en-US" });
 
-/** Press Tab until the focused element has this accessible name; check its focus is visible. */
-async function tabTo(page: Page, name: string | RegExp, limit = 80) {
+/**
+ * Press Tab (or Shift+Tab, going back) until the focused element has this accessible
+ * name; check its focus is visible.
+ */
+async function tabTo(page: Page, name: string | RegExp, { limit = 80, back = false } = {}) {
   for (let i = 0; i < limit; i += 1) {
-    await page.keyboard.press("Tab");
+    await page.keyboard.press(back ? "Shift+Tab" : "Tab");
     const focused = await page.evaluate(() => {
       const el = document.activeElement as HTMLElement | null;
       if (!el) return null;
@@ -51,8 +54,14 @@ test("a guest goes from the opening to the council and takes part, by keyboard",
   await page.keyboard.press("Enter");
   await expect(page.getByRole("heading", { name: "Council of Doom" })).toBeVisible();
 
+  // Step one: approving moves the guest on to the mantles.
   await tabTo(page, "APPROVE");
   await page.keyboard.press("Space");
+  await expect(page.getByRole("heading", { name: "Choose your mantle" })).toBeVisible();
+
+  // A finished step reopens from the step header.
+  await tabTo(page, /^1\s*PROPOSAL/, { back: true });
+  await page.keyboard.press("Enter");
   await expect(page.getByRole("button", { name: "APPROVED" })).toBeVisible();
 
   await tabTo(page, "PROPOSE ANOTHER");
@@ -68,10 +77,15 @@ test("a guest goes from the opening to the council and takes part, by keyboard",
   await tabTo(page, "SET IT BEFORE DOOM");
   await page.keyboard.press("Enter");
   await expect(page.getByText("Your alternative is before Doom.")).toBeVisible();
+  await tabTo(page, "CONTINUE");
+  await page.keyboard.press("Enter");
 
+  // Step two: the search narrows the mantles; claiming one moves on to the council.
+  await tabTo(page, "FIND A MANTLE");
+  await page.keyboard.type("lok");
   await tabTo(page, "Choose Loki");
   await page.keyboard.press("Enter");
-  await expect(page.getByText("You stand before the council as Loki.")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Those summoned" })).toBeVisible();
 
   // A dialog takes focus, Escape closes it, and nothing happened.
   await tabTo(page, "LEAVE THE COUNCIL");

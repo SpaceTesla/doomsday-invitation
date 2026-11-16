@@ -1,27 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { copy, fill } from "@/copy";
 import { Heading } from "@/components/Heading";
 import { Label } from "@/components/Label";
 import { CuirassTile, SuitRune } from "@/components/Mark";
+import { SearchMark } from "@/components/SearchMark";
 import { GuestMessageLine, useGuestAction } from "@/components/guest/useGuestAction";
 import { byFaction, factionName } from "@/domain/factions";
 import type { CouncilData } from "./types";
+
+/** Case and accents do not matter: "loki" finds Loki, "nunez" finds Nuñez. */
+const fold = (text: string) =>
+  text
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .trim();
 
 /**
  * The mantles, one plate each, grouped under their factions. Choosing is optional and
  * gates nothing; a guest may claim a free mantle whenever they wish, and change it until
  * the decree. Taken mantles stay in place, marked, with who holds them.
  */
-export function MantleSection({ data }: { data: CouncilData }) {
+export function MantleSection({
+  data,
+  onClaimed,
+}: {
+  data: CouncilData;
+  /** Called once a claim has succeeded. */
+  onClaimed?: () => void;
+}) {
   const action = useGuestAction(data.token);
   const [chosen, setChosen] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
+  const searchId = useId();
   const { mantles, decreed } = data;
   const mine = data.you.characterId;
   // After the decree a guest who holds a mantle keeps it; one who holds none may still choose.
   const locked = decreed && mine !== null;
-  const groups = byFaction(mantles);
+  const sought = fold(query);
+  const shown = sought ? mantles.filter((m) => fold(m.name).includes(sought)) : mantles;
+  const groups = byFaction(shown);
   const allTaken = mantles.length > 0 && !mine && mantles.every((m) => m.holder !== null);
 
   function plate(mantle: CouncilData["mantles"][number]) {
@@ -85,6 +105,7 @@ export function MantleSection({ data }: { data: CouncilData }) {
     const result = await action.run("PUT", "character", { characterId: id });
     if (result.ok) {
       setChosen(name);
+      onClaimed?.();
       return;
     }
     const holder = (result.data as { holder?: { title: string; name: string } } | null)?.holder;
@@ -111,6 +132,31 @@ export function MantleSection({ data }: { data: CouncilData }) {
       {mantles.length === 0 ? <p className="notice">{copy["5.12"]}</p> : null}
       {allTaken ? <p className="notice">{copy["5.11"]}</p> : null}
       {locked ? <p className="notice">{copy["5.13"]}</p> : null}
+
+      {mantles.length > 0 ? (
+        <div className="cn-search">
+          <label htmlFor={searchId}>
+            <Label>{copy["5.15"]}</Label>
+          </label>
+          <div className="cn-search-field">
+            <SearchMark />
+            <input
+              id={searchId}
+              type="search"
+              className="field field--serif"
+              value={query}
+              autoComplete="off"
+              spellCheck={false}
+              enterKeyHint="search"
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </div>
+          <p className="sr-only" role="status" aria-live="polite">
+            {sought ? fill(copy["5.17"], { "[n]": String(shown.length) }) : ""}
+          </p>
+          {sought && shown.length === 0 ? <p className="notice">{copy["5.16"]}</p> : null}
+        </div>
+      ) : null}
 
       {groups.map((group) => (
         <div key={group.faction ?? "none"} className="cn-faction">

@@ -103,9 +103,9 @@ How the guest is addressed:
 Notes:
 
 - "Go with him" is not acceptance of the invitation. It moves the guest on to the summons.
-- The opening can be skipped by any key or tap, and it plays once per guest.
+- The opening can be skipped by any key or tap. **It returns until the guest presses "Go with him" or "Go without sound"**: watching or skipping the reveal is not enough. Once either is pressed, the link opens past it (decided by the owner, 16 November 2026; it used to play once).
 - The title "The Iron Throne" appears in the opening only, not on the summons or the council (`design/DESIGN.md`, section 1.1).
-- On later visits the guest lands where they left off: on the summons if they have not answered, on the council if they have accepted.
+- On later visits the guest lands where they left off: on the opening until they press an opening action, then on the summons if they have not answered, then on the first council step they have not answered (Stage 3).
 
 ### Stage 2: Acceptance
 
@@ -146,9 +146,16 @@ The wording for the decline and withdraw controls, their confirmations and the c
 
 ### Stage 3: Character selection
 
-Once seated, a guest may choose a character from *Avengers: Doomsday* at any point, from the council screen.
+Once seated, a guest takes part in the council in **three steps**, one screen at a time (decided by the owner, 16 November 2026):
 
-- **Choosing is optional and gates nothing.** A seated guest without a character sees the same council as everyone else and can approve the proposal, suggest an alternative and take every other council action. Their mantle is shown as "No mantle yet" until they claim one.
+1. **The proposal.** Approve it or put forward an alternative; either answers the step. Before Doom proposes, and after he decrees, there is nothing to answer and the step stands open.
+2. **The mantle.** Claim a character, with a search to find one by name. Claiming answers the step. **"Choose later"** moves on without one for this visit only: the next visit from the link opens on this step again. The step also stands answered when no character is free to take.
+3. **The council.** Everyone summoned, with their status and mantle, and the way to leave.
+
+- The link opens on the first step the guest has not answered; with all answered, on step three. After the decree it opens on step one, which shows the decree.
+- Answering a step moves the guest on to the next. A finished step can be reopened from the step header at any time, to change an approval, an alternative or a mantle, under the usual rules. A step cannot be reached before the ones above it are answered.
+- A changed proposal clears approvals, so step one is unanswered again and the guest is brought back to it.
+- A seated guest without a character still appears as "No mantle yet".
 
 - **One guest per character.** A character can be held by only one guest. Once chosen, it is unavailable to everyone else.
 - **Guests choose for themselves.** The administrator does not assign characters.
@@ -610,4 +617,4 @@ Decisions about how the product looks are logged in `design/DESIGN.md`, section 
 
 | Decision | Was |
 |---|---|
-| Choosing a character is optional and never a prerequisite. A seated guest sees one council screen, with the mantle list part of it, and can approve, suggest alternatives and take every other council action without a character. "No mantle yet" is shown until they claim one | new |
+| Choosing a character is optional and never a prerequisite. A seated guest sees one council screen, with the mantle list part of it, and can approve, suggest alternatives and take every other council action without a character. "No mantle yet" is shown until they claim one. **Superseded on 16 November 2026** by the three council steps (Stage 3): the mantle step is answered by claiming one, or put off for the visit with "Choose later" | new |

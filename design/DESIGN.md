@@ -751,7 +751,7 @@ When the guest's device asks for reduced motion:
 Also required (**Decided**; described on the board, not yet built):
 
 - Any key or tap during the opening skips to the final frame.
-- The opening plays once per guest. On later visits the guest lands where they left off (`PRODUCT_SPEC.md`, Stage 1).
+- The opening returns until the guest presses an opening action; then later visits land where they left off (`PRODUCT_SPEC.md`, Stage 1).
 - Fog and silhouette load first and are enough for the first two beats; the lit figure can arrive during the second.
 
 ### 6.11 Guidance carried from the research
@@ -964,6 +964,16 @@ Because the mechanism may change after the first version (`PRODUCT_SPEC.md`, sec
 - In the administrator panel, removing a character that a guest holds is confirmed in a dialog that names the guest (**Decided**).
 - Errors use Signal for the message text and are stated plainly: what went wrong and what to do.
 
+### 8.12 The council's three steps (added 16 November 2026)
+
+The council is three steps, one at a time (`PRODUCT_SPEC.md`, Stage 3), in a single centred column at most 46 rem wide, under the hall.
+
+- **The step header** is a row of three equal tabs: the step's mark and its figure in Cinzel, then its label in Orbitron (copy 6.12), with a 2 px rule beneath. A finished step shows the suit rune in Emerald light over an Emerald rule; the current one the seal mark in Antique gold, its label in Gold light, over an Antique gold rule; one not yet reachable the empty cuirass tile, dimmed, and cannot be pressed. Finished and current tabs are buttons.
+- **A step** fades in over 0.2 s when it changes; the page scrolls to the header, clear of the sound control, and the step takes focus. The detent sound marks the change.
+- Under a finished step sits **CONTINUE**, a primary button. Under an unanswered mantle step sits **CHOOSE LATER**, a quiet control.
+- **The mantle search** sits between the explanation and the factions: an Orbitron label (FIND A MANTLE), then a field with the seeker mark inside its left edge, steel at rest and Antique gold while the field has focus. The seeker is new, drawn for the build in the marks' language (a square lens and a handle, 7-unit strokes), and is not one of the final marks. The field's clear control is a square-cut cross, steel, Gold light on hover. The search ignores case and accents and hides factions with no match; with none at all it says so (copy 5.16).
+- Step three is headed "Those summoned" (copy 6.16), with the guest list and the way to leave beneath.
+
 ### 8.11 Transitions between screens
 
 The iris of the seal (section 6.6), 0.9 s, reversed when going back, and a 0.2 s cross-fade under reduced motion. Changes within a screen (a panel updating, a row changing status) are immediate, with at most a 0.2 s fade.
@@ -1112,7 +1122,7 @@ These must not be compromised.
 15. No bounce or elastic easing. No particles outside the opening. No flicker.
 16. Nothing plays before the guest's first action. "Go without sound" is always offered.
 17. Reduced motion and silent mode are honoured everywhere, and nothing is lost in either.
-18. The opening can be skipped and plays once.
+18. The opening can be skipped, and returns until an opening action is pressed.
 
 **Accessibility**
 

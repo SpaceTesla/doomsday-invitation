@@ -153,7 +153,7 @@ Multi-step operations use Drizzle's `db.transaction()`. Single-statement operati
 
 Rules the domain module settled in milestone 1, each covered by a test in `web/tests/domain/`:
 
-- Choosing a character is optional. No council action checks whether the guest holds one.
+- Choosing a character gates no council action on the server. The council's steps (section 5) are presentation: the mantle step asks for one, and can be put off for the visit.
 - Claiming a character also clears `character_removed`. A first choice is allowed after the decree; a change is not. A claim that loses the race is answered with the holder's name; if the holder let go in the same instant, it is answered as an unknown character and the guest simply chooses again.
 - Doom's proposal and any amendment must be a future quarter hour with a venue. Setting the same date, time and venue again changes nothing and clears no approval.
 - An alternative must be a future quarter hour and differ from the proposal. Withdrawing one, like suggesting one, is refused after the decree.
@@ -188,7 +188,7 @@ The approval rules the product expects to change (`PRODUCT_SPEC.md`, section 5.9
 |---|---|
 | Token unknown or cancelled, or the event deleted | Invalid-link screen, status 404 |
 | Summoned, before the end of the day | Opening (once), then summons |
-| Seated, with or without a character | Council. The mantle list is part of it; choosing a mantle is optional and gates nothing |
+| Seated, with or without a character | Council, in three steps (proposal, mantle, council), opening on the first one not answered. Which step is answered is derived from the guest's row; "Choose later" is kept in the browser's session storage for the visit |
 | Declined, before the end of the day | Closing screen with "Take your seat" |
 | Summoned or declined, after the day | "The day has passed." |
 
@@ -196,7 +196,7 @@ The approval rules the product expects to change (`PRODUCT_SPEC.md`, section 5.9
 
 | Method and path | Does | Notable responses |
 |---|---|---|
-| `POST /api/g/{token}/opened` | Records first open and that the opening played | |
+| `POST /api/g/{token}/opened` | Records first open; with `played`, that an opening action was pressed | |
 | `POST /api/g/{token}/accept` | To seated | 409 after the day |
 | `POST /api/g/{token}/decline` | To declined | |
 | `POST /api/g/{token}/leave` | Seated to declined, freeing everything | 409 after the decree |
@@ -247,7 +247,7 @@ The approved experience is built exactly as specified. The host delivers files a
 | Simpler motion | CSS: fades, the ash loop, button feedback |
 | Reduced motion | Every sequence becomes a 0.2 s cross-fade to its end state. The ash does not run. The opening's fade is CSS, so it plays from first paint without waiting for the script |
 | Silent mode | Sound is off until the guest chooses. No animation waits on audio |
-| Skip | Any key or tap seeks the timeline to its end. "Played" is stored on the server against the link |
+| Skip | Any key or tap seeks the timeline to its end. "Played" is stored on the server against the link only when an opening action is pressed, so the opening returns until then |
 | Static fallback | The final frame is plain HTML and images, so a slow or failed script still shows Doom, the name and the actions. A one-line script in the page's head marks that script will run. Then CSS draws the opening's first beat itself (the rubble closed by the layout data's own offsets, the camera pushed in, the lit figure, scrim and lines hidden), so the first scene paints as soon as its images arrive and the timeline starts from exactly that state; the summons is drawn with its doors closed. If the script never arrives, CSS shows the final frame after 6 s (4 s for the summons). Built in milestone 6, for the performance budget |
 
 ### 7.2 Assets

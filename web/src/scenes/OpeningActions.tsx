@@ -9,7 +9,8 @@ import { setSound } from "@/lib/sound";
 
 /**
  * "Go with him" and "Go without sound". Neither is acceptance: both lead to the
- * summons, and record that the opening has been seen so it plays once. The choice of
+ * summons. Pressing one is what moves the link on: until a guest does, the link opens
+ * on the opening every time, however often the reveal has played. The choice of
  * sound is kept for the visit; nothing plays yet (sound is milestone 5).
  */
 export function OpeningActions({ token }: { token: string }) {

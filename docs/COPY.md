@@ -169,6 +169,10 @@ After confirming, the guest sees the closing screen, 4.5 to 4.7.
 | 5.12 | Roster empty | Body | Doom has not yet named the mantles. Return in a while. | Approved |
 | 5.13 | After the decree | Body | The day is decreed. Mantles can no longer change. | Approved |
 | 5.14 | Faction headings, in this order | Cinzel | The Avengers (Earth-616); The New Avengers / Thunderbolts; The Fantastic Four (Earth-828); The X-Men (Earth-10005); Wakanda & Talokan; The Multiverse & TVA; Doom's Rumoured Team | The owner's names, 16 November 2026. The roster is grouped under them (`PRODUCT_SPEC.md`, section 3.9) |
+| 5.15 | Search field label | Orbitron | FIND A MANTLE | Added in the build, for the council's three steps (16 November 2026) |
+| 5.16 | Search, nothing matches | Body | No mantle answers to that name. | Added in the build, for the council's three steps (16 November 2026) |
+| 5.17 | Search, result for assistive technology | none | [n] mantles answer | Added in the build, for the council's three steps (16 November 2026) |
+| 5.18 | Moving on without a mantle, quiet control | Orbitron | CHOOSE LATER | Added in the build, for the council's three steps (16 November 2026) |
 
 ## 6. The council
 
@@ -187,6 +191,11 @@ After confirming, the guest sees the closing screen, 4.5 to 4.7.
 | 6.9 | Seated, no character yet | Body | No mantle yet | Approved |
 | 6.10 | The guest is the only one seated | Body | You are the first to answer. | Approved |
 | 6.11 | List, accessible name | none | The council: [n] summoned, [n] seated | Approved |
+| 6.12 | Step labels, in order | Orbitron | PROPOSAL, MANTLE, COUNCIL | Added in the build, for the council's three steps (16 November 2026) |
+| 6.13 | The steps, accessible name | none | Your answers to Doom | Added in the build, for the council's three steps (16 November 2026) |
+| 6.14 | A finished step, read after its label by assistive technology | none | answered | Added in the build, for the council's three steps (16 November 2026) |
+| 6.15 | Move to the next step | Orbitron | CONTINUE | Added in the build, for the council's three steps (16 November 2026) |
+| 6.16 | Step three heading | Pirata One | Those summoned | Added in the build, for the council's three steps (16 November 2026) |
 
 ## 7. The proposal
 

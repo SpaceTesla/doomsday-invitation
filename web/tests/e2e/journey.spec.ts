@@ -38,22 +38,34 @@ test("a new guest: the opening, the summons, then the council without a mantle",
   await expect(page.getByText("Doctor Doom is here to collect you.")).toBeVisible();
   await noSidewaysScroll(page);
 
+  // Until an opening action is pressed, the link opens on the opening every time.
+  await page.reload();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Mr. Anish.");
+
   await page.getByRole("button", { name: "GO WITHOUT SOUND" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Mr. Anish");
   await expect(page.getByText("Victor von Doom")).toBeVisible();
   await noSidewaysScroll(page);
 
-  // The opening plays once: reloading lands on the summons.
+  // Once one is pressed, the link opens on the summons.
   await page.reload();
   await expect(page.locator(".sm-name")).toBeVisible();
 
   await page.getByRole("button", { name: "TAKE YOUR SEAT" }).click();
   await expect(page.getByRole("heading", { name: "Council of Doom" })).toBeVisible();
-  await expect(page.locator(".cn-guest.is-you")).toContainText("No mantle yet");
+  // Step one, the proposal: the council opens on it, and the last step is shut.
+  const steps = page.getByRole("navigation", { name: "Your answers to Doom" });
+  await expect(steps.getByRole("button", { name: /PROPOSAL/ })).toHaveAttribute(
+    "aria-current",
+    "step",
+  );
+  await expect(steps.getByRole("button", { name: /COUNCIL/ })).toBeDisabled();
   await expect(page.locator(".panel-well").first()).toHaveText("1 of 2 seats has approved");
 
-  // Without a mantle: approve, withdraw, approve again.
+  // Approving moves the guest on to step two; step one reopens from the header.
   await page.getByRole("button", { name: "APPROVE", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Choose your mantle" })).toBeVisible();
+  await steps.getByRole("button", { name: /PROPOSAL/ }).click();
   await expect(page.locator(".panel-well").first()).toHaveText("2 of 2 seats have approved");
   await page.getByRole("button", { name: "WITHDRAW" }).first().click();
   await expect(page.locator(".panel-well").first()).toHaveText("1 of 2 seats has approved");
@@ -70,12 +82,32 @@ test("a new guest: the opening, the summons, then the council without a mantle",
   await expect(mine).toContainText("at six o'clock in the evening.");
   await mine.getByRole("button", { name: "WITHDRAW" }).click();
   await expect(page.locator(".cn-alt", { hasText: "Mr. Anish" })).toHaveCount(0);
+  // With nothing answered there is no way on; approving again opens it.
+  await expect(page.getByRole("button", { name: "CONTINUE" })).toHaveCount(0);
+  await page.getByRole("button", { name: "APPROVE", exact: true }).click();
+  await page.getByRole("button", { name: "CONTINUE" }).click();
 
-  // A taken mantle is not offered; a free one is claimed whenever the guest wishes.
+  // Step two: a taken mantle is not offered; the search narrows the list.
   await expect(page.getByRole("button", { name: "Choose Thor" })).toHaveCount(0);
   await expect(page.getByRole("listitem", { name: "Thor, taken by Ms. Tara Menon" })).toBeVisible();
+  const search = page.getByRole("searchbox", { name: "FIND A MANTLE" });
+  await search.fill("nobody");
+  await expect(page.getByText("No mantle answers to that name.")).toBeVisible();
+  await search.fill("LOK");
+  await expect(page.getByRole("button", { name: /^Choose / })).toHaveCount(1);
+  await noSidewaysScroll(page);
+
+  // "Choose later" moves on for this visit; a reload keeps it.
+  await page.getByRole("button", { name: "CHOOSE LATER" }).click();
+  await expect(page.getByRole("heading", { name: "Those summoned" })).toBeVisible();
+  await expect(page.locator(".cn-guest.is-you")).toContainText("No mantle yet");
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Those summoned" })).toBeVisible();
+
+  // Claiming a mantle from step two lands on step three, the council.
+  await steps.getByRole("button", { name: /MANTLE/ }).click();
   await page.getByRole("button", { name: "Choose Loki" }).click();
-  await expect(page.getByText("You stand before the council as Loki.")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Those summoned" })).toBeVisible();
   await expect(page.locator(".cn-guest.is-you")).toContainText("Loki");
   await noSidewaysScroll(page);
 
@@ -107,8 +139,10 @@ test("leaving the council frees the mantle", async ({ page }) => {
   const links = await seed([
     { name: "Tara Menon", title: "Ms.", state: "seated", holds: "Thor", approves: true },
   ]);
+  // Every step answered: the link opens on step three, the council.
   await page.goto(links["Tara Menon"]);
-  await expect(page.locator(".cn-char.is-yours")).toContainText("Thor");
+  await expect(page.getByRole("heading", { name: "Those summoned" })).toBeVisible();
+  await expect(page.locator(".cn-guest.is-you")).toContainText("Thor");
   await page.getByRole("button", { name: "LEAVE THE COUNCIL" }).click();
   const dialog = page.getByRole("dialog");
   await expect(dialog.getByRole("heading", { name: "Abandon your seat?" })).toBeVisible();

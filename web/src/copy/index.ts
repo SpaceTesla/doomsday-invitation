@@ -74,6 +74,10 @@ export const copy = {
   "5.14.wakanda-talokan": "Wakanda & Talokan",
   "5.14.multiverse-tva": "The Multiverse & TVA",
   "5.14.dooms-team": "Doom's Rumoured Team",
+  "5.15": "FIND A MANTLE",
+  "5.16": "No mantle answers to that name.",
+  "5.17": "[n] mantles answer",
+  "5.18": "CHOOSE LATER",
 
   // 6. The council
   "6.1": "Council of Doom",
@@ -88,6 +92,13 @@ export const copy = {
   "6.9": "No mantle yet",
   "6.10": "You are the first to answer.",
   "6.11": "The council: [n] summoned, [n] seated",
+  "6.12.proposal": "PROPOSAL",
+  "6.12.mantle": "MANTLE",
+  "6.12.council": "COUNCIL",
+  "6.13": "Your answers to Doom",
+  "6.14": "answered",
+  "6.15": "CONTINUE",
+  "6.16": "Those summoned",
 
   // 7. The proposal
   "7.1": "Doom proposes",

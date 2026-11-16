@@ -10,7 +10,7 @@ State on 16 November 2026: milestones 0A to 6 are live. Production is empty (no 
 - **Changing the proposal clears every approval.** Set the real day, hour and venue before guests arrive, not a placeholder.
 - **The day decides when everything is deleted:** links stop working and all data is deleted thirty days after it.
 - **Removing a guest is complete:** their row, approval and alternative go, and their character is freed. Use this to clear test guests.
-- **Replacing a link does not replay the opening.** The opening plays once per guest. To watch it again, add a new test guest.
+- **The opening returns until a guest presses GO WITH HIM or GO WITHOUT SOUND.** After that the link opens on the summons, and replacing the link does not bring the opening back. To watch it again, add a new test guest.
 
 ## 2. Set up the event
 
@@ -36,7 +36,7 @@ For anything that looks wrong, note the phone model, the app it was opened in, a
 - [ ] The name is right, with the title, and a long name fits without spilling.
 - [ ] Turned sideways, the layout still holds.
 - [ ] With reduced motion on (iPhone: Settings, Accessibility, Motion, Reduce Motion; Android: Settings, Accessibility, Remove animations) the opening simply fades in, with no movement.
-- [ ] Opening the link again goes straight to the summons.
+- [ ] Reopening the link before pressing a button shows the opening again; after pressing one, it opens on the summons.
 
 **Sound** (also the approval by ear left over from milestone 5)
 - [ ] GO WITH HIM: the seal turns at the scene change, the plate parts and closes, the seal wakes, and the council has a low room tone. Approve or reject each sound.
@@ -47,7 +47,10 @@ For anything that looks wrong, note the phone model, the app it was opened in, a
 **Summons and council**
 - [ ] The plate parts, the seal wakes, the words are sharp and readable.
 - [ ] Declining shows the confirmation, then the closing screen. (Use a second test guest for this, or remove and re-add.)
-- [ ] Accepting leads to the council: choose a mantle, see "No mantle yet" without one, approve the proposal, suggest another day and hour (the phone's own date control should open).
+- [ ] Accepting leads to step one, the proposal: approving (or suggesting another day and hour, with the phone's own date control) moves on to step two.
+- [ ] Step two, the mantles: the search finds a name as you type; claiming one moves on to step three; CHOOSE LATER moves on without one, and the next visit from the link asks again.
+- [ ] Step three shows everyone summoned; tapping PROPOSAL or MANTLE in the step header reopens that step.
+- [ ] Closing the page and opening the link again lands on the first step not yet answered.
 - [ ] With two phones on two test guests, a mantle taken on one shows as taken, with its holder's name, on the other after a reload.
 - [ ] The leave dialog opens and cancels cleanly.
 - [ ] Nothing needs pinching or sideways scrolling, and every button is easy to hit with a thumb.
