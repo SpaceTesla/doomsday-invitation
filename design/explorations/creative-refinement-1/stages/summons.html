@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROPOSED: summons outer doors</title>
+<link rel="stylesheet" href="stage.css">
+<style>
+/* The outer-doors concept for the summons reveal. Behind the doors is the real summons plate
+   (its artwork, and the inscribed plate cut from the app's own capture). The doors are a
+   different, heavier object; their lock is the raised suit rune (suit-rune-level-3.png). */
+@property --r { syntax: "<percentage>"; inherits: true; initial-value: -8%; }
+.vp { background: #060808; }
+.plate { position: absolute; }
+.desktop .plate { left: 142px; top: 17px; width: 1156px; height: 867px; --sx: 291px; --sy: 460px; --sw: 267px; }
+.phone .plate { left: 0; top: 0; width: 390px; height: 844px; --sx: 195px; --sy: 119px; --sw: 105px; }
+.plate img.art, .plate img.inscribed { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.plate .inscribed {
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--r) - 7%), transparent var(--r)), radial-gradient(circle at var(--sx) var(--sy), transparent calc(var(--sw) * 0.47), #000 calc(var(--sw) * 0.47 + 1px));
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, #000 calc(var(--r) - 7%), transparent var(--r)), radial-gradient(circle at var(--sx) var(--sy), transparent calc(var(--sw) * 0.47), #000 calc(var(--sw) * 0.47 + 1px));
+  mask-composite: intersect;
+}
+.plate .seal { position: absolute; left: var(--sx); top: var(--sy); width: var(--sw); aspect-ratio: 1; transform: translate(-50%, -50%); }
+.plate .seal img { position: absolute; inset: 0; width: 100%; height: auto; display: block; }
+.plate .seal .active { opacity: 0; }
+.plate .band { position: absolute; top: 0; bottom: 0; left: var(--r); width: 16%; transform: translateX(-60%); pointer-events: none; mix-blend-mode: screen;
+  background: linear-gradient(90deg, transparent, rgba(242,232,176,.05) 30%, rgba(242,232,176,.32) 55%, rgba(79,195,149,.10) 75%, transparent); opacity: 0; }
+.plate .dim { position: absolute; inset: 0; background: #020303; opacity: .55; }
+
+/* the outer doors */
+.doors { position: absolute; inset: 0; pointer-events: none; }
+.door { position: absolute; top: 0; bottom: 0; width: 50.2%; overflow: hidden;
+  background: linear-gradient(90deg, rgba(0,0,0,.3), rgba(0,0,0,0) 14%, rgba(0,0,0,0) 86%, rgba(0,0,0,.4)),
+              linear-gradient(rgba(255,255,255,.07), rgba(0,0,0,.18) 55%, rgba(0,0,0,.38)), url("../frames/source/door-steel.jpg");
+  background-size: auto, auto, 520px auto; }
+.door.l { left: 0; transform-origin: 0 50%; box-shadow: 60px 0 90px rgba(0,0,0,.85); }
+.door.r { right: 0; transform-origin: 100% 50%; box-shadow: -60px 0 90px rgba(0,0,0,.85); }
+.door::before { content: ""; position: absolute; inset: 22px; border: 2px solid #0b0e0e; box-shadow: 0 1px 0 rgba(255,255,255,.07), inset 0 1px 0 rgba(255,255,255,.07); }
+.desktop .door::before { inset: 34px; }
+.door .seam { position: absolute; top: 0; bottom: 0; width: 10px; background: linear-gradient(90deg, #070909, #2c3434); }
+.door.l .seam { right: 0; } .door.r .seam { left: 0; transform: scaleX(-1); }
+.strap { position: absolute; left: 0; right: 0; height: 46px; background: linear-gradient(#323a3a, #171c1c); border-top: 1px solid rgba(255,255,255,.1); border-bottom: 1px solid #000;
+  display: flex; justify-content: space-around; align-items: center; padding: 0 30px; }
+.phone .strap { height: 32px; padding: 0 16px; }
+.strap img { width: 15px; height: 15px; }
+.phone .strap img { width: 11px; height: 11px; }
+.strap.a { top: 17%; } .strap.b { bottom: 17%; }
+.lock { position: absolute; top: 50%; width: calc(var(--L) / 2); height: var(--L); margin-top: calc(var(--L) / -2);
+  background: url("../../assets/v2/suit-rune-level-3.png") 0 0 / var(--L) var(--L) no-repeat;
+  filter: drop-shadow(0 8px 14px rgba(0,0,0,.7)); }
+.desktop .doors { --L: 236px; } .phone .doors { --L: 138px; }
+.door.l .lock { right: 0; background-position: 0 0; }
+.door.r .lock { left: 0; background-position: calc(var(--L) / -2) 0; }
+.seam-light { position: absolute; left: 50%; top: 0; bottom: 0; width: 3px; margin-left: -1.5px; opacity: 0;
+  background: linear-gradient(transparent, rgba(242,232,176,.9) 30%, rgba(79,195,149,.9) 50%, rgba(242,232,176,.9) 70%, transparent); filter: blur(1px); }
+.gap { position: absolute; left: 50%; top: 0; bottom: 0; width: 46%; transform: translateX(-50%) scaleX(.02); opacity: 0; mix-blend-mode: screen;
+  background: radial-gradient(closest-side, rgba(242,232,176,.55), rgba(201,168,94,.18) 55%, rgba(31,143,99,.06) 80%, transparent); }
+
+/* the sequence (about 4.4 s), once */
+.play .lock { animation: press .25s .3s ease-in both, part-lock .3s .62s cubic-bezier(.3,.05,.16,1) both; }
+.play .seam-light { animation: seam .9s .55s ease-out both; }
+.play .door.l { animation: open-l 1.45s .95s cubic-bezier(.55,.05,.25,1) both; }
+.play .door.r { animation: open-r 1.45s .95s cubic-bezier(.55,.05,.25,1) both; }
+.play .gap { animation: gap 1.7s .95s ease-out both; }
+.play .plate .dim { animation: light .9s 1.5s ease-out both; }
+.play .plate { animation: reveal 1.5s 1.75s cubic-bezier(.45,0,.35,1) both; }
+.play .plate .band { animation: band 1.5s 1.75s linear both; }
+.play .plate .seal .active { animation: wake .9s 3.3s ease-out both; }
+@keyframes press { to { filter: drop-shadow(0 3px 6px rgba(0,0,0,.7)) brightness(.85); } }
+@keyframes part-lock { from { filter: drop-shadow(0 3px 6px rgba(0,0,0,.7)) brightness(.85); } to { filter: drop-shadow(0 8px 14px rgba(0,0,0,.7)); } }
+@keyframes seam { 0% { opacity: 0; } 45% { opacity: 1; } 70% { opacity: .8; } 100% { opacity: 0; } }
+@keyframes open-l { to { transform: translateX(-110%) scale(1.04); } }
+@keyframes open-r { to { transform: translateX(110%) scale(1.04); } }
+@keyframes gap { 0% { opacity: 0; transform: translateX(-50%) scaleX(.02); } 35% { opacity: 1; } 100% { opacity: 0; transform: translateX(-50%) scaleX(2.2); } }
+@keyframes light { to { opacity: 0; } }
+@keyframes reveal { from { --r: -8%; } to { --r: 112%; } }
+@keyframes band { 0% { opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes wake { from { opacity: 0; filter: brightness(1.6); } to { opacity: 1; } }
+</style>
+</head>
+<body class="play">
+<div class="vp">
+  <div class="plate">
+    <img class="art" src="../../../../web/public/art/summons-p-plate.webp" alt="">
+    <img class="inscribed" src="../frames/source/summons-p-inscribed.png" alt="">
+    <div class="seal"><img class="dormant" src="../../../../web/public/icons/seal-dormant.svg" alt=""><img class="active" src="../../../../web/public/icons/seal-active.svg" alt=""></div>
+    <div class="band"></div>
+    <div class="dim"></div>
+  </div>
+  <div class="doors">
+    <div class="gap"></div>
+    <div class="door l"><div class="strap a"></div><div class="strap b"></div><div class="seam"></div><div class="lock"></div></div>
+    <div class="door r"><div class="strap a"></div><div class="strap b"></div><div class="seam"></div><div class="lock"></div></div>
+    <div class="seam-light"></div>
+  </div>
+  <div class="tag-proposed placeholder">Proposed sketch · door face is a placeholder</div>
+</div>
+<script src="data.js"></script>
+<script src="stage.js"></script>
+<script>
+const { view, ICONS } = S;
+if (view === "desktop") {
+  document.querySelector(".art").src = "../../../../web/public/art/summons-d-plate.webp";
+  document.querySelector(".inscribed").src = "../frames/source/summons-d-inscribed.png";
+}
+const bolt = `<img src="${ICONS}bolt.svg" alt="">`;
+document.querySelectorAll(".strap").forEach((s) => (s.innerHTML = bolt.repeat(view === "desktop" ? 5 : 3)));
+</script>
+</body>
+</html>

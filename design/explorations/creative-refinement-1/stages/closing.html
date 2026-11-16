@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROPOSED: closing screens with the dormant seal</title>
+<link rel="stylesheet" href="stage.css">
+<style>
+/* The closed screens: the dormant seal (an existing, unused state) and "latveria",
+   engraved, never lit. No motion, no sound. The words are the approved copy, unchanged. */
+.vp { background: var(--c-night); display: grid; place-items: center; }
+.wrap { display: grid; justify-items: center; width: min(100% - 32px, 34rem); }
+.seal { width: 150px; opacity: .92; }
+.desktop .seal { width: 196px; }
+.seal img { width: 100%; display: block; }
+.mark-line { margin: 14px 0 26px; }
+.mark-line .runes { height: 11px; }
+.mark-line .runes path, .mark-line .runes circle { fill: #39423f; filter: none; }
+.panel-plate { width: 100%; }
+.plain { text-align: center; }
+</style>
+</head>
+<body>
+<div class="vp"><div class="wrap" id="wrap"></div><div class="tag-proposed">Proposed sketch</div></div>
+<script src="data.js"></script>
+<script src="stage.js"></script>
+<script>
+const { params, runes, mark, ICONS } = S;
+const s = params.get("s") || "closing";
+const seal = `<div class="seal"><img src="${ICONS}seal-dormant.svg" alt=""></div><div class="mark-line">${runes("latveria")}</div>`;
+const label = (t) => `<span class="lbl" style="color:inherit;font-size:inherit;letter-spacing:inherit">${t}</span>`;
+const body = {
+  closing: `<section class="panel-plate"><h1 class="hd">So be it.</h1><p class="t-procl" style="margin-top:8px">Doom does not ask twice. The seat stands empty until the day; return before then, and it is yours.</p>
+    <div class="panel-acts"><span class="btn-plate">${mark("sealMark")}${label("Take your seat")}</span></div></section>`,
+  daypassed: `<section class="panel-plate"><h1 class="hd">The day has passed.</h1><p class="t-procl" style="margin-top:8px">The council sat without you.</p></section>`,
+  invalid: `<div class="plain"><h1 class="hd">No summons here.</h1><p class="t-expl" style="margin:12px auto 0;max-width:30ch">This link opens nothing. If Doom summoned you, ask him for your link again.</p></div>`,
+}[s];
+document.getElementById("wrap").innerHTML = seal + body;
+</script>
+</body>
+</html>

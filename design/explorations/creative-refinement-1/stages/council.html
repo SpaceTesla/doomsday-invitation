@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROPOSED: council sketch</title>
+<link rel="stylesheet" href="stage.css">
+<style>
+/* ---------- council sketch: the hall as the room, and its one-time sequences ---------- */
+.phone .cn-title { position: absolute; left: 0; right: 0; top: 410px; }
+.desktop .cn-title { position: absolute; left: 0; right: 0; top: 484px; }
+.phone .steps-row { position: absolute; left: 16px; right: 16px; top: 466px; }
+.desktop .steps-row { position: absolute; left: 50%; width: 736px; margin-left: -368px; top: 560px; }
+.flank { display: none; }
+.desktop .flank { display: block; position: absolute; top: 503px; width: 150px; }
+.desktop .flank .runes { height: 13px; }
+.desktop .flank.l { left: calc(50% - 330px); } .desktop .flank.r { right: calc(50% - 330px); }
+.flank .runes path { fill: rgba(10,14,12,.85); filter: drop-shadow(0 1px 0 rgba(228,203,140,.18)); }
+.phone .body { position: absolute; left: 16px; right: 16px; top: 716px; }
+.desktop .body { position: absolute; left: 50%; width: 736px; margin-left: -368px; top: 642px; }
+.content { position: absolute; inset: 0; transform: translateY(calc(-1 * var(--y, 0px))); }
+.panel-plate.steel { --grain: url("../frames/source/door-steel.jpg"); }
+
+/* ---- arrival: once, then still ---- */
+@property --a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+.hall .unlit { -webkit-mask-image: conic-gradient(from 270deg, transparent calc(var(--a) - 40deg), #000 var(--a)); mask-image: conic-gradient(from 270deg, transparent calc(var(--a) - 40deg), #000 var(--a)); }
+.hall .unlit { opacity: 0; }
+.play-arrive .hall .unlit { opacity: 1; }
+.play-arrive .hall .cam { animation: settle 2.6s cubic-bezier(.2,.6,.2,1) both; }
+.play-arrive .hall .dark { animation: lights-up 2.2s ease-in-out both; }
+.play-arrive .hall .unlit { animation: ring 1.5s .6s linear both; }
+.play-arrive .hall .glow { animation: pulse 1.4s 1.6s ease-in-out both; }
+.play-arrive .cn-title .hd { animation: write .8s 1.5s ease-out both; }
+.play-arrive .flank { animation: fade .6s 1.9s linear both; }
+.play-arrive .steps-row { animation: fade .4s 2.1s linear both; }
+.play-arrive .body { animation: rise .6s 2.3s cubic-bezier(.2,.6,.2,1) both; }
+@keyframes settle { from { transform: scale(1.06); } to { transform: scale(1); } }
+@keyframes lights-up { from { opacity: .62; } to { opacity: 0; } }
+@keyframes ring { from { --a: 0deg; } to { --a: 400deg; } }
+@keyframes pulse { 0% { opacity: 0; } 40% { opacity: .9; } 100% { opacity: 0; } }
+@keyframes wash { 0% { opacity: 0; } 40% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes write { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes rise { from { opacity: 0; transform: translateY(36px); } }
+@keyframes rune-on { from { fill: #0b0f0e; } to { fill: #4fc395; filter: drop-shadow(0 0 .18em rgba(79,195,149,.55)); } }
+.runes.seq path { animation: rune-on .25s linear both; animation-play-state: paused; }
+.play .runes.seq path { animation-play-state: running; }
+.still .runes.seq path { animation: none; fill: #4fc395; filter: drop-shadow(0 0 .18em rgba(79,195,149,.55)); }
+
+/* ---- a response: the floor circle answers a meaningful action ---- */
+.play-pulse .hall .glow { animation: pulse 1.2s .15s ease-in-out both; }
+.play-pulse .hall .wash { animation: wash 1.2s .15s ease-in-out both; }
+
+/* ---- the claim beat ---- */
+.claimed .mk-b, .claimed .tag { opacity: 0; }
+.claimed .mk-a, .claimed .mk-b { grid-area: 1 / 1; }
+.claimed .marks { display: grid; }
+.play-claim .claimed { animation: border-em .2s .05s linear both; }
+.play-claim .claimed .fill { animation: fill-in .35s .05s cubic-bezier(.2,.6,.2,1) both; }
+.play-claim .claimed .mk-a { animation: turn-out .3s .35s ease-in both; }
+.play-claim .claimed .mk-b { animation: turn-in .3s .45s ease-out both; }
+.play-claim .claimed .tag { animation: fade .2s .55s linear reverse both; }
+.play-claim .chooser { animation: fade-out .35s 1.0s linear both; }
+.play-claim .yours-panel { animation: rise .5s 1.15s cubic-bezier(.2,.6,.2,1) both; }
+.play-claim .yours-panel .claim-line { animation: write .8s 1.75s ease-out both; }
+.play-claim .rolls { animation: dim .4s 1.0s linear both; }
+.play-claim .hall .glow { animation: pulse 1.3s 1.3s ease-in-out both; }
+.play-claim .hall .wash { animation: wash 1.3s 1.3s ease-in-out both; }
+@keyframes border-em { to { border-color: #1f8f63; } }
+@keyframes fill-in { to { transform: scaleX(1); } }
+@keyframes turn-out { to { opacity: 0; transform: rotate(45deg) scale(.8); } }
+@keyframes turn-in { from { opacity: 0; transform: rotate(-45deg) scale(.8); } to { opacity: 1; transform: none; } }
+@keyframes fade-out { to { opacity: 0; } }
+@keyframes dim { to { opacity: .45; } }
+.state-claim .yours-panel { position: absolute; left: 0; right: 0; top: 0; }
+.claim-line { text-wrap: balance; }
+.state-claim .yours-panel { opacity: 0; }
+.play-claim .yours-panel { opacity: 1; }
+
+/* ---- the decree ceremony ---- */
+.play-decree .decree .issuer { animation: issue .9s .2s cubic-bezier(.2,.6,.2,1) both; }
+.play-decree .decree .tagline { animation: fade .4s .7s linear both; }
+.play-decree .decree .hd { animation: write .7s .8s ease-out both; }
+.play-decree .decree .day { animation: write 1.0s 1.45s cubic-bezier(.4,0,.2,1) both; }
+.play-decree .decree .venue { animation: write .8s 2.1s cubic-bezier(.4,0,.2,1) both; }
+.play-decree .decree .sanction { animation: write .6s 2.75s ease-out both; }
+.play-decree .light-band { animation: sweep 1.8s 1.4s cubic-bezier(.4,0,.2,1) both; }
+.play-decree .hall .glow { animation: pulse 1.4s 3.4s ease-in-out both; }
+.play-decree .hall .wash { animation: wash 1.4s 3.4s ease-in-out both; }
+.play-decree .after { animation: fade .4s 4.3s linear both; }
+@keyframes issue { from { opacity: 0; transform: scale(.92); filter: brightness(1.8); } }
+@keyframes sweep { 0% { opacity: 0; transform: translateX(-60%); } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; transform: translateX(60%); } }
+</style>
+</head>
+<body>
+<div class="vp" id="vp">
+  <div class="hall">
+    <div class="cam">
+      <img id="plate" src="../../../../web/public/art/hall-p-plate.jpg" alt="">
+      <img id="doom" src="../../../../web/public/art/hall-p-doom.webp" alt="">
+      <div class="unlit circle"></div>
+      <div class="glow circle"></div>
+      <div class="wash"></div>
+      <div class="dark"></div>
+    </div>
+    <div class="shade" id="shade"></div>
+  </div>
+  <div class="cn-scroll"><div class="content" id="content"></div></div>
+  <div class="sound-control"><span class="link-quiet">Sound on</span></div>
+  <div class="tag-proposed" id="tag">Proposed sketch</div>
+</div>
+<script src="data.js"></script>
+<script src="stage.js"></script>
+<script>
+const { ART, ICONS, params, view, mark, runes, runeBand, bolts } = S;
+const state = params.get("s") || "step1";
+document.documentElement.classList.add("state-" + state);
+document.getElementById("plate").src = ART + (view === "phone" ? "hall-p-plate.jpg" : "hall-d-plate.jpg");
+document.getElementById("doom").src = ART + (view === "phone" ? "hall-p-doom.webp" : "hall-d-doom.webp");
+// The hall dims under the content, more as the guest reads further down.
+const shade = document.getElementById("shade");
+const y = Number(params.get("y") || 0);
+document.getElementById("content").style.setProperty("--y", y + "px");
+shade.style.background = view === "phone"
+  ? `linear-gradient(rgba(10,13,11,${0.1 + y / 1200}) 0%, rgba(10,13,11,${0.1 + y / 1600}) 40%, rgba(10,13,11,.55) 100%)`
+  : `linear-gradient(rgba(10,13,11,${0.05 + y / 1400}) 0%, rgba(10,13,11,.15) 50%, rgba(10,13,11,.6) 100%)`;
+
+function tab(n, label, kind) {
+  const m = kind === "done" ? mark("suitRuneLevel1", "", "own").replace('class="mk', 'class="mk mk--emerald')
+          : kind === "current" ? mark("sealMark", "mk--gold") : mark("cuirassTileEmpty", "mk--dim");
+  return `<li><div class="cn-step-tab is-${kind}"><span class="cn-step-head">${m}<span class="cn-step-n">${n}</span></span><span class="lbl">${label}</span></div></li>`;
+}
+function steps(cur, done) {
+  const k = (n) => (n === cur ? "current" : done.includes(n) ? "done" : "off");
+  return `<nav class="cn-steps"><ol>${tab(1, "Proposal", k(1))}${tab(2, "Mantle", k(2))}${tab(3, "Council", k(3))}</ol></nav>`;
+}
+const head = `<div class="cn-title"><h1 class="hd hd--title">Council of Doom</h1></div>
+  <div class="flank l">${runes("justice", "on-ground")}</div><div class="flank r">${runes("revenge", "on-ground")}</div>`;
+
+function proposal(approved) {
+  return `<section class="panel-plate principal steel bolted">${bolts()}
+    ${runeBand("there is no promise of tomorro", approved ? "lit-seq" : "", approved ? 0.07 : 0, 0.2)}
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px"><h2 class="hd">Doom proposes</h2><span class="lbl">Proposed</span></div>
+    <p class="t-procl" style="margin-top:6px">Friday the eighteenth of December, at half past seven in the evening.</p>
+    <p class="t-procl">At the Grand Cinema, in the fourth hall.</p>
+    <div class="panel-well">${approved ? '<span class="fig">2</span> of <span class="fig">3</span> seats have approved' : '<span class="fig">1</span> of <span class="fig">3</span> seats has approved'}</div>
+    <div class="panel-acts">${approved
+      ? `<span class="btn-plate is-done">${mark("sealMark")}<span class="lbl" style="color:inherit;font-size:inherit;letter-spacing:inherit">Approved</span></span><span class="link-quiet">Withdraw</span>`
+      : `<span class="btn-plate">${mark("sealMark")}<span class="lbl" style="color:inherit;font-size:inherit;letter-spacing:inherit">Approve</span></span><span class="link-quiet">Propose another</span>`}</div>
+    <p class="t-expl" style="margin-top:16px">Your approval is counsel. Doom alone decides, and may change the proposal at any time.</p>
+  </section>`;
+}
+
+const ROLLS = [
+  ["The Avengers (Earth-616)", ["Captain America / Sam Wilson", "Captain America / Steve Rogers", ["Thor", "Ms. Tara Menon"], "Ant-Man", "Shang-Chi", "Falcon / Joaquin Torres"]],
+  ["The New Avengers / Thunderbolts", ["Yelena Belova", "Winter Soldier", "Sentry", "Ghost", "U.S. Agent", "Red Guardian"]],
+];
+function plate(name, claimTarget) {
+  if (Array.isArray(name)) {
+    return `<li class="cn-char is-taken">${mark("cuirassTileEmpty", "mk--dim")}<span class="cn-cname">${name[0]}</span><span class="lbl">Taken</span><span class="cn-holder">${name[1]}</span></li>`;
+  }
+  if (name === claimTarget) {
+    return `<li class="cn-char claimed"><span class="fill"></span><span class="marks">${mark("cuirassTileEmpty", "mk-a")}${mark("suitRuneLevel1", "mk-b mk--emerald", "own")}</span><span class="cn-cname">${name}</span><span class="lbl tag" style="color:#4fc395">Yours</span></li>`;
+  }
+  return `<li class="cn-char">${mark("cuirassTileEmpty")}<span class="cn-cname">${name}</span><span></span></li>`;
+}
+function rolls(claimTarget) {
+  return `<div class="rolls">${ROLLS.map(([f, names]) => `<div class="roll"><div class="roll-head"><h3 class="t-faction">${f}</h3></div><ul class="cn-chars">${names.map((n) => plate(n, claimTarget)).join("")}</ul></div>`).join("")}</div>`;
+}
+function chooser(lit) {
+  return `<section class="panel-plate principal steel bolted chooser">${bolts()}
+    ${runeBand("to the viktor go the spoils", lit ? "lit-seq" : "", 0, 0)}
+    <h2 class="hd">Choose your mantle</h2>
+    <p class="t-expl" style="margin-top:8px">Each mantle is borne by one guest alone. You may choose again until Doom decrees the day.</p>
+    <div style="margin-top:16px"><span class="lbl">Find a mantle</span><div style="margin-top:8px;height:46px;background:#0c100f;border:1px solid #333c3a;border-radius:2px;display:flex;align-items:center;padding-left:14px"><svg class="mk" viewBox="-50 -50 100 100" style="width:22px;height:22px"><g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="square"><rect x="-38" y="-38" width="54" height="54"/><rect x="-21" y="-21" width="20" height="20"/><path d="M20 20 L38 38"/></g></svg></div></div>
+  </section>`;
+}
+function yoursPanel(name, seq) {
+  return `<section class="panel-plate principal steel bolted yours-panel">${bolts()}
+    ${runeBand("to the viktor go the spoils", "lit-seq", seq ? 0.065 : 0, seq ? 1.45 : 0)}
+    <div class="yours">${mark("suitRuneLevel2", "big", "own")}<div><span class="lbl" style="color:#4fc395">Yours</span><div class="yours-name" style="margin-top:8px">${name}</div></div></div>
+    <p class="t-procl claim-line">You stand before the council as ${name}.</p>
+  </section>`;
+}
+function guests() {
+  const row = (m, name, tags, sub, cls = "") => `<li class="cn-guest ${cls}">${m}<span class="cn-guest-head"><span class="cn-guest-name">${name}</span><span class="cn-guest-tags">${tags}</span></span>${sub || ""}</li>`;
+  const seated = mark("suitRuneLevel1", "mk--emerald", "own");
+  return `<h2 class="hd" style="margin-bottom:16px">Those summoned</h2><section class="panel-plate"><ul class="panel-well" style="list-style:none;margin:0;padding:6px 16px">
+    ${row(mark("maskLevel1", "mk--gold", "fill").replace('class="mk', 'style="width:26px;height:30px" class="mk'), '<span style="font-size:1.3rem;color:#e4cb8c">Doctor Doom</span>', '<span class="lbl">Sovereign</span>', "", "")}
+    ${row(seated, "Anish", '<span class="lbl" style="color:#e4cb8c">You</span><span class="lbl">Seated</span>', '<p class="cn-guest-mantle">Shang-Chi</p>', "is-you")}
+    ${row(seated, "Tara Menon", '<span class="lbl">Seated</span>', '<p class="cn-guest-mantle">Thor</p>')}
+    ${row(seated, "Ravi", '<span class="lbl">Seated</span>', '<p class="cn-guest-mantle none">No mantle yet</p>')}
+    ${row(mark("sealMark"), "Bhattacharya-Okonkwo", '<span class="lbl">Summoned</span>')}
+    ${row(mark("cuirassTileEmpty", "mk--dim"), '<span style="color:#96a19e">José Nuñez</span>', '<span class="lbl">Declined</span>')}
+  </ul></section>`;
+}
+function decree() {
+  return `<section class="panel-plate principal steel bolted decree" style="overflow:hidden">${bolts()}<div class="light-band"></div>
+    <svg class="issuer" viewBox="${MARKS.maskLevel2Plain.viewBox}" aria-hidden="true" style="color:#c6a75e">${MARKS.maskLevel2Plain.body}</svg>
+    <span class="lbl tagline">Decreed</span>
+    <h2 class="hd" style="margin-top:12px">Doom decrees</h2>
+    <p class="day">Saturday the nineteenth of December, at eight o'clock in the evening.</p>
+    <p class="venue">At the Grand Cinema, in the fourth hall.</p>
+    <p class="sanction">Be there. The absent forfeit their voice.</p>
+    <div class="sig">${runes("viktor von doom", "seq", 0.075, 3.05)}</div>
+  </section>
+  <div class="after" style="text-align:center;margin-top:24px"><span class="btn-plate">${mark("sealMark")}<span class="lbl" style="color:inherit;font-size:inherit;letter-spacing:inherit">Continue</span></span></div>`;
+}
+
+let stepsHtml, bodyHtml, rootCls = [];
+switch (state) {
+  case "arrival": stepsHtml = steps(1, []); bodyHtml = proposal(false); rootCls = ["play", "play-arrive"]; break;
+  case "step1": stepsHtml = steps(1, []); bodyHtml = proposal(false); rootCls = ["still"]; break;
+  case "approve": stepsHtml = steps(1, [1]); bodyHtml = proposal(true); rootCls = ["play", "play-pulse"]; break;
+  case "step2": stepsHtml = steps(2, [1]); bodyHtml = chooser(false) + rolls(); rootCls = ["still"]; break;
+  case "claim": stepsHtml = steps(2, [1]); bodyHtml = `<div style="position:relative">${chooser(false)}${yoursPanel("Captain America / Sam Wilson", true)}</div>` + rolls("Captain America / Sam Wilson"); rootCls = ["play", "play-claim"]; break;
+  case "yours": stepsHtml = steps(2, [1, 2]); bodyHtml = yoursPanel("Shang-Chi", false) + rolls(); rootCls = ["still"]; break;
+  case "step3": stepsHtml = steps(3, [1, 2]); bodyHtml = guests(); rootCls = ["still"]; break;
+  case "decree": stepsHtml = steps(1, [1, 2]); bodyHtml = decree(); rootCls = ["play", "play-decree"]; break;
+}
+document.getElementById("content").innerHTML = head + `<div class="steps-row">${stepsHtml}</div><div class="body">${bodyHtml}</div>`;
+document.documentElement.classList.add(...rootCls);
+if (!rootCls.includes("play")) document.documentElement.classList.add("still");
+if (state === "yours") document.querySelectorAll(".rune-band .runes").forEach((r) => r.classList.add("on"));
+</script>
+</body>
+</html>

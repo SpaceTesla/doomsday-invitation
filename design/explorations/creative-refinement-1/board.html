@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Creative refinement 1: review board</title>
+<style>
+@font-face { font-family: "Pirata One"; src: url("../../../web/src/fonts/pirata-one-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cinzel"; font-weight: 500; src: url("../../../web/src/fonts/cinzel-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Orbitron"; font-weight: 600; src: url("../../../web/src/fonts/orbitron-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 500; src: url("../../../web/src/fonts/cormorant-garamond-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 500; font-style: italic; src: url("../../../web/src/fonts/cormorant-garamond-latin-500-italic.woff2") format("woff2"); }
+:root { --night: #0a0d12; --plate: #1a2020; --steel: #96a19e; --silver: #d9dedc; --gold: #c6a75e; --gold-l: #e4cb8c; --em: #4fc395; --line: #2a3232; --signal: #e0806f; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--night); color: var(--silver); font: 500 18px/1.5 "Cormorant Garamond", Georgia, serif; }
+main { max-width: 1480px; margin: 0 auto; padding: 40px 28px 120px; }
+h1 { font: 400 52px/1 "Pirata One", serif; color: var(--gold-l); margin: 0 0 10px; }
+h2 { font: 400 36px/1.05 "Pirata One", serif; color: var(--gold-l); margin: 72px 0 6px; padding-top: 24px; border-top: 1px dotted rgba(198,167,94,.45); }
+h3 { font: 500 19px/1.3 "Cinzel", serif; letter-spacing: .04em; color: var(--gold); margin: 34px 0 12px; }
+p { margin: 0 0 12px; max-width: 78ch; }
+.lead { font-size: 21px; font-style: italic; max-width: 80ch; }
+.lbl { font: 600 11px/1 "Orbitron", sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--steel); }
+a { color: var(--gold-l); }
+ul { margin: 0 0 12px; padding-left: 22px; max-width: 80ch; } li { margin: 3px 0; }
+.status { display: inline-block; margin: 0 0 18px; padding: 7px 10px; border: 1px solid var(--gold); color: var(--gold-l); }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 16px 0 6px; }
+.tag { display: inline-block; padding: 5px 7px; border-radius: 2px; font: 600 10px/1 "Orbitron", sans-serif; letter-spacing: .1em; text-transform: uppercase; vertical-align: middle; }
+.tag.cur { background: #3a4341; color: var(--silver); }
+.tag.pro { background: var(--gold-l); color: #0a0d12; }
+.tag.ph { background: var(--signal); color: #0a0d12; }
+.tag.ex { background: #4fc395; color: #0a0d12; }
+.cmp { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: start; }
+.col { min-width: 0; }
+.col > .lbl { display: block; margin-bottom: 10px; }
+.row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; align-items: flex-start; }
+figure { margin: 0; flex: none; }
+figure img { display: block; border: 1px solid var(--line); background: #000; }
+figcaption { margin-top: 5px; font: 500 14px/1.3 "Cormorant Garamond", serif; color: var(--steel); max-width: 260px; }
+.ph img { width: 210px; }
+.dk img { width: 520px; }
+.dk figcaption { max-width: 520px; }
+.dk.sm img { width: 400px; }
+.ph.sm img { width: 170px; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px 36px; margin-top: 18px; }
+.box { padding: 16px 18px; background: var(--plate); border: 1px solid #3a4341; }
+.box h4 { margin: 0 0 8px; font: 600 11px/1 "Orbitron", sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+.box.decide { border-color: var(--gold); }
+.box.decide h4 { color: var(--gold-l); }
+table { border-collapse: collapse; width: 100%; max-width: 1100px; margin: 8px 0 16px; font-size: 17px; }
+th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-top: 1px solid #2a3232; }
+th { font: 600 11px/1.2 "Orbitron", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--steel); }
+.spec { display: grid; grid-template-columns: 210px 1fr 1fr; gap: 10px 22px; align-items: center; padding: 12px 0; border-top: 1px solid #2a3232; }
+.spec .plate { padding: 14px 16px; background: linear-gradient(#232a2a, #151a1a); border: 1px solid #3a4341; }
+.spec .plate.ground { background: var(--night); }
+.runes { display: block; height: 14px; width: auto; max-width: 100%; }
+.runes path, .runes circle { fill: #0b0f0e; filter: drop-shadow(0 1px 0 rgba(255,255,255,.14)); }
+.runes.lit path, .runes.lit circle { fill: var(--em); filter: drop-shadow(0 0 3px rgba(79,195,149,.55)); }
+.ground .runes path, .ground .runes circle { fill: #39423f; filter: none; }
+.toc { columns: 2; max-width: 900px; } .toc li { break-inside: avoid; }
+.play { display: inline-block; margin: 6px 12px 0 0; font: 600 11px/1 "Orbitron", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+@media (max-width: 900px) { .cmp { grid-template-columns: 1fr; } .dk img { width: 92vw; } .toc { columns: 1; } .spec { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+<span class="status lbl">Proposed creative refinements · not approved · nothing implemented</span>
+<h1>Refinement board: first round</h1>
+<p class="lead">This page compares what the invitation does today with what <code>design/EXPERIENCE_AUDIT.md</code> and your decisions of 17 November propose. It changes nothing in the application. Everything proposed is built from artwork the project already has, and it is labelled as proposed.</p>
+<p>Branch <code>creative-refinement</code>. The opening is untouched throughout. Characters stay name-only. No new artwork was generated: the one placeholder is the face of the summons' outer doors, assembled from existing steel, bolts and the rune relief, and it is marked wherever it appears.</p>
+
+<div class="legend">
+  <span><span class="tag cur">Current</span> captured from the running app on 16 November, unretouched</span>
+  <span><span class="tag pro">Proposed</span> a composition made from existing approved artwork, in a playable sketch</span>
+  <span><span class="tag ph">Placeholder</span> stands in for an asset that would be baked properly</span>
+</div>
+
+<h3>Contents</h3>
+<ol class="toc">
+  <li><a href="#council">The council hall: current and proposed</a></li>
+  <li><a href="#mantle">The mantle: current and proposed</a></li>
+  <li><a href="#decree">The proposal and the decree</a></li>
+  <li><a href="#doors">The summons: the split plate and the outer doors</a></li>
+  <li><a href="#runes">Doomscript: places and illumination</a></li>
+  <li><a href="#closing">The closed screens with the dormant seal</a></li>
+  <li><a href="#sound">Sound: the audition page and the two scores</a></li>
+  <li><a href="#decide">What still needs your decision</a></li>
+</ol>
+<p><a href="audition.html">Open the sound audition and the score prototypes</a>. Each sketch can also be played live (links in each section); the frames below are frozen from those sketches.</p>
+
+<!-- ======================================================= 1 -->
+<h2 id="council">1. The council hall</h2>
+<p>Today the hall is a banner: a 250-pixel strip on a phone, cropped from the wide painting, scrolled away at the first step. The proposal makes the painting the room the council sits in: the upright painting on phones (shipped, never used), the wide one on desktop, held behind every step. The floor circle, the hall's own Doomscript, lights once on arrival and answers the guest's actions. Doom does not move.</p>
+
+<h3>Phone</h3>
+<div class="cmp">
+  <div class="col"><span class="lbl"><span class="tag cur">Current</span></span>
+    <div class="row"><figure class="ph"><img src="current/council-step1-phone.jpg" alt=""><figcaption>Step one today: the hall is a cropped strip above the title</figcaption></figure></div>
+  </div>
+  <div class="col"><span class="lbl"><span class="tag pro">Proposed</span> the hall as the room</span>
+    <div class="row">
+      <figure class="ph"><img src="frames/council-step1-top-phone.jpg" alt=""><figcaption>Arriving: the whole upright hall, Doom on the throne, the floor circle lit, the title on the dais; the step's panel rises from the floor line</figcaption></figure>
+      <figure class="ph"><img src="frames/council-step1-read-phone.jpg" alt=""><figcaption>Reading: the panel passes over the floor; the hall stays behind, dimmed, Doom above the panel's edge</figcaption></figure>
+    </div>
+  </div>
+</div>
+
+<h3>Desktop</h3>
+<div class="cmp">
+  <div class="col"><span class="lbl"><span class="tag cur">Current</span></span>
+    <div class="row"><figure class="dk sm"><img src="current/council-step1-desktop.jpg" alt=""><figcaption>A banner, a narrow column, a flat olive ground</figcaption></figure></div>
+  </div>
+  <div class="col"><span class="lbl"><span class="tag pro">Proposed</span></span>
+    <div class="row">
+      <figure class="dk sm"><img src="frames/council-step1-top-desktop.jpg" alt=""><figcaption>The wide hall fills the screen. The circle shows on both sides of the column. "justice" and "revenge" engraved either side of the title, as they flank the summons plate</figcaption></figure>
+      <figure class="dk sm"><img src="frames/council-step1-read-desktop.jpg" alt=""><figcaption>Reading: the panel over the floor, the circle still visible</figcaption></figure>
+    </div>
+  </div>
+</div>
+
+<h3>The arrival, once per visit, then stillness (about 2.9 s)</h3>
+<div class="row">
+  <figure class="ph sm"><img src="frames/council-arrival-phone-005.jpg" alt=""><figcaption>0.0 s: iris opens on a dim hall, the camera pushed in, the circle dark</figcaption></figure>
+  <figure class="ph sm"><img src="frames/council-arrival-phone-090.jpg" alt=""><figcaption>0.9 s: light rises in the windows; the circle lights around the ring</figcaption></figure>
+  <figure class="ph sm"><img src="frames/council-arrival-phone-160.jpg" alt=""><figcaption>1.6 s: the ring closes; one emerald breath across the floor</figcaption></figure>
+  <figure class="ph sm"><img src="frames/council-arrival-phone-220.jpg" alt=""><figcaption>2.2 s: the title is written in place; the steps appear</figcaption></figure>
+  <figure class="ph sm"><img src="frames/council-arrival-phone-320.jpg" alt=""><figcaption>3.2 s: settled. Nothing moves after this</figcaption></figure>
+</div>
+<div class="row" style="margin-top:10px">
+  <figure class="dk sm"><img src="frames/council-arrival-desktop-090.jpg" alt=""><figcaption>Desktop, 0.9 s</figcaption></figure>
+  <figure class="dk sm"><img src="frames/council-arrival-desktop-320.jpg" alt=""><figcaption>Desktop, 3.2 s, settled</figcaption></figure>
+</div>
+<p><a class="play" href="stages/council.html?v=phone&s=arrival">Play the arrival, phone</a><a class="play" href="stages/council.html?v=desktop&s=arrival">desktop</a> <span class="lbl">(reload to replay)</span></p>
+
+<h3>The floor answers an action: approving</h3>
+<div class="row">
+  <figure class="ph sm"><img src="frames/council-approve-phone-020.jpg" alt=""><figcaption>0.2 s: APPROVED; the proposal's inscription begins to light</figcaption></figure>
+  <figure class="ph sm"><img src="frames/council-approve-phone-075.jpg" alt=""><figcaption>0.75 s: the floor's light washes up; runes light in reading order</figcaption></figure>
+  <figure class="ph sm"><img src="frames/council-approve-phone-160.jpg" alt=""><figcaption>1.6 s: settled; the inscription stays lit while the approval stands</figcaption></figure>
+  <figure class="dk sm"><img src="frames/council-approve-desktop-075.jpg" alt=""><figcaption>Desktop, 0.75 s: the circle itself pulses either side of the panel</figcaption></figure>
+</div>
+<p><a class="play" href="stages/council.html?v=phone&s=approve&y=360">Play, phone</a><a class="play" href="stages/council.html?v=desktop&s=approve&y=300">desktop</a></p>
+
+<div class="notes">
+  <div class="box"><h4>What changes</h4><ul>
+    <li>The upright hall (<code>hall-p-plate.jpg</code>, <code>hall-p-doom.webp</code>) on phones, the wide one on desktop, fixed behind the steps.</li>
+    <li>A one-time arrival: camera settle, light rising, the ring lighting, the title written, the panel rising. It runs on the first arrival of a visit; reduced motion gets a 0.2 s fade.</li>
+    <li>A response, not a loop: the circle answers approving, claiming a mantle and the decree, once each, about 1.2 s.</li>
+    <li>Principal panels take the summons' brushed steel and four corner bolts. Wells, lists and fields stay as they are.</li>
+  </ul></div>
+  <div class="box"><h4>What stays</h4><ul>
+    <li>Doom motionless; no ambient loops; no flicker.</li>
+    <li>Every panel opaque, so text never sits on the painting.</li>
+    <li>The three steps, their behaviour, and every word.</li>
+    <li>On desktop the circle stays visible either side of the column, so the response is seen directly.</li>
+  </ul></div>
+  <div class="box decide"><h4>Decide</h4><ul>
+    <li><b>Phone: hall first, or content first?</b> Shown here: each step opens on the hall view, with the panel's top at the bottom of the screen, so a guest scrolls once to read it. The alternative opens with the panel at the top and the hall behind; less of the room, no extra scroll. On a phone the panel covers the circle while reading, so there the response is mostly the light washing up the hall.</li>
+  </ul></div>
+</div>
+
+<!-- ======================================================= 2 -->
+<h2 id="mantle">2. The mantle</h2>
+<p>Today choosing is picking a row: 38 identical plates with an empty square, and a confirmation line that is on screen for one or two frames. The proposal makes claiming an act: the plate takes the mantle, then the step resolves into the guest's own mantle, large, with the confirmation held long enough to read before the council opens.</p>
+
+<div class="cmp">
+  <div class="col"><span class="lbl"><span class="tag cur">Current</span></span>
+    <div class="row">
+      <figure class="ph"><img src="current/mantle-phone.jpg" alt=""><figcaption>The list today</figcaption></figure>
+      <figure class="ph"><img src="current/mantle-yours-phone.jpg" alt=""><figcaption>A held mantle today: an emerald border among the others</figcaption></figure>
+    </div>
+  </div>
+  <div class="col"><span class="lbl"><span class="tag pro">Proposed</span></span>
+    <div class="row">
+      <figure class="ph"><img src="frames/mantle-step2-phone.jpg" alt=""><figcaption>Choosing: a principal panel with "to the viktor go the spoils" engraved; factions as rolls, each a recessed tray under a dotted rule</figcaption></figure>
+      <figure class="ph"><img src="frames/mantle-yours-phone.jpg" alt=""><figcaption>Holding one: the guest's mantle large, with the suit rune at level 2 (unused until now), the inscription lit; the rolls below to choose again</figcaption></figure>
+    </div>
+  </div>
+</div>
+
+<h3>The claim (about 2.5 s, then the council; a tap skips it)</h3>
+<div class="row">
+  <figure class="ph sm"><img src="frames/mantle-claim-phone-025.jpg" alt=""><figcaption>0.25 s: the tapped plate fills with emerald from the left, the button's own pressed language, held</figcaption></figure>
+  <figure class="ph sm"><img src="frames/mantle-claim-phone-070.jpg" alt=""><figcaption>0.7 s: the tile turns into the suit rune; YOURS; a lock sound</figcaption></figure>
+  <figure class="ph sm"><img src="frames/mantle-claim-phone-135.jpg" alt=""><figcaption>1.35 s: the list dims; the guest's mantle rises in the panel; the floor answers</figcaption></figure>
+  <figure class="ph sm"><img src="frames/mantle-claim-phone-220.jpg" alt=""><figcaption>2.2 s: the inscription lights rune by rune; "You stand before the council as …" is written in place</figcaption></figure>
+  <figure class="ph sm"><img src="frames/mantle-claim-phone-340.jpg" alt=""><figcaption>3.4 s: held; then on to step three, as now</figcaption></figure>
+</div>
+<div class="row" style="margin-top:10px">
+  <figure class="dk sm"><img src="frames/mantle-claim-desktop-135.jpg" alt=""><figcaption>Desktop, 1.35 s</figcaption></figure>
+  <figure class="dk sm"><img src="frames/mantle-claim-desktop-340.jpg" alt=""><figcaption>Desktop, 3.4 s</figcaption></figure>
+</div>
+<p><a class="play" href="stages/council.html?v=phone&s=claim&y=360">Play the claim, phone</a><a class="play" href="stages/council.html?v=desktop&s=claim&y=300">desktop</a></p>
+
+<h3>Step three: those summoned</h3>
+<div class="cmp">
+  <div class="col"><span class="lbl"><span class="tag cur">Current</span></span><div class="row"><figure class="ph"><img src="current/council-step3-phone.jpg" alt=""><figcaption>Today</figcaption></figure></div></div>
+  <div class="col"><span class="lbl"><span class="tag pro">Proposed</span></span><div class="row"><figure class="ph"><img src="frames/council-step3-phone.jpg" alt=""><figcaption>The hall behind; Doom's row in gold and a little larger. Otherwise unchanged: this screen should stay quiet</figcaption></figure></div></div>
+</div>
+
+<div class="notes">
+  <div class="box"><h4>Behaviour kept exactly</h4><ul>
+    <li>The claim is sent the moment the plate is tapped. The beat plays over the request, never before it, and the database still decides who gets a mantle: a lost race still shows its message.</li>
+    <li>Search, taken plates with their holders, CHOOSE LATER, changing until the decree, locking after it.</li>
+    <li>No character emblems: the suit rune is the mark of a seat taken, the same for every mantle.</li>
+    <li>The confirmation line is the approved copy (5.8), now held about two seconds instead of one or two frames.</li>
+  </ul></div>
+  <div class="box"><h4>Considered and left out</h4><ul>
+    <li>The mantle's name in the step header: tabs are 120 px wide on a phone, too narrow for "Captain America / Steve Rogers".</li>
+    <li>Bolts on every faction roll: 28 bolts would clutter. Only the principal panel is bolted.</li>
+  </ul></div>
+</div>
+
+<!-- ======================================================= 3 -->
+<h2 id="decree">3. The proposal and the decree</h2>
+<p>Today the decree is the proposal panel with two words changed. The proposal gives it the weight of an issued act: the mask insignia as issuer, the day as a proclamation, written in place by a passing light, and Doom's signature in runes lighting last. It plays the first time a guest sees a decree, and again after an amendment; a reload shows it settled.</p>
+
+<div class="cmp">
+  <div class="col"><span class="lbl"><span class="tag cur">Current</span></span>
+    <div class="row">
+      <figure class="ph"><img src="current/proposal-phone.jpg" alt=""><figcaption>The proposal today</figcaption></figure>
+      <figure class="ph"><img src="current/decree-phone.jpg" alt=""><figcaption>The decree today</figcaption></figure>
+    </div>
+  </div>
+  <div class="col"><span class="lbl"><span class="tag pro">Proposed</span></span>
+    <div class="row">
+      <figure class="ph"><img src="frames/council-step1-read-phone.jpg" alt=""><figcaption>The proposal: unchanged except the steel, the bolts and its engraved inscription, which lights once the guest approves</figcaption></figure>
+      <figure class="ph"><img src="frames/decree-phone-480.jpg" alt=""><figcaption>The decree, settled</figcaption></figure>
+    </div>
+  </div>
+</div>
+
+<h3>The ceremony (about 4.3 s, once per decree)</h3>
+<div class="row">
+  <figure class="ph sm"><img src="frames/decree-phone-060.jpg" alt=""><figcaption>0.6 s: the issuer's mark appears (mask, level 2)</figcaption></figure>
+  <figure class="ph sm"><img src="frames/decree-phone-190.jpg" alt=""><figcaption>1.9 s: "Doom decrees"; a band of light passes, writing the day</figcaption></figure>
+  <figure class="ph sm"><img src="frames/decree-phone-260.jpg" alt=""><figcaption>2.6 s: the place</figcaption></figure>
+  <figure class="ph sm"><img src="frames/decree-phone-360.jpg" alt=""><figcaption>3.6 s: the sanction; "viktor von doom" lighting rune by rune</figcaption></figure>
+  <figure class="ph sm"><img src="frames/decree-phone-480.jpg" alt=""><figcaption>4.8 s: settled; the floor has answered; CONTINUE</figcaption></figure>
+</div>
+<div class="row" style="margin-top:10px">
+  <figure class="dk sm"><img src="current/decree-desktop.jpg" alt=""><figcaption><span class="tag cur">Current</span> desktop decree</figcaption></figure>
+  <figure class="dk sm"><img src="frames/decree-desktop-480.jpg" alt=""><figcaption><span class="tag pro">Proposed</span> desktop decree, settled</figcaption></figure>
+</div>
+<p><a class="play" href="stages/council.html?v=phone&s=decree&y=476">Play the decree, phone</a><a class="play" href="stages/council.html?v=desktop&s=decree&y=330">desktop</a></p>
+
+<div class="notes">
+  <div class="box"><h4>Type, within the approved system</h4><ul>
+    <li>"Doom decrees" at the council title's size (40 px phone, 52 px desktop) instead of a panel heading's.</li>
+    <li>The day 26 px phone, 34 px desktop; the place 22 / 26 px; both Cormorant Garamond italic, Doom's proclaiming voice. The heading stays the largest line.</li>
+    <li>No new faces, no new colours; the copy is unchanged (8.1, 8.4, 8.5, 8.7).</li>
+  </ul></div>
+  <div class="box"><h4>Once, not on every reload</h4><ul>
+    <li>The decree carries a version: finalised, and each amendment. The guest's page records the version it has shown the ceremony for, so a reload, or a later visit, shows the decree settled.</li>
+    <li>Plays again only for a new version (an amendment), with the existing "Doom has amended the decree" line.</li>
+    <li>Where that record lives (the guest's row, like the notices already marked "seen", or the browser) is an implementation choice; the guest's row is the reliable one.</li>
+  </ul></div>
+</div>
+
+<!-- ======================================================= 4 -->
+<h2 id="doors">4. The summons: the split plate, and the outer doors</h2>
+<p>Today the plate's own picture splits and slides apart, over the same plate, blank; the words switch on in one frame as the halves meet; the seal wakes afterwards. In the concept, heavier outer doors stand in front of the real summons. The raised suit rune locks them. The lock releases first; the doors part fully and stay open; a band of light passes across the plate and the words appear in its wake; then the seal wakes, as it does now.</p>
+
+<h3><span class="tag cur">Current</span> desktop, as it plays</h3>
+<div class="row">
+  <figure class="dk sm"><img src="current/summons-desktop-0010.jpg" alt=""><figcaption>0.1 s</figcaption></figure>
+  <figure class="dk sm"><img src="current/summons-desktop-0045.jpg" alt=""><figcaption>0.45 s: the halves are the plate itself</figcaption></figure>
+  <figure class="dk sm"><img src="current/summons-desktop-0145.jpg" alt=""><figcaption>1.45 s: closed again; the words switch on at once</figcaption></figure>
+  <figure class="dk sm"><img src="current/summons-desktop-0600.jpg" alt=""><figcaption>6.0 s: final</figcaption></figure>
+</div>
+<h3><span class="tag cur">Current</span> phone</h3>
+<div class="row">
+  <figure class="ph sm"><img src="current/summons-phone-0010.jpg" alt=""><figcaption>0.1 s: the whole screen splits</figcaption></figure>
+  <figure class="ph sm"><img src="current/summons-phone-0080.jpg" alt=""><figcaption>0.8 s</figcaption></figure>
+  <figure class="ph sm"><img src="current/summons-phone-0145.jpg" alt=""><figcaption>1.45 s</figcaption></figure>
+  <figure class="ph sm"><img src="current/summons-phone-0600.jpg" alt=""><figcaption>6.0 s</figcaption></figure>
+</div>
+
+<h3><span class="tag pro">Proposed</span> <span class="tag ph">door face is a placeholder</span> the outer doors, desktop (about 4.3 s)</h3>
+<div class="row">
+  <figure class="dk sm"><img src="frames/doors-desktop-010.jpg" alt=""><figcaption>0.1 s: the iris opens on the doors, locked by the raised suit rune</figcaption></figure>
+  <figure class="dk sm"><img src="frames/doors-desktop-065.jpg" alt=""><figcaption>0.65 s: the lock presses in and releases; light along the seam (the seal-turn ratchet belongs here)</figcaption></figure>
+  <figure class="dk sm"><img src="frames/doors-desktop-115.jpg" alt=""><figcaption>1.15 s: the doors begin to part, each taking half the rune</figcaption></figure>
+  <figure class="dk sm"><img src="frames/doors-desktop-160.jpg" alt=""><figcaption>1.6 s: light in the gap; the summons behind, still dark</figcaption></figure>
+  <figure class="dk sm"><img src="frames/doors-desktop-210.jpg" alt=""><figcaption>2.1 s: the doors clear, casting their shadow; the plate lit</figcaption></figure>
+  <figure class="dk sm"><img src="frames/doors-desktop-260.jpg" alt=""><figcaption>2.6 s: a band of light crosses the plate; the words appear in its wake</figcaption></figure>
+  <figure class="dk sm"><img src="frames/doors-desktop-310.jpg" alt=""><figcaption>3.1 s: written</figcaption></figure>
+  <figure class="dk sm"><img src="frames/doors-desktop-460.jpg" alt=""><figcaption>4.6 s: the seal wakes, as now</figcaption></figure>
+</div>
+<h3><span class="tag pro">Proposed</span> phone</h3>
+<div class="row">
+  <figure class="ph sm"><img src="frames/doors-phone-010.jpg" alt=""><figcaption>0.1 s</figcaption></figure>
+  <figure class="ph sm"><img src="frames/doors-phone-065.jpg" alt=""><figcaption>0.65 s: release</figcaption></figure>
+  <figure class="ph sm"><img src="frames/doors-phone-115.jpg" alt=""><figcaption>1.15 s</figcaption></figure>
+  <figure class="ph sm"><img src="frames/doors-phone-160.jpg" alt=""><figcaption>1.6 s</figcaption></figure>
+  <figure class="ph sm"><img src="frames/doors-phone-260.jpg" alt=""><figcaption>2.6 s: the light writes the words</figcaption></figure>
+  <figure class="ph sm"><img src="frames/doors-phone-460.jpg" alt=""><figcaption>4.6 s: the seal wakes</figcaption></figure>
+</div>
+<p><a class="play" href="stages/summons.html?v=desktop">Play the doors, desktop</a><a class="play" href="stages/summons.html?v=phone">phone</a> <span class="lbl">(reload to replay)</span></p>
+
+<div class="notes">
+  <div class="box"><h4>What the frames are made of</h4><ul>
+    <li><span class="tag ex">Existing</span> the summons plate artwork; the inscribed plate exactly as the app draws it (cut from the capture); the dormant and active seals; the suit rune at level 3 (<code>suit-rune-level-3.png</code>, never shipped until now) as the lock; the bolt mark.</li>
+    <li><span class="tag ph">Placeholder</span> the door face: brushed steel taken from the plate's blank area, with straps, bolts and a seam. A final door would be baked once from the same parts, so the doors are an object in their own right, never a copy of the plate.</li>
+  </ul></div>
+  <div class="box"><h4>Timing and sound (starting values)</h4><table>
+    <tr><th>When</th><th>What</th><th>Sound</th></tr>
+    <tr><td>0.3 to 0.9 s</td><td>Lock presses in and releases; seam light</td><td>seal-turn (kept)</td></tr>
+    <tr><td>0.95 to 2.4 s</td><td>Doors part fully, coming slightly forward</td><td>plate-part (kept, re-timed)</td></tr>
+    <tr><td>1.75 to 3.25 s</td><td>Light band writes the words</td><td>none</td></tr>
+    <tr><td>3.3 s</td><td>The seal wakes: bands lock, runes light one by one</td><td>detents and rune ticks; no hum</td></tr>
+  </table><p>Reduced motion: a 0.2 s fade to the final plate. A return visit: the doors are already open (a short version), as the audit suggested.</p></div>
+  <div class="box decide"><h4>Decide</h4><ul>
+    <li>The doors stay open off-screen, so <b>plate-close</b> no longer has a moment. Keep it for the reverse iris on decline, or retire it?</li>
+    <li>Approve the door face to be baked from these parts (no new painting).</li>
+  </ul></div>
+</div>
+
+<!-- ======================================================= 5 -->
+<h2 id="runes">5. Doomscript: one place and one meaning for each inscription</h2>
+<p>Six approved inscriptions, laid out from the traced glyphs exactly as the app lays them out. Engraved is dark steel cut into steel; lit is emerald, and means a state has been reached. At most one inscription is lit on a screen. None goes inside a field, a list, a well or a dialog, and none replaces readable text.</p>
+<div id="specimens"></div>
+
+<table>
+  <tr><th>Screen</th><th>Inscription shown</th><th>Lit?</th></tr>
+  <tr><td>Opening</td><td>viktor von doom (unchanged)</td><td>No (unchanged)</td></tr>
+  <tr><td>Summons</td><td>its baked edges and seal (unchanged)</td><td>The seal's runes, as now</td></tr>
+  <tr><td>Council, step 1, proposal</td><td>there is no promise of tomorro (band); justice, revenge beside the title on desktop</td><td>The band, while the guest's approval stands</td></tr>
+  <tr><td>Council, step 1, decree</td><td>viktor von doom (signature); the proposal's band is gone</td><td>The signature, after the ceremony</td></tr>
+  <tr><td>Council, step 2</td><td>to the viktor go the spoils (band)</td><td>The band, while the guest holds a mantle</td></tr>
+  <tr><td>Council, step 3</td><td>none in the panel</td><td>No</td></tr>
+  <tr><td>Closing, day passed, invalid link</td><td>latveria, under the dormant seal</td><td>Never</td></tr>
+</table>
+
+<!-- ======================================================= 6 -->
+<h2 id="closing">6. The closed screens, with the dormant seal</h2>
+<p>The seal's dormant state exists and has never been shown. Above the approved words, with "latveria" engraved beneath it, it says the hall is shut without revealing anything about a guest, which matters on the invalid-link screen. No motion, no sound.</p>
+<div class="cmp">
+  <div class="col"><span class="lbl"><span class="tag cur">Current</span></span>
+    <div class="row">
+      <figure class="ph sm"><img src="current/closing-phone.jpg" alt=""><figcaption>So be it.</figcaption></figure>
+      <figure class="ph sm"><img src="current/daypassed-phone.jpg" alt=""><figcaption>The day has passed.</figcaption></figure>
+      <figure class="ph sm"><img src="current/invalid-phone.jpg" alt=""><figcaption>No summons here.</figcaption></figure>
+    </div>
+  </div>
+  <div class="col"><span class="lbl"><span class="tag pro">Proposed</span></span>
+    <div class="row">
+      <figure class="ph sm"><img src="frames/closing-phone.jpg" alt=""><figcaption>So be it.</figcaption></figure>
+      <figure class="ph sm"><img src="frames/daypassed-phone.jpg" alt=""><figcaption>The day has passed.</figcaption></figure>
+      <figure class="ph sm"><img src="frames/invalid-phone.jpg" alt=""><figcaption>No summons here.</figcaption></figure>
+    </div>
+  </div>
+</div>
+<div class="row" style="margin-top:12px">
+  <figure class="dk sm"><img src="current/closing-desktop.jpg" alt=""><figcaption><span class="tag cur">Current</span> desktop</figcaption></figure>
+  <figure class="dk sm"><img src="frames/closing-desktop.jpg" alt=""><figcaption><span class="tag pro">Proposed</span> desktop</figcaption></figure>
+</div>
+<p>The iris into these screens would run in reverse (closing from the centre outwards), as the design specifies for going back. It is not drawn here; it is the existing transition played backwards.</p>
+
+<!-- ======================================================= 7 -->
+<h2 id="sound">7. Sound</h2>
+<p>All listening is on <a href="audition.html">the audition page</a>. It has the six existing sounds one by one; the seal's waking as it plays now and with the ticks in turn and no hum; draft claim and decree sounds; and the two scores, as stems, as a layered player you can move between stages, and as a two-and-a-half-minute journey for each. Nothing there loads until you press play.</p>
+
+<!-- ======================================================= 8 -->
+<h2 id="decide">8. What still needs your decision</h2>
+<div class="notes">
+  <div class="box decide"><h4>Before implementation</h4><ol>
+    <li><b>Council on phones:</b> hall first (shown) or content first (section 1).</li>
+    <li><b>The arrival:</b> is about 2.9 s right, and should it play on every visit or only the first of a session?</li>
+    <li><b>The claim beat:</b> about 2.5 s before the council opens, tap to skip. Right length?</li>
+    <li><b>Decree type:</b> the sizes in section 3.</li>
+    <li><b>Doomscript:</b> the placements in section 5, including "justice" and "revenge" beside the title on desktop.</li>
+    <li><b>The doors:</b> approve the concept, the door face to be baked, and what happens to plate-close.</li>
+    <li><b>Score:</b> direction A or B, after listening; and whether the hum goes.</li>
+    <li><b>Draft sounds:</b> the claim and decree sounds.</li>
+  </ol></div>
+  <div class="box"><h4>Already settled by your brief</h4><ul>
+    <li>The opening is untouched; Doom never moves; no ambient loops; names only.</li>
+    <li>No audio loads or plays before the guest chooses sound; the first scene change will not lose its sound; closing screens stay silent.</li>
+    <li>Rune ticks in turn, not at once; seal-turn and the mechanical clicks kept.</li>
+    <li>The dormant seal on the closed screens; the reverse iris.</li>
+  </ul></div>
+</div>
+</main>
+<script src="stages/data.js"></script>
+<script>
+// Doomscript specimens, laid out from the approved glyphs (stages/data.js).
+function runes(text, cls) {
+  const r = RUNES[text];
+  const g = r.g.map(([x, d]) => `<path d="${d}" fill-rule="evenodd" transform="translate(${x},0)"/>`).join("");
+  const dots = r.dots.map(([cx, cy, rr]) => `<circle cx="${cx}" cy="${cy}" r="${rr}"/>`).join("");
+  return `<svg class="runes ${cls}" viewBox="0 0 ${r.w} ${r.h}" aria-hidden="true">${g}${dots}</svg>`;
+}
+const SPECS = [
+  ["there is no promise of tomorro", "The proposal. The hall floor's own inscription; it is about the day.", "Lit while the guest's approval stands", "panel"],
+  ["to the viktor go the spoils", "The mantle. What is claimed.", "Lit while the guest holds a mantle", "panel"],
+  ["viktor von doom", "Doom's signature: the opening (as now) and under the decree.", "Lit once the decree is issued", "panel"],
+  ["justice", "Beside the council title, left, on desktop. As on the summons plate's left edge.", "Never lit", "ground"],
+  ["revenge", "Beside the council title, right, on desktop. As on the plate's right edge.", "Never lit", "ground"],
+  ["latveria", "Under the dormant seal on the closed screens: the state, shut.", "Never lit", "ground"],
+];
+document.getElementById("specimens").innerHTML = SPECS.map(([t, where, when, kind]) => `
+  <div class="spec">
+    <div><span class="lbl">${where.split(".")[0]}</span><p style="margin:6px 0 0;font-size:16px">${where.split(".").slice(1).join(".").trim()}</p></div>
+    <div class="plate ${kind === "ground" ? "ground" : ""}"><span class="lbl" style="display:block;margin-bottom:10px">Engraved</span>${runes(t, "")}</div>
+    <div class="plate ${kind === "ground" ? "ground" : ""}"><span class="lbl" style="display:block;margin-bottom:10px">${when}</span>${kind === "ground" ? runes(t, "") : runes(t, "lit")}</div>
+  </div>`).join("");
+</script>
+</body>
+</html>
