@@ -138,3 +138,33 @@ test("the closed screens carry the dormant seal and nothing else of the guest", 
   await expect(page.locator(".closed-seal .seal--dormant")).toHaveCount(1);
   await expect(page.locator("body")).not.toContainText("Priya");
 });
+
+test("a mantle in the guest list opens in full above the list, and closes back into its row", async ({
+  page,
+}) => {
+  const links = await seed([
+    { name: "Ravi", title: "Dr.", state: "seated", holds: "Loki", approves: true },
+    { name: "Tara Menon", title: "Ms.", state: "seated", holds: "Thor", approves: true },
+  ]);
+  await page.goto(links.Ravi);
+  await expect(page.getByRole("heading", { name: "Those summoned" })).toBeVisible();
+  const card = page.locator(".cn-mantle-card");
+  await expect(card).toHaveCount(0);
+
+  // Another guest's mantle: the character and whose it is.
+  const thor = page.getByRole("button", { name: "Thor" });
+  await thor.click();
+  await expect(thor).toHaveAttribute("aria-expanded", "true");
+  await expect(card).toContainText("Thor");
+  await expect(card).toContainText("Tara Menon");
+  await expect(card.locator(".rune-line--lit")).toHaveCount(1);
+
+  // The guest's own: "You stand before the council as …".
+  await page.getByRole("button", { name: "Loki" }).click();
+  await expect(card).toContainText("You stand before the council as Loki.");
+
+  // Closing returns it to the row, and focus with it.
+  await card.getByRole("button", { name: "Close" }).click();
+  await expect(card).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Loki" })).toBeFocused();
+});

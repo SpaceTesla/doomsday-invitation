@@ -71,6 +71,9 @@ test("guest screens", async ({ page }) => {
 
   await page.goto(links["Tara Menon"]);
   await scan(page, "council, holding a mantle and approving");
+  await page.locator(".cn-guest-mantle", { hasText: "Thor" }).click();
+  await expect(page.locator(".cn-mantle-card")).toBeVisible();
+  await scan(page, "council, a mantle opened in full");
 
   await page.goto(links.Priya);
   await scan(page, "closing screen");

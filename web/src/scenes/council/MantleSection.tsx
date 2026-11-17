@@ -26,8 +26,8 @@ const fold = (text: string) =>
 /** A claim the server has confirmed, being shown to the guest (design/DESIGN.md, 8.15). */
 export type Claim = { id: string; name: string };
 
-/** The claim beat: about 2.8 s, then the council. A tap or a key ends it sooner. */
-const BEAT = { turn: 0.3, rise: 0.6, respond: 0.95, band: 0.85, end: 2.8 };
+/** The claim beat: about 3.8 s, then the council. A tap or a key ends it sooner. */
+const BEAT = { turn: 0.3, rise: 0.6, respond: 0.95, band: 0.85, end: 3.8 };
 
 /**
  * The mantles, one plate each, grouped under their factions. Choosing is optional and

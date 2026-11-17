@@ -1580,6 +1580,81 @@
     letter-spacing: 0;
     color: var(--c-silver);
   }
+  /* A held mantle opens in full (8.18): the row's mantle is a control, a dotted rule beneath
+     saying so, Gold light on hover and focus. At least 24 px tall to press. */
+  button.cn-guest-mantle {
+    justify-self: start;
+    min-height: 24px;
+    padding: 2px 0;
+    background: none;
+    border: 0;
+    border-bottom: 1px dotted rgba(198, 167, 94, 0.55);
+    border-radius: 0;
+    text-align: left;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button.cn-guest-mantle:hover,
+  button.cn-guest-mantle:focus-visible,
+  button.cn-guest-mantle[aria-expanded="true"] {
+    color: var(--c-gold-light);
+    border-bottom-color: var(--c-gold-light);
+  }
+
+  /* The mantle in full, above the list (8.18). It shares the guest's own mantle's layout. */
+  .cn-mantle-card {
+    margin-bottom: 16px;
+  }
+  .cn-mantle-card .cn-yours {
+    margin-top: 0;
+    padding-top: 6px;
+    border-top: 0;
+  }
+  .cn-yours-holder {
+    margin: 6px 0 0;
+    font: 500 var(--t-expl) / 1.3 var(--f-serif);
+    letter-spacing: 0.04em;
+    color: var(--c-steel);
+  }
+  .cn-card-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    width: var(--tap);
+    height: var(--tap);
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .cn-card-close::before {
+    content: "";
+    position: absolute;
+    inset: 15px;
+    background: var(--c-steel);
+    -webkit-mask: url("/ui/clear.svg") center / contain no-repeat;
+    mask: url("/ui/clear.svg") center / contain no-repeat;
+  }
+  .cn-card-close:hover::before,
+  .cn-card-close:focus-visible::before {
+    background: var(--c-gold-light);
+  }
+
+  /* The move between a mantle's card and its row (src/lib/morph.ts): only the mantle
+     travels and changes shape. The rest of the screen changes at once beneath it (the hall
+     behind is the same in both), so nothing is seen twice. */
+  ::view-transition-group(mantle) {
+    animation-duration: 0.65s;
+    animation-timing-function: cubic-bezier(0.2, 0.6, 0.2, 1);
+  }
+  ::view-transition-old(root) {
+    animation: none;
+    opacity: 0;
+  }
+  ::view-transition-new(root) {
+    animation: none;
+  }
   .cn-guest.is-declined .cn-guest-name {
     color: var(--c-steel);
   }

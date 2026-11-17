@@ -1101,7 +1101,7 @@ The throne hall is the room the council sits in, not a banner (reference: `desig
 **The claim**
 - It begins only once the server has confirmed the claim. A claim that loses the race shows its message and no ceremony.
 - In order: the plate fills with emerald from the left (the button's pressed fill, held), and its tile turns into the suit rune; the guest's mantle opens out at the top of the panel; its line is written in place; the floor answers; the inscription lights rune by rune. Sound: `claim`.
-- About 2.8 s later the council (step three) opens by itself.
+- About 3.8 s later the council (step three) opens by itself (lengthened from 2.8 s on 17 November 2026, so the guest's mantle can be taken in). As it opens, the guest's mantle moves and shrinks into their own row of the list (8.18).
 - A tap or a key ends the beat sooner. Under reduced motion nothing moves, and the line is still held.
 - **Behaviour is unchanged:** search, taken plates and their holders, CHOOSE LATER, changing until the decree, and the database's uniqueness of every claim.
 
@@ -1123,6 +1123,20 @@ The throne hall is the room the council sits in, not a banner (reference: `desig
 - "So be it.", "The day has passed." and "No summons here." carry the seal, dormant, with "latveria" engraved beneath it, never lit.
 - It says the hall is shut and reveals nothing about any guest.
 - No motion and no sound: the score fades to silence on them.
+
+### 8.18 A mantle in full, in the council (Approved 17 November 2026)
+
+- In the guest list, a held mantle is a control: a dotted rule beneath it, Gold light on hover and focus.
+- Pressing it opens that mantle in full **above the list**, never inside it, so no Doomscript enters a list. The card shows:
+  - the mantle's inscription, lit;
+  - the suit rune at level 2;
+  - the character's name;
+  - for the guest's own mantle, YOURS and "You stand before the council as [Character]." (copy 5.4 and 5.8);
+  - for another guest's, that guest's name as the list shows it.
+- Pressing again, or its close control (copy 9.10), closes it and returns focus to the row.
+- **The movement.** The card rises out of the row and closes back into it. After a claim, the guest's mantle card moves from the mantle step into their own row, where their name and their mantle stand together.
+  - Only the mantle travels (0.65 s); the rest of the screen changes at once beneath it.
+  - Built on the browser's View Transitions (`web/src/lib/morph.ts`). Without them, or under reduced motion, the state simply changes.
 
 ### 8.11 Transitions between screens
 

@@ -625,5 +625,6 @@ Decisions about how the product looks are logged in `design/DESIGN.md`, section 
 |---|---|
 | A continuous score (Score A, a drone with no melody) when sound is on, from the summons onwards; silent opening and closing screens | "No music bed" (5.6) |
 | The council's hall is the room: arrival once per browser session, the floor answering approvals, claims and the decree; Doom never moves; no loops | A still banner |
-| A confirmed mantle claim is shown (about 2.8 s, skippable) before the council opens; a failed claim shows nothing | The council opened at once |
+| A confirmed mantle claim is shown (about 3.8 s, skippable) before the council opens, and moves into the guest's own row of the list; a failed claim shows nothing | The council opened at once |
+| In the council, any held mantle can be opened in full above the guest list | Mantles were names in the list only |
 | The decree's ceremony plays once per revision of the decree, and again after an amendment | No ceremony |

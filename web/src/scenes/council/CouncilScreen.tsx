@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { copy } from "@/copy";
+import { morph } from "@/lib/morph";
 import { play, scoreDecree } from "@/lib/sound";
 import { Button } from "@/components/Button";
 import { Figure } from "@/components/Figure";
@@ -64,9 +65,23 @@ export function CouncilScreen({ data }: { data: CouncilData }) {
   const [picked, setPicked] = useState<Step | null>(null);
   // A claim the server has confirmed, while its beat plays on step two.
   const [claim, setClaim] = useState<Claim | null>(null);
+  // When the beat ends, the guest's mantle moves into their own row of the council's list,
+  // where their name and their mantle stand together (design/DESIGN.md, 8.18).
   const claimShown = useCallback(() => {
-    setClaim(null);
-    setPicked(null);
+    morph(
+      document.querySelector(".cn-yours-wrap"),
+      () => {
+        setClaim(null);
+        setPicked(null);
+      },
+      () => {
+        // The step has opened at the top of the room; bring the guest's row into view so
+        // the mantle is seen arriving in it.
+        const row = document.querySelector(".cn-guest.is-you .cn-guest-mantle");
+        row?.scrollIntoView({ block: "nearest" });
+        return row;
+      },
+    );
   }, []);
 
   // Once Doom has decreed, the council's score gains its crown.
