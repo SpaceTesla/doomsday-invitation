@@ -239,7 +239,7 @@
   .op-sig svg {
     margin: 0 auto;
   }
-  .op-copy[data-fit="step"] .op-name {
+  .op-copy[data-fit~="step"] .op-name {
     font-size: clamp(1.4rem, 3.36cqw, 4rem);
   }
   .op-act {
@@ -302,7 +302,7 @@
       top: max(3%, 1.5rem);
       font-size: min(9.4cqw, 3rem);
     }
-    .op-copy[data-fit="step"] .op-name {
+    .op-copy[data-fit~="step"] .op-name {
       font-size: min(9.12cqw, 3.2rem);
     }
   }
@@ -320,9 +320,26 @@
     width: min(100%, calc((100dvh - 32px) * 4 / 3), 1400px);
     aspect-ratio: 4 / 3;
     --plate-art: url("/art/summons-d-plate.webp");
-    background: var(--plate-art) center / 100% 100% no-repeat;
+    /* Where the art may grow: a plain band two dots of the gold border high, at 84% of
+       the plate (and its height in units of the plate's width). */
+    --plate-top: 84%;
+    --plate-bottom: 14.111%;
+    --plate-top-w: 63cqw;
+    --plate-bottom-w: 10.583cqw;
     container-type: inline-size;
     color: var(--c-silver);
+  }
+  /* The plate's art. A rare long name makes the plate taller than its art (the page then
+     scrolls, design/DESIGN.md 2.2); the art then keeps its proportions above and below one
+     plain band, which repeats, so nothing in it stretches or moves out of place. At the
+     plate's own proportions the band appears once and the art is exactly as drawn. */
+  .sm-plate::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-image: var(--plate-art) var(--plate-top) 0 var(--plate-bottom) 0 fill /
+      var(--plate-top-w) 0 var(--plate-bottom-w) 0 / 0 stretch round;
+    pointer-events: none;
   }
   /* The text column. Its padding is in units of the whole plate: container units measure
      the plate's content box, so the plate itself carries no padding. */
@@ -406,22 +423,22 @@
     margin-top: 2.4cqw;
   }
   /* A name on two lines: the approved fit. */
-  .sm-plate[data-fit="two-lines"] .sm-name {
+  .sm-plate[data-fit~="two-lines"] .sm-name {
     font-size: 3.9cqw;
     line-height: 1.04;
   }
-  .sm-plate[data-fit="two-lines"] .sm-body {
+  .sm-plate[data-fit~="two-lines"] .sm-body {
     font-size: max(1.0625rem, 2cqw);
     line-height: 1.34;
   }
-  .sm-plate[data-fit="two-lines"] .sm-body p + p {
+  .sm-plate[data-fit~="two-lines"] .sm-body p + p {
     margin-top: 0.6cqw;
   }
-  .sm-plate[data-fit="two-lines"] .sm-act {
+  .sm-plate[data-fit~="two-lines"] .sm-act {
     margin-top: 1.7cqw;
   }
   /* A single word too wide for the line: one step down, to 80%, never smaller. */
-  .sm-plate[data-fit="step"] .sm-name {
+  .sm-plate[data-fit~="step"] .sm-name {
     font-size: 3.68cqw;
   }
 
@@ -435,6 +452,10 @@
       width: min(100%, 480px);
       aspect-ratio: 780 / 1688;
       --plate-art: url("/art/summons-p-plate.webp");
+      --plate-top: 85.0118%;
+      --plate-bottom: 13.981%;
+      --plate-top-w: 183.974cqw;
+      --plate-bottom-w: 30.256cqw;
     }
     .sm-copy {
       padding: 51.9cqw 12cqw 13.5cqw;
@@ -480,14 +501,14 @@
       gap: 3cqw 4.5cqw;
       margin-top: 3cqw;
     }
-    .sm-plate[data-fit="two-lines"] .sm-name {
+    .sm-plate[data-fit~="two-lines"] .sm-name {
       font-size: 6.9cqw;
     }
-    .sm-plate[data-fit="two-lines"] .sm-body {
+    .sm-plate[data-fit~="two-lines"] .sm-body {
       font-size: max(1.0625rem, 4.5cqw);
       line-height: 1.32;
     }
-    .sm-plate[data-fit="step"] .sm-name {
+    .sm-plate[data-fit~="step"] .sm-name {
       font-size: 7.04cqw;
     }
   }
@@ -1102,8 +1123,10 @@
   .cn-step-tab.is-current .lbl {
     color: var(--c-gold-light);
   }
-  .cn-step-tab:hover:not(:disabled) .lbl {
-    color: var(--c-silver);
+  @media (hover: hover) {
+    .cn-step-tab:hover:not(:disabled) .lbl {
+      color: var(--c-silver);
+    }
   }
   .cn-step-tab:disabled {
     cursor: default;
@@ -1165,8 +1188,10 @@
     mask: url("/ui/clear.svg") center / contain no-repeat;
     cursor: pointer;
   }
-  .cn-search-field input::-webkit-search-cancel-button:hover {
-    background: var(--c-gold-light);
+  @media (hover: hover) {
+    .cn-search-field input::-webkit-search-cancel-button:hover {
+      background: var(--c-gold-light);
+    }
   }
   .cn-col {
     display: grid;
@@ -1514,13 +1539,21 @@
     border: 1px dotted rgba(198, 167, 94, 0.5);
     pointer-events: none;
   }
-  button.cn-char:hover,
   button.cn-char:focus-visible {
     border-color: var(--c-gold);
   }
-  button.cn-char:hover .mk,
+  @media (hover: hover) {
+    button.cn-char:hover {
+      border-color: var(--c-gold);
+    }
+  }
   button.cn-char:focus-visible .mk {
     color: var(--c-emerald-light);
+  }
+  @media (hover: hover) {
+    button.cn-char:hover .mk {
+      color: var(--c-emerald-light);
+    }
   }
   button.cn-char:active {
     border-color: var(--c-emerald);
@@ -1632,16 +1665,26 @@
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
   }
-  button.cn-guest-mantle:hover,
   button.cn-guest-mantle:focus-visible,
   button.cn-guest-mantle[aria-expanded="true"] {
     color: var(--c-gold-light);
     border-bottom-color: var(--c-gold-light);
   }
+  @media (hover: hover) {
+    button.cn-guest-mantle:hover {
+      color: var(--c-gold-light);
+      border-bottom-color: var(--c-gold-light);
+    }
+  }
 
   /* The mantle in full, above the list (8.18). It shares the guest's own mantle's layout. */
   .cn-mantle-card {
     margin-bottom: 16px;
+  }
+  /* The close control sits at the band's right end: the inscription keeps clear of it,
+     by the same margin at both ends so it stays centred. */
+  .cn-mantle-card .rune-band .rune-line {
+    max-width: calc(100% - 64px);
   }
   .cn-mantle-card .cn-yours {
     margin-top: 0;
@@ -1674,9 +1717,13 @@
     -webkit-mask: url("/ui/clear.svg") center / contain no-repeat;
     mask: url("/ui/clear.svg") center / contain no-repeat;
   }
-  .cn-card-close:hover::before,
   .cn-card-close:focus-visible::before {
     background: var(--c-gold-light);
+  }
+  @media (hover: hover) {
+    .cn-card-close:hover::before {
+      background: var(--c-gold-light);
+    }
   }
 
   /* The move between a mantle's card and its row (src/lib/morph.ts): only the mantle

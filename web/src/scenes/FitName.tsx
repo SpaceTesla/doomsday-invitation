@@ -1,7 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, type ReactNode } from "react";
-import { fitOf, type Fit } from "@/lib/fit";
+import { fitOf } from "@/lib/fit";
 
 /**
  * A container that applies the approved long-name rule to the name inside it: the name
@@ -18,7 +18,7 @@ export function FitName({
   children: ReactNode;
   className: string;
   nameSelector: string;
-  steps?: Exclude<Fit, null>[];
+  steps?: ("two-lines" | "step")[];
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const allowed = steps.join(",");
@@ -29,8 +29,11 @@ export function FitName({
     if (!box || !name) return;
     const measure = () => {
       delete box.dataset.fit;
-      const fit = fitOf(name);
-      if (fit && allowed.split(",").includes(fit)) box.dataset.fit = fit;
+      const fit = (fitOf(name) ?? "")
+        .split(" ")
+        .filter((part) => part && allowed.split(",").includes(part))
+        .join(" ");
+      if (fit) box.dataset.fit = fit;
     };
     measure();
     const observer = new ResizeObserver(measure);

@@ -728,6 +728,8 @@ A taken character's name is set in `#7F8A88` (the holder's colour), not `#6C7674
 
 The board draws the pressed state as a partial fill ("Held: the plate fills"). A button acts on an ordinary press, and the fill is feedback only (**Decided**). No action requires holding.
 
+Hover states apply only on screens that can hover (`@media (hover: hover)`), so on a phone a tapped control does not stay lit as though hovered; focus and pressed states apply everywhere (17 November 2026, polish pass).
+
 Feedback is immediate. Do not delay an action to finish an animation.
 
 ### 6.6 Doomscript and mechanism animation (Carried over; storyboarded as stills only)
@@ -927,7 +929,7 @@ Approved components are documented from the boards. The council's layout is **ap
 
 ### 8.2 Quiet control (Carried over)
 
-An underlined label in Orbitron 600, capitals, letter-spacing 0.08 em, at 0.8 of the button's size, Steel, underline at 50% opacity and 0.3 em below the text. Silver on hover. Used for the alternative to a primary action: "Go without sound", "Propose another".
+An underlined label in Orbitron 600, capitals, letter-spacing 0.08 em, at 0.8 of the button's size, Steel, underline at 50% opacity and 0.3 em below the text. Silver on hover. Pressed, Silver with its underline at full opacity, so a tap is seen on a phone (17 November 2026). Used for the alternative to a primary action: "Go without sound", "Propose another".
 
 ### 8.3 Panel (Carried over)
 
@@ -1355,7 +1357,7 @@ Not questions. Each is done during the build, from this document and the approve
 | Motion never seen in motion | **Built in milestone 4** with the starting timings, to be judged in the running product. The iris closes in 0.45 s once the guest's action has been answered and opens in 0.45 s on the new scene, with the active seal at its centre. The plate's halves (its own artwork, cut at the seam) part 34% each in 1.2 s with light in the gap and close in 0.8 s, and the words appear as they meet. The seal then wakes: its bands turn from 38°, −24° and 61° to register in 0.7, 0.9 and 1.1 s, and its runes light in reading order 75 ms apart. The ash drifts down and to the left and fades out over 1 s, three seconds after the actions appear. Under reduced motion each is a 0.2 s cross-fade | 15 |
 | Accessibility and performance | **Checked in milestone 6 (16 November 2026)**: axe (WCAG 2.2 A and AA) and keyboard alone on every screen; one colour changed for contrast (section 6.5). The opening's first beat is drawn by CSS before its script arrives, and under reduced motion its 0.2 s fade is CSS too (section 6.10); neither changes what the guest sees | new |
 | Device checks | Nothing has been checked on a real phone or tablet. The research calls this the most valuable next step | 16 |
-| Long names | **Built** (`web/src/lib/fit.ts`, measured in the browser): on the summons the two-line fit and the single 80% step; in the opening the name may take three lines and only steps down | new |
+| Long names | **Built** (`web/src/lib/fit.ts`, measured in the browser): on the summons the two-line fit and the single 80% step; in the opening the name may take three lines and only steps down. A name on several lines with a word still too wide takes both. The width is measured with mid-word breaking turned off, so the step applies before a word is broken (fixed 17 November 2026: the step had never applied). When the summons plate grows taller than its art, the art keeps its proportions above and below one plain band, which repeats; nothing in it stretches (17 November 2026) | new |
 | The title in the opening | **Set in milestone 4, by eye:** centred at the top of the frame, it fades in at 0.3 s over the closed rubble and is gone before the slab clears the hood (by 4.1 s), so it never sits over Doom. It is not part of the final frame, so a guest who skips or asks for reduced motion does not see it; the page's title in the browser carries it. Overrule if it should stay | new |
 | Display strings | Every new heading set in Pirata One must be checked by eye (section 2.2) | new |
 | Assets to export | The seal mark, nested square, corner bolt, cuirass tile, clasps and the seal's dormant and waking states (section 9.1). Font files for self-hosting. Brushed-steel textures baked to images | section 9 |

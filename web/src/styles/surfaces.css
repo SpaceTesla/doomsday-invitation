@@ -188,14 +188,22 @@
     color: var(--c-steel);
     transition: color 0.1s linear;
   }
-  .btn-plate:hover:not(:disabled),
   .btn-plate:focus-visible {
     border-color: var(--c-gold);
   }
-  .btn-plate:hover:not(:disabled) .mk,
+  @media (hover: hover) {
+    .btn-plate:hover:not(:disabled) {
+      border-color: var(--c-gold);
+    }
+  }
   .btn-plate:focus-visible .mk,
   .btn-plate:active:not(:disabled) .mk {
     color: var(--c-emerald-light);
+  }
+  @media (hover: hover) {
+    .btn-plate:hover:not(:disabled) .mk {
+      color: var(--c-emerald-light);
+    }
   }
   /* Pressed: the plate fills with emerald from the left. Feedback only; the action is
      an ordinary press and never waits for the fill. */
@@ -252,9 +260,18 @@
     letter-spacing: inherit;
     color: inherit;
   }
-  .link-quiet:hover,
   .link-quiet:focus-visible {
     color: var(--c-silver);
+  }
+  /* Pressed: the word brightens and its underline firms, so a tap is seen on a phone. */
+  .link-quiet:active {
+    color: var(--c-silver);
+    text-decoration-color: currentColor;
+  }
+  @media (hover: hover) {
+    .link-quiet:hover {
+      color: var(--c-silver);
+    }
   }
 
   /* ---- panel: a plate that holds a part of the council (section 8.3) ---- */

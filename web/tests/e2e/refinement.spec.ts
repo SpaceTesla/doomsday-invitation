@@ -170,3 +170,22 @@ test("a mantle in the guest list opens in full above the list, and closes back i
   await expect(card).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Loki" })).toBeFocused();
 });
+
+test("a scene change that fails opens the iris again on the same scene, and says so", async ({
+  page,
+}) => {
+  const links = await seed([{ name: "Ravi", title: "Dr.", state: "summons" }]);
+  await page.goto(links.Ravi);
+  await expect(page.locator(".sm-plate")).toHaveAttribute("data-motion", "done", {
+    timeout: 15_000,
+  });
+  // The connection drops as the guest answers.
+  await page.route("**/api/g/**", (route) => route.abort("internetdisconnected"));
+  await page.getByRole("button", { name: "TAKE YOUR SEAT" }).click();
+  await expect(page.getByText("No connection. Your answer is not yet recorded.")).toBeVisible();
+  // The iris has opened again: the summons is still there to answer.
+  await expect
+    .poll(() => page.locator(".iris").evaluate((el) => getComputedStyle(el).visibility))
+    .toBe("hidden");
+  await expect(page.getByRole("button", { name: "TAKE YOUR SEAT" })).toBeEnabled();
+});
