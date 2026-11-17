@@ -8,7 +8,8 @@ import { GuestMessageLine, useGuestAction } from "@/components/guest/useGuestAct
 
 /** Leaving the council, until the decree: a quiet control, confirmed first. */
 export function LeaveControl({ token }: { token: string }) {
-  const action = useGuestAction(token, { changesStage: true });
+  // Leaving is a step back: the iris runs in reverse.
+  const action = useGuestAction(token, { changesStage: true, back: true });
   const [confirming, setConfirming] = useState(false);
 
   async function leave() {

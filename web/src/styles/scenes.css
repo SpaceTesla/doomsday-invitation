@@ -476,70 +476,258 @@
     }
   }
 
-  /* The vault door: the plate's own artwork cut at the centre seam (SummonsMotion). */
+  /* The outer doors (SummonsMotion; design/DESIGN.md, 6.6 as refined on 17 November 2026):
+     heavier than the plate and distinct from it, brushed steel (the shared tile over gunmetal)
+     with a recessed frame, two strapped bands of bolts, a shadowed seam, and the raised suit
+     rune across the seam as their lock. They cover the whole scene, not only the plate. */
+  .sm-stage {
+    position: relative;
+    overflow: hidden;
+  }
   .sm-doors {
     position: absolute;
     inset: 0;
     z-index: 2;
-    overflow: hidden;
+    display: none;
     pointer-events: none;
+    --lock: clamp(132px, 17vw, 240px);
   }
   .sm-door {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 50%;
-    background-image: var(--plate-art);
-    background-size: 200% 100%;
-    background-repeat: no-repeat;
+    width: 50.2%;
+    overflow: hidden;
+    background-image:
+      linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.3),
+        transparent 14%,
+        transparent 86%,
+        rgba(0, 0, 0, 0.42)
+      ),
+      url("/art/steel.webp"), url("/art/steel.webp"), linear-gradient(#3a4343, #1b2121 58%, #121616);
+    background-size:
+      auto,
+      512px 512px,
+      200px 200px,
+      auto;
+    background-blend-mode: normal, overlay, overlay, normal;
   }
   .sm-door--left {
     left: 0;
-    background-position: left center;
-    box-shadow: 6px 0 18px rgba(0, 0, 0, 0.55);
+    transform-origin: 0 50%;
+    box-shadow: 60px 0 90px rgba(0, 0, 0, 0.85);
   }
   .sm-door--right {
     right: 0;
-    background-position: right center;
-    box-shadow: -6px 0 18px rgba(0, 0, 0, 0.55);
+    transform-origin: 100% 50%;
+    box-shadow: -60px 0 90px rgba(0, 0, 0, 0.85);
   }
-  .sm-light {
+  /* the recessed frame */
+  .sm-door::before {
+    content: "";
+    position: absolute;
+    inset: clamp(18px, 2.4vw, 36px);
+    border: 2px solid #0b0e0e;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+  /* the seam: dark at the meeting edge, a thin bevel catching light */
+  .sm-door::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    background: linear-gradient(90deg, #070909, #2c3434);
+  }
+  .sm-door--left::after {
+    right: 0;
+  }
+  .sm-door--right::after {
+    left: 0;
+    transform: scaleX(-1);
+  }
+  .sm-strap {
+    --b: clamp(11px, 1.1vw, 16px);
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: clamp(30px, 4.2vw, 48px);
+    /* four bolts on each strap */
+    background:
+      url("/icons/bolt.svg") 12% 50% / var(--b) var(--b) no-repeat,
+      url("/icons/bolt.svg") 37% 50% / var(--b) var(--b) no-repeat,
+      url("/icons/bolt.svg") 63% 50% / var(--b) var(--b) no-repeat,
+      url("/icons/bolt.svg") 88% 50% / var(--b) var(--b) no-repeat,
+      linear-gradient(#323a3a, #171c1c);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid #000;
+  }
+  .sm-strap--a {
+    top: 17%;
+  }
+  .sm-strap--b {
+    bottom: 17%;
+  }
+  /* the lock: the raised suit rune, split down the seam, half on each door */
+  .sm-lock {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    width: calc(var(--lock) / 2);
+    height: var(--lock);
+    margin-top: calc(var(--lock) / -2);
+    background: url("/art/door-lock.webp") 0 0 / var(--lock) var(--lock) no-repeat;
+    filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.7));
+  }
+  .sm-door--left .sm-lock {
+    right: 0;
+  }
+  .sm-door--right .sm-lock {
+    left: 0;
+    background-position: calc(var(--lock) / -2) 0;
+  }
+  .sm-seam-light {
     position: absolute;
     left: 50%;
-    top: 4%;
-    bottom: 4%;
-    width: 46%;
-    transform: translateX(-50%);
-    background: radial-gradient(
-      closest-side,
-      rgba(242, 232, 176, 0.95),
-      rgba(201, 168, 94, 0.55) 35%,
-      rgba(31, 143, 99, 0.22) 65%,
+    top: 0;
+    bottom: 0;
+    z-index: 3;
+    width: 3px;
+    margin-left: -1.5px;
+    opacity: 0;
+    background: linear-gradient(
+      transparent,
+      rgba(242, 232, 176, 0.9) 30%,
+      rgba(79, 195, 149, 0.9) 50%,
+      rgba(242, 232, 176, 0.9) 70%,
       transparent
     );
-    visibility: hidden;
+    filter: blur(1px);
   }
-  /* The doors are rendered by the server, closed over the words, so the plate paints at
-     once and the reveal never flashes. Without script they are never shown; if script
-     is expected but never arrives, they step aside after 4 s. Under reduced motion they
-     are not used. */
-  .sm-doors {
-    display: none;
+  .sm-gap {
+    position: absolute;
+    left: 25%;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    opacity: 0;
+    mix-blend-mode: screen;
+    background: radial-gradient(
+      closest-side,
+      rgba(242, 232, 176, 0.55),
+      rgba(201, 168, 94, 0.18) 55%,
+      rgba(31, 143, 99, 0.06) 80%,
+      transparent
+    );
   }
+  /* The plate behind: in shadow until the doors open, then written by a band of light. The
+     words are masked up to the band's position, --r, in the plate's own units (cqw). */
+  .sm-plate {
+    --r: 112;
+  }
+  .sm-copy {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      #000 calc((var(--r) - 7) * 1cqw),
+      transparent calc(var(--r) * 1cqw)
+    );
+    mask-image: linear-gradient(
+      90deg,
+      #000 calc((var(--r) - 7) * 1cqw),
+      transparent calc(var(--r) * 1cqw)
+    );
+  }
+  .sm-caption {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      #000 calc((var(--r) - 14) * 1cqw),
+      transparent calc((var(--r) - 7) * 1cqw)
+    );
+    mask-image: linear-gradient(
+      90deg,
+      #000 calc((var(--r) - 14) * 1cqw),
+      transparent calc((var(--r) - 7) * 1cqw)
+    );
+  }
+  .sm-dim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: #020303;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .sm-sweep {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--r) * 1cqw);
+    z-index: 1;
+    width: 16cqw;
+    transform: translateX(-60%);
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(242, 232, 176, 0.05) 30%,
+      rgba(242, 232, 176, 0.32) 55%,
+      rgba(79, 195, 149, 0.1) 75%,
+      transparent
+    );
+  }
+  /* The doors and the shadow are drawn by the server, closed, so nothing flashes before the
+     reveal. Without script they are never shown; if script is expected but never arrives,
+     everything steps aside after 4 s. Under reduced motion they are not used. */
   html.js .sm-doors {
     display: block;
   }
-  html.js .sm-plate:not([data-motion]) .sm-doors {
+  html.js .sm-plate:not([data-motion]) {
+    --r: -8;
+  }
+  html.js .sm-plate:not([data-motion]) .sm-dim {
+    opacity: 0.55;
+  }
+  html.js .sm-stage:has(.sm-plate:not([data-motion])) .sm-doors {
     animation: sm-doors-away 0s linear 4s forwards;
+  }
+  html.js .sm-plate:not([data-motion]) .sm-dim {
+    animation: sm-undim 0s linear 4s forwards;
+  }
+  html.js .sm-plate:not([data-motion]) .sm-copy,
+  html.js .sm-plate:not([data-motion]) .sm-caption {
+    animation: sm-unmask 0s linear 4s forwards;
   }
   @keyframes sm-doors-away {
     to {
       visibility: hidden;
     }
   }
+  @keyframes sm-undim {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes sm-unmask {
+    to {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
     html.js .sm-doors {
       display: none;
+    }
+    html.js .sm-plate:not([data-motion]) {
+      --r: 112;
+    }
+    html.js .sm-plate:not([data-motion]) .sm-dim {
+      opacity: 0;
     }
   }
 
@@ -579,6 +767,20 @@
     visibility: hidden;
     pointer-events: none;
   }
+  /* Going back (declining, leaving): the dark closes in from the edges, then withdraws to
+     the centre (design/DESIGN.md, 6.6). */
+  .iris.iris--back {
+    -webkit-mask-image: radial-gradient(
+      circle at 50% 50%,
+      #000 var(--iris),
+      transparent calc(var(--iris) + 0.5px)
+    );
+    mask-image: radial-gradient(
+      circle at 50% 50%,
+      #000 var(--iris),
+      transparent calc(var(--iris) + 0.5px)
+    );
+  }
   .iris-seal {
     width: min(36vmin, 18rem);
     aspect-ratio: 1;
@@ -593,6 +795,7 @@
   .closing {
     display: grid;
     place-items: center;
+    align-content: center;
     min-height: 100dvh;
     padding: 24px 16px;
     background: var(--c-night);
@@ -600,45 +803,198 @@
   .closing .panel-plate {
     width: min(100%, 34rem);
   }
+  /* The dormant seal and "latveria" over every closed screen (design/DESIGN.md, 8.17). */
+  .closed-seal {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    margin-bottom: 26px;
+  }
+  .closed-seal .seal-svg {
+    width: clamp(132px, 34vw, 196px);
+    opacity: 0.92;
+  }
+  .closed-seal-runes.rune-line {
+    height: 11px;
+    fill: #39423f;
+  }
 
   /* =========================================================== the council */
+  /* The throne hall is the room the council sits in (design/DESIGN.md, 8.13): fixed behind
+     every step, the content scrolling over it. The wide painting covers landscape screens;
+     upright screens get the upright painting, lifted so Doom sits between the steps and the
+     step's panel. The floor circle's box is measured from each painting's green light. */
   .cn {
+    --fw: max(100vw, calc(100vh * 16 / 9));
+    --fh: calc(var(--fw) * 9 / 16);
+    position: relative;
+    isolation: isolate;
     min-height: 100dvh;
-    background: var(--c-olive-black);
     color: var(--c-silver);
   }
   .cn-hall {
-    position: relative;
-    width: 100%;
-    height: min(32.5vw, 46dvh);
+    --dim: 0;
+    position: fixed;
+    inset: 0;
+    z-index: -1;
     overflow: hidden;
+    background: var(--c-olive-black);
+    pointer-events: none;
   }
-  .cn-hall img {
+  .cn-cam {
+    position: absolute;
+    left: calc((100vw - var(--fw)) / 2);
+    top: calc((100vh - var(--fh)) / 2);
+    width: var(--fw);
+    height: var(--fh);
+    transform-origin: 50% 40%;
+  }
+  .cn-cam picture,
+  .cn-cam img {
     position: absolute;
     inset: 0;
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: 50% 36%;
   }
-  .cn-hall::after {
-    content: "";
+  .cn-circle {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      rgba(16, 19, 12, 0) 30%,
-      rgba(16, 19, 12, 0.86) 78%,
-      var(--c-olive-black)
+    left: 14.4%;
+    top: 75.2%;
+    width: 69%;
+    height: 22%;
+    border-radius: 50%;
+  }
+  /* Before the ring lights: dark, swept away around the ring by --a. */
+  .cn-unlit {
+    --a: 400deg;
+    opacity: 0;
+    background: radial-gradient(
+      closest-side,
+      rgba(6, 10, 8, 0.9) 55%,
+      rgba(6, 10, 8, 0.7) 80%,
+      transparent
+    );
+    /* Soft at both edges of the sweep, so the ring never shows a hard seam. */
+    -webkit-mask-image: conic-gradient(
+      from 270deg,
+      transparent calc(var(--a) - 40deg),
+      #000 var(--a),
+      #000 330deg,
+      rgba(0, 0, 0, 0.55) 360deg
+    );
+    mask-image: conic-gradient(
+      from 270deg,
+      transparent calc(var(--a) - 40deg),
+      #000 var(--a),
+      #000 330deg,
+      rgba(0, 0, 0, 0.55) 360deg
     );
   }
-  .cn-title {
+  /* The floor answering an action: light on the circle, washing up the hall. Rests at zero. */
+  .cn-glow {
+    opacity: 0;
+    background: radial-gradient(
+      closest-side,
+      rgba(79, 195, 149, 0.55),
+      rgba(31, 143, 99, 0.22) 55%,
+      transparent
+    );
+    mix-blend-mode: screen;
+  }
+  .cn-wash {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 14px;
-    z-index: 1;
+    inset: 0;
+    opacity: 0;
+    background: radial-gradient(70% 45% at 50% 85%, rgba(79, 195, 149, 0.2), transparent 70%);
+    mix-blend-mode: screen;
+  }
+  /* The hall dims as the guest reads down (HallScene sets --dim from 0 to 1). */
+  .cn-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(rgba(10, 13, 11, 0.18), rgba(10, 13, 11, 0) 34%, rgba(10, 13, 11, 0.4)),
+      rgba(10, 13, 11, calc(var(--dim) * 0.74));
+  }
+  .cn-dark {
+    position: absolute;
+    inset: 0;
+    background: #050806;
+    opacity: 0;
+  }
+  /* The arrival's first frame, drawn before its script runs; released after 3.5 s if the
+     script never arrives. Reduced motion draws the final frame at once. */
+  @media (prefers-reduced-motion: no-preference) {
+    html.js .cn[data-arrival="pending"] .cn-dark {
+      opacity: 0.62;
+      animation: cn-release 0s linear 3.5s forwards;
+    }
+    html.js .cn[data-arrival="pending"] .cn-body {
+      opacity: 0;
+      animation: op-show 0s linear 3.5s forwards;
+    }
+  }
+  @keyframes cn-release {
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* The title over the dais, framed by "justice" and "revenge" on wide screens. */
+  .cn-head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    padding: calc((100vh - var(--fh)) / 2 + var(--fh) * 0.53) 16px 0;
     text-align: center;
   }
+  .cn-head .hd {
+    text-shadow:
+      0 0 0.5em rgba(4, 7, 6, 0.95),
+      0 0 1.2em rgba(4, 7, 6, 0.85);
+  }
+  .cn-flank {
+    display: none;
+    width: 150px;
+  }
+  .cn-flank .rune-line {
+    height: 13px;
+    margin: 0 auto;
+    fill: rgba(10, 14, 12, 0.88);
+    filter: drop-shadow(0 1px 0 rgba(228, 203, 140, 0.2));
+  }
+  @media (min-width: 60rem) and (min-aspect-ratio: 5/6) {
+    .cn-flank {
+      display: block;
+    }
+  }
+  @media (max-aspect-ratio: 5/6) {
+    .cn {
+      --cw: max(100vw, calc(100vh * 780 / 1688));
+    }
+    .cn-cam {
+      left: calc((100vw - var(--cw)) / 2);
+      top: calc(var(--cw) * -0.28);
+      width: var(--cw);
+      height: calc(var(--cw) * 1688 / 780);
+    }
+    .cn-circle {
+      left: -7%;
+      top: 66.3%;
+      width: 114%;
+      height: 17.6%;
+    }
+    .cn-head {
+      padding-top: calc(var(--cw) * 0.14);
+    }
+    /* Leave Doom and the throne in view between the steps and the step's panel. */
+    .cn-step {
+      padding-top: max(0px, calc(var(--cw) * 0.66 - 114px));
+    }
+  }
+
   /* The council's three steps (design/DESIGN.md, 8.12): one column, one step at a time. */
   .cn-body {
     display: grid;
@@ -646,9 +1002,19 @@
     gap: 28px;
     max-width: 46rem;
     margin: 0 auto;
-    padding: 28px 36px 40px;
+    padding: 14px 36px 48px;
     align-items: start;
-    scroll-margin-top: 64px; /* below the fixed sound control */
+  }
+  /* The steps sit over the painting: a dark band keeps their labels readable. */
+  .cn-steps {
+    background: linear-gradient(rgba(10, 13, 11, 0.55), rgba(10, 13, 11, 0.82));
+    border-radius: 2px;
+  }
+  /* Text set straight on the hall (not on a panel) carries a dark halo. */
+  .cn-step > .hd,
+  .cn-step > section > .hd,
+  .cn-step .t-faction {
+    text-shadow: 0 0 0.6em rgba(4, 7, 6, 0.95);
   }
   .cn-steps ol {
     display: grid;
@@ -778,6 +1144,135 @@
     text-align: center;
   }
 
+  /* The decree (design/DESIGN.md, 8.16): the issuer's mask, the day as a proclamation, the
+     sanction and Doom's signature in runes, centred. Its heading is the council title's size;
+     the day is set larger than the proposal's, in the same italic, and wraps naturally. */
+  .cn-decree {
+    overflow: hidden;
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+  .cn-decree-issuer.mk {
+    width: auto;
+    height: 84px;
+    margin: 0 auto 12px;
+  }
+  .cn-decree-tag {
+    display: block;
+    margin-bottom: 12px;
+  }
+  .cn-decree-notice {
+    margin: 0 0 10px;
+  }
+  .cn-decree-day {
+    margin: 14px 0 0;
+    font: italic 500 1.625rem / 1.25 var(--f-body);
+    color: var(--c-silver);
+    text-wrap: balance;
+  }
+  .cn-decree-venue {
+    margin: 8px 0 0;
+    font: italic 500 1.375rem / 1.3 var(--f-body);
+    color: var(--c-silver);
+    text-wrap: balance;
+  }
+  .cn-decree-sanction {
+    margin: 18px 0 0;
+    font: italic 700 var(--t-procl) / 1.35 var(--f-body);
+    color: var(--c-silver);
+  }
+  .cn-decree-sig {
+    margin-top: 20px;
+  }
+  .cn-decree-sig .rune-line {
+    height: 12px;
+    margin: 0 auto;
+  }
+  @media (min-width: 50rem) {
+    .cn-decree-issuer.mk {
+      height: 104px;
+    }
+    .cn-decree-day {
+      font-size: 2.125rem;
+    }
+    .cn-decree-venue {
+      font-size: 1.625rem;
+    }
+    .cn-decree-sig .rune-line {
+      height: 14px;
+    }
+  }
+  /* The ceremony, once per revision of the decree (about 4.4 s). */
+  .cn-decree-light {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background: linear-gradient(
+      90deg,
+      transparent 35%,
+      rgba(242, 232, 176, 0.32) 50%,
+      transparent 65%
+    );
+  }
+  .cn-decree.is-issuing .cn-decree-issuer {
+    animation: decree-issue 0.9s 0.2s cubic-bezier(0.2, 0.6, 0.2, 1) both;
+  }
+  .cn-decree.is-issuing .cn-decree-tag {
+    animation: decree-fade 0.4s 0.7s linear both;
+  }
+  .cn-decree.is-issuing .hd {
+    animation: decree-write 0.7s 0.8s ease-out both;
+  }
+  .cn-decree.is-issuing .cn-decree-day {
+    animation: decree-write 1s 1.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  .cn-decree.is-issuing .cn-decree-venue {
+    animation: decree-write 0.8s 2.1s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  .cn-decree.is-issuing .cn-decree-sanction {
+    animation: decree-write 0.6s 2.75s ease-out both;
+  }
+  .cn-decree.is-issuing .cn-decree-light {
+    animation: decree-sweep 1.8s 1.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  @keyframes decree-issue {
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+      filter: brightness(1.8);
+    }
+  }
+  @keyframes decree-fade {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes decree-write {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  @keyframes decree-sweep {
+    0% {
+      opacity: 0;
+      transform: translateX(-60%);
+    }
+    15%,
+    85% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(60%);
+    }
+  }
+
   /* the proposal's alternatives */
   .cn-alt {
     display: flex;
@@ -812,16 +1307,146 @@
     padding: 0;
     list-style: none;
   }
-  /* A faction: its name, then its mantles. Cinzel, because the names carry figures
-     (design/DESIGN.md, 8.6). */
-  .cn-faction + .cn-faction {
-    margin-top: 30px;
+  /* A faction: a roll of names on a recessed tray, its name between two dotted rules
+     (design/DESIGN.md, 8.15). Cinzel, because the names carry figures (8.6). */
+  .cn-faction {
+    margin-top: 26px;
+    padding: 14px 12px 12px;
+    background: rgba(12, 16, 15, 0.9);
+    border-top: 1px solid #000;
+    border-bottom: 1px solid var(--c-well-edge);
   }
   .cn-faction-name {
-    margin: 24px 0 0;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    text-align: center;
+  }
+  .cn-faction-name::before,
+  .cn-faction-name::after {
+    content: "";
+    border-top: 1px dotted rgba(198, 167, 94, 0.55);
   }
   .cn-faction-name + .cn-chars {
     margin-top: 12px;
+  }
+
+  /* The guest's own mantle, large, at the top of the step: the suit rune at level 2. It opens
+     out (a grid row from nothing) only when it rises, so a claim never moves the list. */
+  .cn-yours-wrap {
+    display: grid;
+    grid-template-rows: 1fr;
+  }
+  .cn-yours-clip {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .cn-yours {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 6px 18px;
+    margin-top: 16px;
+    padding: 16px 0 4px;
+    border-top: 1px solid var(--c-row-rule);
+  }
+  .cn-yours .lbl {
+    color: var(--c-emerald-light);
+  }
+  .cn-yours-mark {
+    width: 72px;
+    height: 72px;
+  }
+  .cn-yours-name {
+    margin: 8px 0 0;
+    font: 500 1.75rem / 1.12 var(--f-serif);
+    letter-spacing: 0.03em;
+    color: var(--c-silver);
+    overflow-wrap: break-word;
+  }
+  .cn-yours-line {
+    grid-column: 1 / -1;
+    margin-top: 6px;
+    text-wrap: balance;
+  }
+  @media (min-width: 50rem) {
+    .cn-yours-mark {
+      width: 92px;
+      height: 92px;
+    }
+    .cn-yours-name {
+      font-size: 2.125rem;
+    }
+  }
+
+  /* The claim, once the server has confirmed it (8.15): the plate fills with emerald from the
+     left (the button's pressed fill, held), its tile turns into the suit rune, then the guest's
+     mantle rises at the top and its line is written in place. */
+  .cn-char > :not(.cn-char-fill) {
+    position: relative;
+  }
+  .cn-char-fill {
+    position: absolute;
+    inset: 0;
+    background: rgba(31, 143, 99, 0.42);
+    transform-origin: 0 50%;
+    pointer-events: none;
+  }
+  .cn-char.is-claiming .cn-char-fill {
+    animation: claim-fill 0.35s cubic-bezier(0.2, 0.6, 0.2, 1) both;
+  }
+  .cn-char.is-claiming .mk {
+    animation: claim-turn 0.3s 0.3s ease-out both;
+  }
+  .cn-mantle.is-claiming .cn-yours-wrap {
+    animation: claim-open 0.45s 0.6s cubic-bezier(0.2, 0.6, 0.2, 1) both;
+  }
+  .cn-mantle.is-claiming .cn-yours {
+    animation: claim-rise 0.45s 0.6s cubic-bezier(0.2, 0.6, 0.2, 1) both;
+  }
+  @keyframes claim-open {
+    from {
+      grid-template-rows: 0fr;
+    }
+  }
+  .cn-mantle.is-claiming .cn-yours-line {
+    animation: claim-write 0.7s 1.05s ease-out both;
+  }
+  @keyframes claim-fill {
+    from {
+      transform: scaleX(0);
+    }
+  }
+  @keyframes claim-turn {
+    from {
+      opacity: 0;
+      transform: rotate(-45deg) scale(0.8);
+    }
+  }
+  @keyframes claim-rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+  @keyframes claim-write {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cn-char.is-claiming .cn-char-fill,
+    .cn-char.is-claiming .mk,
+    .cn-mantle.is-claiming .cn-yours,
+    .cn-mantle.is-claiming .cn-yours-wrap,
+    .cn-mantle.is-claiming .cn-yours-line {
+      animation: none;
+    }
   }
   .cn-char {
     position: relative;
@@ -960,9 +1585,6 @@
   }
 
   @media (max-width: 50rem) {
-    .cn-hall {
-      height: min(64.1vw, 46dvh);
-    }
     .cn-body {
       grid-template-columns: 1fr;
       gap: 22px;

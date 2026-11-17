@@ -4,8 +4,9 @@ import { SummonsActions } from "./SummonsActions";
 import { FitName } from "./FitName";
 import { SummonsMotion } from "./SummonsMotion";
 
-// The royal summons: a steel plate bearing the guest's name (design/DESIGN.md, 8.4).
-// The plate is baked artwork; every word on it is real text, in reading order.
+// The royal summons: a steel plate bearing the guest's name (design/DESIGN.md, 8.4),
+// behind the outer doors of 6.6 (SummonsMotion). The plate is baked artwork; every word
+// on it is real text, in reading order.
 
 const DATE = "the [day] day of [Month], [year]";
 
@@ -50,8 +51,11 @@ export function Summons({
           </div>
           <SummonsActions token={token} />
         </div>
-        <SummonsMotion />
+        {/* The plate in shadow behind the doors, and the band of light that writes it. */}
+        <span className="sm-dim" aria-hidden="true" />
+        <span className="sm-sweep" aria-hidden="true" />
       </FitName>
+      <SummonsMotion token={token} />
     </main>
   );
 }

@@ -37,7 +37,7 @@ One application, one database, one scheduled job. Everything a guest sees move r
 | UI | React, TypeScript in strict mode | Server Components for reads, Client Components for scenes and controls |
 | Styling | Tailwind CSS v4, CSS custom properties, hand-written CSS | Section 6 |
 | Motion | GSAP with its React hook; CSS for simple motion | Client only |
-| Sound | Howler | Client only |
+| Sound | The browser's Web Audio API, through `web/src/lib/sound.ts` (Howler until 17 November 2026: it could not keep the score's layers on one clock, nor hold a one-shot until its file arrived) | Client only. No dependency |
 | Database | Neon PostgreSQL | |
 | Data access | Drizzle ORM over `pg` (node-postgres); Drizzle Kit migrations | Section 4.4 explains the driver choice |
 | Validation | Zod | |
@@ -499,7 +499,7 @@ Later, during the build: your ear on the sounds in milestone 5, and the content 
 
 ## 15. Summary
 
-- **Architecture.** One Next.js application deployed natively on Vercel, one Neon PostgreSQL database, one daily Vercel Cron job. Assets are served from `web/public/`. Tailwind v4 for layout over CSS tokens; GSAP and Howler in the browser.
+- **Architecture.** One Next.js application deployed natively on Vercel, one Neon PostgreSQL database, one daily Vercel Cron job. Assets are served from `web/public/`. Tailwind v4 for layout over CSS tokens; GSAP and the Web Audio API in the browser.
 - **Key decisions.** Character uniqueness is a database constraint, and a claim is a single statement whose conflict is returned as a 409. Multi-step changes are Drizzle transactions. One driver, `pg`, in production and in tests, over Neon's pooled connection. No middleware, no extra services. The domain module is free of framework code and tested against real PostgreSQL.
 - **Expected cost.** Nothing on Vercel Hobby and Neon Free, plus a domain if you want one.
 - **Blocking implementation.** Nothing. I need the three accounts and the time zone to start milestone 0.

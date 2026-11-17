@@ -27,6 +27,7 @@ Written on 15 November 2026 for a new Claude session taking over this project, a
 | Technical architecture | Complete and final: Next.js on Vercel with Neon PostgreSQL |
 | Application code | **Version 1 is code-complete and live** at https://iron-throne.vercel.app (16 November 2026). Milestones 0A to 6 are built: the administrator panel, the whole guest journey with motion and sound, the three-step council with the mantle search, the Doomsday roster seeded by migration, and the hardening pass (accessibility, privacy, performance, error screens, full TLS verification). Deployed by the workflow from `main`. The scope is frozen: what remains is milestone 7, run by the owner from `docs/LAUNCH.md` |
 | Version control | A Git repository on `main`. The specifications live in `docs/`; `AGENTS.md` and `CLAUDE.md` at the root point to them |
+| Creative refinement | On the `creative-refinement` branch (17 November 2026), not merged: the hall as the council's room with a one-time arrival, the mantle claim, the decree ceremony, Doomscript placements, the summons' outer doors, the dormant seal on closed screens, the reverse iris, and Score A with the sound fixes. Specified in `design/DESIGN.md` (4.8, 6.6, 6.12, 8.13 to 8.17); review material in `design/explorations/creative-refinement-1/` and `design/EXPERIENCE_AUDIT.md` |
 | Accounts | The GitHub repository (private), the Vercel project (Hobby) and the Neon project (PostgreSQL 18). Production deploys from `main` through `.github/workflows/ci.yml` |
 
 The application is in `web/`. The Python under `design/explorations/assets/board-4-*-source/` generated the concept boards and is drawing code, not application code.
@@ -125,7 +126,7 @@ Provisional or never drawn, to be built from `DESIGN.md` and the council mock du
 
 Final. Detail is in `ARCHITECTURE.md`.
 
-- **Stack.** Next.js (App Router), React, TypeScript strict, Tailwind CSS v4 over CSS custom-property tokens, GSAP, Howler, Zod, Drizzle ORM with `pg`, Vitest, Playwright, Prettier, ESLint, GitHub Actions.
+- **Stack.** Next.js (App Router), React, TypeScript strict, Tailwind CSS v4 over CSS custom-property tokens, GSAP, the Web Audio API (Howler until 17 November 2026), Zod, Drizzle ORM with `pg`, Vitest, Playwright, Prettier, ESLint, GitHub Actions.
 - **Hosting.** One Next.js application deployed natively on Vercel. Only `web/` is deployed. One daily Vercel Cron job for retention.
 - **Database.** Neon PostgreSQL through its pooled connection string; the direct string for migrations. Six tables.
 - **Integrity.** `guest.character_id` is unique. Claiming or changing a character is one `UPDATE`; a unique violation (23505) is returned as a 409 naming the holder. Multi-step changes use Drizzle transactions. Approvals carry a proposal version, so changing the proposal resets them without touching rows.

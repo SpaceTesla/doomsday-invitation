@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { copy, fill } from "@/copy";
 import { Button } from "@/components/Button";
+import { CornerBolts } from "@/components/CornerBolts";
+import { RuneBand } from "@/components/Runes";
 import { Figure } from "@/components/Figure";
 import { Heading } from "@/components/Heading";
 import { Label } from "@/components/Label";
@@ -10,6 +12,8 @@ import { Panel, PanelActions, Well } from "@/components/Panel";
 import { QuietControl } from "@/components/QuietControl";
 import { GuestMessageLine, useGuestAction } from "@/components/guest/useGuestAction";
 import { AlternativeEntry } from "./AlternativeEntry";
+import { DecreePanel } from "./DecreePanel";
+import { useHall } from "./HallScene";
 import type { CouncilData } from "./types";
 
 /** "3 of 7 seats have approved", each figure in Cinzel; 7.5 and 7.6 for one and none. */
@@ -42,6 +46,16 @@ export function ProposalSection({ data }: { data: CouncilData }) {
   const [entering, setEntering] = useState(false);
   const [received, setReceived] = useState(false);
   const { proposal, decreed } = data;
+  const { respond } = useHall();
+  // The proposal's inscription lights when the guest's approval stands; rune by rune only
+  // at the moment it is given, not on every load.
+  const [lighting, setLighting] = useState(false);
+
+  // Approving is a meaningful act: once the council has it, the floor answers.
+  async function approve() {
+    const result = await approval.run("PUT", "approval", undefined, () => setLighting(true));
+    if (result.ok) respond();
+  }
 
   const notice = decreed
     ? data.notices.decreeAmended
@@ -51,9 +65,29 @@ export function ProposalSection({ data }: { data: CouncilData }) {
       ? copy["7.13"]
       : null;
 
+  // The decree has a panel of its own, and its own ceremony.
+  if (decreed && proposal) {
+    return (
+      <DecreePanel
+        token={data.token}
+        when={proposal.when}
+        venue={proposal.venue}
+        amended={data.notices.decreeAmended}
+      />
+    );
+  }
+
   return (
     <>
-      <Panel labelledBy="proposal-heading">
+      <Panel labelledBy="proposal-heading" className="panel-plate--principal">
+        <CornerBolts />
+        {proposal ? (
+          <RuneBand
+            inscription="there is no promise of tomorro"
+            state={data.you.approves ? "lit" : "engraved"}
+            sequence={lighting && data.you.approves}
+          />
+        ) : null}
         <div className="flex flex-wrap items-baseline justify-between gap-x-4">
           <Heading as="h2" id="proposal-heading">
             {decreed ? copy["8.1"] : copy["7.1"]}
@@ -96,7 +130,7 @@ export function ProposalSection({ data }: { data: CouncilData }) {
                   </QuietControl>
                 </div>
               ) : (
-                <Button onClick={() => approval.run("PUT", "approval")} disabled={approval.busy}>
+                <Button onClick={approve} disabled={approval.busy}>
                   {copy["7.7"]}
                 </Button>
               )}

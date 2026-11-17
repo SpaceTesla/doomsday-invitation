@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Encode the synthesised sounds (scripts/make-sounds.py) for the web: WebM/Opus first,
-# MP3 as the fallback (design/DESIGN.md, section 6.11). Mono; the room tone at a lower
-# bitrate. Runs ffmpeg in Docker, so nothing needs installing.
+# Encode the synthesised sounds (scripts/make-sounds.py and scripts/make-score.py) for the
+# web: WebM/Opus first, MP3 as the fallback (design/DESIGN.md, section 6.11). One-shots in
+# mono, the score and the claim and decree sounds in stereo. Runs ffmpeg in Docker, so
+# nothing needs installing.
 #
 # Usage, from web/:  bash scripts/encode-sounds.sh <folder of .wav files>
 set -euo pipefail
@@ -13,12 +14,19 @@ out="$(cd public/audio; pwd -W 2>/dev/null || pwd)"
 
 for wav in "$1"/*.wav; do
   name="$(basename "$wav" .wav)"
-  if [ "$name" = "hall-room" ]; then opus=40k; mp3=64k; else opus=64k; mp3=96k; fi
+  # The score's stems and the claim and decree sounds are stereo (make-score.py); the
+  # mechanical one-shots are mono.
+  case "$name" in
+    score-*) ch=2; opus=64k; mp3=112k ;;
+    claim|decree) ch=2; opus=64k; mp3=96k ;;
+    hall-room) ch=1; opus=40k; mp3=64k ;;
+    *) ch=1; opus=64k; mp3=96k ;;
+  esac
   MSYS_NO_PATHCONV=1 docker run --rm -v "$src:/in:ro" -v "$out:/out" jrottenberg/ffmpeg:7.1-alpine \
-    -hide_banner -loglevel error -y -i "/in/$name.wav" -ac 1 \
+    -hide_banner -loglevel error -y -i "/in/$name.wav" -ac "$ch" \
     -c:a libopus -b:a "$opus" -vbr on "/out/$name.webm"
   MSYS_NO_PATHCONV=1 docker run --rm -v "$src:/in:ro" -v "$out:/out" jrottenberg/ffmpeg:7.1-alpine \
-    -hide_banner -loglevel error -y -i "/in/$name.wav" -ac 1 \
+    -hide_banner -loglevel error -y -i "/in/$name.wav" -ac "$ch" \
     -c:a libmp3lame -b:a "$mp3" "/out/$name.mp3"
   echo "encoded $name"
 done

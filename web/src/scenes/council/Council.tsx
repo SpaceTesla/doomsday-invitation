@@ -1,10 +1,12 @@
 import { copy } from "@/copy";
 import { Heading } from "@/components/Heading";
+import { Runes } from "@/components/Runes";
 import { addressOf } from "@/domain/guests";
 import type { GuestCouncil } from "@/domain/council";
 import { localParts } from "@/domain/time";
 import { dateTimeInWords } from "@/domain/words";
 import { CouncilScreen } from "./CouncilScreen";
+import { HallScene } from "./HallScene";
 import type { CouncilData } from "./types";
 
 const two = (n: number) => String(n).padStart(2, "0");
@@ -50,23 +52,27 @@ export function councilData(token: string, council: GuestCouncil, now: Date): Co
   };
 }
 
-/** The council: the hall, then the proposal, the mantles and everyone summoned. */
+/**
+ * The council: the throne hall as the room (fixed behind every step), its title, then the
+ * proposal, the mantles and everyone summoned (design/DESIGN.md, 8.12 and 8.13).
+ */
 export function Council({ data }: { data: CouncilData }) {
   return (
-    <div className="cn">
-      <header className="cn-hall">
-        {/* The council mock crops the wide hall on every screen (board revision 5, section C). */}
-        {/* eslint-disable-next-line @next/next/no-img-element -- the approved render, served as it is */}
-        <img src="/art/hall-d-plate.jpg" alt="" decoding="async" />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/art/hall-d-doom.webp" alt="" decoding="async" />
-        <div className="cn-title">
-          <Heading as="h1" size="title">
-            {copy["6.1"]}
-          </Heading>
-        </div>
+    <HallScene token={data.token}>
+      <header className="cn-head">
+        {/* "justice" and "revenge" frame the title on wide screens, as they flank the
+            summons plate. Engraved, never lit. Hidden on narrow screens. */}
+        <span className="cn-flank" aria-hidden="true">
+          <Runes inscription="justice" />
+        </span>
+        <Heading as="h1" size="title">
+          {copy["6.1"]}
+        </Heading>
+        <span className="cn-flank" aria-hidden="true">
+          <Runes inscription="revenge" />
+        </span>
       </header>
       <CouncilScreen data={data} />
-    </div>
+    </HallScene>
   );
 }

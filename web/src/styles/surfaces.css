@@ -37,6 +37,54 @@
     fill: currentColor;
   }
 
+  /* Engraved: dark steel cut into steel, a faint highlight under each stroke. Lit: Emerald
+     light, meaning a state has been reached. One lit inscription per screen at most
+     (design/DESIGN.md, 4.1 and 4.8). */
+  .rune-line--engraved {
+    fill: #0b0f0e;
+    filter: drop-shadow(0 0.05em 0 rgba(255, 255, 255, 0.14));
+  }
+  .rune-line--lit {
+    fill: var(--c-emerald-light);
+    filter: drop-shadow(0 0 0.16em rgba(79, 195, 149, 0.5));
+  }
+  .rune-line--lighting path {
+    animation: rune-light 0.25s linear both;
+  }
+  @keyframes rune-light {
+    from {
+      fill: #0b0f0e;
+    }
+    to {
+      fill: var(--c-emerald-light);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rune-line--lighting path {
+      animation: none;
+    }
+  }
+
+  /* The rune band (2.4): runes between a dotted line and a rule, at the top of a principal
+     panel. Decoration: hidden from assistive technology. */
+  .rune-band {
+    display: grid;
+    gap: 7px;
+    margin: -4px 0 16px;
+  }
+  .rune-band-dots {
+    border-top: 1px dotted rgba(198, 167, 94, 0.55);
+  }
+  .rune-band-rule {
+    height: 1px;
+    background: #0b0f0e;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  .rune-band .rune-line {
+    height: 13px;
+    margin: 0 auto;
+  }
+
   /* ---- the three-band seal ---- */
   .seal-svg {
     display: block;
@@ -235,6 +283,42 @@
     align-items: center;
     gap: 12px 20px;
     margin-top: 20px;
+  }
+
+  /* A principal panel: the one main plate of a council step (8.14). The summons' brushed
+     steel (a baked, seamless tile blended over the panel's gradient) and four corner bolts. */
+  .panel-plate--principal {
+    background-image: url("/art/steel.webp"), linear-gradient(#232a2a, #151a1a);
+    background-size:
+      512px 512px,
+      auto;
+    background-blend-mode: overlay, normal;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 18px 40px rgba(0, 0, 0, 0.55);
+  }
+  .bolt {
+    position: absolute;
+    z-index: 1;
+    width: 11px;
+    height: 11px;
+    pointer-events: none;
+  }
+  .bolt--tl {
+    left: -4px;
+    top: -4px;
+  }
+  .bolt--tr {
+    right: -4px;
+    top: -4px;
+  }
+  .bolt--bl {
+    left: -4px;
+    bottom: -4px;
+  }
+  .bolt--br {
+    right: -4px;
+    bottom: -4px;
   }
 
   /* ---- well: a recessed strip for counts and lists inside a panel ---- */

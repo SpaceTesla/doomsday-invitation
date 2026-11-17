@@ -23,15 +23,26 @@ export type GuestMessage = {
  * caller can replace the message with a more specific one. An action that changes the
  * scene (`changesStage`) closes the seal's iris before the new scene is shown.
  */
-export function useGuestAction(token: string, options: { changesStage?: boolean } = {}) {
+export function useGuestAction(
+  token: string,
+  options: { changesStage?: boolean; back?: boolean } = {},
+) {
   const router = useRouter();
   const { cover } = useStageTransition();
   const changesStage = options.changesStage ?? false;
+  const back = options.back ?? false;
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<GuestMessage | null>(null);
 
   const run = useCallback(
-    async (method: string, action: string, body?: unknown): Promise<GuestResult> => {
+    async (
+      method: string,
+      action: string,
+      body?: unknown,
+      // Runs once the server has accepted the action, before the page re-renders with it,
+      // so a confirmation can begin in the same update as the new state.
+      onAccepted?: () => void,
+    ): Promise<GuestResult> => {
       setBusy(true);
       setMessage(null);
       try {
@@ -46,7 +57,8 @@ export function useGuestAction(token: string, options: { changesStage?: boolean 
           : null;
         const error = (data as { error?: string } | null)?.error;
         if (response.ok) {
-          if (changesStage) await cover();
+          if (changesStage) await cover(back);
+          onAccepted?.();
           router.refresh();
           return { ok: true, status: response.status, data };
         }
@@ -66,7 +78,7 @@ export function useGuestAction(token: string, options: { changesStage?: boolean 
         setBusy(false);
       }
     },
-    [router, token, changesStage, cover],
+    [router, token, changesStage, back, cover],
   );
 
   return { run, busy, message, setMessage };

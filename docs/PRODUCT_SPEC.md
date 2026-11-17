@@ -481,9 +481,9 @@ Targets marked "research" come from desk research that was never checked in a re
 - Silent until the guest's first action. "Go without sound" is always offered.
 - The guest's choice persists for the visit, and sound never restarts by itself.
 - Sound stops when the tab is hidden.
-- No music bed and no voice.
+- ~~No music bed~~ and no voice. **Changed 17 November 2026 (your decision):** one continuous, restrained score (a drone with no melody) plays from the summons onwards when sound is on, layered by stage and never restarting; the opening and the closing screens stay silent (`design/DESIGN.md`, section 6.12).
+- SOUND OFF stops music and effects at once, and sound never turns itself back on after the guest has chosen silence.
 - The experience is complete in silence.
-- No audio exists yet (`design/DESIGN.md`, section 6.8).
 
 ### 5.7 Reliability
 
@@ -618,3 +618,12 @@ Decisions about how the product looks are logged in `design/DESIGN.md`, section 
 | Decision | Was |
 |---|---|
 | Choosing a character is optional and never a prerequisite. A seated guest sees one council screen, with the mantle list part of it, and can approve, suggest alternatives and take every other council action without a character. "No mantle yet" is shown until they claim one. **Superseded on 16 November 2026** by the three council steps (Stage 3): the mantle step is answered by claiming one, or put off for the visit with "Choose later" | new |
+
+### 7.7 Stated by you: creative refinement (17 November 2026)
+
+| Decision | Was |
+|---|---|
+| A continuous score (Score A, a drone with no melody) when sound is on, from the summons onwards; silent opening and closing screens | "No music bed" (5.6) |
+| The council's hall is the room: arrival once per browser session, the floor answering approvals, claims and the decree; Doom never moves; no loops | A still banner |
+| A confirmed mantle claim is shown (about 2.8 s, skippable) before the council opens; a failed claim shows nothing | The council opened at once |
+| The decree's ceremony plays once per revision of the decree, and again after an amendment | No ceremony |
