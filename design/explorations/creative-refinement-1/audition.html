@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sound audition</title>
+<style>
+@font-face { font-family: "Pirata One"; src: url("../../../web/src/fonts/pirata-one-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cinzel"; font-weight: 500; src: url("../../../web/src/fonts/cinzel-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Orbitron"; font-weight: 600; src: url("../../../web/src/fonts/orbitron-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 500; src: url("../../../web/src/fonts/cormorant-garamond-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 500; font-style: italic; src: url("../../../web/src/fonts/cormorant-garamond-latin-500-italic.woff2") format("woff2"); }
+:root { --night: #0a0d12; --plate: #1a2020; --steel: #96a19e; --silver: #d9dedc; --gold: #c6a75e; --gold-l: #e4cb8c; --em: #4fc395; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--night); color: var(--silver); font: 500 18px/1.5 "Cormorant Garamond", Georgia, serif; }
+main { max-width: 1120px; margin: 0 auto; padding: 40px 24px 120px; }
+h1 { font: 400 48px/1 "Pirata One", serif; color: var(--gold-l); margin: 0 0 12px; }
+h2 { font: 400 32px/1.1 "Pirata One", serif; color: var(--gold-l); margin: 60px 0 8px; padding-top: 22px; border-top: 1px dotted rgba(198,167,94,.45); }
+h3 { font: 500 18px/1.3 "Cinzel", serif; letter-spacing: .04em; color: var(--gold); margin: 26px 0 10px; }
+p { margin: 0 0 12px; max-width: 76ch; }
+.lbl { font: 600 11px/1 "Orbitron", sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--steel); }
+a { color: var(--gold-l); }
+.status { display: inline-block; margin: 0 0 18px; padding: 7px 10px; border: 1px solid var(--gold); color: var(--gold-l); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+.card { padding: 16px 18px; background: var(--plate); border: 1px solid #3a4341; }
+.card .name { font: 500 20px/1.2 "Cinzel", serif; color: var(--silver); }
+.card .meta { margin: 4px 0 8px; }
+.card p { font-size: 16.5px; margin: 6px 0; }
+.verdict { display: inline-block; margin-top: 4px; padding: 4px 7px; font: 600 10px/1 "Orbitron", sans-serif; letter-spacing: .1em; text-transform: uppercase; border-radius: 2px; }
+.keep { background: #4fc395; color: #0a0d12; } .replace { background: #e0806f; color: #0a0d12; } .listen { background: #e4cb8c; color: #0a0d12; }
+audio { width: 100%; margin-top: 8px; height: 36px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.player { padding: 18px; background: #0f1414; border: 1px solid #3a4341; margin: 14px 0; }
+.stages { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+button { font: 600 12px/1 "Orbitron", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--silver); padding: 12px 14px; min-height: 44px;
+  background: linear-gradient(#2a3232, #171c1c); border: 1px solid #5a6462; border-radius: 2px; cursor: pointer; }
+button:hover, button:focus-visible { border-color: var(--gold); outline: none; }
+button[aria-pressed="true"] { border-color: var(--em); color: var(--em); }
+.meter { display: grid; grid-template-columns: 150px 1fr 44px; gap: 8px 12px; align-items: center; margin-top: 10px; font-size: 15px; }
+.bar { height: 6px; background: #1d2422; } .bar i { display: block; height: 100%; width: 0; background: var(--em); transition: width .2s linear; }
+table { border-collapse: collapse; width: 100%; font-size: 16px; margin: 8px 0; }
+th, td { text-align: left; padding: 6px 10px; border-top: 1px solid #2a3232; vertical-align: top; }
+th { font: 600 10px/1.2 "Orbitron", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--steel); }
+.note { color: var(--steel); font-size: 16px; }
+@media (max-width: 720px) { .pair { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+<span class="status lbl">Proposed · prototypes for listening · nothing here is in the app</span>
+<h1>Sound audition</h1>
+<p>The existing sounds are the files the app plays today (<code>web/public/audio</code>). Everything marked draft or score is a prototype synthesised for this review by <code>source/make_score.py</code>, from noise and sine waves like the existing sounds: no recordings, no film score, nothing to license.</p>
+<p class="note">Listen once on headphones and once on a phone's own speaker; most guests will hear it on a phone. Nothing on this page loads until you press play. <a href="board.html">Back to the review board</a>.</p>
+
+<h2>1. The existing sounds, one by one</h2>
+<div class="grid" id="existing"></div>
+
+<h2>2. The seal waking: now, and with the ticks in turn</h2>
+<p>When the summons' seal wakes, the app plays a rising hum, three detents as the bands lock, then the runes' ticks. The ticks are meant to run one per rune, 75 ms apart; today all 24 fire in the same instant. The proposal keeps the detents, plays the ticks in turn, and drops the hum.</p>
+<div class="pair">
+  <div class="card"><div class="name">Now</div><div class="meta lbl">Hum, three detents, 24 ticks at once</div><audio controls preload="none" src="audio/seal-wake-current.webm"></audio></div>
+  <div class="card"><div class="name">Proposed</div><div class="meta lbl">Three detents, then the ticks in reading order, no hum</div><audio controls preload="none" src="audio/seal-wake-proposed.webm"></audio></div>
+</div>
+
+<h2>3. Draft sounds for the new moments</h2>
+<div class="grid">
+  <div class="card"><div class="name">Claim (draft)</div><div class="meta lbl">About 1.2 s</div><p>A mantle claimed: the existing detent, then a short low resonance on A, the score's key. Plays when the tile turns into the suit rune.</p><audio controls preload="none" src="audio/claim-proposed.webm"></audio><span class="verdict listen">Listen</span></div>
+  <div class="card"><div class="name">Decree (draft)</div><div class="meta lbl">About 2 s</div><p>A heavy low close, then a struck plate ringing on A. Restrained: one strike, no fanfare. Plays as the issuer's mark appears.</p><audio controls preload="none" src="audio/decree-proposed.webm"></audio><span class="verdict listen">Listen</span></div>
+  <div class="card"><div class="name">Decree phrase (direction B only)</div><div class="meta lbl">About 10 s</div><p>The motif, stated plainly once on low brass under the bell, at the decree. In direction A the brass layer simply joins instead.</p><audio controls preload="none" src="audio/decree-phrase-b.webm"></audio><span class="verdict listen">Listen</span></div>
+</div>
+
+<h2>4. The score: two directions</h2>
+<p>Both are in A, with a flattened second (B flat) for darkness rather than a minor key, and both are built as layers of the same length (64 s) that start together and loop together. Moving between screens changes which layers are heard and never restarts the music. The opening stays silent: the score begins with GO WITH HIM. The closing screens fade to silence and stay silent.</p>
+<table>
+  <tr><th>Stage</th><th>Direction A: a restrained drone</th><th>Direction B: a drone with a sparse motif</th></tr>
+  <tr><td>Opening</td><td colspan="2">Silent, by rule. Nothing loads.</td></tr>
+  <tr><td>GO WITH HIM, the summons</td><td>Foundation: the low drone (A and E), bowed metal swelling twice a loop, the B flat once</td><td>Foundation B: darker, more air, a slow pad. The motif heard faintly, once a loop: A, B flat, A, E</td></tr>
+  <tr><td>The council</td><td>+ The hall: moving air, a few high glass tones</td><td>+ The hall (the same layer)</td></tr>
+  <tr><td>The decree</td><td>+ Crown: low brass swells, the open fifth; the B flat resolving to A once</td><td>The motif stated plainly once (the decree phrase), then the bed continues</td></tr>
+  <tr><td>Closing</td><td colspan="2">Everything fades over about 4 s, then silence</td></tr>
+</table>
+
+<div id="directions"></div>
+
+<h2>5. Notes for the decision</h2>
+<ul>
+  <li>The layered players use the browser's plain looping, which can leave a tiny gap at the 64-second loop point. The app would cross-fade two copies, so there is no gap there; listen to the journeys for the seamless version.</li>
+  <li>The bed sits about 10 dB under the one-shots, so the detents and the seal stay clear. The drone keeps most of its audible energy above 200 Hz, so a phone speaker plays it.</li>
+  <li>These are prototypes to choose a direction. The chosen one would be refined in a few rounds by ear before it goes anywhere near the app.</li>
+</ul>
+</main>
+<script>
+const EX = "../../../web/public/audio/";
+const EXISTING = [
+  ["seal-turn", "0.9 s", "A low grinding bed, ratchet clicks that slow, a soft stop.", "Every scene change (the iris): GO WITH HIM, TAKE YOUR SEAT, declining, leaving. Silent on the very first one today, because the files are still loading.", "keep", "Keep: the transition sound"],
+  ["detent", "0.35 s", "A click, a short mid thunk, a brief ring.", "Each of the seal's three bands locking; every council step change.", "keep", "Keep: the mechanical click"],
+  ["hum", "2.2 s", "A tone at 55 Hz with stacked harmonics, swelling and brightening.", "The summons' seal waking, under the detents and ticks.", "replace", "Proposed for replacement"],
+  ["rune-tick", "0.08 s", "A dry, high metal tick.", "One per rune as the seal lights. Today all fire at once (section 2).", "keep", "Keep, played in turn"],
+  ["plate-part", "1.2 s", "Steel sliding on steel, a low draw of air.", "The summons plate parting.", "keep", "Keep, re-timed to the doors"],
+  ["plate-close", "0.8 s", "A short slide and a heavy close.", "The summons plate closing.", "listen", "Open: no moment if the doors stay open"],
+  ["hall-room", "60 s loop", "Low filtered noise, slow wind gusts, a faint rumble.", "The council, while it is on screen.", "replace", "Folded into the score's hall layer"],
+];
+document.getElementById("existing").innerHTML = EXISTING.map(([n, len, what, where, v, verdict]) => `
+  <div class="card"><div class="name">${n}</div><div class="meta lbl">${len}</div>
+  <p>${what}</p><p class="note">${where}</p>
+  <audio controls preload="none"><source src="${EX}${n}.webm" type="audio/webm"><source src="${EX}${n}.mp3" type="audio/mpeg"></audio>
+  <span class="verdict ${v}">${verdict}</span></div>`).join("");
+
+// Layer levels as mixed in the journeys (make_score.py, BED = 0.32).
+const DIRS = {
+  a: {
+    title: "Direction A: a restrained drone, no melody",
+    text: "Low brass and bowed metal over a slow drone. Nothing you could hum: the weight and the slowness carry it.",
+    layers: { "foundation-a": 0.32, hall: 0.51, "crown-a": 0.42 },
+    stages: { summons: ["foundation-a"], council: ["foundation-a", "hall"], decree: ["foundation-a", "hall", "crown-a"] },
+    decree: ["decree-proposed"],
+  },
+  b: {
+    title: "Direction B: an atmospheric drone with a sparse motif",
+    text: "More air and less weight. A four-note motif (A, B flat, A, E) is heard faintly, once a loop, on bowed metal; at the decree it is stated once, plainly, on low brass.",
+    layers: { "foundation-b": 0.32, "motif-b": 0.51, hall: 0.51 },
+    stages: { summons: ["foundation-b", "motif-b"], council: ["foundation-b", "motif-b", "hall"], decree: ["foundation-b", "motif-b", "hall"] },
+    decree: ["decree-proposed", "decree-phrase-b"],
+  },
+};
+const JOURNEY = `<table><tr><th>Time</th><th>In the journey</th></tr>
+  <tr><td>0 to 6 s</td><td>The opening: silence</td></tr><tr><td>6 s</td><td>GO WITH HIM: seal-turn; the bed fades in</td></tr>
+  <tr><td>7 to 13 s</td><td>The summons: plate parts and closes; the seal wakes (ticks in turn, no hum)</td></tr>
+  <tr><td>26 s</td><td>TAKE YOUR SEAT: seal-turn; the hall layer joins</td></tr>
+  <tr><td>41 s</td><td>Approve: a detent</td></tr><tr><td>58 s</td><td>A mantle claimed: the draft claim sound; a detent</td></tr>
+  <tr><td>84 s</td><td>The decree: the draft decree sound, then the decree's layer</td></tr><tr><td>to 150 s</td><td>The council under the decree; fade</td></tr></table>`;
+document.getElementById("directions").innerHTML = Object.entries(DIRS).map(([k, d]) => `
+  <h3>${d.title}</h3><p>${d.text}</p>
+  <div class="pair">
+    <div class="card"><div class="name">The journey</div><div class="meta lbl">About 2.5 minutes, as a guest would hear it</div><audio controls preload="none" src="audio/journey-${k}.webm"></audio></div>
+    <div class="card"><div class="name">"So be it."</div><div class="meta lbl">Leaving: the bed fades to silence</div><audio controls preload="none" src="audio/closing-${k}.webm"></audio></div>
+  </div>
+  ${JOURNEY}
+  <div class="player" data-dir="${k}">
+    <span class="lbl">Layered player: move between stages and hear the layers change</span>
+    <div class="stages">
+      <button data-stage="opening">Opening (silent)</button><button data-stage="summons">Summons</button>
+      <button data-stage="council">Council</button><button data-stage="decree">Decree</button><button data-stage="closing">So be it.</button>
+      <button data-shot="detent">Step change</button><button data-shot="claim-proposed">Claim</button>
+    </div>
+    ${Object.keys(d.layers).map((l) => `<div class="meter"><span class="lbl">${l}</span><span class="bar"><i data-bar="${l}"></i></span><span class="note" data-pct="${l}">0</span></div>`).join("")}
+  </div>`).join("");
+
+function file(n) {
+  return ["detent", "seal-turn"].includes(n) ? `${EX}${n}.webm` : `audio/${n}.webm`;
+}
+function shot(n, vol = 0.8) { const a = new Audio(file(n)); a.volume = vol; a.play(); }
+
+document.querySelectorAll(".player").forEach((player) => {
+  const d = DIRS[player.dataset.dir];
+  let els = null;
+  const target = {};
+  function ensure() {
+    if (els) return;
+    els = {};
+    for (const l of Object.keys(d.layers)) {
+      const a = new Audio(`audio/${l}.webm`);
+      a.loop = true; a.volume = 0; els[l] = a; target[l] = 0;
+    }
+    // Start every layer together, so they stay in step.
+    Promise.all(Object.values(els).map((a) => a.play().catch(() => null)));
+    let last = performance.now();
+    (function tick(now) {
+      const dt = (now - last) / 1000; last = now;
+      for (const [l, a] of Object.entries(els)) {
+        const goal = target[l].v ?? 0, rate = target[l].rate ?? 0.5;
+        const step = Math.sign(goal - a.volume) * Math.min(Math.abs(goal - a.volume), rate * dt);
+        a.volume = Math.max(0, Math.min(1, a.volume + step));
+        player.querySelector(`[data-bar="${l}"]`).style.width = `${(a.volume / d.layers[l]) * 100}%`;
+        player.querySelector(`[data-pct="${l}"]`).textContent = Math.round((a.volume / d.layers[l]) * 100);
+      }
+      requestAnimationFrame(tick);
+    })(last);
+  }
+  player.querySelectorAll("[data-stage]").forEach((b) => b.addEventListener("click", () => {
+    const stage = b.dataset.stage;
+    player.querySelectorAll("[data-stage]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    if (stage === "opening" && !els) return;
+    ensure();
+    const on = d.stages[stage] || [];
+    for (const l of Object.keys(d.layers)) {
+      const v = on.includes(l) ? d.layers[l] : 0;
+      target[l] = { v, rate: stage === "closing" ? d.layers[l] / 4 : stage === "opening" ? 1 : d.layers[l] / 2.5 };
+    }
+    if (["summons", "council", "closing"].includes(stage)) shot("seal-turn", 0.7);
+    if (stage === "decree") d.decree.forEach((n, i) => setTimeout(() => shot(n, i ? 0.7 : 0.75), i ? 1200 : 0));
+  }));
+  player.querySelectorAll("[data-shot]").forEach((b) => b.addEventListener("click", () => shot(b.dataset.shot, 0.6)));
+});
+</script>
+</body>
+</html>

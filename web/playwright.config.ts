@@ -47,6 +47,7 @@ export default defineConfig({
       DATABASE_URL: E2E_DATABASE_URL,
       DATABASE_URL_DIRECT: E2E_DATABASE_URL,
       EVENT_TIMEZONE: "Asia/Kolkata",
+      DOOM_NAME: "Arjun Rao",
       SESSION_KEY: "e2e-session-key-that-is-long-enough-000000",
       ADMIN_PASSPHRASE_HASH: e2ePassphraseHash(),
       NEXT_TELEMETRY_DISABLED: "1",

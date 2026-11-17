@@ -1,4 +1,5 @@
 import { copy } from "@/copy";
+import { ClosedSeal } from "@/components/ClosedSeal";
 import { Heading } from "@/components/Heading";
 import { Panel } from "@/components/Panel";
 import { ClosingActions } from "./ClosingActions";
@@ -7,6 +8,7 @@ import { ClosingActions } from "./ClosingActions";
 export function Closing({ token }: { token: string }) {
   return (
     <main className="closing">
+      <ClosedSeal />
       <Panel labelledBy="closing-heading">
         <Heading as="h1" id="closing-heading">
           {copy["4.5"]}
@@ -22,6 +24,7 @@ export function Closing({ token }: { token: string }) {
 export function DayPassed() {
   return (
     <main className="closing">
+      <ClosedSeal />
       <Panel labelledBy="day-passed-heading">
         <Heading as="h1" id="day-passed-heading">
           {copy["4.13"]}

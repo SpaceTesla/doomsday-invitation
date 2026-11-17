@@ -11,5 +11,7 @@ describe("the long-name rule", () => {
   });
   it("steps down once when a single word is wider than the line", () => {
     expect(decideFit(1, true)).toBe("step");
+    // A name on several lines with a word still too wide takes both.
+    expect(decideFit(2, true)).toBe("two-lines step");
   });
 });

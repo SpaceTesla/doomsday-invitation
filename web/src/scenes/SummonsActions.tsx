@@ -10,32 +10,35 @@ import { GuestMessageLine, useGuestAction } from "@/components/guest/useGuestAct
 /** "Take your seat", and the quiet control to decline, confirmed first. */
 export function SummonsActions({ token }: { token: string }) {
   const action = useGuestAction(token, { changesStage: true });
+  // Declining is a step back: the iris runs in reverse.
+  const refusal = useGuestAction(token, { changesStage: true, back: true });
+  const busy = action.busy || refusal.busy;
   const [confirming, setConfirming] = useState(false);
 
   async function decline() {
     // Close the dialog first: it sits in the top layer, above the iris that follows.
     setConfirming(false);
-    await action.run("POST", "decline");
+    await refusal.run("POST", "decline");
   }
 
   return (
     <>
       <div className="sm-act">
-        <Button onClick={() => action.run("POST", "accept")} disabled={action.busy}>
+        <Button onClick={() => action.run("POST", "accept")} disabled={busy}>
           {copy["3.10"]}
         </Button>
-        <QuietControl onClick={() => setConfirming(true)} disabled={action.busy}>
+        <QuietControl onClick={() => setConfirming(true)} disabled={busy}>
           {copy["3.11"]}
         </QuietControl>
       </div>
-      <GuestMessageLine message={action.message} busy={action.busy && !confirming} />
+      <GuestMessageLine message={action.message ?? refusal.message} busy={busy && !confirming} />
       <ConfirmDialog
         open={confirming}
         heading={copy["4.1"]}
         text={copy["4.2"]}
         confirmLabel={copy["4.3"]}
         cancelLabel={copy["4.4"]}
-        busy={action.busy}
+        busy={busy}
         onConfirm={decline}
         onCancel={() => setConfirming(false)}
       />

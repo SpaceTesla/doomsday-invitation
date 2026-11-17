@@ -29,7 +29,7 @@ If documents conflict, the product spec governs behaviour, the copy deck wording
 
 ## Stack
 
-Next.js (App Router), React, TypeScript strict, Tailwind CSS v4, GSAP, Howler, Zod, Drizzle ORM with `pg`, Neon PostgreSQL, Vercel, Vitest, Playwright. Details and reasons are in the architecture document. Do not change the stack.
+Next.js (App Router), React, TypeScript strict, Tailwind CSS v4, GSAP, the Web Audio API (Howler until 17 November 2026), Zod, Drizzle ORM with `pg`, Neon PostgreSQL, Vercel, Vitest, Playwright. Details and reasons are in the architecture document. Do not change the stack.
 
 ## How to work
 

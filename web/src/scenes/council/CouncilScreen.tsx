@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { copy } from "@/copy";
-import { play, room } from "@/lib/sound";
+import { morph } from "@/lib/morph";
+import { play, scoreDecree } from "@/lib/sound";
 import { Button } from "@/components/Button";
 import { Figure } from "@/components/Figure";
 import { Heading } from "@/components/Heading";
@@ -11,7 +12,7 @@ import { CuirassTile, SealMark, SuitRune } from "@/components/Mark";
 import { QuietControl } from "@/components/QuietControl";
 import { GuestList } from "./GuestList";
 import { LeaveControl } from "./LeaveControl";
-import { MantleSection } from "./MantleSection";
+import { MantleSection, type Claim } from "./MantleSection";
 import { ProposalSection } from "./ProposalSection";
 import type { CouncilData } from "./types";
 
@@ -55,7 +56,6 @@ const subscribeLater = (listener: () => void) => {
  */
 export function CouncilScreen({ data }: { data: CouncilData }) {
   const marked = useRef(false);
-  const body = useRef<HTMLDivElement>(null);
   const stepPanel = useRef<HTMLDivElement>(null);
   const later = useSyncExternalStore(
     subscribeLater,
@@ -63,12 +63,32 @@ export function CouncilScreen({ data }: { data: CouncilData }) {
     () => false,
   );
   const [picked, setPicked] = useState<Step | null>(null);
-
-  // The hall's room tone while the council is on screen, if the guest chose sound.
-  useEffect(() => {
-    room(true);
-    return () => room(false);
+  // A claim the server has confirmed, while its beat plays on step two.
+  const [claim, setClaim] = useState<Claim | null>(null);
+  // When the beat ends, the guest's mantle moves into their own row of the council's list,
+  // where their name and their mantle stand together (design/DESIGN.md, 8.18).
+  const claimShown = useCallback(() => {
+    morph(
+      document.querySelector(".cn-yours-wrap"),
+      () => {
+        setClaim(null);
+        setPicked(null);
+      },
+      () => {
+        // The step has opened at the top of the room; bring the guest's row into view so
+        // the mantle is seen arriving in it.
+        const row = document.querySelector(".cn-guest.is-you .cn-guest-mantle");
+        row?.scrollIntoView({ block: "nearest" });
+        return row;
+      },
+    );
   }, []);
+
+  // Once Doom has decreed, the council's score gains its crown.
+  useEffect(() => {
+    scoreDecree(data.decreed);
+    return () => scoreDecree(false);
+  }, [data.decreed]);
 
   // The notices on this load have been seen: they will not show again.
   useEffect(() => {
@@ -90,7 +110,7 @@ export function CouncilScreen({ data }: { data: CouncilData }) {
 
   // After the decree the page opens on it; otherwise on the first unanswered step.
   const first: Step = data.decreed || !proposalDone ? 1 : !mantleDone ? 2 : 3;
-  const step: Step = picked !== null && reachable(picked) ? picked : first;
+  const step: Step = claim ? 2 : picked !== null && reachable(picked) ? picked : first;
 
   // A new step: bring it into view, give it focus, and turn the detent.
   const shown = useRef(step);
@@ -98,14 +118,15 @@ export function CouncilScreen({ data }: { data: CouncilData }) {
     if (shown.current === step) return;
     shown.current = step;
     play("detent");
-    body.current?.scrollIntoView({ block: "start", behavior: "auto" });
+    // Back to the top of the room: the hall, the title and the steps, then the new step.
+    window.scrollTo({ top: 0, behavior: "auto" });
     stepPanel.current?.focus({ preventScroll: true });
   }, [step]);
 
   const go = useCallback((n: Step) => setPicked(n), []);
 
   return (
-    <div className="cn-body" ref={body}>
+    <div className="cn-body">
       <nav className="cn-steps" aria-label={copy["6.13"]}>
         <ol>
           {STEPS.map(({ n, label }) => {
@@ -155,16 +176,16 @@ export function CouncilScreen({ data }: { data: CouncilData }) {
             <ProposalSection data={data} />
           </>
         ) : step === 2 ? (
-          <MantleSection data={data} onClaimed={() => setPicked(null)} />
+          <MantleSection data={data} claim={claim} onClaimed={setClaim} onClaimShown={claimShown} />
         ) : (
           <>
             <Heading as="h2">{copy["6.16"]}</Heading>
-            <GuestList guests={data.guests} />
+            <GuestList guests={data.guests} doomName={data.doomName} />
             {data.decreed ? null : <LeaveControl token={data.token} />}
           </>
         )}
 
-        {step === 2 && !mantleDone ? (
+        {claim ? null : step === 2 && !mantleDone ? (
           <div className="cn-step-next">
             <QuietControl
               onClick={() => {

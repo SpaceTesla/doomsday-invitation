@@ -37,7 +37,7 @@ One application, one database, one scheduled job. Everything a guest sees move r
 | UI | React, TypeScript in strict mode | Server Components for reads, Client Components for scenes and controls |
 | Styling | Tailwind CSS v4, CSS custom properties, hand-written CSS | Section 6 |
 | Motion | GSAP with its React hook; CSS for simple motion | Client only |
-| Sound | Howler | Client only |
+| Sound | The browser's Web Audio API, through `web/src/lib/sound.ts` (Howler until 17 November 2026: it could not keep the score's layers on one clock, nor hold a one-shot until its file arrived) | Client only. No dependency |
 | Database | Neon PostgreSQL | |
 | Data access | Drizzle ORM over `pg` (node-postgres); Drizzle Kit migrations | Section 4.4 explains the driver choice |
 | Validation | Zod | |
@@ -318,6 +318,7 @@ Tests never touch Neon's production branch: they use a container that exists onl
 | `SESSION_KEY` | Signs the session cookie |
 | `CRON_SECRET` | Protects the retention endpoint |
 | `EVENT_TIMEZONE` | IANA time zone of the event: `Asia/Kolkata`. It seeds `event.timezone` when the event row is created; from then on the column is the source |
+| `DOOM_NAME` | Optional. The name of the person who summons the guests as Doom, shown beneath Doctor Doom on the council's guest list. Not a secret, but kept out of the repository |
 | `NEON_DATABASE_URL`, `NEON_DATABASE_URL_DIRECT` | Local only. The Neon strings, read by `npm run db:check` and nothing else |
 
 `web/.env.example` lists them. `web/.env.local` holds local values and is not committed; `npm run env:setup` creates it without printing a value. Locally, `DATABASE_URL` and `DATABASE_URL_DIRECT` both point at the Docker database. Preview and production values are set in Vercel's project settings.
@@ -499,7 +500,7 @@ Later, during the build: your ear on the sounds in milestone 5, and the content 
 
 ## 15. Summary
 
-- **Architecture.** One Next.js application deployed natively on Vercel, one Neon PostgreSQL database, one daily Vercel Cron job. Assets are served from `web/public/`. Tailwind v4 for layout over CSS tokens; GSAP and Howler in the browser.
+- **Architecture.** One Next.js application deployed natively on Vercel, one Neon PostgreSQL database, one daily Vercel Cron job. Assets are served from `web/public/`. Tailwind v4 for layout over CSS tokens; GSAP and the Web Audio API in the browser.
 - **Key decisions.** Character uniqueness is a database constraint, and a claim is a single statement whose conflict is returned as a 409. Multi-step changes are Drizzle transactions. One driver, `pg`, in production and in tests, over Neon's pooled connection. No middleware, no extra services. The domain module is free of framework code and tested against real PostgreSQL.
 - **Expected cost.** Nothing on Vercel Hobby and Neon Free, plus a domain if you want one.
 - **Blocking implementation.** Nothing. I need the three accounts and the time zone to start milestone 0.

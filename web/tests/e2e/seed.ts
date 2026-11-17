@@ -3,7 +3,7 @@ import { Pool } from "pg";
 import { addCharacter, claimCharacter } from "@/domain/characters";
 import { ensureEvent } from "@/domain/event";
 import { accept, addGuest, decline, recordOpeningPlayed, type Title } from "@/domain/guests";
-import { approve, finalise, setProposal } from "@/domain/proposal";
+import { amendPlan, approve, finalise, setProposal } from "@/domain/proposal";
 import { zonedInstant } from "@/domain/time";
 
 const URL =
@@ -67,6 +67,21 @@ export async function seed(
       await pool.query("update event set proposal_at = now() - interval '2 days' where id = 1");
     }
     return links;
+  } finally {
+    await pool.end();
+  }
+}
+
+/** Doom amends the decree to another day: guests are shown the amended decree. */
+export async function amendDecree() {
+  const pool = new Pool({ connectionString: URL });
+  try {
+    const result = await amendPlan(
+      { db: drizzle(pool) },
+      zonedInstant(TZ, YEAR, 1, 9, 20, 0),
+      "the Grand Cinema",
+    );
+    if (!result.ok) throw new Error(result.reason);
   } finally {
     await pool.end();
   }

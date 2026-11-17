@@ -1,0 +1,191 @@
+/* PROPOSED creative refinements: review sketches only. Not application code.
+   The tokens and components below are copied from web/src/styles (tokens, type, surfaces,
+   scenes) so the sketches are built from the approved parts; additions are marked NEW. */
+@font-face { font-family: "Pirata One"; src: url("../../../../web/src/fonts/pirata-one-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cinzel"; font-weight: 500; src: url("../../../../web/src/fonts/cinzel-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Orbitron"; font-weight: 600; src: url("../../../../web/src/fonts/orbitron-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 500; src: url("../../../../web/src/fonts/cormorant-garamond-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 500; font-style: italic; src: url("../../../../web/src/fonts/cormorant-garamond-latin-500-italic.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 700; src: url("../../../../web/src/fonts/cormorant-garamond-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 700; font-style: italic; src: url("../../../../web/src/fonts/cormorant-garamond-latin-700-italic.woff2") format("woff2"); }
+
+:root {
+  --c-night: #0a0d12; --c-olive-black: #10130c; --c-plate: #1a2020; --c-gunmetal: #252c2c;
+  --c-dark-steel: #5a6462; --c-steel: #96a19e; --c-silver: #d9dedc; --c-emerald-deep: #0e5a40;
+  --c-emerald: #1f8f63; --c-emerald-light: #4fc395; --c-bronze: #7d5f2c; --c-gold: #c6a75e;
+  --c-gold-light: #e4cb8c; --c-off-text: #6c7674; --c-off-border: #333b3a; --c-off-mark: #4c5553;
+  --c-holder: #7f8a88; --c-well: #0c100f; --c-well-edge: #333c3a; --c-panel-border: #3a4341; --c-row-rule: #1d2422;
+  --f-display: "Pirata One", serif; --f-serif: "Cinzel", serif; --f-tech: "Orbitron", sans-serif; --f-body: "Cormorant Garamond", serif;
+  --t-title: 2.5rem; --t-heading: 1.875rem; --t-procl: 1.25rem; --t-expl: 1.125rem; --t-well: 1.125rem;
+  --t-name: 1.375rem; --t-holder: 0.9375rem; --t-label: 0.71875rem; --t-button: 0.875rem; --tap: 44px;
+  --art: "../../../../web/public/art/";
+}
+.desktop { --t-title: 3.25rem; --t-heading: 2.125rem; --t-procl: 1.375rem; --t-expl: 1.1875rem; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #000; color: var(--c-silver); }
+body { font-family: var(--f-body); -webkit-font-smoothing: antialiased; }
+
+/* the viewport being sketched */
+.vp { position: relative; overflow: hidden; background: var(--c-olive-black); }
+.phone .vp { width: 390px; height: 844px; }
+.desktop .vp { width: 1440px; height: 900px; }
+
+/* ---- type (type.css) ---- */
+.hd { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: var(--t-heading); line-height: 1.05; color: var(--c-gold-light); }
+.hd--title { font-size: var(--t-title); line-height: 1; }
+.t-faction { margin: 0; font-family: var(--f-serif); font-weight: 500; font-size: var(--t-expl); line-height: 1.3; letter-spacing: 0.04em; color: var(--c-gold); }
+.t-holder { font-family: var(--f-serif); font-weight: 500; font-size: var(--t-holder); line-height: 1.25; letter-spacing: 0.04em; color: var(--c-steel); }
+.fig { font-family: var(--f-serif); font-weight: 500; font-size: 1.02em; line-height: 1; color: var(--c-silver); }
+.lbl { font-family: var(--f-tech); font-weight: 600; font-size: var(--t-label); line-height: 1; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-steel); }
+.t-expl { margin: 0; font-family: var(--f-body); font-weight: 500; font-size: var(--t-expl); line-height: 1.4; color: var(--c-silver); }
+.t-procl { margin: 0; font-family: var(--f-body); font-style: italic; font-weight: 500; font-size: var(--t-procl); line-height: 1.35; color: var(--c-silver); }
+
+/* ---- marks ---- */
+.mk { display: block; flex: none; width: 1.5rem; height: 1.5rem; color: var(--c-steel); }
+.mk--stroke { stroke: currentColor; } .mk--fill { fill: currentColor; }
+.mk--gold { color: var(--c-gold); } .mk--emerald { color: var(--c-emerald-light); } .mk--dim { color: var(--c-off-mark); }
+
+/* ---- surfaces (surfaces.css) ---- */
+.btn-plate { position: relative; display: inline-flex; align-items: center; gap: 0.7em; min-height: var(--tap); padding: 0.82em 1.5em 0.82em 1em;
+  font: 600 var(--t-button)/1 var(--f-tech); letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-silver);
+  background: linear-gradient(#2a3232, #171c1c); border: 1px solid var(--c-dark-steel); border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 .5em 1.2em rgba(0,0,0,.5); }
+.btn-plate::after { content: ""; position: absolute; inset: 3px; border: 1px dotted rgba(198,167,94,.55); }
+.btn-plate .mk { width: 1.7em; height: 1.7em; }
+.btn-plate.is-done { border-color: var(--c-emerald); color: var(--c-emerald-light); }
+.btn-plate.is-done .mk { color: var(--c-emerald-light); }
+.link-quiet { display: inline-flex; align-items: center; min-height: var(--tap); font: 600 var(--t-label)/1 var(--f-tech); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--c-steel); text-decoration: underline; text-decoration-color: rgba(150,161,158,.5); text-underline-offset: .3em; }
+.panel-plate { position: relative; padding: 26px 28px 24px; background: linear-gradient(#232a2a, #151a1a); border: 1px solid var(--c-panel-border);
+  border-radius: 2px; box-shadow: inset 0 1px 0 rgba(255,255,255,.1); }
+.panel-plate::after { content: ""; position: absolute; inset: 6px; border: 1px dotted rgba(198,167,94,.5); pointer-events: none; }
+.panel-well { margin-top: 16px; padding: 14px 16px; background: var(--c-well); border-top: 1px solid #000; border-bottom: 1px solid var(--c-well-edge);
+  font: 500 var(--t-well)/1.4 var(--f-body); color: var(--c-steel); }
+.panel-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 20px; }
+.sound-control { position: absolute; top: 8px; right: 16px; z-index: 50; padding: 0 6px; background: rgba(10,13,18,.55); border-radius: 2px; }
+
+/* ---- council (scenes.css) ---- */
+.cn-steps ol { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); margin: 0; padding: 0; list-style: none; }
+.cn-step-tab { display: grid; justify-items: center; gap: 7px; padding: 10px 4px 12px; border-bottom: 2px solid var(--c-off-border); color: var(--c-steel); }
+.cn-step-head { display: flex; align-items: center; gap: 8px; }
+.cn-step-tab .mk { width: 22px; height: 22px; }
+.cn-step-n { font: 500 var(--t-expl)/1 var(--f-serif); }
+.cn-step-tab.is-done { border-bottom-color: var(--c-emerald); }
+.cn-step-tab.is-current { border-bottom-color: var(--c-gold); color: var(--c-gold-light); }
+.cn-step-tab.is-current .lbl { color: var(--c-gold-light); }
+.cn-step-tab.is-off .lbl { color: var(--c-off-text); }
+.cn-chars { display: grid; gap: 12px; margin: 12px 0 0; padding: 0; list-style: none; }
+.cn-char { position: relative; display: grid; grid-template-columns: 26px minmax(0,1fr) auto; align-items: center; gap: 4px 12px; min-height: var(--tap);
+  padding: 16px 18px 15px 16px; background: linear-gradient(#2a3232, #171c1c); border: 1px solid var(--c-dark-steel); border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12); overflow: hidden; }
+.cn-char::after { content: ""; position: absolute; inset: 3px; border: 1px dotted rgba(198,167,94,.5); }
+.cn-char .mk { width: 24px; height: 24px; }
+.cn-cname { font: 500 var(--t-name)/1.15 var(--f-serif); letter-spacing: .03em; color: var(--c-silver); position: relative; }
+.cn-holder { grid-column: 2/4; font: 500 var(--t-holder)/1.25 var(--f-serif); letter-spacing: .04em; color: var(--c-holder); }
+.cn-char.is-taken { background: none; border-color: var(--c-off-border); box-shadow: none; }
+.cn-char.is-taken::after { border-color: rgba(150,161,158,.2); }
+.cn-char.is-taken .cn-cname { color: var(--c-holder); }
+.cn-char.is-yours { border-color: var(--c-emerald); }
+.cn-char.is-yours .lbl { color: var(--c-emerald-light); }
+.cn-guest { position: relative; display: grid; grid-template-columns: 24px minmax(0,1fr); align-items: center; gap: 2px 12px; padding: 12px 0; border-top: 1px solid var(--c-row-rule); }
+.cn-guest:first-child { border-top: 0; }
+.cn-guest-head { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; }
+.cn-guest-name { flex: 1 1 auto; font: 500 1.125rem/1.2 var(--f-serif); letter-spacing: .03em; color: var(--c-silver); }
+.cn-guest-tags { display: flex; gap: 10px; margin-left: auto; }
+.cn-guest .mk { width: 22px; height: 22px; }
+.cn-guest-mantle { grid-column: 2; margin: 0; font: 500 var(--t-holder)/1.25 var(--f-serif); letter-spacing: .04em; color: var(--c-steel); }
+.cn-guest-mantle.none { font: 500 1.0625rem/1.3 var(--f-body); letter-spacing: 0; color: var(--c-silver); }
+.cn-guest.is-you::before { content: ""; position: absolute; left: -16px; top: 0; bottom: 0; width: 2px; background: var(--c-gold-light); }
+
+/* ===================================================== NEW: proposed additions ===== */
+
+/* Doomscript, engraved: dark steel cut into steel, a highlight under each stroke. */
+.runes { display: block; height: 1em; width: auto; max-width: 100%; overflow: visible; }
+.runes path, .runes circle { fill: #0b0f0e; filter: drop-shadow(0 0.04em 0 rgba(255,255,255,.14)); transition: fill .25s linear; }
+.runes.on path, .runes.on circle, .runes path.on { fill: var(--c-emerald-light); filter: drop-shadow(0 0 .18em rgba(79,195,149,.55)); }
+.runes.on-plain path { fill: var(--c-emerald-light); filter: none; }
+/* on a dark ground (no steel to cut into) the engraved state is a dark steel line */
+.runes.on-ground path, .runes.on-ground circle { fill: #39423f; filter: none; }
+
+/* The rune band of DESIGN.md 2.4: runes between a dotted line and a rule. */
+.rune-band { display: grid; gap: 7px; margin: 0 0 16px; }
+.rune-band .dots { height: 1px; border-top: 1px dotted rgba(198,167,94,.55); }
+.rune-band .rule { height: 1px; background: #0b0f0e; box-shadow: 0 1px 0 rgba(255,255,255,.08); }
+.rune-band .runes { height: 13px; margin: 0 auto; }
+.desktop .rune-band .runes { height: 15px; }
+
+/* corner bolts (bolt mark, gold) on the one principal panel of a step */
+.bolted { --b: 11px; }
+.bolted > .bolt { position: absolute; width: var(--b); height: var(--b); z-index: 2; }
+.bolted > .bolt.tl { left: -4px; top: -4px; } .bolted > .bolt.tr { right: -4px; top: -4px; }
+.bolted > .bolt.bl { left: -4px; bottom: -4px; } .bolted > .bolt.br { right: -4px; bottom: -4px; }
+
+/* brushed steel: the summons plate's own grain, very faint, under the panel gradient */
+.steel { background-image: linear-gradient(rgba(35,42,42,.9), rgba(21,26,26,.93)), var(--grain); background-size: auto, 900px auto; }
+
+/* ---- the hall as the council's room ---- */
+.hall { position: absolute; inset: 0; overflow: hidden; }
+.hall .cam { position: absolute; left: 0; top: 0; width: 100%; transform-origin: 50% 40%; }
+.phone .hall .cam { aspect-ratio: 780 / 1688; }
+.desktop .hall .cam { width: 1600px; left: -80px; aspect-ratio: 16 / 9; }
+.hall .cam img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hall .unlit { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, rgba(6,10,8,.88) 55%, rgba(6,10,8,.7) 80%, transparent);
+  mix-blend-mode: multiply; }
+.hall .glow { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, rgba(79,195,149,.55), rgba(31,143,99,.22) 55%, transparent);
+  mix-blend-mode: screen; opacity: 0; }
+.hall .wash { position: absolute; inset: 0; background: radial-gradient(70% 40% at 50% 80%, rgba(79,195,149,.18), transparent 70%); mix-blend-mode: screen; opacity: 0; }
+.hall .shade { position: absolute; inset: 0; pointer-events: none; }
+.hall .dark { position: absolute; inset: 0; background: #050806; opacity: 0; }
+
+/* the circle's position in each painting (measured from the green pixels) */
+.phone .circle { left: -7%; width: 114%; top: 66.3%; height: 17.6%; }
+.desktop .circle { left: 14.4%; width: 69%; top: 75.2%; height: 22%; }
+
+/* the council content over the hall */
+.cn-scroll { position: absolute; inset: 0; overflow: hidden; }
+.cn-title { text-align: center; }
+.cn-title .hd { text-shadow: 0 0 .6em rgba(4,7,6,.95), 0 0 1.4em rgba(4,7,6,.8); }
+.phone .cn-col { position: absolute; left: 0; right: 0; padding: 0 16px; }
+.desktop .cn-col { position: absolute; left: 50%; width: 736px; margin-left: -368px; }
+.cn-steps { background: linear-gradient(rgba(10,13,11,.0), rgba(10,13,11,.72) 30%, rgba(10,13,11,.82)); }
+.cn-step-tab .lbl { text-shadow: 0 1px 2px #000; }
+
+/* proposed principal panels */
+.panel-plate.principal { box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 18px 40px rgba(0,0,0,.55); }
+
+/* mantle: factions as rolls */
+.roll { position: relative; margin-top: 26px; padding: 14px 12px 12px; background: rgba(12,16,15,.82); border-top: 1px solid #000; border-bottom: 1px solid var(--c-well-edge); }
+.roll-head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
+.roll-head::before, .roll-head::after { content: ""; height: 1px; border-top: 1px dotted rgba(198,167,94,.55); }
+.roll .cn-chars { margin-top: 12px; gap: 10px; }
+
+/* mantle: the guest's own plate */
+.yours { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 6px 18px; }
+.yours .big { width: 76px; height: 76px; }
+.desktop .yours .big { width: 96px; height: 96px; }
+.yours-name { font: 500 1.875rem/1.1 var(--f-serif); letter-spacing: .03em; color: var(--c-silver); }
+.desktop .yours-name { font-size: 2.25rem; }
+
+/* claim beat */
+.cn-char .fill { position: absolute; inset: 0; background: rgba(31,143,99,.5); transform-origin: 0 50%; transform: scaleX(0); }
+.claim-line { text-align: center; margin: 18px 0 0; }
+
+/* decree */
+.decree { text-align: center; }
+.decree .issuer { width: 74px; height: auto; margin: 0 auto 10px; display: block; }
+.desktop .decree .issuer { width: 92px; }
+.decree .hd { font-size: var(--t-title); }
+.decree .day { font: italic 500 1.625rem/1.25 var(--f-body); color: var(--c-silver); margin: 14px 0 0; }
+.decree .venue { font: italic 500 1.375rem/1.3 var(--f-body); color: var(--c-silver); margin: 6px 0 0; }
+.desktop .decree .day { font-size: 2.125rem; }
+.desktop .decree .venue { font-size: 1.625rem; }
+.decree .sanction { font: italic 700 1.25rem/1.35 var(--f-body); margin: 18px 0 0; }
+.decree .sig { margin: 18px auto 0; height: 12px; }
+.decree .sig .runes { height: 12px; margin: 0 auto; }
+.light-band { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(242,232,176,.0) 40%, rgba(242,232,176,.35) 50%, rgba(201,168,94,.0) 60%, transparent); }
+
+/* labels on sketches: so nobody mistakes a sketch for the product */
+.tag-proposed { position: absolute; left: 8px; bottom: 8px; z-index: 99; font: 600 10px/1 var(--f-tech); letter-spacing: .12em; text-transform: uppercase;
+  color: #0a0d12; background: #e4cb8c; padding: 5px 7px; border-radius: 2px; opacity: .92; }
+.tag-proposed.placeholder { background: #e0806f; }

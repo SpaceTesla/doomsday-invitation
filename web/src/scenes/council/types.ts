@@ -23,6 +23,8 @@ export type CouncilData = {
     holder: string | null;
     isYours: boolean;
   }[];
+  /** Who summons the guests as Doom, by name; null when the owner has not set it. */
+  doomName: string | null;
   guests: {
     name: string;
     status: "summoned" | "seated" | "declined";

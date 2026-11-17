@@ -556,6 +556,24 @@ These govern the project's own marks: Doom's, Latveria's and the interface's. Ch
 - Colour by role: gold when Doom issues something, emerald when something is active, steel otherwise.
 - Icons shown in use on the board: mask level 1 for the council, suit rune level 1 for the roster, the seal mark for the summons and for primary actions.
 
+### 4.8 Doomscript placements (Approved 17 November 2026)
+
+Each approved inscription has one place and one meaning (`design/EXPERIENCE_AUDIT.md`, 5.2). Engraved runes are dark steel; Emerald light means a state has been reached.
+
+| Inscription | Place | Lit when |
+|---|---|---|
+| viktor von doom | Doom's signature: under the opening line (unchanged), and under the decree | The decree is issued |
+| there is no promise of tomorro | The rune band of the proposal's panel | The guest's approval stands |
+| to the viktor go the spoils | The rune band of the mantle's panel | The guest holds a mantle |
+| justice, revenge | Either side of the council title, wide screens only | Never |
+| latveria | Under the dormant seal on the closed screens | Never |
+
+The rules:
+- At most one inscription is lit on a screen.
+- Doomscript never replaces readable text, and never appears in a field, a list, a well or a dialog.
+- No new phrase and no invented rune.
+- When an inscription lights at the moment of the act, its runes light one by one in reading order, 75 ms apart; otherwise it is simply shown lit.
+
 ### 4.7 Character emblems (Approved rules, 16 November 2026; no emblem drawn yet)
 
 Rules for the marks of the characters a guest can claim. You set them in your brief of 16 November 2026. The research behind each character's concept is in `research/research_notes/character_visual_identity_research.md`. Characters are still shown by name only in the first version (section 8.6). These rules apply if emblems are made.
@@ -710,6 +728,8 @@ A taken character's name is set in `#7F8A88` (the holder's colour), not `#6C7674
 
 The board draws the pressed state as a partial fill ("Held: the plate fills"). A button acts on an ordinary press, and the fill is feedback only (**Decided**). No action requires holding.
 
+Hover states apply only on screens that can hover (`@media (hover: hover)`), so on a phone a tapped control does not stay lit as though hovered; focus and pressed states apply everywhere (17 November 2026, polish pass).
+
 Feedback is immediate. Do not delay an action to finish an animation.
 
 ### 6.6 Doomscript and mechanism animation (Carried over; storyboarded as stills only)
@@ -717,15 +737,15 @@ Feedback is immediate. Do not delay an action to finish an animation.
 | Beat | What happens | Timing |
 |---|---|---|
 | Doomscript wakes | The seal's three bands turn to register, each at its own speed, with no bounce. Once they lock, the runes go from engraved to lit in reading order | Bands 0.7 to 1.1 s; runes 60 to 90 ms each |
-| The summons is revealed | The plate parts on a centre seam like a vault door, light in the gap, and closes as one plate bearing the guest's name | 1.2 s open, 0.8 s close |
-| Between stages | The centre of the seal opens like an iris onto the next scene. Going back runs it in reverse. Every change of scene uses this one transition | 0.9 s |
+| The summons is revealed | **Superseded 17 November 2026** (the split plate, which parted and closed as one plate). Now: heavier outer doors stand before the summons, locked by the raised suit rune (suit rune level 3). The lock presses in and releases first (a detent); the doors part fully, coming slightly forward and casting their shadow, and stay open (plate-part); light enters the gap. A band of light then passes across the plate and the words appear in its wake. Then the seal wakes, as above. The full reveal plays on the first arrival in a browser session; later arrivals get the light alone. Any key or tap skips to the end; reduced motion is a 0.2 s cross-fade | Lock 0.3 to 0.9 s; doors 0.95 to 2.4 s; light 1.75 to 3.25 s; the seal from 3.3 s |
+| Between stages | The centre of the seal opens like an iris onto the next scene. Going back (declining, leaving) runs it in reverse: the dark closes in from the edges and withdraws to the centre (**built 17 November 2026**). Every change of scene uses this one transition, with the seal-turn sound. The iris begins to close as the guest presses, while the answer is on its way, and opens again on the same scene if the action fails. It opens on the new scene only once that scene is laid out and its pictures decoded (at most 0.7 s more); each scene fetches the next scene's art ahead once it has settled (**17 November 2026**, for smoothness) | 0.9 s |
 
-These three have never been built or seen in motion. Treat the timings as starting values.
+The doors are composed from approved material only: the shared brushed-steel tile (baked from the summons plate's blank steel, `web/public/art/steel.webp`), the bolt mark, and the suit rune relief (`web/public/art/door-lock.webp`, reduced from `design/explorations/assets/v2/suit-rune-level-3.png`). The review sketch's placeholder door face is not used. `web/scripts/bake-materials.py` remakes both files. Reference: `design/explorations/creative-refinement-1/`.
 
 ### 6.7 Ambient movement
 
 - **Opening:** the ash loop only.
-- **Hall:** none in the first version (**Decided**). The hall is a still image.
+- **Hall:** ~~none in the first version (**Decided**)~~ **Superseded 17 November 2026** (section 8.13): a one-time arrival when the council first opens in a browser session (about 2.9 s; a short fade on later loads), and a brief answer from the floor circle to a meaningful action. Doom never moves. No loops: after the arrival the hall is still.
 - No flicker anywhere.
 - **The ash stops.** It fades to stillness after the text has appeared: begin about three seconds after the two actions are on screen, and fade over about one second (**Decided**; the two durations are starting values). As sketched on the board it runs for as long as the opening is on screen, and accessibility guidance (WCAG 2.2.2) asks that movement which starts by itself and lasts more than five seconds can be stopped. A motion control for the guest is a could-have (`PRODUCT_SPEC.md`, section 4.3).
 
@@ -758,9 +778,9 @@ The first board also specified sounds for its own opening (room tone stopping de
 Limits, all in force:
 
 - Nothing plays before the guest's first action.
-- No music bed.
+- ~~No music bed.~~ **Superseded 17 November 2026:** one continuous score, Score A, a drone with no melody (section 6.12).
 - No voice. Doom's lines appear as type. No actor is imitated.
-- Every sound is under two seconds except the hum and the room.
+- Every sound is under two seconds except the hum and the room. **Refined 17 November 2026:** every one-shot is under two and a half seconds; the hum and the room are retired, replaced by the score.
 
 ### 6.9 Audio controls and silent mode
 
@@ -770,6 +790,43 @@ Limits, all in force:
 - The guest's choice should be remembered for the rest of their visit, and sound must never restart by itself.
 - Sound fades out when the tab is hidden.
 - No sound on hover or on scroll.
+
+### 6.12 The score and the sound refinements (Approved 17 November 2026)
+
+Approved after listening to the review prototypes (`design/explorations/creative-refinement-1/audition.html`): **Score A**, a restrained drone with no melody, in A with a darkening flattened second (B flat). Dark, regal, ominous, industrial; no fantasy melody and no power-up sound.
+
+| Layer | What it is | Heard |
+|---|---|---|
+| Foundation (`score-foundation`) | The low drone (A and E), bowed metal swelling, the B flat once a loop | From the summons onwards |
+| Hall (`score-hall`) | Moving air and a few high glass tones | In the council |
+| Crown (`score-crown`) | Low brass swells, the open fifth | Once Doom has decreed |
+
+- **One clock.** The layers are 64-second stems that start together and loop in step, each copy overlapping the next by 0.08 s. A change of scene only changes which layers are heard (fading over 2.5 s); the music never restarts.
+- **Silence.** The opening is silent, by rule. The closing screens fade the score to silence over 4 s and stay silent.
+- **Levels.** The score sits about 10 dB under the one-shots. Most of its audible energy is above 200 Hz, so a phone's own speaker plays it.
+- **Adjusting it.** Every level, layer, stage and fade is in `web/src/lib/score.ts`. The stems are synthesised by `web/scripts/make-score.py` and encoded by `web/scripts/encode-sounds.sh`.
+
+The one-shots after the refinement:
+
+| Sound | Standing | Where |
+|---|---|---|
+| `seal-turn` | Kept | The iris, forwards and backwards |
+| `detent` | Kept | The seal's bands locking; a council step; the doors' lock releasing |
+| `rune-tick` | Kept, fixed | One per rune, 75 ms apart on the audio clock (before, every tick sounded at the same instant) |
+| `plate-part` | Kept, re-timed | The summons' outer doors opening |
+| `claim` | Provisional | A mantle claimed: the detent, then a short low resonance on A |
+| `decree` | Provisional | The decree issued: a heavy low close, a struck plate ringing on A |
+| `hum` | Retired | Replaced by the score. The file is kept as source, not loaded |
+| `hall-room` | Retired | Replaced by the score's hall layer. Kept, not loaded |
+| `plate-close` | Retired | The doors stay open, so it has no moment. Kept, not loaded |
+
+Consent, unchanged and enforced in `web/src/lib/sound.ts`:
+
+- Nothing loads or plays before the guest chooses sound.
+- The choice is a press, and the press unlocks the audio engine.
+- A one-shot asked for while its file is still loading plays as soon as it arrives, within 1.2 s, so the first scene change is heard.
+- SOUND OFF stops music and effects at once.
+- Sound never turns itself back on after the guest has chosen silence.
 
 ### 6.10 Reduced motion
 
@@ -872,7 +929,7 @@ Approved components are documented from the boards. The council's layout is **ap
 
 ### 8.2 Quiet control (Carried over)
 
-An underlined label in Orbitron 600, capitals, letter-spacing 0.08 em, at 0.8 of the button's size, Steel, underline at 50% opacity and 0.3 em below the text. Silver on hover. Used for the alternative to a primary action: "Go without sound", "Propose another".
+An underlined label in Orbitron 600, capitals, letter-spacing 0.08 em, at 0.8 of the button's size, Steel, underline at 50% opacity and 0.3 em below the text. Silver on hover. Pressed, Silver with its underline at full opacity, so a tap is seen on a phone (17 November 2026). Used for the alternative to a primary action: "Go without sound", "Propose another".
 
 ### 8.3 Panel (Carried over)
 
@@ -986,6 +1043,7 @@ Because the mechanism may change after the first version (`PRODUCT_SPEC.md`, sec
 - Rows are separated by the well's own edges. No cards inside the panel.
 - The guest's own row is marked with a Gold light rule at its left edge and the word "You".
 - Doom heads the list as its sovereign, with the mask at level 1, and is not counted among the seats.
+- Beneath "Doctor Doom", where a guest's row shows their mantle, Doom's row shows the name of the person who summons the guests as Doom, in Cinzel in Steel (added 17 November 2026). It comes from the setting `DOOM_NAME`; when that is unset the row shows Doom alone.
 
 ### 8.10 Dialogs (Derived)
 
@@ -1005,6 +1063,83 @@ The council is three steps, one at a time (`PRODUCT_SPEC.md`, Stage 3), in a sin
 - Under a finished step sits **CONTINUE**, a primary button. Under an unanswered mantle step sits **CHOOSE LATER**, a quiet control.
 - **The mantle search** sits between the explanation and the factions: an Orbitron label (FIND A MANTLE), then a field with the seeker mark inside its left edge, steel at rest and Antique gold while the field has focus. The seeker is new, drawn for the build in the marks' language (a square lens and a handle, 7-unit strokes), and is not one of the final marks. The field's clear control is a square-cut cross, steel, Gold light on hover. The search ignores case and accents and hides factions with no match; with none at all it says so (copy 5.16).
 - Step three is headed "Those summoned" (copy 6.16), with the guest list and the way to leave beneath.
+
+### 8.13 The hall as the council's room (Approved 17 November 2026)
+
+The throne hall is the room the council sits in, not a banner (reference: `design/explorations/creative-refinement-1/`).
+
+**Composition**
+- The painting is fixed behind every step and the content scrolls over it.
+- Landscape screens get the wide painting, covering the screen. Upright screens (below 5:6) get the upright painting, which shipped with the first version but was never used until now.
+- On phones the layout is **content with the hall behind**: the title and the steps sit at the top, Doom and the throne show in a gap below them, and the step's panel begins underneath, with no extra scroll needed to reach it.
+- The floor circle is visible on arrival and either side of the panel.
+
+**Readability**
+- The hall dims as the guest reads further down, so text never sits on bright glass.
+- Panels are opaque. Text set directly on the hall carries a dark halo, and the steps sit on a dark band.
+
+**The arrival**
+- It plays in full once per browser session for a guest, about 2.9 s: the camera settles from 1.06, light rises in the windows, the floor circle lights around its ring, the title is written in place, and the council rises.
+- Later loads in the session get a 0.6 s fade.
+- A tap or a key skips it. Reduced motion shows the settled hall.
+- **Doom never moves.** There is no loop.
+
+**The floor answers** approving, a mantle claimed and the decree issued: one emerald breath on the circle and up the hall, about 1.2 s.
+
+**Doomscript in the frame.** On wide screens, "justice" and "revenge" are engraved either side of the council title, never lit. They are hidden on narrow screens.
+
+### 8.14 Principal panels (Approved 17 November 2026)
+
+- Each step has at most one principal panel: the proposal, the mantle chooser, or the decree.
+- A principal panel takes the summons' brushed steel and four corner bolts. The steel is a baked, seamless tile (`web/public/art/steel.webp`) blended over the panel's gradient; the bolts are the bolt mark.
+- Wells, lists, fields and dialogs are unchanged.
+
+### 8.15 The mantle (Approved 17 November 2026)
+
+**Layout**
+- The step's principal panel carries the mantle's inscription, "to the viktor go the spoils", engraved; it is lit while the guest holds a mantle.
+- It holds the heading, the explanation, the search and, when the guest holds a mantle, that mantle shown large: the suit rune at level 2, YOURS, the name in Cinzel, and "You stand before the council as [Character]." (copy 5.8).
+- Factions are rolls: a recessed tray, the faction's name between two dotted rules.
+
+**The claim**
+- It begins only once the server has confirmed the claim. A claim that loses the race shows its message and no ceremony.
+- In order: the plate fills with emerald from the left (the button's pressed fill, held), and its tile turns into the suit rune; the guest's mantle opens out at the top of the panel; its line is written in place; the floor answers; the inscription lights rune by rune. Sound: `claim`.
+- About 3.8 s later the council (step three) opens by itself (lengthened from 2.8 s on 17 November 2026, so the guest's mantle can be taken in). As it opens, the guest's mantle moves and shrinks into their own row of the list (8.18).
+- A tap or a key ends the beat sooner. Under reduced motion nothing moves, and the line is still held.
+- **Behaviour is unchanged:** search, taken plates and their holders, CHOOSE LATER, changing until the decree, and the database's uniqueness of every claim.
+
+### 8.16 The decree (Approved 17 November 2026)
+
+**The panel**
+- A centred principal panel: the mask at level 2 in gold as issuer, DECREED, then "Doom decrees" at the council title's size.
+- The day in Cormorant Garamond italic: 26 px on phones, 34 px on desktop. The venue at 22 and 26 px. Both wrap naturally.
+- The sanction in bold italic, then Doom's signature, "viktor von doom", in runes.
+
+**The ceremony**
+- The mark appears, the heading is written in place, and a band of light passes and writes the day and the place; then the sanction; then the signature lights rune by rune and the floor answers. Sound: `decree`. About 4.4 s.
+- It plays once for each revision of the decree (the first decree, and each amendment), recorded in the guest's browser. A reload, or a later visit, shows the decree settled.
+- It waits for the hall's arrival to finish. A tap or a key settles it at once. Reduced motion shows it settled.
+- While the decree stands the score adds its crown.
+
+### 8.17 The closed screens (Approved 17 November 2026)
+
+- "So be it.", "The day has passed." and "No summons here." carry the seal, dormant, with "latveria" engraved beneath it, never lit.
+- It says the hall is shut and reveals nothing about any guest.
+- No motion and no sound: the score fades to silence on them.
+
+### 8.18 A mantle in full, in the council (Approved 17 November 2026)
+
+- In the guest list, a held mantle is a control: a dotted rule beneath it, Gold light on hover and focus.
+- Pressing it opens that mantle in full **above the list**, never inside it, so no Doomscript enters a list. The card shows:
+  - the mantle's inscription, lit;
+  - the suit rune at level 2;
+  - the character's name;
+  - for the guest's own mantle, YOURS and "You stand before the council as [Character]." (copy 5.4 and 5.8);
+  - for another guest's, that guest's name as the list shows it.
+- Pressing again, or its close control (copy 9.10), closes it and returns focus to the row.
+- **The movement.** The card rises out of the row and closes back into it. After a claim, the guest's mantle card moves from the mantle step into their own row, where their name and their mantle stand together.
+  - Only the mantle travels (0.65 s); the rest of the screen changes at once beneath it.
+  - Built on the browser's View Transitions (`web/src/lib/morph.ts`). Without them, or under reduced motion, the state simply changes.
 
 ### 8.11 Transitions between screens
 
@@ -1199,6 +1334,7 @@ Recommendations you accepted on 15 November 2026. The "Was" column gives the num
 | "The Iron Throne" appears in the opening experience only | review |
 | The council layout of the typography review board is the design direction for the first version: structure, hierarchy, character states, proposal panel, approval count, alternatives. Its placeholder wording is not approved | review |
 | Pirata One never renders an individual word containing V or v. Only that word is set in Cinzel; the heading is not switched to Cinzel as a whole and keeps its place in the hierarchy. Stated by you on 15 November 2026, correcting the earlier wording of sections 2.2 and 8.3 | build |
+| Creative refinement 1 (17 November 2026, your decisions on the review board): the hall as the council's room with a one-time arrival (8.13); principal panels (8.14); the mantle claim (8.15); the decree ceremony (8.16); the dormant seal on the closed screens (8.17); the outer doors and the reverse iris (6.6); Doomscript placements (4.8); Score A and the sound refinements (6.12). They supersede "no music bed" and "no ambient movement in the hall" | refinement |
 | Character emblems (16 November 2026, your brief): simple curves are allowed and ornament stays Doom's; no letters, numerals or names inside a mark. Rules in section 4.7. Doom's mask and the project's own icon rules (section 4.6) are unchanged | emblems |
 
 Product decisions that shaped section 8 (taken characters show their holder, approvals reset when the proposal changes, the count is against seated guests, the council updates on reload) are logged in `PRODUCT_SPEC.md`, section 7.
@@ -1221,7 +1357,7 @@ Not questions. Each is done during the build, from this document and the approve
 | Motion never seen in motion | **Built in milestone 4** with the starting timings, to be judged in the running product. The iris closes in 0.45 s once the guest's action has been answered and opens in 0.45 s on the new scene, with the active seal at its centre. The plate's halves (its own artwork, cut at the seam) part 34% each in 1.2 s with light in the gap and close in 0.8 s, and the words appear as they meet. The seal then wakes: its bands turn from 38°, −24° and 61° to register in 0.7, 0.9 and 1.1 s, and its runes light in reading order 75 ms apart. The ash drifts down and to the left and fades out over 1 s, three seconds after the actions appear. Under reduced motion each is a 0.2 s cross-fade | 15 |
 | Accessibility and performance | **Checked in milestone 6 (16 November 2026)**: axe (WCAG 2.2 A and AA) and keyboard alone on every screen; one colour changed for contrast (section 6.5). The opening's first beat is drawn by CSS before its script arrives, and under reduced motion its 0.2 s fade is CSS too (section 6.10); neither changes what the guest sees | new |
 | Device checks | Nothing has been checked on a real phone or tablet. The research calls this the most valuable next step | 16 |
-| Long names | **Built** (`web/src/lib/fit.ts`, measured in the browser): on the summons the two-line fit and the single 80% step; in the opening the name may take three lines and only steps down | new |
+| Long names | **Built** (`web/src/lib/fit.ts`, measured in the browser): on the summons the two-line fit and the single 80% step; in the opening the name may take three lines and only steps down. A name on several lines with a word still too wide takes both. The width is measured with mid-word breaking turned off, so the step applies before a word is broken (fixed 17 November 2026: the step had never applied). When the summons plate grows taller than its art, the art keeps its proportions above and below one plain band, which repeats; nothing in it stretches (17 November 2026) | new |
 | The title in the opening | **Set in milestone 4, by eye:** centred at the top of the frame, it fades in at 0.3 s over the closed rubble and is gone before the slab clears the hood (by 4.1 s), so it never sits over Doom. It is not part of the final frame, so a guest who skips or asks for reduced motion does not see it; the page's title in the browser carries it. Overrule if it should stay | new |
 | Display strings | Every new heading set in Pirata One must be checked by eye (section 2.2) | new |
 | Assets to export | The seal mark, nested square, corner bolt, cuirass tile, clasps and the seal's dormant and waking states (section 9.1). Font files for self-hosting. Brushed-steel textures baked to images | section 9 |
@@ -1238,6 +1374,9 @@ Kept in the project for the record. Do not build from these where they differ fr
 | First Iron Throne board: the seal as the hall's rose window | The seal belongs to the summons and transitions only |
 | `design/explorations/direction-4-the-iron-throne-v2.html`: its figure | Revisions 3 and 4 |
 | `design/explorations/direction-4-the-iron-throne-v3.html`: its hood, cowl and hand | Revision 4 |
+| The split-plate summons reveal (6.6, until 17 November 2026) | The outer doors (6.6) |
+| "No music bed" and the hall's room tone (6.8) | The score (6.12) |
+| "Hall: no ambient movement" (6.7) and the council's hall banner | The hall as the room, its arrival and the floor's answer (8.13) |
 | Figure layers in `design/explorations/assets/v2/` and `v3/` | `design/explorations/assets/v4/` |
 | Earlier sample copy using the placeholder guest "Tara Menon" and longer titling | The wording in `PRODUCT_SPEC.md`, section 2 |
 | Typefaces of earlier directions: Castoro Titling, Cormorant Garamond, Crimson Pro, IM Fell, IBM Plex Mono, Hanken Grotesk, Instrument Sans | Section 2.2 |

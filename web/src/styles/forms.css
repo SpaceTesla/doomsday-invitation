@@ -114,6 +114,7 @@
     font-size: var(--t-expl);
     line-height: 1.4;
     color: var(--c-silver);
+    text-wrap: pretty;
   }
   .notice--error {
     color: var(--c-signal);
@@ -163,6 +164,15 @@
     flex-wrap: wrap;
     gap: 4px 22px;
   }
+  /* On a phone the four sections sit as two even rows, with signing out beside them,
+     rather than three, one and one. */
+  @media (max-width: 30rem) {
+    .throne-nav {
+      display: grid;
+      grid-template-columns: repeat(2, max-content);
+      gap: 0 22px;
+    }
+  }
   .throne-nav a {
     display: inline-flex;
     align-items: center;
@@ -176,8 +186,10 @@
     text-decoration: none;
     border-bottom: 1px solid transparent;
   }
-  .throne-nav a:hover {
-    color: var(--c-silver);
+  @media (hover: hover) {
+    .throne-nav a:hover {
+      color: var(--c-silver);
+    }
   }
   .throne-nav a[aria-current="page"] {
     color: var(--c-gold-light);

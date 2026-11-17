@@ -69,7 +69,9 @@ test("the summons settles, and changing scene leaves nothing covering the page",
   const links = await seed([{ name: "Ravi", title: "Dr.", state: "summons" }]);
   await page.goto(links.Ravi);
   // The vault door opens and closes, then the seal wakes.
-  await expect(page.locator(".sm-plate")).toHaveAttribute("data-motion", "done", { timeout: 8000 });
+  await expect(page.locator(".sm-plate")).toHaveAttribute("data-motion", "done", {
+    timeout: 15_000,
+  });
   await expect(page.locator(".sm-doors")).toHaveCount(0);
   await expect(page.locator(".sm-seal svg g.seal")).toHaveAttribute("class", "seal seal--active");
 

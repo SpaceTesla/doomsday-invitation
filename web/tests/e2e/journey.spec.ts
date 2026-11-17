@@ -24,6 +24,9 @@ test("a new guest: the opening, the summons, then the council without a mantle",
   page,
   baseURL,
 }) => {
+  // The whole journey with every ceremony played: the opening, the doors, the hall's
+  // arrival and the claim beat take about 25 s before any assertion waits.
+  test.setTimeout(60_000);
   const links = await seed([
     { name: "Anish", title: "Mr." },
     { name: "Tara Menon", title: "Ms.", state: "seated", holds: "Thor", approves: true },
