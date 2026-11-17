@@ -5,6 +5,11 @@ import "@/styles/app.css";
 
 // The same title and preview for every address, so a forwarded link reveals no name
 // and nothing about the event. The site asks not to be indexed.
+// The title is set twice on purpose. Here, for the pages Next.js renders without the layout
+// (an invalid link's 404 shell carries only the metadata). And in the layout below, because
+// Next.js renders metadata in a boundary that can suspend while a refresh streams in, and
+// the title then vanishes for a moment (axe caught it on a slower machine); the layout's
+// is never unmounted. Both say the same thing; the first in the document is the one used.
 export const metadata: Metadata = {
   title: copy["2.9"],
   description: copy["2.11"],
@@ -24,6 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     // final frame back until their script takes over (see scenes.css).
     <html lang="en" className={fontVariables} suppressHydrationWarning>
       <head>
+        <title>{copy["2.9"]}</title>
         <script
           dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
         />
