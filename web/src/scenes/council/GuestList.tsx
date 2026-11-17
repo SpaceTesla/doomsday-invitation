@@ -90,15 +90,17 @@ export function GuestList({
       <Panel>
         <Well className="mt-0">
           <ul className="row-list" aria-label={listName} ref={list}>
-            <li className="cn-guest">
+            {/* Like every row, the person first and the mantle beneath: the one who summons
+                as Doom, then Doctor Doom. Without DOOM_NAME the row shows Doom alone. */}
+            <li className="cn-guest cn-guest-doom">
               <Mask tone="gold" className="!h-[22px] !w-auto" />
               <span className="cn-guest-head">
-                <span className="cn-guest-name">{copy["6.4.name"]}</span>
+                <span className="cn-guest-name">{doomName ?? copy["6.4.name"]}</span>
                 <span className="cn-guest-tags">
                   <Label>{copy["6.4.tag"]}</Label>
                 </span>
               </span>
-              {doomName ? <p className="cn-guest-mantle cn-guest-doom">{doomName}</p> : null}
+              {doomName ? <p className="cn-guest-mantle">{copy["6.4.name"]}</p> : null}
             </li>
             {guests.map((guest, index) => (
               <li

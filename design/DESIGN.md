@@ -1043,7 +1043,7 @@ Because the mechanism may change after the first version (`PRODUCT_SPEC.md`, sec
 - Rows are separated by the well's own edges. No cards inside the panel.
 - The guest's own row is marked with a Gold light rule at its left edge and the word "You".
 - Doom heads the list as its sovereign, with the mask at level 1, and is not counted among the seats.
-- Beneath "Doctor Doom", where a guest's row shows their mantle, Doom's row shows the name of the person who summons the guests as Doom, in Cinzel in Steel (added 17 November 2026). It comes from the setting `DOOM_NAME`; when that is unset the row shows Doom alone.
+- Doom's row reads like a guest's: the name of the person who summons the guests as Doom in Cinzel, and beneath it, where a guest's row shows their mantle, "Doctor Doom" in Cinzel in Steel (added 17 November 2026; the order turned the same evening to match the other rows). The name comes from the setting `DOOM_NAME`; when that is unset the row shows "Doctor Doom" alone, as its name. Doom's mantle does not open in full.
 
 ### 8.10 Dialogs (Derived)
 
