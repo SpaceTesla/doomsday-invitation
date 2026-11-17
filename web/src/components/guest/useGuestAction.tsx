@@ -21,14 +21,15 @@ export type GuestMessage = {
  * Send one of the guest's actions and, when it lands, re-render the page from the
  * server. Failures are told plainly in the deck's words (COPY.md, section 9); the
  * caller can replace the message with a more specific one. An action that changes the
- * scene (`changesStage`) closes the seal's iris before the new scene is shown.
+ * scene (`changesStage`) closes the seal's iris as it is sent, so the wait for the server
+ * is part of the movement; if the action fails, the iris opens again on the same scene.
  */
 export function useGuestAction(
   token: string,
   options: { changesStage?: boolean; back?: boolean } = {},
 ) {
   const router = useRouter();
-  const { cover } = useStageTransition();
+  const { cover, uncover } = useStageTransition();
   const changesStage = options.changesStage ?? false;
   const back = options.back ?? false;
   const [busy, setBusy] = useState(false);
@@ -45,6 +46,12 @@ export function useGuestAction(
     ): Promise<GuestResult> => {
       setBusy(true);
       setMessage(null);
+      const covering = changesStage ? cover(back) : null;
+      const reopen = async () => {
+        if (!covering) return;
+        await covering;
+        uncover();
+      };
       try {
         const response = await fetch(`/api/g/${token}/${action}`, {
           method,
@@ -57,11 +64,12 @@ export function useGuestAction(
           : null;
         const error = (data as { error?: string } | null)?.error;
         if (response.ok) {
-          if (changesStage) await cover(back);
+          await covering;
           onAccepted?.();
           router.refresh();
           return { ok: true, status: response.status, data };
         }
+        if (response.status !== 404) await reopen();
         if (response.status === 404) {
           // The link stopped working while the page was open: show what it shows now.
           router.refresh();
@@ -72,13 +80,14 @@ export function useGuestAction(
         }
         return { ok: false, status: response.status, data, error };
       } catch {
+        await reopen();
         setMessage({ text: copy["9.5"], kind: "error" });
         return { ok: false, status: 0, data: null };
       } finally {
         setBusy(false);
       }
     },
-    [router, token, changesStage, back, cover],
+    [router, token, changesStage, back, cover, uncover],
   );
 
   return { run, busy, message, setMessage };

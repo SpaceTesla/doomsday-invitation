@@ -19,3 +19,13 @@ export function passphraseHash(): string | null {
   const value = process.env.ADMIN_PASSPHRASE_HASH ?? "";
   return value.startsWith("scrypt:") ? value : null;
 }
+
+/**
+ * The name of the person who summons the guests as Doom, shown beneath Doctor Doom on the
+ * council's list (design/DESIGN.md, 8.9). Kept out of the repository; null when unset, and
+ * the list then shows Doom alone.
+ */
+export function doomName(): string | null {
+  const value = (process.env.DOOM_NAME ?? "").trim().replace(/\s+/g, " ");
+  return value ? value.slice(0, 60) : null;
+}

@@ -736,7 +736,7 @@ Feedback is immediate. Do not delay an action to finish an animation.
 |---|---|---|
 | Doomscript wakes | The seal's three bands turn to register, each at its own speed, with no bounce. Once they lock, the runes go from engraved to lit in reading order | Bands 0.7 to 1.1 s; runes 60 to 90 ms each |
 | The summons is revealed | **Superseded 17 November 2026** (the split plate, which parted and closed as one plate). Now: heavier outer doors stand before the summons, locked by the raised suit rune (suit rune level 3). The lock presses in and releases first (a detent); the doors part fully, coming slightly forward and casting their shadow, and stay open (plate-part); light enters the gap. A band of light then passes across the plate and the words appear in its wake. Then the seal wakes, as above. The full reveal plays on the first arrival in a browser session; later arrivals get the light alone. Any key or tap skips to the end; reduced motion is a 0.2 s cross-fade | Lock 0.3 to 0.9 s; doors 0.95 to 2.4 s; light 1.75 to 3.25 s; the seal from 3.3 s |
-| Between stages | The centre of the seal opens like an iris onto the next scene. Going back (declining, leaving) runs it in reverse: the dark closes in from the edges and withdraws to the centre (**built 17 November 2026**). Every change of scene uses this one transition, with the seal-turn sound | 0.9 s |
+| Between stages | The centre of the seal opens like an iris onto the next scene. Going back (declining, leaving) runs it in reverse: the dark closes in from the edges and withdraws to the centre (**built 17 November 2026**). Every change of scene uses this one transition, with the seal-turn sound. The iris begins to close as the guest presses, while the answer is on its way, and opens again on the same scene if the action fails. It opens on the new scene only once that scene is laid out and its pictures decoded (at most 0.7 s more); each scene fetches the next scene's art ahead once it has settled (**17 November 2026**, for smoothness) | 0.9 s |
 
 The doors are composed from approved material only: the shared brushed-steel tile (baked from the summons plate's blank steel, `web/public/art/steel.webp`), the bolt mark, and the suit rune relief (`web/public/art/door-lock.webp`, reduced from `design/explorations/assets/v2/suit-rune-level-3.png`). The review sketch's placeholder door face is not used. `web/scripts/bake-materials.py` remakes both files. Reference: `design/explorations/creative-refinement-1/`.
 
@@ -1041,6 +1041,7 @@ Because the mechanism may change after the first version (`PRODUCT_SPEC.md`, sec
 - Rows are separated by the well's own edges. No cards inside the panel.
 - The guest's own row is marked with a Gold light rule at its left edge and the word "You".
 - Doom heads the list as its sovereign, with the mask at level 1, and is not counted among the seats.
+- Beneath "Doctor Doom", where a guest's row shows their mantle, Doom's row shows the name of the person who summons the guests as Doom, in Cinzel in Steel (added 17 November 2026). It comes from the setting `DOOM_NAME`; when that is unset the row shows Doom alone.
 
 ### 8.10 Dialogs (Derived)
 

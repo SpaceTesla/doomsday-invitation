@@ -31,7 +31,13 @@ function StatusMark({ status }: { status: CouncilData["guests"][number]["status"
  * A held mantle can be opened in full (8.18): pressing it raises its card above the list,
  * moving out of the row, and closing it returns the card into the row.
  */
-export function GuestList({ guests }: { guests: CouncilData["guests"] }) {
+export function GuestList({
+  guests,
+  doomName,
+}: {
+  guests: CouncilData["guests"];
+  doomName: CouncilData["doomName"];
+}) {
   const [open, setOpen] = useState<number | null>(null);
   const list = useRef<HTMLUListElement>(null);
   const summoned = guests.length;
@@ -92,6 +98,7 @@ export function GuestList({ guests }: { guests: CouncilData["guests"] }) {
                   <Label>{copy["6.4.tag"]}</Label>
                 </span>
               </span>
+              {doomName ? <p className="cn-guest-mantle cn-guest-doom">{doomName}</p> : null}
             </li>
             {guests.map((guest, index) => (
               <li

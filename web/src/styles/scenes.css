@@ -148,36 +148,50 @@
      the final frame appears after 6 s. Under reduced motion none of this applies: the
      final frame is drawn from the start. */
   @media (prefers-reduced-motion: no-preference) {
-    html.js .op[data-motion="pending"] .op-rock {
-      transform: translate(var(--dcx), var(--dcy)) rotate(var(--dcr));
-      animation: op-unpend 0s linear 6s forwards;
+    @media (scripting: enabled) {
+      html:root .op[data-motion="pending"] .op-rock {
+        transform: translate(var(--dcx), var(--dcy)) rotate(var(--dcr));
+        animation: op-unpend 0s linear 6s forwards;
+      }
     }
-    html.js .op[data-motion="pending"] :is(.op-sky, .op-fig) {
-      transform: scale(1.045);
-      transform-origin: 50% 40%;
-      animation: op-unpend 0s linear 6s forwards;
+    @media (scripting: enabled) {
+      html:root .op[data-motion="pending"] :is(.op-sky, .op-fig) {
+        transform: scale(1.045);
+        transform-origin: 50% 40%;
+        animation: op-unpend 0s linear 6s forwards;
+      }
     }
-    html.js .op[data-motion="pending"] .op-fig--lit {
-      opacity: 0;
-      animation:
-        op-unpend 0s linear 6s forwards,
-        op-show 0s linear 6s forwards;
+    @media (scripting: enabled) {
+      html:root .op[data-motion="pending"] .op-fig--lit {
+        opacity: 0;
+        animation:
+          op-unpend 0s linear 6s forwards,
+          op-show 0s linear 6s forwards;
+      }
     }
-    html.js .op[data-motion="pending"] .op-scrim {
-      opacity: 0;
-      animation: op-show 0s linear 6s forwards;
+    @media (scripting: enabled) {
+      html:root .op[data-motion="pending"] .op-scrim {
+        opacity: 0;
+        animation: op-show 0s linear 6s forwards;
+      }
     }
-    html.js .op[data-motion="pending"] .op-glow {
-      opacity: 0.3;
+    @media (scripting: enabled) {
+      html:root .op[data-motion="pending"] .op-glow {
+        opacity: 0.3;
+      }
     }
-    html.js .op[data-motion="pending"] :is(.op-name, .op-line, .op-sig, .op-act) {
-      clip-path: inset(0% 100% 0% 0%);
-      animation: op-unclip 0s linear 6s forwards;
+    @media (scripting: enabled) {
+      html:root .op[data-motion="pending"] :is(.op-name, .op-line, .op-sig, .op-act) {
+        clip-path: inset(0% 100% 0% 0%);
+        animation: op-unclip 0s linear 6s forwards;
+      }
     }
   }
   @media (prefers-reduced-motion: no-preference) and (max-aspect-ratio: 5/6) {
-    html.js .op[data-motion="pending"] .op-rock {
-      transform: translate(var(--pcx), var(--pcy)) rotate(var(--pcr));
+    @media (scripting: enabled) {
+      html:root .op[data-motion="pending"] .op-rock {
+        transform: translate(var(--pcx), var(--pcy)) rotate(var(--pcr));
+      }
     }
   }
   /* Under reduced motion the final frame fades in over 0.2 s with the text already in
@@ -196,9 +210,11 @@
   /* The lit figure's file waits until the script arms it after the page has loaded (a
      lazy image that is not displayed is not fetched). If the script never runs, it is
      released with the rest of the final frame at 6 s. */
-  html.js .op:not([data-lit]) .op-fig--lit img {
-    display: none;
-    animation: op-arm 0s linear 6s forwards;
+  @media (scripting: enabled) {
+    html:root .op:not([data-lit]) .op-fig--lit img {
+      display: none;
+      animation: op-arm 0s linear 6s forwards;
+    }
   }
   @keyframes op-arm {
     to {
@@ -684,24 +700,36 @@
   /* The doors and the shadow are drawn by the server, closed, so nothing flashes before the
      reveal. Without script they are never shown; if script is expected but never arrives,
      everything steps aside after 4 s. Under reduced motion they are not used. */
-  html.js .sm-doors {
-    display: block;
+  @media (scripting: enabled) {
+    html:root .sm-doors {
+      display: block;
+    }
   }
-  html.js .sm-plate:not([data-motion]) {
-    --r: -8;
+  @media (scripting: enabled) {
+    html:root .sm-plate:not([data-motion]) {
+      --r: -8;
+    }
   }
-  html.js .sm-plate:not([data-motion]) .sm-dim {
-    opacity: 0.55;
+  @media (scripting: enabled) {
+    html:root .sm-plate:not([data-motion]) .sm-dim {
+      opacity: 0.55;
+    }
   }
-  html.js .sm-stage:has(.sm-plate:not([data-motion])) .sm-doors {
-    animation: sm-doors-away 0s linear 4s forwards;
+  @media (scripting: enabled) {
+    html:root .sm-stage:has(.sm-plate:not([data-motion])) .sm-doors {
+      animation: sm-doors-away 0s linear 4s forwards;
+    }
   }
-  html.js .sm-plate:not([data-motion]) .sm-dim {
-    animation: sm-undim 0s linear 4s forwards;
+  @media (scripting: enabled) {
+    html:root .sm-plate:not([data-motion]) .sm-dim {
+      animation: sm-undim 0s linear 4s forwards;
+    }
   }
-  html.js .sm-plate:not([data-motion]) .sm-copy,
-  html.js .sm-plate:not([data-motion]) .sm-caption {
-    animation: sm-unmask 0s linear 4s forwards;
+  @media (scripting: enabled) {
+    html:root .sm-plate:not([data-motion]) .sm-copy,
+    html:root .sm-plate:not([data-motion]) .sm-caption {
+      animation: sm-unmask 0s linear 4s forwards;
+    }
   }
   @keyframes sm-doors-away {
     to {
@@ -720,14 +748,20 @@
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    html.js .sm-doors {
-      display: none;
+    @media (scripting: enabled) {
+      html:root .sm-doors {
+        display: none;
+      }
     }
-    html.js .sm-plate:not([data-motion]) {
-      --r: 112;
+    @media (scripting: enabled) {
+      html:root .sm-plate:not([data-motion]) {
+        --r: 112;
+      }
     }
-    html.js .sm-plate:not([data-motion]) .sm-dim {
-      opacity: 0;
+    @media (scripting: enabled) {
+      html:root .sm-plate:not([data-motion]) .sm-dim {
+        opacity: 0;
+      }
     }
   }
 
@@ -926,13 +960,17 @@
   /* The arrival's first frame, drawn before its script runs; released after 3.5 s if the
      script never arrives. Reduced motion draws the final frame at once. */
   @media (prefers-reduced-motion: no-preference) {
-    html.js .cn[data-arrival="pending"] .cn-dark {
-      opacity: 0.62;
-      animation: cn-release 0s linear 3.5s forwards;
+    @media (scripting: enabled) {
+      html:root .cn[data-arrival="pending"] .cn-dark {
+        opacity: 0.62;
+        animation: cn-release 0s linear 3.5s forwards;
+      }
     }
-    html.js .cn[data-arrival="pending"] .cn-body {
-      opacity: 0;
-      animation: op-show 0s linear 3.5s forwards;
+    @media (scripting: enabled) {
+      html:root .cn[data-arrival="pending"] .cn-body {
+        opacity: 0;
+        animation: op-show 0s linear 3.5s forwards;
+      }
     }
   }
   @keyframes cn-release {

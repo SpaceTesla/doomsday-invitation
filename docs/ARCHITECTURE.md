@@ -318,6 +318,7 @@ Tests never touch Neon's production branch: they use a container that exists onl
 | `SESSION_KEY` | Signs the session cookie |
 | `CRON_SECRET` | Protects the retention endpoint |
 | `EVENT_TIMEZONE` | IANA time zone of the event: `Asia/Kolkata`. It seeds `event.timezone` when the event row is created; from then on the column is the source |
+| `DOOM_NAME` | Optional. The name of the person who summons the guests as Doom, shown beneath Doctor Doom on the council's guest list. Not a secret, but kept out of the repository |
 | `NEON_DATABASE_URL`, `NEON_DATABASE_URL_DIRECT` | Local only. The Neon strings, read by `npm run db:check` and nothing else |
 
 `web/.env.example` lists them. `web/.env.local` holds local values and is not committed; `npm run env:setup` creates it without printing a value. Locally, `DATABASE_URL` and `DATABASE_URL_DIRECT` both point at the Docker database. Preview and production values are set in Vercel's project settings.

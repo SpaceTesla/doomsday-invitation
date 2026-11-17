@@ -180,7 +180,7 @@ export function CouncilScreen({ data }: { data: CouncilData }) {
         ) : (
           <>
             <Heading as="h2">{copy["6.16"]}</Heading>
-            <GuestList guests={data.guests} />
+            <GuestList guests={data.guests} doomName={data.doomName} />
             {data.decreed ? null : <LeaveControl token={data.token} />}
           </>
         )}

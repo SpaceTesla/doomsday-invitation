@@ -12,13 +12,16 @@ import {
 import { SoundControl } from "@/components/guest/SoundControl";
 import { REDUCED, gsap, prefersReducedMotion } from "@/lib/motion";
 import { initSound, play, scoreStage, type ScoreStage } from "@/lib/sound";
+import { sceneReady, warmNext } from "@/lib/warm";
 
 // The change between scenes (design/DESIGN.md, section 6.6): the centre of the seal opens
 // like an iris onto the next scene, 0.9 s in all, half closing and half opening. Every
 // change of stage uses it. Under reduced motion it is a 0.2 s cross-fade.
 //
-// The action itself is never delayed: the request has already been answered when the
-// iris closes, and the new scene is rendered while it is closed.
+// The iris begins to close as the guest presses, while the request is on its way; if the
+// request fails it opens again on the same scene. The new scene is rendered while it is
+// closed, and the iris opens only once that scene is laid out and its pictures decoded
+// (at most 0.7 s more). The next scene's art is fetched ahead, once a scene has settled.
 
 const HALF = 0.45;
 
@@ -31,9 +34,12 @@ const SCORE: Record<string, ScoreStage> = {
 };
 const OPEN = "150vmax";
 
-/** `back`: the guest is stepping back (declining, leaving), and the iris runs in reverse. */
-type StageTransition = { cover: (back?: boolean) => Promise<void> };
-const Context = createContext<StageTransition>({ cover: async () => {} });
+/**
+ * `cover`: close the iris (`back`: the guest is stepping back, declining or leaving, and
+ * it runs in reverse). `uncover`: open it again on the same scene, when a request failed.
+ */
+type StageTransition = { cover: (back?: boolean) => Promise<void>; uncover: () => void };
+const Context = createContext<StageTransition>({ cover: async () => {}, uncover: () => {} });
 
 export const useStageTransition = () => useContext(Context);
 
@@ -106,7 +112,7 @@ export function StageFrame({ stage, children }: { stage: string; children: React
         el.classList.toggle("iris--back", back);
         play("seal-turn");
         // If the scene does not change (the request ended on the same stage), open again.
-        fallback.current = setTimeout(reveal, 5000);
+        fallback.current = setTimeout(reveal, 8000);
         if (prefersReducedMotion()) {
           gsap.fromTo(
             el,
@@ -138,12 +144,19 @@ export function StageFrame({ stage, children }: { stage: string; children: React
     [reveal],
   );
 
-  // A new stage has rendered behind the closed iris: open it.
+  // A new stage has rendered behind the closed iris: open it once the scene is ready.
   useEffect(() => {
     if (shown.current === stage) return;
     shown.current = stage;
-    reveal();
+    void sceneReady().then(reveal);
   }, [stage, reveal]);
+
+  // Once the scene has settled, fetch the next scene's art.
+  useEffect(() => {
+    if (!sealReady) return;
+    const timer = setTimeout(() => warmNext(stage), 1200);
+    return () => clearTimeout(timer);
+  }, [stage, sealReady]);
 
   // The guest's choice of sound for this visit. Nothing loads unless it is on.
   useEffect(() => initSound(), []);
@@ -160,7 +173,7 @@ export function StageFrame({ stage, children }: { stage: string; children: React
   );
 
   return (
-    <Context.Provider value={{ cover }}>
+    <Context.Provider value={{ cover, uncover: reveal }}>
       {children}
       {stage === "opening" ? null : <SoundControl />}
       <div ref={iris} className="iris" aria-hidden="true">

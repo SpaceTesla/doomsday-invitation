@@ -25,14 +25,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    // The class "js" is added before first paint, so scenes that animate can hold their
-    // final frame back until their script takes over (see scenes.css).
-    <html lang="en" className={fontVariables} suppressHydrationWarning>
+    // Scenes that animate hold their final frame back until their script takes over; the
+    // stylesheet asks whether scripts run with @media (scripting: enabled) (see scenes.css).
+    <html lang="en" className={fontVariables}>
       <head>
         <title>{copy["2.9"]}</title>
-        <script
-          dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
-        />
       </head>
       <body>{children}</body>
     </html>
