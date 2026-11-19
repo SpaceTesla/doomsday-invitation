@@ -1,13 +1,16 @@
 "use client";
 
+import Link from "next/link";
 import { useId, useState, type FormEvent } from "react";
 import { copy, fill } from "@/copy";
 import { Button } from "@/components/Button";
 import { Heading } from "@/components/Heading";
 import { Label } from "@/components/Label";
+import { SealMark } from "@/components/Mark";
 import { Panel, PanelActions, Well } from "@/components/Panel";
 import { QuietControl } from "@/components/QuietControl";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { useEventPaths } from "./EventPaths";
 import { ActionMessage, useAdminAction } from "./useAdminAction";
 
 type Title = "" | "Mr." | "Ms." | "Dr.";
@@ -100,6 +103,7 @@ function NameFields({
 }
 
 function SummonForm() {
+  const paths = useEventPaths();
   const action = useAdminAction();
   const messageId = useId();
   const [name, setName] = useState("");
@@ -114,7 +118,7 @@ function SummonForm() {
       return;
     }
     setMissing(false);
-    const result = await action.run("POST", "/api/admin/guests", { name, title });
+    const result = await action.run("POST", `${paths.api}/guests`, { name, title });
     if (result.ok) {
       setName("");
       setTitle("");
@@ -161,6 +165,7 @@ function GuestEntry({
   onAsk: (pending: NonNullable<Pending>) => void;
   onCopy: (guest: GuestRow) => void;
 }) {
+  const paths = useEventPaths();
   const action = useAdminAction();
   const messageId = useId();
   const [editing, setEditing] = useState(false);
@@ -173,7 +178,7 @@ function GuestEntry({
       action.setMessage({ text: copy["10.9"], error: true });
       return;
     }
-    const result = await action.run("PATCH", `/api/admin/guests/${guest.id}`, { name, title });
+    const result = await action.run("PATCH", `${paths.api}/guests/${guest.id}`, { name, title });
     if (result.ok) setEditing(false);
   }
 
@@ -242,7 +247,27 @@ function GuestEntry({
   );
 }
 
-export function GuestsPanel({ guests }: { guests: GuestRow[] }) {
+/** Before a day is proposed there is nothing to summon guests to: the proposal comes first. */
+function ProposeFirst() {
+  const paths = useEventPaths();
+  return (
+    <Panel labelledBy="summon-heading">
+      <Heading as="h1" id="summon-heading">
+        {copy["10.4"]}
+      </Heading>
+      <p className="t-expl mt-3">{copy["10.39"]}</p>
+      <div className="mt-5">
+        <Link href={`${paths.page}/proposal`} className="btn-plate no-underline">
+          <SealMark />
+          <Label>{copy["10.29"]}</Label>
+        </Link>
+      </div>
+    </Panel>
+  );
+}
+
+export function GuestsPanel({ guests, canSummon }: { guests: GuestRow[]; canSummon: boolean }) {
+  const paths = useEventPaths();
   const action = useAdminAction();
   const [pending, setPending] = useState<Pending>(null);
   const [manualLink, setManualLink] = useState<string | null>(null);
@@ -265,10 +290,10 @@ export function GuestsPanel({ guests }: { guests: GuestRow[] }) {
     const { kind, guest } = pending;
     const result =
       kind === "replace"
-        ? await action.run("POST", `/api/admin/guests/${guest.id}/link`)
+        ? await action.run("POST", `${paths.api}/guests/${guest.id}/link`)
         : kind === "cancel"
-          ? await action.run("DELETE", `/api/admin/guests/${guest.id}/link`)
-          : await action.run("DELETE", `/api/admin/guests/${guest.id}`);
+          ? await action.run("DELETE", `${paths.api}/guests/${guest.id}/link`)
+          : await action.run("DELETE", `${paths.api}/guests/${guest.id}`);
     setPending(null);
     if (result.ok && kind === "replace") {
       const token = (result.data as { token?: string } | null)?.token;
@@ -298,7 +323,7 @@ export function GuestsPanel({ guests }: { guests: GuestRow[] }) {
 
   return (
     <>
-      <SummonForm />
+      {canSummon ? <SummonForm /> : <ProposeFirst />}
       <Panel labelledBy="guest-list-label">
         <span id="guest-list-label">
           <Label block>{copy["10.2.guests"]}</Label>

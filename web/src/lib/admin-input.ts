@@ -1,11 +1,17 @@
-// Input shapes for the administrator's requests, and the conversion of the panel's
+// Input shapes for the organizer's requests, and the conversion of the panel's
 // day-and-hour fields into an instant in the event's time zone.
 import { z } from "zod";
 import { FACTIONS } from "@/domain/factions";
+import { HOST_NAME_MAX } from "@/domain/event";
 import { TITLES } from "@/domain/guests";
 import { zonedInstant } from "@/domain/time";
 
 export const idParam = z.uuid();
+
+export const eventInput = z.object({
+  timeZone: z.string().max(64),
+  hostName: z.string().max(HOST_NAME_MAX * 2),
+});
 
 export const guestInput = z.object({
   name: z.string().max(200),

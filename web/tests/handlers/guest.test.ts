@@ -4,11 +4,12 @@ import { Client, Pool } from "pg";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { runMigrations } from "@/db/migrate";
 import { addCharacter } from "@/domain/characters";
-import { ensureEvent } from "@/domain/event";
+import { forEvent } from "@/domain/context";
 import { addGuest, cancelLink } from "@/domain/guests";
 import { setProposal } from "@/domain/proposal";
 import { zonedInstant } from "@/domain/time";
 import { createTestDatabase, type TestDatabase } from "../helpers/database";
+import { ALL_TABLES, insertEvent } from "../helpers/domain";
 
 import * as accept from "@/app/api/g/[token]/accept/route";
 import * as alternative from "@/app/api/g/[token]/alternative/route";
@@ -27,7 +28,8 @@ const NEXT_YEAR = new Date().getFullYear() + 1;
 let database: TestDatabase;
 let sql: Client;
 let pool: Pool;
-const domain = () => ({ db: drizzle(pool) });
+let eventId = 0;
+const domain = () => forEvent({ db: drizzle(pool) }, eventId);
 
 beforeAll(async () => {
   database = await createTestDatabase();
@@ -42,10 +44,8 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  await sql.query(
-    "truncate alternative, guest, character, event, admin_session, attempt restart identity cascade",
-  );
-  await ensureEvent(domain(), TZ);
+  await sql.query(`truncate ${ALL_TABLES} restart identity cascade`);
+  eventId = await insertEvent(pool);
   await setProposal(domain(), zonedInstant(TZ, NEXT_YEAR, 1, 8, 19, 30), "the Grand Cinema");
 });
 

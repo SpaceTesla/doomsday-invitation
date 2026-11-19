@@ -50,6 +50,11 @@ const nextConfig: NextConfig = {
       { source: "/api/:path*", headers: privateNoStore },
       { source: "/s/:path*", headers: privateNoStore },
       { source: "/throne/:path*", headers: privateNoStore },
+      // The organizer pages: personal, so never stored.
+      { source: "/", headers: privateNoStore },
+      { source: "/dashboard/:path*", headers: privateNoStore },
+      { source: "/sign-in", headers: privateNoStore },
+      { source: "/sign-up", headers: privateNoStore },
       ...(isDev
         ? []
         : [

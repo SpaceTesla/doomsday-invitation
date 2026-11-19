@@ -9,6 +9,7 @@ import { Heading } from "@/components/Heading";
 import { Label } from "@/components/Label";
 import { Panel, Well } from "@/components/Panel";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { useEventPaths } from "./EventPaths";
 import { ActionMessage, useAdminAction } from "./useAdminAction";
 
 export type CouncilView = {
@@ -35,12 +36,13 @@ function ApprovalLine({ approved, total }: { approved: number; total: number }) 
 }
 
 export function CouncilPanel({ view }: { view: CouncilView }) {
+  const paths = useEventPaths();
   const action = useAdminAction();
   const [confirming, setConfirming] = useState(false);
 
   async function finalise() {
     setConfirming(false);
-    const result = await action.run("POST", "/api/admin/finalise");
+    const result = await action.run("POST", `${paths.api}/finalise`);
     if (!result.ok && result.status === 409)
       action.setMessage({ text: copy["10.39"], error: true });
   }
@@ -84,7 +86,7 @@ export function CouncilPanel({ view }: { view: CouncilView }) {
 
         <div className="mt-6">
           {view.decreed ? (
-            <Link href="/throne/proposal" className="btn-plate no-underline">
+            <Link href={`${paths.page}/proposal`} className="btn-plate no-underline">
               <span className="lbl">{copy["10.40"]}</span>
             </Link>
           ) : (
@@ -123,7 +125,7 @@ export function CouncilPanel({ view }: { view: CouncilView }) {
       )}
 
       <div>
-        <a href="/api/admin/export" className="link-quiet" download>
+        <a href={`${paths.api}/export`} className="link-quiet" download>
           <span className="lbl">{copy["10.48"]}</span>
         </a>
       </div>

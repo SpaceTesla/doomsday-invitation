@@ -60,7 +60,7 @@ describe("the seeded roster", () => {
     await expect(
       queryOnce(
         db.url,
-        "insert into character (name, name_key, faction) values ('X', 'x', 'nope')",
+        "insert into character (event_id, name, name_key, faction) values (1, 'X', 'x', 'nope')",
       ),
     ).rejects.toThrow(/character_faction_known/);
   });

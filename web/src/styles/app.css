@@ -4,6 +4,7 @@
 @import "./surfaces.css";
 @import "./forms.css";
 @import "./scenes.css";
+@import "./platform.css";
 
 /* Tailwind does layout. Its colour and font names are mapped onto the tokens, and its
    default palette and font stacks are removed, so only approved values can be used. */

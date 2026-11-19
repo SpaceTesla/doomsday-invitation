@@ -1043,7 +1043,7 @@ Because the mechanism may change after the first version (`PRODUCT_SPEC.md`, sec
 - Rows are separated by the well's own edges. No cards inside the panel.
 - The guest's own row is marked with a Gold light rule at its left edge and the word "You".
 - Doom heads the list as its sovereign, with the mask at level 1, and is not counted among the seats.
-- Doom's row reads like a guest's: the name of the person who summons the guests as Doom in Cinzel, and beneath it, where a guest's row shows their mantle, "Doctor Doom" in Cinzel in Steel (added 17 November 2026; the order turned the same evening to match the other rows). The name comes from the setting `DOOM_NAME`; when that is unset the row shows "Doctor Doom" alone, as its name. Doom's mantle does not open in full.
+- Doom's row reads like a guest's: the name of the person who summons the guests as Doom in Cinzel, and beneath it, where a guest's row shows their mantle, "Doctor Doom" in Cinzel in Steel (added 17 November 2026; the order turned the same evening to match the other rows). The name is the event's "name beneath Doom", set by its organizer (since 18 November 2026; before that, the setting `DOOM_NAME`); when it is empty the row shows "Doctor Doom" alone, as its name. Doom's mantle does not open in full.
 
 ### 8.10 Dialogs (Derived)
 
@@ -1140,6 +1140,16 @@ The throne hall is the room the council sits in, not a banner (reference: `desig
 - **The movement.** The card rises out of the row and closes back into it. After a claim, the guest's mantle card moves from the mantle step into their own row, where their name and their mantle stand together.
   - Only the mantle travels (0.65 s); the rest of the screen changes at once beneath it.
   - Built on the browser's View Transitions (`web/src/lib/morph.ts`). Without them, or under reduced motion, the state simply changes.
+
+### 8.19 The organizer's pages (Derived, 18 November 2026)
+
+The landing page, sign-in and sign-up, the dashboard and each event's settings (`PRODUCT_SPEC.md`, section 8). Guests never see them. Like the administrator panel, they use the same plates, wells, type and palette without the cinematic treatment: no scenes, no motion beyond the controls' own feedback, no sound, no Doomscript. Styles in `web/src/styles/platform.css`.
+
+- **Landing page.** One column on Night, left-aligned, at most 40 rem: the mask at level 2 (plain), "The Iron Throne" as a title in Pirata One, the lead in the body face, "How it goes" with three numbered steps (they are a sequence; the figures in Cinzel, Gold), then CREATE AN ACCOUNT as the one primary plate and SIGN IN as a quiet control. The demonstration notice (copy 13.9) closes the page in Steel.
+- **Sign-in and sign-up.** One panel, centred, as the old sign-in was: the mask and the heading, then the fields (wells), one primary plate, the error line, and a link in the body face to the other form.
+- **Dashboard.** Above every dashboard page, a quiet row: ALL EVENTS at the left; "Signed in as [Name]." and SIGN OUT at the right. Then "Your councils" with the mask, the events as rows in a well (never cards). Events have no names (19 November 2026), so a row shows the proposed day in words, as guests read it, and the venue in Cinzel in Steel, then the figures (in Cinzel, the words in the body face) and the state as an Orbitron label, OPEN at the right. Then "A new council", a panel with its two fields: time zone and the name beneath Doom.
+- **An event.** The panel's own header, "Doom's Council", with the proposed day in words beneath it once there is one. The section labels run PROPOSAL, CHARACTERS, GUESTS, COUNCIL, SETTINGS (on a phone, two rows of three and two), and an event opens on its proposal. Until a day is proposed, GUESTS shows "Summon a guest" with "Set a proposal first." (copy 10.39) and SET PROPOSAL (10.29) as its plate, in place of the form.
+- **Settings.** The two fields and SAVE; then "Delete this council", its explanation, DELETE EVENT as a quiet control, and the confirmation dialog of section 8.10.
 
 ### 8.11 Transitions between screens
 

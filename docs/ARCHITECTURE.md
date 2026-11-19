@@ -171,6 +171,30 @@ Rules the domain module settled in milestone 1, each covered by a test in `web/t
 - **The migration runner** (`src/db/migrate.ts`) serialises runs with a session-level advisory lock. The lock and Drizzle's migrator use one connection, because such a lock belongs to the connection that took it. The lock is released in a `finally` block and the connection is closed after it, so a failed run cannot leave it held. A second runner waits its turn, then gives up at a deadline without applying anything. A pooled connection string is refused: a session lock does not survive transaction pooling. `tests/db/migrate.test.ts` proves each of these against a real PostgreSQL.
 - Neon's free database sleeps after five minutes idle and wakes in a few hundred milliseconds **(verified)**. The first request after a quiet spell is slightly slower; the opening covers it.
 
+### 4.5 Organizers and events (the platform, 18 November 2026)
+
+The single event became one of many, each owned by one organizer (`PRODUCT_SPEC.md`, section 8). Migration `0003_platform` makes the change without deleting or regenerating anything.
+
+| Table | Change |
+|---|---|
+| `organizer`, `organizer_session`, `organizer_account`, `organizer_verification`, `auth_rate_limit` | New. Better Auth's tables (section 7.6): the account (name, email), its sessions, its hashed password, an unused verification table it requires, and its sign-in limits |
+| `event` | No longer one row: `id` is an identity column from 2, the first event keeps 1. New `organizer_id` (null only until the first event is claimed; `on delete restrict`) and `host_name` (the name beneath Doctor Doom, which replaces the `DOOM_NAME` setting) |
+| `character` | New `event_id` (cascade). The roster's name is unique per event, not per database |
+| `guest` | New `event_id` (cascade). `token` stays unique across all events |
+| `alternative` | Unchanged: it belongs to an event through its guest |
+| `admin_session` | Unused, kept so the migration deletes nothing |
+
+How isolation is enforced:
+
+- **One gate for organizers.** Every organizer handler runs through `asEventOwner` (`src/lib/admin.ts`): a live Better Auth session, then `ownedEvent`, a single query on `event.id` and `event.organizer_id`. Someone else's event, a missing one and a malformed id all answer 404. Pages check the same way, each for itself (`requirePageEvent`), since a page renders alongside its layout.
+- **A scoped domain.** Every domain function that touches an event's data takes an `EventDomain`, which carries the event id, and every statement is limited to it: `guest.event_id`, `character.event_id`, or `event.id`. A guest or character id from another event matches nothing and is answered as unknown. TypeScript refuses an unscoped call.
+- **Guests by their link.** `findByToken` joins the guest to its own event, and the guest handlers build the scoped domain from that event. No request names an event or a guest id.
+- **Same-event mantles.** Claiming checks, in the same `UPDATE`, that the character belongs to the guest's event. The decree check reads the guest's own event.
+- **Retention per event.** Each event is deleted thirty days after its own day; the cascades take its guests, roster and alternatives. Organizer accounts stay.
+- **The first event.** It is left without an owner by the migration. `npm run organizer:claim -- --email <email>` gives every unowned event to that organizer; owned events are never touched. Until it is claimed no organizer can see it, and its guests' links work as before.
+
+Tested in `tests/db/platform-migration.test.ts` (a copy of the live event's shape on the old schema, migrated: every old column of every row unchanged, every link opening its own guest), `tests/domain/events.test.ts` (cross-event ids in every domain function) and `tests/handlers/organizer.test.ts` (every route against another organizer's event, and with another event's ids).
+
 ## 5. Backend and API
 
 | Layer | Where | Rule |
@@ -192,7 +216,7 @@ The approval rules the product expects to change (`PRODUCT_SPEC.md`, section 5.9
 | Declined, before the end of the day | Closing screen with "Take your seat" |
 | Summoned or declined, after the day | "The day has passed." |
 
-`/throne` is the sign-in; `/throne/guests`, `/throne/characters`, `/throne/proposal`, `/throne/council` are the sections of `COPY.md`.
+Organizer pages (18 November 2026): `/` is the landing page; `/sign-up` and `/sign-in` the account forms; `/dashboard` lists the organizer's events and creates one; `/dashboard/{event}/guests`, `/characters`, `/proposal`, `/council` are the panel's sections of `COPY.md`, and `/settings` sets the name beneath Doom, changes the zone before a proposal, and deletes. The sections run in the order an organizer works: proposal, characters, guests, council, settings, and an event opens on its proposal. Events have no names (19 November 2026): the dashboard tells them apart by day and venue. `/throne`, the old sign-in, redirects to `/dashboard`.
 
 | Method and path | Does | Notable responses |
 |---|---|---|
@@ -204,14 +228,18 @@ The approval rules the product expects to change (`PRODUCT_SPEC.md`, section 5.9
 | `PUT`, `DELETE /api/g/{token}/approval` | Approves, withdraws | 409 after the decree |
 | `PUT`, `DELETE /api/g/{token}/alternative` | Sets, replaces, withdraws | 422 past date, missing part, same as the proposal |
 | `POST /api/g/{token}/seen` | Marks notices seen | |
-| `POST`, `DELETE /api/admin/session` | Sign in, sign out | 401; 429 |
-| `POST /api/admin/guests`; `PATCH`, `DELETE /api/admin/guests/{id}` | Add, edit, remove | |
-| `POST`, `DELETE /api/admin/guests/{id}/link` | Replace, cancel | |
-| `POST /api/admin/characters`; `DELETE /api/admin/characters/{id}` | Add, remove | 409 duplicate; 409 `held` unless `confirm` is sent |
-| `PUT /api/admin/proposal` | Set or change | Raises the proposal version |
-| `POST /api/admin/finalise`; `PUT /api/admin/plan` | Finalise; amend | |
-| `GET /api/admin/export` | The whole event as JSON | |
-| `GET /api/cron/retention` | Deletes the event thirty days after the day | 401 without the cron secret |
+| `/api/auth/*` (Better Auth) | Sign up, sign in, sign out, the session | 400 short password; 401; 403 another origin; 429 |
+| `POST /api/events` | Create an event for the signed-in organizer, with the default roster | 422 unknown zone |
+| `PATCH`, `DELETE /api/events/{event}` | Settings; delete with everything in it | 409 zone change after a proposal |
+| `POST /api/events/{event}/guests`; `PATCH`, `DELETE /api/events/{event}/guests/{id}` | Add, edit, remove | 409 `no_proposal`: guests are summoned only once a day is proposed |
+| `POST`, `DELETE /api/events/{event}/guests/{id}/link` | Replace, cancel | |
+| `POST /api/events/{event}/characters`; `DELETE /api/events/{event}/characters/{id}` | Add, remove | 409 duplicate; 409 `held` unless `confirm` is sent |
+| `PUT /api/events/{event}/proposal` | Set or change | Raises the proposal version |
+| `POST /api/events/{event}/finalise`; `PUT /api/events/{event}/plan` | Finalise; amend | |
+| `GET /api/events/{event}/export` | The whole event as JSON | |
+| `GET /api/cron/retention` | Deletes each event thirty days after its day | 401 without the cron secret |
+
+Every `/api/events/{event}/*` route answers 401 without a live session and 404 for an event the organizer does not own.
 
 Every mutation is idempotent.
 
@@ -264,17 +292,17 @@ The approved experience is built exactly as specified. The host delivers files a
 
 | Requirement | Implementation |
 |---|---|
-| Passphrase | Generated at setup, not chosen. Only its scrypt hash (`node:crypto`) is stored, as an environment variable |
-| Session cookie | A session id with an HMAC-SHA256 signature. `HttpOnly`, `Secure`, `SameSite=Strict`, seven days. The id must also exist, unexpired, in `admin_session`, so signing out really ends it |
-| Server-side checks | The administrator layout and every administrator handler verify the session. No client-side gate |
-| Cross-site requests | Administrator mutations check the `Origin` header |
-| Rate limiting | Failed sign-ins are counted in `attempt`: five in fifteen minutes locks sign-in for fifteen minutes. Unknown guest tokens are counted per address the same way |
+| Organizer accounts | Since 18 November 2026: Better Auth, email and password (section 7.6). The single passphrase and its hand-made session are retired |
+| Session cookie | Better Auth's signed session cookie, `HttpOnly`, `Secure` in production, `SameSite=Strict`, seven days. The session must also exist, unexpired, in `organizer_session`, so signing out really ends it |
+| Server-side checks | The dashboard layouts, each event page and every organizer handler verify the session and the event's owner. No client-side gate |
+| Cross-site requests | Organizer mutations check the `Origin` header; Better Auth checks it on its own endpoints, sign-in included |
+| Rate limiting | Better Auth limits sign-in (ten in fifteen minutes per address) and sign-up (five an hour), in the database. Unknown guest tokens are counted per address in `attempt`, as before |
 | Guest tokens | 256 bits. Stored as they are so a link can be copied again; a token can be replaced at will, and anyone able to read the database can read everything in it already |
 | Tokens in the address | The token stays in the path, `/s/{token}`. Vercel's request logs record paths, keep them for a short time (under an hour on Hobby, confirmed in milestone 0B) and show them only to the account's owner, who is Doom and already holds every token. Anyone who took over the account would also hold the database credentials. Exchanging the token from a URL fragment for a cookie was evaluated and rejected: it would make the first screen wait for a script and a request, remove the server-rendered fallback, and add a guest cookie that in-app browsers often drop, while protecting none of the places a link really leaks (the message thread, browser history, screenshots). Our own logs never contain a token or a full address, error responses never echo one, and Doom can replace any link |
 | Guest-specific access | A guest handler loads the guest by the token in its own path and acts only on that row. No handler accepts a guest id from the request |
 | What guests see | Never another guest's token or id, the opened status, or who approved |
 | Built in milestone 3 | Unknown guest links are counted per address like failed sign-ins; a locked address gets the invalid-link answer even for a valid link, so links cannot be searched for. The first open is recorded by a script on the page, not by the page request, so a messaging app's link-preview robot never marks a guest as having opened; either opening action records that the opening was seen. The summons plate is exported from the board generator (`scripts/export-plates.py`) and baked to WebP in a browser, because live SVG filters are too slow on phones; its words are real text and its seal is a live component. Long names are measured in the browser (`lib/fit.ts`) and take the approved fit. The guest list shows names without titles. A guest whose character Doom removed sees its name in the message (migration `0001` adds `guest.removed_character_name`) |
-| Built in milestone 2 | `ADMIN_PASSPHRASE_HASH` is `scrypt:N:r:p:salt:hash` in base64url, with no `$`, because Next.js expands `$` in environment files. Sign-in failures are counted per address (`x-forwarded-for`), so nobody elsewhere can lock Doom out. The panel's pages sit in the route group `app/throne/(panel)`, whose layout checks the session on the server before anything renders; each handler reads the cookie from its own request and checks it again, which also lets the handler tests call them directly. The day control is the browser's date field; the hour control lists every quarter hour named in words, as guests will read it. Copy link builds the address from the page's own origin |
+| Built in milestone 2 (superseded on 18 November 2026 by section 7.6) | `ADMIN_PASSPHRASE_HASH` was `scrypt:N:r:p:salt:hash` in base64url, with no `$`, because Next.js expands `$` in environment files. Sign-in failures are counted per address (`x-forwarded-for`), so nobody elsewhere can lock Doom out. The panel's pages sit in the route group `app/throne/(panel)`, whose layout checks the session on the server before anything renders; each handler reads the cookie from its own request and checks it again, which also lets the handler tests call them directly. The day control is the browser's date field; the hour control lists every quarter hour named in words, as guests will read it. Copy link builds the address from the page's own origin |
 
 ### 7.4 Privacy and headers
 
@@ -291,9 +319,17 @@ The approved experience is built exactly as specified. The host delivers files a
 
 - `vercel.json` schedules `GET /api/cron/retention` once a day.
 - The endpoint requires `Authorization: Bearer <CRON_SECRET>` and answers 401 otherwise. Vercel sends that header when the `CRON_SECRET` variable is set; this is confirmed in milestone 0.
-- If the day plus thirty days has passed, one transaction deletes every alternative, guest, character, session and attempt and clears the event row. Otherwise it does nothing.
+- For each event whose day plus thirty days has passed, it deletes the event row, and the foreign keys take its guests, roster and alternatives. Events not yet due, and organizer accounts, are left alone. Failed-link counts older than a day are swept. (Until 18 November 2026 there was one event, and the job cleared everything.)
 - It is safe to retry: a second run finds nothing to delete.
-- Independently of the job, the same date check makes every link invalid from that moment.
+- Independently of the job, the same date check makes every link of that event invalid from that moment.
+
+### 7.6 Organizer accounts (18 November 2026)
+
+- **Better Auth 1.7** (`src/lib/auth.ts`), mounted at `/api/auth`, with its Drizzle adapter on the same `pg` pool. Email and password only: no social sign-in, no email provider. It hashes passwords with scrypt, signs the session cookie with `SESSION_KEY`, keeps each session in `organizer_session`, checks the Origin of every change (forced on, since it skips the check in test runs otherwise), and limits attempts in `auth_rate_limit`. Its telemetry is off; the site makes no third-party requests.
+- **What is collected:** a name, an email and a password of at least six characters (ten until 19 November 2026: this is an invitation, not a bank; the sign-in limits guard against guessing). Nothing else.
+- **Registration** is for a closed beta. `ORGANIZER_SIGNUP=open` opens it; unset, it is open in development and closed in production. Closed, the form is not shown and Better Auth refuses the request too.
+- **Without an email provider** there is no email verification and no password reset. An organizer who forgets a password cannot recover it without a provider; the owner can delete the account's row by hand. Adding a provider (Resend, Postmark, SES) is a later step and needs its own credential.
+- **Known trade-offs:** sign-up says when an email is already taken, which reveals that it has an account; acceptable for a closed beta of friends. Event ids are small integers in addresses: knowing one gives nothing, since every route checks the owner.
 
 ## 8. Local development and deployment
 
@@ -314,11 +350,11 @@ Tests never touch Neon's production branch: they use a container that exists onl
 |---|---|
 | `DATABASE_URL` | Pooled Neon connection string, used by the application |
 | `DATABASE_URL_DIRECT` | Direct connection string, used only for migrations |
-| `ADMIN_PASSPHRASE_HASH` | scrypt hash of the generated passphrase |
-| `SESSION_KEY` | Signs the session cookie |
+| `SESSION_KEY` | Better Auth's secret: signs and encrypts organizer sessions. At least 32 characters |
+| `BETTER_AUTH_URL` | The address organizers use (`http://localhost:3000` locally, the production address in Vercel). Vercel's own deployment addresses are allowed too |
+| `ORGANIZER_SIGNUP` | `open` or `closed`. Unset: open in development, closed in production |
 | `CRON_SECRET` | Protects the retention endpoint |
-| `EVENT_TIMEZONE` | IANA time zone of the event: `Asia/Kolkata`. It seeds `event.timezone` when the event row is created; from then on the column is the source |
-| `DOOM_NAME` | Optional. The name of the person who summons the guests as Doom, shown beneath Doctor Doom on the council's guest list. Not a secret, but kept out of the repository |
+| Retired on 18 November 2026 | `ADMIN_PASSPHRASE_HASH` (organizer accounts replace the passphrase), `EVENT_TIMEZONE` (each event has its own zone), `DOOM_NAME` (each event has its own name beneath Doom) |
 | `NEON_DATABASE_URL`, `NEON_DATABASE_URL_DIRECT` | Local only. The Neon strings, read by `npm run db:check` and nothing else |
 
 `web/.env.example` lists them. `web/.env.local` holds local values and is not committed; `npm run env:setup` creates it without printing a value. Locally, `DATABASE_URL` and `DATABASE_URL_DIRECT` both point at the Docker database. Preview and production values are set in Vercel's project settings.
@@ -365,7 +401,7 @@ What the trial established, by hand from the CLI, before the workflow was writte
 - **`--prebuilt` cannot be uploaded from Windows**: the local build writes function links Vercel cannot take. The workflow builds on Linux, where it works; a deployment from a Windows machine by hand must let Vercel build (`vercel deploy` without `--prebuilt`).
 - `web/.vercelignore` keeps every `.env` file, tests and caches out of any upload.
 
-Settings: Vercel holds `DATABASE_URL` (the pooled string), `EVENT_TIMEZONE`, `SESSION_KEY` and `CRON_SECRET` for production and for preview, each environment with its own secrets; `ADMIN_PASSPHRASE_HASH` is set by the owner (milestone 7, or earlier to use the panel). GitHub holds `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, `PRODUCTION_DATABASE_URL_DIRECT` and `PREVIEW_DATABASE_URL_DIRECT`.
+Settings: Vercel holds `DATABASE_URL` (the pooled string), `SESSION_KEY`, `BETTER_AUTH_URL`, `ORGANIZER_SIGNUP` and `CRON_SECRET` for production and for preview, each environment with its own secrets. (`EVENT_TIMEZONE`, `DOOM_NAME` and `ADMIN_PASSPHRASE_HASH` are no longer read, from 18 November 2026; they can be removed once the platform is live.) The platform's migration, `0003`, reaches the preview database when a pull request is opened and production only on a merge to `main`, after the backup; `docs/LAUNCH.md`, section 0, is the order of steps. GitHub holds `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, `PRODUCTION_DATABASE_URL_DIRECT` and `PREVIEW_DATABASE_URL_DIRECT`.
 
 Migrations are written to be backward compatible, so the previous deployment keeps working while the new one goes live, and `vercel rollback` stays safe after a promotion.
 

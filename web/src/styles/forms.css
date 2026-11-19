@@ -164,13 +164,13 @@
     flex-wrap: wrap;
     gap: 4px 22px;
   }
-  /* On a phone the four sections sit as two even rows, with signing out beside them,
-     rather than three, one and one. */
+  /* On a phone the five sections sit as two even rows (three, then two), rather than
+     ragged wrapping. */
   @media (max-width: 30rem) {
     .throne-nav {
       display: grid;
-      grid-template-columns: repeat(2, max-content);
-      gap: 0 22px;
+      grid-template-columns: repeat(3, max-content);
+      gap: 0 20px;
     }
   }
   .throne-nav a {

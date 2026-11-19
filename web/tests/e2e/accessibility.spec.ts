@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-import { E2E_PASSPHRASE } from "./constants";
+import { E2E_ORGANIZER } from "./constants";
+import { panel } from "./organizer";
 import { seed } from "./seed";
 
 // Every screen, scanned with axe against WCAG 2.2 A and AA (docs/PRODUCT_SPEC.md, 5.4).
@@ -100,25 +101,35 @@ test("the decree and the day passed", async ({ page }) => {
   await scan(page, "day passed");
 });
 
-test("the administrator panel", async ({ page }) => {
+test("the landing page, accounts, dashboard and an event's panel", async ({ page }) => {
   await seed([
     { name: "Tara Menon", title: "Ms.", state: "seated", holds: "Thor", approves: true },
     { name: "Anish", title: "Mr." },
   ]);
-  await page.goto("/throne");
+  await page.goto("/");
+  await scan(page, "landing page");
+  await page.goto("/sign-up");
+  await scan(page, "sign-up");
+  await page.goto("/sign-in");
   await scan(page, "sign-in");
-  await page.getByRole("textbox", { name: "PASSPHRASE" }).fill("wrong");
-  await page.getByRole("button", { name: "ENTER" }).click();
-  await expect(page.getByText("That is not the passphrase.")).toBeVisible();
-  await scan(page, "sign-in, wrong passphrase");
-  await page.getByRole("textbox", { name: "PASSPHRASE" }).fill(E2E_PASSPHRASE);
-  await page.getByRole("button", { name: "ENTER" }).click();
-  await page.waitForURL("**/throne/guests");
-  for (const section of ["guests", "characters", "proposal", "council"]) {
-    await page.goto(`/throne/${section}`);
+  await page.getByRole("textbox", { name: "EMAIL" }).fill(E2E_ORGANIZER.email);
+  await page.getByLabel("PASSWORD").fill("wrong-password");
+  await page.getByRole("button", { name: "SIGN IN" }).click();
+  await expect(page.getByText("That email and password do not match an account.")).toBeVisible();
+  await scan(page, "sign-in, wrong password");
+  await page.getByLabel("PASSWORD").fill(E2E_ORGANIZER.password);
+  await page.getByRole("button", { name: "SIGN IN" }).click();
+  await page.waitForURL("**/dashboard");
+  await scan(page, "dashboard");
+  for (const section of ["guests", "characters", "proposal", "council", "settings"]) {
+    await page.goto(panel(section));
     await scan(page, `panel, ${section}`);
   }
-  await page.goto("/throne/guests");
+  await page.goto(panel("settings"));
+  await page.getByRole("button", { name: "DELETE EVENT" }).click();
+  await scan(page, "settings, delete dialog");
+  await page.getByRole("dialog").getByRole("button", { name: "CANCEL" }).click();
+  await page.goto(panel("guests"));
   await page.getByRole("button", { name: "REMOVE GUEST" }).first().click();
   await scan(page, "panel, confirmation dialog");
 });

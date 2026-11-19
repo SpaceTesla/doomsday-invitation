@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { E2E_PASSPHRASE } from "./constants";
+import { E2E_ORGANIZER } from "./constants";
 import { seed, YEAR } from "./seed";
 
 // The whole journey by keyboard alone, with focus always visible (docs/PRODUCT_SPEC.md,
@@ -100,11 +100,20 @@ test("a guest goes from the opening to the council and takes part, by keyboard",
 
 test("Doom runs the panel by keyboard", async ({ page }) => {
   await seed([{ name: "Tara Menon", title: "Ms.", state: "seated" }]);
-  await page.goto("/throne");
-  await tabTo(page, "PASSPHRASE");
-  await page.keyboard.type(E2E_PASSPHRASE);
+  await page.goto("/sign-in");
+  await tabTo(page, "EMAIL");
+  await page.keyboard.type(E2E_ORGANIZER.email);
+  await tabTo(page, "PASSWORD");
+  await page.keyboard.type(E2E_ORGANIZER.password);
   await page.keyboard.press("Enter");
-  await page.waitForURL("**/throne/guests");
+  await page.waitForURL("**/dashboard");
+  await tabTo(page, /^OPEN/);
+  await page.keyboard.press("Enter");
+  // An event opens on its proposal; the seeded one has a proposal, so guests can be added.
+  await page.waitForURL("**/proposal");
+  await tabTo(page, "GUESTS");
+  await page.keyboard.press("Enter");
+  await page.waitForURL("**/guests");
 
   await tabTo(page, "NAME");
   await page.keyboard.type("Ravi");
@@ -114,7 +123,7 @@ test("Doom runs the panel by keyboard", async ({ page }) => {
 
   await tabTo(page, "CHARACTERS");
   await page.keyboard.press("Enter");
-  await page.waitForURL("**/throne/characters");
+  await page.waitForURL("**/characters");
   await tabTo(page, "CHARACTER");
   await page.keyboard.type("Hulk");
   // The faction is a native select: End picks the last, Doom's Rumoured Team.

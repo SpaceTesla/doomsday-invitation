@@ -2,9 +2,9 @@
 //
 // A guest's view never contains another guest's token, id or opened status, or who
 // approved (docs/ARCHITECTURE.md, section 7.3). Doom's view contains everything.
-import { asc, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import { alternative, character, guest, type GuestStatus } from "@/db/schema";
-import { type Domain } from "./context";
+import { type EventDomain } from "./context";
 import { getEvent, type EventRow } from "./event";
 import { approvalCount, approvers } from "./proposal";
 
@@ -18,6 +18,8 @@ function proposalOf(row: EventRow | undefined): Proposal | null {
 
 export type GuestCouncil = {
   timeZone: string;
+  /** Shown beneath Doctor Doom on the guest list; null shows Doom alone. */
+  hostName: string | null;
   proposal: Proposal | null;
   decreed: boolean;
   count: { approved: number; total: number };
@@ -52,7 +54,7 @@ export type GuestCouncil = {
 
 /** The council as one guest sees it. Null if the guest no longer exists. */
 export async function councilForGuest(
-  domain: Domain,
+  domain: EventDomain,
   guestId: string,
 ): Promise<GuestCouncil | null> {
   const eventRow = await getEvent(domain);
@@ -74,6 +76,7 @@ export async function councilForGuest(
     })
     .from(guest)
     .leftJoin(character, eq(character.id, guest.characterId))
+    .where(eq(guest.eventId, domain.eventId))
     .orderBy(asc(guest.invitedAt), asc(guest.name));
   const me = guestRows.find((row) => row.id === guestId);
   if (!me) return null;
@@ -89,6 +92,7 @@ export async function councilForGuest(
     })
     .from(character)
     .leftJoin(guest, eq(guest.characterId, character.id))
+    .where(eq(character.eventId, domain.eventId))
     .orderBy(asc(character.position), asc(character.createdAt), asc(character.name));
 
   const alternativeRows = await domain.db
@@ -100,7 +104,7 @@ export async function councilForGuest(
     })
     .from(alternative)
     .innerJoin(guest, eq(guest.id, alternative.guestId))
-    .where(eq(guest.status, "seated"))
+    .where(and(eq(guest.eventId, domain.eventId), eq(guest.status, "seated")))
     .orderBy(asc(alternative.createdAt));
 
   const decreed = eventRow.finalisedAt !== null;
@@ -108,6 +112,7 @@ export async function councilForGuest(
 
   return {
     timeZone: eventRow.timezone,
+    hostName: eventRow.hostName,
     proposal: proposalOf(eventRow),
     decreed,
     count: await approvalCount(domain),
@@ -183,7 +188,7 @@ export type AdminCouncil = {
 };
 
 /** The whole event as Doom sees it. */
-export async function councilForAdmin(domain: Domain): Promise<AdminCouncil> {
+export async function councilForAdmin(domain: EventDomain): Promise<AdminCouncil> {
   const eventRow = await getEvent(domain);
   const guestRows = await domain.db
     .select({
@@ -200,6 +205,7 @@ export async function councilForAdmin(domain: Domain): Promise<AdminCouncil> {
     .from(guest)
     .leftJoin(character, eq(character.id, guest.characterId))
     .leftJoin(alternative, eq(alternative.guestId, guest.id))
+    .where(eq(guest.eventId, domain.eventId))
     .orderBy(asc(guest.invitedAt), asc(guest.name));
 
   const roster = await domain.db
@@ -212,6 +218,7 @@ export async function councilForAdmin(domain: Domain): Promise<AdminCouncil> {
     })
     .from(character)
     .leftJoin(guest, eq(guest.characterId, character.id))
+    .where(eq(character.eventId, domain.eventId))
     .orderBy(asc(character.position), asc(character.createdAt), asc(character.name));
 
   return {
@@ -244,7 +251,7 @@ export async function councilForAdmin(domain: Domain): Promise<AdminCouncil> {
 }
 
 /** Everything in the event, for the panel's Export. */
-export async function exportEvent(domain: Domain) {
+export async function exportEvent(domain: EventDomain) {
   const eventRow = await getEvent(domain);
   const council = await councilForAdmin(domain);
   return {

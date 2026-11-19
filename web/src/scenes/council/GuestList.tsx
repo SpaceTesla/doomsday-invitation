@@ -91,7 +91,7 @@ export function GuestList({
         <Well className="mt-0">
           <ul className="row-list" aria-label={listName} ref={list}>
             {/* Like every row, the person first and the mantle beneath: the one who summons
-                as Doom, then Doctor Doom. Without DOOM_NAME the row shows Doom alone. */}
+                as Doom, then Doctor Doom. Without a name set for the event, the row shows Doom alone. */}
             <li className="cn-guest cn-guest-doom">
               <Mask tone="gold" className="!h-[22px] !w-auto" />
               <span className="cn-guest-head">

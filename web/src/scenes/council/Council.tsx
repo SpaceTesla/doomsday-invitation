@@ -2,7 +2,6 @@ import { copy } from "@/copy";
 import { Heading } from "@/components/Heading";
 import { Runes } from "@/components/Runes";
 import { addressOf } from "@/domain/guests";
-import { doomName } from "@/lib/env";
 import type { GuestCouncil } from "@/domain/council";
 import { localParts } from "@/domain/time";
 import { dateTimeInWords } from "@/domain/words";
@@ -43,7 +42,8 @@ export function councilData(token: string, council: GuestCouncil, now: Date): Co
       holder: mantle.holder ? addressOf(mantle.holder) : null,
       isYours: mantle.isYours,
     })),
-    doomName: doomName(),
+    // The name of the one who summons as Doom, from the event (design/DESIGN.md, 8.9).
+    doomName: council.hostName,
     // On the guest list a guest appears by name, without the title (design/DESIGN.md, 8.5).
     guests: council.guests.map((guest) => ({
       name: guest.name,

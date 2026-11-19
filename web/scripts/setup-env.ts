@@ -56,7 +56,7 @@ function main() {
     ["DATABASE_URL_DIRECT", LOCAL_DATABASE],
     ["NEON_DATABASE_URL", neonPooled],
     ["NEON_DATABASE_URL_DIRECT", neonDirect],
-    ["EVENT_TIMEZONE", "Asia/Kolkata"],
+    ["BETTER_AUTH_URL", "http://localhost:3000"],
     ["SESSION_KEY", crypto.randomBytes(32).toString("base64url")],
     ["CRON_SECRET", crypto.randomBytes(32).toString("base64url")],
   ];
