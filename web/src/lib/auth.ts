@@ -5,6 +5,7 @@
 // cryptography. Guests never have accounts.
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { APIError } from "better-auth/api";
 import { getDb } from "@/db/client";
 import {
   authRateLimit,
@@ -18,6 +19,21 @@ import { sessionKey, signupOpen } from "@/lib/env";
 export const PASSWORD_MIN = 6;
 export const PASSWORD_MAX = 128;
 export const SESSION_DAYS = 7;
+export const ORGANIZER_NAME_MAX = 60;
+
+/**
+ * An organizer's name as stored: spaces collapsed, trimmed, at most 60 characters. Better
+ * Auth takes any string, so the form's limits are enforced here too; a blank name is refused.
+ */
+function organizerName(raw: unknown): string {
+  const name = String(raw ?? "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .slice(0, ORGANIZER_NAME_MAX)
+    .trim();
+  if (!name) throw new APIError("BAD_REQUEST", { code: "NAME_REQUIRED", message: "Name required" });
+  return name;
+}
 
 /** The hosts this deployment answers on: the configured address and Vercel's own. */
 function allowedHosts(): string[] {
@@ -54,6 +70,15 @@ function createAuth() {
       },
     }),
     user: { modelName: "organizer" },
+    databaseHooks: {
+      user: {
+        create: { before: async (user) => ({ data: { ...user, name: organizerName(user.name) } }) },
+        update: {
+          before: async (user) =>
+            "name" in user ? { data: { ...user, name: organizerName(user.name) } } : undefined,
+        },
+      },
+    },
     session: {
       modelName: "organizerSession",
       expiresIn: SESSION_DAYS * 24 * 60 * 60,

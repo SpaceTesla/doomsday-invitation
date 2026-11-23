@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useId, useState, type FormEvent } from "react";
+import { useId, useRef, useState, type FormEvent } from "react";
 import { copy } from "@/copy";
 import { Button } from "@/components/Button";
 import { Label } from "@/components/Label";
@@ -35,6 +35,7 @@ export function AccountForm({ mode }: { mode: Mode }) {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const passwordField = useRef<HTMLInputElement>(null);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -65,7 +66,9 @@ export function AccountForm({ mode }: { mode: Mode }) {
         return;
       }
       const body = (await response.json().catch(() => null)) as { code?: unknown } | null;
+      // The password is cleared and has focus again, ready to be typed once more.
       setPassword("");
+      passwordField.current?.focus();
       setError(messageFor(mode, response.status, typeof body?.code === "string" ? body.code : ""));
     } catch {
       setError(copy["9.3"]);
@@ -119,6 +122,7 @@ export function AccountForm({ mode }: { mode: Mode }) {
         </label>
         <input
           id={ids.password}
+          ref={passwordField}
           className="field"
           type="password"
           value={password}

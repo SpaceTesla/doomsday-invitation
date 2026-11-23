@@ -38,7 +38,8 @@ export function EventSettings({
   async function deleteEvent() {
     const result = await remove.run("DELETE", paths.api, undefined, { refresh: false });
     setConfirming(false);
-    if (result.ok) {
+    // Gone already (deleted in another tab) is as good as deleted.
+    if (result.ok || result.status === 404) {
       router.replace("/dashboard");
       router.refresh();
     }

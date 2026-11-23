@@ -182,6 +182,11 @@ test("another organizer's guest link and event stay out of reach", async ({ page
   // The rival's event is not on this dashboard, and its panel is not-found.
   await expect(page.getByText("the Rival Hall")).toHaveCount(0);
   expect((await page.goto(`/dashboard/${rival.eventId}/guests`))?.status()).toBe(404);
+  // The same answer as an event that never existed, with the way back to one's own.
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("No council here");
+  await expect(page.locator("body")).not.toContainText("the Rival Hall");
+  await page.getByRole("link", { name: "ALL EVENTS" }).first().click();
+  await expect(page).toHaveURL(/\/dashboard$/);
   // A change aimed at the rival's guest through one's own event is refused.
   const response = await page.request.patch(
     `/api/events/${seededEventId()}/guests/${rival.guestId}`,

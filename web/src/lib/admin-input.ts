@@ -25,7 +25,15 @@ export const characterInput = z.object({
 
 /** DAY as YYYY-MM-DD and HOUR as HH:MM on a quarter hour, as the panel's controls send them. */
 export const whenInput = z.object({
-  day: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  // A day that exists: 30 February would otherwise roll over into March.
+  day: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .refine((value) => {
+      const [year, month, day] = value.split("-").map(Number);
+      const date = new Date(Date.UTC(year, month - 1, day));
+      return date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+    }),
   hour: z.string().regex(/^([01]\d|2[0-3]):(00|15|30|45)$/),
 });
 

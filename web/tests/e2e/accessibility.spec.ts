@@ -33,6 +33,8 @@ async function scan(page: Page, label: string) {
 }
 
 test("guest screens", async ({ page }) => {
+  // A dozen full scans in one test: give it the slow-test allowance on a busy machine.
+  test.slow();
   const links = await seed([
     { name: "Anish", title: "Mr." },
     { name: "Ravi", title: "Dr.", state: "summons" },
@@ -102,6 +104,8 @@ test("the decree and the day passed", async ({ page }) => {
 });
 
 test("the landing page, accounts, dashboard and an event's panel", async ({ page }) => {
+  // A dozen full scans in one test: give it the slow-test allowance on a busy machine.
+  test.slow();
   await seed([
     { name: "Tara Menon", title: "Ms.", state: "seated", holds: "Thor", approves: true },
     { name: "Anish", title: "Mr." },

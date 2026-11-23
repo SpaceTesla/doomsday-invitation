@@ -49,6 +49,7 @@ export function CharactersPanel({ characters }: { characters: CharacterRow[] }) 
     if (!result.ok && result.status === 409) {
       // Taken since the page loaded: warn, naming who holds it now.
       const holder = (result.data as { holder?: CharacterRow["holder"] } | null)?.holder ?? null;
+      remove.setMessage(null);
       setPending({ ...character, holder });
       return;
     }

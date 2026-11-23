@@ -199,6 +199,19 @@ describe("organizer accounts", () => {
     expect((await signUp("B", "taken@example.test")).status).toBeGreaterThanOrEqual(400);
   });
 
+  it("refuses a blank name and stores a long one tidied and cut to sixty characters", async () => {
+    expect((await signUp("   ", "blank@example.test")).status).toBe(400);
+    expect((await signUp("  Victor   von\tDoom  ", "spaces@example.test")).status).toBe(200);
+    expect((await signUp("x".repeat(5000), "long@example.test")).status).toBe(200);
+    const { rows } = await sql.query<{ email: string; name: string }>(
+      "select email, name from organizer order by email",
+    );
+    expect(rows).toEqual([
+      { email: "long@example.test", name: "x".repeat(60) },
+      { email: "spaces@example.test", name: "Victor von Doom" },
+    ]);
+  });
+
   it("signs in with the right password and refuses a wrong one", async () => {
     await signUp("Shivansh", "owner@example.test");
     expect((await signIn("owner@example.test")).status).toBe(200);
@@ -697,6 +710,31 @@ describe("running an event from the panel", () => {
       expect(response.status).toBeGreaterThanOrEqual(400);
       expect(response.status).toBeLessThan(500);
     }
+  });
+
+  it("refuses a day that does not exist, rather than rolling it into the next month", async () => {
+    const cookie = await organizer("Shivansh", "owner@example.test");
+    const created = await eventsRoute.POST(
+      request("/api/events", {
+        method: "POST",
+        body: { timeZone: "Asia/Kolkata", hostName: "" },
+        cookie,
+      }),
+    );
+    const { id } = (await created.json()) as { id: number };
+    for (const day of [`${NEXT_YEAR}-02-30`, `${NEXT_YEAR}-04-31`, `${NEXT_YEAR}-13-01`]) {
+      const response = await proposalRoute.PUT(
+        request(`/api/events/${id}/proposal`, {
+          method: "PUT",
+          body: { day, hour: "19:30", venue: "the Grand Cinema" },
+          cookie,
+        }),
+        ctx({ eventId: String(id) }),
+      );
+      expect(response.status).toBe(400);
+    }
+    const { rows } = await sql.query("select proposal_at from event where id = $1", [id]);
+    expect(rows[0].proposal_at).toBeNull();
   });
 
   it("answers 400 for a guest id that is not one, and 404 for an event id that is not one", async () => {

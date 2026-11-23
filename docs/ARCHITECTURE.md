@@ -186,7 +186,7 @@ The single event became one of many, each owned by one organizer (`PRODUCT_SPEC.
 
 How isolation is enforced:
 
-- **One gate for organizers.** Every organizer handler runs through `asEventOwner` (`src/lib/admin.ts`): a live Better Auth session, then `ownedEvent`, a single query on `event.id` and `event.organizer_id`. Someone else's event, a missing one and a malformed id all answer 404. Pages check the same way, each for itself (`requirePageEvent`), since a page renders alongside its layout.
+- **One gate for organizers.** Every organizer handler runs through `asEventOwner` (`src/lib/admin.ts`): a live Better Auth session, then `ownedEvent`, a single query on `event.id` and `event.organizer_id`. Someone else's event, a missing one and a malformed id all answer 404. Pages check the same way, each for itself (`requirePageEvent`), since a page renders alongside its layout; inside the dashboard the not-found screen is the organizer's own (`src/app/dashboard/not-found.tsx`, copy 13.45 and 13.46), the same for all three cases, with the way back to their events.
 - **A scoped domain.** Every domain function that touches an event's data takes an `EventDomain`, which carries the event id, and every statement is limited to it: `guest.event_id`, `character.event_id`, or `event.id`. A guest or character id from another event matches nothing and is answered as unknown. TypeScript refuses an unscoped call.
 - **Guests by their link.** `findByToken` joins the guest to its own event, and the guest handlers build the scoped domain from that event. No request names an event or a guest id.
 - **Same-event mantles.** Claiming checks, in the same `UPDATE`, that the character belongs to the guest's event. The decree check reads the guest's own event.
@@ -239,7 +239,7 @@ Organizer pages (18 November 2026): `/` is the landing page; `/sign-up` and `/si
 | `GET /api/events/{event}/export` | The whole event as JSON | |
 | `GET /api/cron/retention` | Deletes each event thirty days after its day | 401 without the cron secret |
 
-Every `/api/events/{event}/*` route answers 401 without a live session and 404 for an event the organizer does not own.
+Every `/api/events/{event}/*` route answers 401 without a live session and 404 for an event the organizer does not own. Days in a proposal, an amendment or an alternative must exist (30 February is refused with 400, never rolled into March). Organizer names are tidied and cut to 60 characters on the server, and a blank one is refused, since Better Auth itself takes any string. In the panel, any refused change says so (copy 10.43 unless the form says something more specific), and a 404 or 409 redraws the page from the server.
 
 Every mutation is idempotent.
 

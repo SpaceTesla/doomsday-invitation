@@ -285,6 +285,8 @@ export const copy = {
   "13.44": "This event and everything in it will be deleted. Every link stops working.",
   "13.44.confirm": "DELETE EVENT",
   "13.44.cancel": "CANCEL",
+  "13.45": "No council here",
+  "13.46": "This event does not exist, or it is not yours. Your own are under ALL EVENTS.",
 } as const;
 
 export type CopyKey = keyof typeof copy;
@@ -322,4 +324,5 @@ export const displayHeadings = [
   "13.25",
   "13.27",
   "13.41",
+  "13.45",
 ] as const satisfies readonly CopyKey[];

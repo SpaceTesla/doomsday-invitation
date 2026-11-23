@@ -452,3 +452,5 @@ Added on 18 November 2026 for the organizer platform (`PRODUCT_SPEC.md`, section
 | 13.42 | Delete, explanation | Body | Every guest, link, character, approval and alternative in it is deleted at once, and every link stops working. This cannot be undone. | Added |
 | 13.43 | Delete | Orbitron | DELETE EVENT | Added |
 | 13.44 | Delete, dialog | Body | This event and everything in it will be deleted. Every link stops working. | Added. Confirm: DELETE EVENT. Cancel: CANCEL |
+| 13.45 | An event that is missing or not yours, heading | Pirata One | No council here | Added 20 November 2026. Shown to signed-in organizers instead of 9.1 |
+| 13.46 | An event that is missing or not yours, explanation | Body | This event does not exist, or it is not yours. Your own are under ALL EVENTS. | Added 20 November 2026. Says nothing about which |
