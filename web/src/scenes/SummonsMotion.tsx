@@ -51,8 +51,21 @@ export function SummonsMotion({ token }: { token: string }) {
       };
 
       if (prefersReducedMotion()) {
-        gsap.fromTo(words, { autoAlpha: 0 }, { autoAlpha: 1, duration: REDUCED, ease: "none" });
-        plate.dataset.motion = "still";
+        // "settling" already takes the plate out of the waiting styles; "still" says the
+        // words are fully shown, so nothing (a contrast check, say) reads them mid-fade.
+        plate.dataset.motion = "settling";
+        gsap.fromTo(
+          words,
+          { autoAlpha: 0 },
+          {
+            autoAlpha: 1,
+            duration: REDUCED,
+            ease: "none",
+            onComplete: () => {
+              plate.dataset.motion = "still";
+            },
+          },
+        );
         setPlaying(false);
         return;
       }
