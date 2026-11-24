@@ -257,6 +257,8 @@ Approved with them:
 
 What the board established: with a short name the phone summons fits one screen; with a long name and the decline control it is about one line over, and scrolls.
 
+**Phone summons alignment (Approved by the owner, 24 November 2026).** On the upright plate the heading (Victor von Doom, the titling line, the name, "greeting."), the sanction line and the controls are centred, TAKE YOUR SEAT above DECLINE; the two paragraphs of the body stay left-aligned for reading. The dating clause is the same wording as on the wide plate (copy 3.8) and closes the summons, centred at the foot under the controls, instead of ending the body. The wide plate is unchanged: its text column stays left-aligned beside the seal. Measured at 390 by 844, the plate is 872 px high with a short name and 879 px with a long one (it was 882 and 894 before), so it scrolls slightly at that size, as it did.
+
 The summons sheet is a 4:3 plate; its percentages are of the plate's width.
 
 Rules:

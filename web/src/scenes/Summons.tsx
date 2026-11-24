@@ -47,9 +47,11 @@ export function Summons({
             <p>{copy["3.5"]}</p>
             <p>{copy["3.6"]}</p>
             <p className="sm-sanction">{copy["3.7"]}</p>
-            <p className="sm-date">{copy["3.8.phone"].replace(DATE, dating)}</p>
           </div>
           <SummonsActions token={token} />
+          {/* The dating clause closes the decree: under the seal on the wide plate (the
+              caption above), at the foot of the upright one. Read once, here, at the end. */}
+          <p className="sm-date">{wide}</p>
         </div>
         {/* The plate in shadow behind the doors, and the band of light that writes it. */}
         <span className="sm-dim" aria-hidden="true" />

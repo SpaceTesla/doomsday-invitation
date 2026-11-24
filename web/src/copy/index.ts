@@ -30,7 +30,6 @@ export const copy = {
     "You are therefore summoned to take your seat at the Council of Doom, where the day, the hour and the place shall be set before you.",
   "3.7": "Let none who is called fail to answer. The absent forfeit their voice.",
   "3.8": "Given at Castle Doom, in Doomstadt, the [day] day of [Month], [year].",
-  "3.8.phone": "Given at Castle Doom, the [day] day of [Month], [year].",
   "3.10": "TAKE YOUR SEAT",
   "3.11": "DECLINE",
 

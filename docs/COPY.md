@@ -103,7 +103,7 @@ The part of day is always given, because "half past seven" alone does not say mo
 | 3.5 | Body, first paragraph | Body | Be it known that Doom has weighed the defenders of this world and found them wanting; that he now gathers a company of his own choosing; and that you have been chosen. | Approved |
 | 3.6 | Body, second paragraph | Body | You are therefore summoned to take your seat at the Council of Doom, where the day, the hour and the place shall be set before you. | Approved |
 | 3.7 | Sanction | Body, italic, bold | Let none who is called fail to answer. The absent forfeit their voice. | Approved |
-| 3.8 | Dating clause | Body, italic | Given at Castle Doom, in Doomstadt, the [day] day of [Month], [year]. On the phone: Given at Castle Doom, the [day] day of [Month], [year]. | Approved |
+| 3.8 | Dating clause | Body, italic | Given at Castle Doom, in Doomstadt, the [day] day of [Month], [year]. | Approved. The same on every screen from 24 November 2026: under the seal on the wide plate, centred at the foot of the phone summons. The shorter phone form is retired |
 | 3.9 | Caption under the seal, wide plate | Runes | latveria | Approved. Decoration, not read aloud |
 | 3.10 | Primary action | Orbitron | TAKE YOUR SEAT | Approved |
 | 3.11 | Quiet control | Orbitron | DECLINE | Approved. Kept from the placeholder: it is the clearest word for an irreversible-looking choice |

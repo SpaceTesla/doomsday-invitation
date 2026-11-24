@@ -468,6 +468,17 @@
     .sm-caption {
       display: none;
     }
+    /* One column: the heading, the sanction and the controls are centred like a decree;
+       the two paragraphs of the body stay left-aligned, for reading. */
+    .sm-from,
+    .sm-title,
+    .sm-name,
+    .sm-greet,
+    .sm-sanction,
+    .sm-copy .notice {
+      text-align: center;
+    }
+    /* The dating clause, centred at the foot, under the controls. */
     .sm-date {
       position: static;
       width: auto;
@@ -475,6 +486,10 @@
       overflow: visible;
       clip-path: none;
       white-space: normal;
+      margin: 3cqw 0 0;
+      text-align: center;
+      text-wrap: balance;
+      font: italic 500 max(1.0625rem, 4cqw) / 1.3 var(--f-body);
     }
     .sm-from {
       font-size: 7cqw;
@@ -498,7 +513,9 @@
       margin-top: 1.5cqw;
     }
     .sm-act {
-      gap: 3cqw 4.5cqw;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2.5cqw;
       margin-top: 3cqw;
     }
     .sm-plate[data-fit~="two-lines"] .sm-name {
