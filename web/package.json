@@ -18,13 +18,14 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx --env-file=.env.local scripts/migrate.ts",
     "db:check": "tsx --env-file=.env.local scripts/db-check.ts",
-    "admin:passphrase": "tsx scripts/admin-passphrase.ts",
+    "organizer:claim": "tsx --env-file=.env.local scripts/claim-event.ts",
     "seed:local": "tsx --env-file=.env.local scripts/seed-local.ts",
     "env:setup": "tsx scripts/setup-env.ts",
     "assets:sync": "tsx scripts/sync-assets.ts"
   },
   "dependencies": {
     "@gsap/react": "2.1.2",
+    "better-auth": "1.7.16",
     "drizzle-orm": "0.45.4",
     "gsap": "3.15.1",
     "next": "16.4.6",

@@ -223,8 +223,9 @@ describe("leaving the council", () => {
 });
 
 describe("the event", () => {
-  it("exists once, in the configured time zone", async () => {
+  // There is no longer one event per database: the domain reads the event it is scoped to.
+  it("is the domain's own event, in its time zone, with nothing proposed", async () => {
     const row = await getEvent(domain);
-    expect(row).toMatchObject({ id: 1, timezone: "Asia/Kolkata", proposalVersion: 0 });
+    expect(row).toMatchObject({ id: t.eventId(), timezone: "Asia/Kolkata", proposalVersion: 0 });
   });
 });

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { forEvent } from "@/domain/context";
 import { councilForGuest } from "@/domain/council";
 import { addressOf, stageOf } from "@/domain/guests";
 import { datingClause } from "@/domain/words";
@@ -59,7 +60,7 @@ async function Scene({
     case "day_passed":
       return <DayPassed />;
     case "council": {
-      const council = await councilForGuest(serverDomain(), guest.id);
+      const council = await councilForGuest(forEvent(serverDomain(), event.id), guest.id);
       if (!council) notFound();
       return <Council data={councilData(token, council, now)} />;
     }

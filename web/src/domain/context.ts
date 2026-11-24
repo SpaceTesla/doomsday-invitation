@@ -9,6 +9,26 @@ export type Domain = {
   now?: () => Date;
 };
 
+/**
+ * The domain, scoped to one event. Every function that reads or changes an event's
+ * guests, roster, proposal or decree takes this, and every query it runs is limited to
+ * `eventId`, so an id from another event matches nothing. Callers build it only after
+ * proving the right to the event: the organizer owns it (src/lib/admin.ts), or the guest's
+ * link belongs to it (src/lib/guest.ts).
+ */
+export type EventDomain = Domain & { eventId: number };
+
+export const forEvent = (domain: Domain, eventId: number): EventDomain => ({
+  // Read through, so a domain whose database is attached later (in tests) still works.
+  get db() {
+    return domain.db;
+  },
+  get now() {
+    return domain.now;
+  },
+  eventId,
+});
+
 export const nowOf = (domain: Domain): Date => (domain.now ? domain.now() : new Date());
 
 /** A refused action, with a reason the screen can explain in the copy deck's words. */

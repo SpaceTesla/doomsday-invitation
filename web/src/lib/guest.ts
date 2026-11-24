@@ -3,7 +3,7 @@
 // cancelled, replaced or expired link gets the same answer, and unknown links are
 // counted per address so the space of links cannot be searched.
 import { headers } from "next/headers";
-import type { Domain } from "@/domain/context";
+import { forEvent, type Domain, type EventDomain } from "@/domain/context";
 import { findByToken, type GuestRow } from "@/domain/guests";
 import type { EventRow } from "@/domain/event";
 import { json, sameOrigin, serverDomain } from "@/lib/admin";
@@ -36,9 +36,12 @@ export async function pageAddress(): Promise<string> {
 
 export const notFound = () => json({ error: "not_found" }, 404);
 
-type Handler = (domain: Domain, found: FoundGuest) => Promise<Response>;
+type Handler = (domain: EventDomain, found: FoundGuest) => Promise<Response>;
 
-/** Run a guest handler: same origin, a valid link, and a plain failure that reveals nothing. */
+/**
+ * Run a guest handler: same origin, a valid link, and a plain failure that reveals nothing.
+ * The handler gets the domain scoped to the event the link belongs to, and nothing else.
+ */
 export async function asGuest(
   request: Request,
   params: Promise<{ token: string }>,
@@ -50,7 +53,7 @@ export async function asGuest(
     const { token } = await params;
     const found = await guestForLink(domain, token, clientAddress(request));
     if (!found) return notFound();
-    return await handler(domain, found);
+    return await handler(forEvent(domain, found.event.id), found);
   } catch {
     // Never log the error itself, nor the address: both can carry the token.
     console.error("guest action failed");

@@ -1,12 +1,16 @@
 // Fill the LOCAL database with a sample event, for trying the guest journey by hand.
-// Usage: npm run seed:local
-// It empties the local database first, except the roster (seeded by migration 0002), and
-// refuses any database that is not on this machine. The links it prints work only against
-// the local database.
+// Usage: npm run seed:local [-- --owner <email of a local organizer>]
+//
+// It deletes every event (and so every guest and roster) in the local database, keeps the
+// organizer accounts, and makes one sample event with the default roster. With --owner the
+// event belongs to that organizer, who sees it on their dashboard; without it the event has
+// no owner until `npm run organizer:claim`. It refuses any database that is not on this
+// machine. The links it prints work only against the local database.
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { addCharacter, claimCharacter } from "../src/domain/characters";
-import { ensureEvent } from "../src/domain/event";
+import { claimCharacter } from "../src/domain/characters";
+import { forEvent } from "../src/domain/context";
+import { claimUnownedEvents, createEvent } from "../src/domain/event";
 import { accept, addGuest, decline, recordOpeningPlayed, type Title } from "../src/domain/guests";
 import { approve, proposeAlternative, setProposal } from "../src/domain/proposal";
 import { zonedInstant } from "../src/domain/time";
@@ -17,14 +21,21 @@ async function main() {
   if (host !== "localhost" && host !== "127.0.0.1") {
     throw new Error("seed:local only runs against a database on this machine.");
   }
+  const ownerIndex = process.argv.indexOf("--owner");
+  const owner = ownerIndex > 0 ? process.argv[ownerIndex + 1] : undefined;
   const pool = new Pool({ connectionString: url });
-  const domain = { db: drizzle(pool) };
-  const tz = process.env.EVENT_TIMEZONE ?? "Asia/Kolkata";
+  const base = { db: drizzle(pool) };
+  const tz = "Asia/Kolkata";
 
   await pool.query(
-    "truncate alternative, guest, event, admin_session, attempt restart identity cascade",
+    "truncate alternative, guest, character, event, attempt restart identity cascade",
   );
-  await ensureEvent(domain, tz);
+  const created = await createEvent(base, null, {
+    timeZone: tz,
+    hostName: "",
+  });
+  if (!created.ok) throw new Error(created.reason);
+  const domain = forEvent(base, created.id);
 
   const year = new Date().getFullYear() + (new Date().getMonth() === 11 ? 1 : 0);
   await setProposal(
@@ -32,17 +43,11 @@ async function main() {
     zonedInstant(tz, year, 12, 18, 19, 30),
     "the Grand Cinema, in the fourth hall",
   );
-
-  // The sample guests use Thor from the seeded roster; he is added back if removed.
-  const roster: Record<string, string> = {};
   const found = await pool.query<{ id: string }>(
-    "select id from character where name_key = 'thor'",
+    "select id from character where event_id = $1 and name_key = 'thor'",
+    [created.id],
   );
-  if (found.rows[0]) roster.Thor = found.rows[0].id;
-  else {
-    const added = await addCharacter(domain, "Thor", "avengers");
-    if (added.ok) roster.Thor = added.id;
-  }
+  const thor = found.rows[0]?.id;
 
   const guests: [string, Title, string][] = [
     ["Anish", "Mr.", "new: sees the opening"],
@@ -60,7 +65,7 @@ async function main() {
     );
     if (name === "Tara Menon") {
       await accept(domain, added.id);
-      await claimCharacter(domain, added.id, roster.Thor);
+      if (thor) await claimCharacter(domain, added.id, thor);
       await approve(domain, added.id);
       await proposeAlternative(domain, added.id, zonedInstant(tz, year, 12, 19, 18, 0));
     } else if (name === "Ravi") {
@@ -71,7 +76,15 @@ async function main() {
       await decline(domain, added.id);
     }
   }
-  console.log("Local sample event created. Links (local database only):\n");
+
+  let ownership = "It has no owner yet: sign up locally, then run `npm run organizer:claim`.";
+  if (owner) {
+    const claimed = await claimUnownedEvents(base, owner);
+    ownership = claimed
+      ? "It belongs to that organizer: open http://localhost:3000/dashboard."
+      : "No local organizer has that email; the event has no owner yet.";
+  }
+  console.log(`Local sample event created. ${ownership}\nLinks (local database only):\n`);
   console.log(links.join("\n"));
   await pool.end();
 }

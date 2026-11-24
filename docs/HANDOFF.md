@@ -131,7 +131,7 @@ Final. Detail is in `ARCHITECTURE.md`.
 - **Database.** Neon PostgreSQL through its pooled connection string; the direct string for migrations. Six tables.
 - **Integrity.** `guest.character_id` is unique. Claiming or changing a character is one `UPDATE`; a unique violation (23505) is returned as a 409 naming the holder. Multi-step changes use Drizzle transactions. Approvals carry a proposal version, so changing the proposal resets them without touching rows.
 - **Structure.** Pages read; Route Handlers validate and call one domain function; the domain module holds every rule with no framework imports; all copy lives in `src/copy/` keyed by `COPY.md` line numbers.
-- **Security.** Generated passphrase stored as a scrypt hash; signed session cookie backed by a session row; 256-bit guest tokens; server-side checks on every administrator route; rate limits counted in the database; strict headers; no middleware; no third parties.
+- **Security.** Organizer accounts by Better Auth since 18 November 2026 (until then, a generated passphrase stored as a scrypt hash); signed session cookie backed by a session row; every event reachable only by its owner (`ARCHITECTURE.md`, section 4.5); 256-bit guest tokens; server-side checks on every administrator route; rate limits counted in the database; strict headers; no middleware; no third parties.
 - **Tests.** Real PostgreSQL in a throwaway container, never mocked, including a twenty-way concurrent claim test. Playwright for the journey, reduced motion, accessibility and headers.
 - **Cost.** Expected to be free on Vercel Hobby and Neon Free.
 

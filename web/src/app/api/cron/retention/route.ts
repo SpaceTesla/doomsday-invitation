@@ -15,8 +15,8 @@ function authorised(request: Request): boolean {
 }
 
 /**
- * Called once a day by Vercel Cron. Thirty days after the day, deletes the event and
- * everything in it; before then, does nothing. Safe to run any number of times.
+ * Called once a day by Vercel Cron. Deletes each event thirty days after its day, with
+ * everything in it; an event before then is left alone. Safe to run any number of times.
  * docs/ARCHITECTURE.md, section 7.5.
  */
 export async function GET(request: Request) {
@@ -28,7 +28,11 @@ export async function GET(request: Request) {
   }
   try {
     const result = await runRetention(serverDomain());
-    console.log(result.deleted ? "retention deleted the event" : "retention: nothing due");
+    console.log(
+      result.deleted
+        ? `retention deleted ${result.events.length} event(s)`
+        : "retention: nothing due",
+    );
     return json({ deleted: result.deleted });
   } catch {
     console.error("retention failed");

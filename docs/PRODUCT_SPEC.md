@@ -628,3 +628,36 @@ Decisions about how the product looks are logged in `design/DESIGN.md`, section 
 | A confirmed mantle claim is shown (about 3.8 s, skippable) before the council opens, and moves into the guest's own row of the list; a failed claim shows nothing | The council opened at once |
 | In the council, any held mantle can be opened in full above the guest list | Mantles were names in the list only |
 | The decree's ceremony plays once per revision of the decree, and again after an amendment | No ceremony |
+
+## 8. The organizer platform (18 November 2026)
+
+Stated by you on 18 November 2026: The Iron Throne becomes a small platform on which other people create organizer accounts, create their own events, summon their friends and run their own councils. A deliberately minimal version, for a closed beta. The guest journey is unchanged.
+
+### 8.1 Roles
+
+| Role | Change |
+|---|---|
+| Organizer | New. Has an account (name, email, password). Owns any number of events and does, for each, everything Doom did in the panel (section 3). Sees only their own events |
+| Doom | Within an event, still the sovereign the guests see. The organizer plays him; the name beneath Doctor Doom on the guest list is set per event (it starts as the organizer's name) |
+| Guest | Unchanged: no account, one private link, the whole journey of section 2. A guest belongs to exactly one event |
+
+Each event has exactly one organizer. There are no teams, collaborators, organisations or shared events.
+
+### 8.2 What an organizer can do
+
+- **Landing page** (`/`): what the invitation is, a way to create an account and a way to sign in. It presents the theme as a private demonstration, not licensed or endorsed by the owners of the characters, and not for commercial use.
+- **Accounts:** create an account, sign in, sign out. A password needs only six characters: this is an invitation, not a bank. Registration is open only where the deployment opens it (a closed beta).
+- **Dashboard:** their events, each with how many are summoned and seated and whether a day is proposed or decreed; a form for a new event; a way into each event.
+- **An event:** its time zone (fixed once a day is proposed) and the name beneath Doom. Events have no names: each is the one summons to the screening, and the dashboard tells them apart by day and venue (19 November 2026). It starts with the Doomsday roster, which the organizer edits as before.
+- **The proposal comes first** (19 November 2026). An event opens on its proposal, and the panel's sections run proposal, characters, guests, council, settings. Guests can be summoned only once a day is proposed, since the summons and the council are built on it; the server refuses earlier. The sections work as section 3 describes.
+- **Deleting an event**, after a confirmation that names it: every guest, link, character, approval and alternative in it goes at once, and every link stops working.
+
+### 8.3 Each event is its own world
+
+- An event owns its guests and their links, its roster and who holds what, its proposal, approvals and alternatives, its decree, its time zone, and its retention: thirty days after its own day, it and everything in it are deleted (section 4). Organizer accounts are not deleted by retention.
+- A link opens only its own guest, in its own event. Nothing an organizer types, in an address or a request, reaches another organizer's event.
+- The existing event moves over whole: every guest, link, status, mantle, approval, alternative and the decree stay as they are. It belongs to the first organizer once they claim it (`docs/LAUNCH.md`, section 0).
+
+### 8.4 Not in this version
+
+Payments, subscriptions, a theme marketplace, a visual editor, uploads, teams, guest accounts, analytics, notifications, custom domains and other themes. Without an email provider there is no email verification and no password reset. One theme, the Doctor Doom experience, remains a private demonstration until its intellectual property is cleared.

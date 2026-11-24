@@ -1,0 +1,117 @@
+/* The organizer's pages: the landing page, sign-in and sign-up, the dashboard. They use
+   the panel's plates, wells, type and palette, without the cinematic treatment
+   (design/DESIGN.md, section 8.19). Guests never see them. */
+@layer components {
+  /* A link inside a sentence of body text: the body face, underlined, never capitals. */
+  .link-body {
+    color: var(--c-silver);
+    text-decoration: underline;
+    text-decoration-color: rgba(198, 167, 94, 0.55);
+    text-underline-offset: 0.25em;
+  }
+  .link-body:focus-visible {
+    outline: 2px solid var(--c-gold-light);
+    outline-offset: 3px;
+  }
+  .link-body:active {
+    color: var(--c-gold-light);
+    text-decoration-color: currentColor;
+  }
+  @media (hover: hover) {
+    .link-body:hover {
+      color: var(--c-gold-light);
+      text-decoration-color: currentColor;
+    }
+  }
+
+  /* ---- the landing page: the mask, the title, three steps, two ways in ---- */
+  .landing {
+    display: grid;
+    align-content: center;
+    gap: 28px;
+    min-height: 100dvh;
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 48px 16px 40px;
+  }
+  .landing-head {
+    display: grid;
+    justify-items: start;
+    gap: 18px;
+  }
+  .landing-lead {
+    margin: 0;
+    max-width: 34em;
+    font-family: var(--f-body);
+    font-weight: 500;
+    font-size: var(--t-expl);
+    line-height: 1.45;
+    color: var(--c-silver);
+    text-wrap: pretty;
+  }
+  /* The steps are a sequence, so they are numbered; the figures are Cinzel. */
+  .landing-steps {
+    display: grid;
+    gap: 14px;
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+  .landing-steps li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    align-items: baseline;
+    counter-increment: step;
+    font-size: var(--floor-body);
+    line-height: 1.4;
+    color: var(--c-silver);
+  }
+  .landing-steps li::before {
+    content: counter(step);
+    font-family: var(--f-serif);
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: var(--c-gold);
+  }
+  .landing-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 28px;
+  }
+  .platform-note {
+    margin: 0;
+    max-width: 40em;
+    font-size: var(--floor-body);
+    line-height: 1.4;
+    color: var(--c-steel);
+  }
+
+  /* ---- the dashboard's list of events: rows in a well, never cards ---- */
+  .event-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 6px 16px;
+  }
+  /* The day in words, as guests read it, then the venue in Cinzel. */
+  .event-when {
+    margin: 0;
+    font-size: var(--t-expl);
+    line-height: 1.35;
+    color: var(--c-silver);
+  }
+  .event-venue {
+    margin: 2px 0 0;
+    font: 500 1.125rem / 1.25 var(--f-serif);
+    letter-spacing: 0.03em;
+    color: var(--c-steel);
+    overflow-wrap: anywhere;
+  }
+  .event-facts {
+    margin: 2px 0 0;
+    font-size: var(--floor-body);
+    color: var(--c-silver);
+  }
+}

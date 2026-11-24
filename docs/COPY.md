@@ -282,9 +282,9 @@ The reader here is Doom. The copy is plain and brief, in the same typefaces, wit
 | 10.1 | Panel title | Pirata One | Doom's Council | Approved |
 | 10.2 | Section labels | Orbitron | GUESTS, CHARACTERS, PROPOSAL, COUNCIL | Approved |
 | 10.3 | Sign-in heading | Pirata One | Doom's Council | Approved |
-| 10.3a | Sign-in field label | Orbitron | PASSPHRASE | Approved |
-| 10.3b | Sign-in button | Orbitron | ENTER | Approved |
-| 10.3c | Wrong passphrase | Body | That is not the passphrase. | Approved |
+| 10.3a | Sign-in field label | Orbitron | PASSPHRASE | Retired 18 November 2026: organizers sign in with email and password (13.11 to 13.24) |
+| 10.3b | Sign-in button | Orbitron | ENTER | Retired 18 November 2026 (13.8) |
+| 10.3c | Wrong passphrase | Body | That is not the passphrase. | Retired 18 November 2026 (13.18) |
 | 10.3d | Too many attempts | Body | Too many attempts. Wait a while, then try again. | Approved |
 | 10.3e | Sign out | Orbitron | SIGN OUT | Approved |
 
@@ -381,7 +381,7 @@ Closed on 15 November 2026:
 | "The Iron Throne" is the opening's title. The administrator panel is titled "Doom's Council" | 2.1, 10.1 |
 | After the day has passed, a guest who never answered or had declined sees the closing screen | 4.13, 4.14 |
 | Guests learn of a changed proposal or an amended decree from a notice the next time they load the council. Nothing is sent to them | 7.13, 8.7 |
-| The administrator signs in with a passphrase (`ARCHITECTURE.md`) | 10.3 to 10.3e |
+| The administrator signs in with a passphrase (`ARCHITECTURE.md`). Replaced on 18 November 2026 by organizer accounts | 10.3 to 10.3e; section 13 |
 
 Settled in the build, without further wording questions:
 
@@ -389,3 +389,68 @@ Settled in the build, without further wording questions:
 - The date and time entry controls. Their labels are final.
 - Any heading that sits badly in its layout is reworded without a V, in the same voice.
 - Wording for a state this deck did not foresee follows section 1 and reuses the nearest existing line.
+
+## 13. The platform
+
+Added on 18 November 2026 for the organizer platform (`PRODUCT_SPEC.md`, section 8): the landing page, organizer accounts, the dashboard and each event's settings. The reader is an organizer, not a guest, so the register is the panel's: plain and brief, in the same typefaces. Guests never see these lines. Headings avoid V and v, as every Pirata One line must. Events have no names (19 November 2026): each is the one summons to the screening, told apart by its day and venue.
+
+### 13.1 Landing page
+
+| # | Where | Face | Copy | Standing |
+|---|---|---|---|---|
+| 13.1 | Title | Pirata One | The Iron Throne | Added. The same words as 2.1 |
+| 13.2 | Lead | Body | A private summons to a night at the cinema. Each friend receives their own link, takes a seat at the council, claims a character, and agrees the day with you. | Added |
+| 13.3 | Steps heading | Pirata One | How it goes | Added |
+| 13.4 | Step one | Body | Create an event and summon your friends by name. | Added |
+| 13.5 | Step two | Body | Send each friend their private link. They need no account and no app. | Added |
+| 13.6 | Step three | Body | They answer, claim a character and approve the day you propose. You decree it. | Added |
+| 13.7 | Create an account | Orbitron | CREATE AN ACCOUNT | Added |
+| 13.8 | Sign in | Orbitron | SIGN IN | Added. Also the sign-in button |
+| 13.9 | Notice | Body | A private demonstration, shared by invitation. The characters and their names belong to their owners. This site is not licensed or endorsed by them, and is not for commercial use. | Added. On the landing page and the dashboard |
+| 13.10 | Accounts closed | Body | New accounts are by invitation for now. If you have one, sign in. | Added. Shown when registration is closed |
+
+### 13.2 Accounts
+
+| # | Where | Face | Copy | Standing |
+|---|---|---|---|---|
+| 13.11 | Sign-in heading | Pirata One | Sign in | Added |
+| 13.12 | Sign-up heading | Pirata One | Create an account | Added |
+| 13.13 | Field labels | Orbitron | NAME, EMAIL and PASSWORD | Added. NAME as in 10.5 |
+| 13.14 | Help under the name field | Body | Your name as your guests know you. It starts as the name beneath Doctor Doom in each council. | Added |
+| 13.15 | Help under the password field | Body | At least six characters. | Added. Was ten characters until 19 November 2026 |
+| 13.16 | Sign-up button | Orbitron | CREATE ACCOUNT | Added |
+| 13.17 | Field missing | Body | Fill in every field. | Added |
+| 13.18 | Wrong email or password | Body | That email and password do not match an account. | Added |
+| 13.19 | Email already used | Body | An account already uses that email. Sign in instead. | Added |
+| 13.20 | Password too short | Body | The password needs at least six characters. | Added. As 13.15 |
+| 13.21 | Not an email address | Body | That is not an email address. | Added. Too many attempts reuses 10.3d |
+| 13.22 | To sign-up | Body | No account yet? Create one. | Added |
+| 13.23 | To sign-in | Body | Already have an account? Sign in. | Added |
+| 13.24 | Signed in as | Body | Signed in as [Name]. | Added. Sign out reuses 10.3e |
+
+### 13.3 Dashboard and settings
+
+| # | Where | Face | Copy | Standing |
+|---|---|---|---|---|
+| 13.25 | Dashboard heading | Pirata One | Your councils | Added |
+| 13.26 | No events | Body | You have no events yet. Create one to start summoning. | Added |
+| 13.27 | New event heading | Pirata One | A new council | Added |
+| 13.28 | Field labels | Orbitron | TIME ZONE, NAME BENEATH DOOM | Added. EVENT NAME retired on 19 November 2026 |
+| 13.29 | Help under the event name | Body | Only you see it. Guests see the summons, never this name. | Retired 19 November 2026: events have no names |
+| 13.30 | Help under the time zone | Body | Every day and hour is set in this zone. It can change only until you propose. | Added |
+| 13.31 | Help under the name beneath Doom | Body | Shown beneath Doctor Doom on the guest list. Leave it empty to show Doom alone. | Added |
+| 13.32 | Create | Orbitron | CREATE EVENT | Added |
+| 13.33 | Event name missing | Body | An event needs a name. | Retired 19 November 2026 |
+| 13.34 | An event's figures | Body, figures in Cinzel | [n] summoned, [seated] seated | Added |
+| 13.35 | An event's state | Orbitron | NOTHING PROPOSED, PROPOSED, DECREED | Added |
+| 13.36 | Open an event | Orbitron | OPEN | Added |
+| 13.37 | Back to the dashboard | Orbitron | ALL EVENTS | Added |
+| 13.38 | Settings section label | Orbitron | SETTINGS | Added, beside the labels of 10.2 |
+| 13.39 | Save settings | Orbitron | SAVE | Added |
+| 13.40 | Time zone fixed | Body | The time zone is fixed once a proposal is set. | Added |
+| 13.41 | Delete heading | Pirata One | Delete this council | Added |
+| 13.42 | Delete, explanation | Body | Every guest, link, character, approval and alternative in it is deleted at once, and every link stops working. This cannot be undone. | Added |
+| 13.43 | Delete | Orbitron | DELETE EVENT | Added |
+| 13.44 | Delete, dialog | Body | This event and everything in it will be deleted. Every link stops working. | Added. Confirm: DELETE EVENT. Cancel: CANCEL |
+| 13.45 | An event that is missing or not yours, heading | Pirata One | No council here | Added 20 November 2026. Shown to signed-in organizers instead of 9.1 |
+| 13.46 | An event that is missing or not yours, explanation | Body | This event does not exist, or it is not yours. Your own are under ALL EVENTS. | Added 20 November 2026. Says nothing about which |

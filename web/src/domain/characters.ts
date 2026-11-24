@@ -2,7 +2,8 @@
 //
 // One guest per character is a database constraint (guest.character_id is unique).
 // Claiming or changing is one UPDATE: two guests racing for a character cannot both
-// win, and a guest changing character never holds two or none.
+// win, and a guest changing character never holds two or none. Every statement is
+// limited to the domain's event, so a character or guest of another event matches nothing.
 import { and, eq, sql } from "drizzle-orm";
 import { character, event, guest } from "@/db/schema";
 import {
@@ -10,7 +11,7 @@ import {
   postgresCode,
   refuse,
   UNIQUE_VIOLATION,
-  type Domain,
+  type EventDomain,
   type Refused,
 } from "./context";
 import type { Faction } from "./factions";
@@ -20,7 +21,7 @@ export type Holder = { title: string; name: string };
 const nameKey = (name: string) => name.trim().toLowerCase();
 
 export async function addCharacter(
-  domain: Domain,
+  domain: EventDomain,
   rawName: string,
   faction: Faction | null = null,
 ): Promise<{ ok: true; id: string } | Refused<"no_name" | "duplicate">> {
@@ -29,7 +30,7 @@ export async function addCharacter(
   try {
     const [row] = await domain.db
       .insert(character)
-      .values({ name, nameKey: nameKey(name), faction })
+      .values({ eventId: domain.eventId, name, nameKey: nameKey(name), faction })
       .returning({ id: character.id });
     return { ok: true, id: row.id };
   } catch (error) {
@@ -38,21 +39,22 @@ export async function addCharacter(
   }
 }
 
-/** The guest holding a character, if any. */
-export async function holderOf(domain: Domain, characterId: string): Promise<Holder | null> {
+/** The guest of this event holding a character, if any. */
+export async function holderOf(domain: EventDomain, characterId: string): Promise<Holder | null> {
   const rows = await domain.db
     .select({ title: guest.title, name: guest.name })
     .from(guest)
-    .where(eq(guest.characterId, characterId));
+    .where(and(eq(guest.characterId, characterId), eq(guest.eventId, domain.eventId)));
   return rows[0] ?? null;
 }
 
 /**
  * Remove a character from the roster. If a guest holds it, Doom is warned first, by
  * name; with `confirm` it is removed and that guest is sent back to choose again.
+ * A character of another event is left alone.
  */
 export async function removeCharacter(
-  domain: Domain,
+  domain: EventDomain,
   characterId: string,
   options: { confirm?: boolean } = {},
 ): Promise<{ ok: true } | ({ ok: false; reason: "held" } & { holder: Holder })> {
@@ -64,13 +66,16 @@ export async function removeCharacter(
     const [removed] = await tx
       .select({ name: character.name })
       .from(character)
-      .where(eq(character.id, characterId));
+      .where(and(eq(character.id, characterId), eq(character.eventId, domain.eventId)));
+    if (!removed) return;
     await tx
       .update(guest)
-      .set({ characterRemoved: true, removedCharacterName: removed?.name ?? null })
-      .where(eq(guest.characterId, characterId));
+      .set({ characterRemoved: true, removedCharacterName: removed.name })
+      .where(and(eq(guest.characterId, characterId), eq(guest.eventId, domain.eventId)));
     // The foreign key clears guest.character_id.
-    await tx.delete(character).where(eq(character.id, characterId));
+    await tx
+      .delete(character)
+      .where(and(eq(character.id, characterId), eq(character.eventId, domain.eventId)));
   });
   return { ok: true };
 }
@@ -81,10 +86,11 @@ export type ClaimRefusal =
 
 /**
  * Claim a character, or change to another. A first choice is allowed after the decree;
- * a change is not. If someone else holds it, the answer names them.
+ * a change is not. If someone else holds it, the answer names them. Only a character of
+ * the guest's own event can be claimed.
  */
 export async function claimCharacter(
-  domain: Domain,
+  domain: EventDomain,
   guestId: string,
   characterId: string,
 ): Promise<{ ok: true } | ClaimRefusal> {
@@ -95,10 +101,13 @@ export async function claimCharacter(
       .where(
         and(
           eq(guest.id, guestId),
+          eq(guest.eventId, domain.eventId),
           eq(guest.status, "seated"),
+          sql`exists (select 1 from ${character} c
+                      where c.id = ${characterId} and c.event_id = ${guest.eventId})`,
           sql`(${guest.characterId} is null
                or ${guest.characterId} = ${characterId}
-               or (select ${event.finalisedAt} from ${event} where ${event.id} = 1) is null)`,
+               or (select e.finalised_at from ${event} e where e.id = ${guest.eventId}) is null)`,
         ),
       )
       .returning({ id: guest.id });
@@ -119,8 +128,13 @@ export async function claimCharacter(
   const rows = await domain.db
     .select({ status: guest.status })
     .from(guest)
-    .where(eq(guest.id, guestId));
+    .where(and(eq(guest.id, guestId), eq(guest.eventId, domain.eventId)));
   if (!rows[0]) return refuse("unknown_guest");
   if (rows[0].status !== "seated") return refuse("not_seated");
+  const known = await domain.db
+    .select({ id: character.id })
+    .from(character)
+    .where(and(eq(character.id, characterId), eq(character.eventId, domain.eventId)));
+  if (!known.length) return refuse("unknown_character");
   return refuse("after_decree");
 }

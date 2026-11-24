@@ -9,8 +9,9 @@ export type ActionResult =
 
 /**
  * Send one change to the panel's API and refresh the page from the server when it lands.
- * A lost session goes back to sign-in. The message says "Saved." or "That did not save",
- * in the deck's words; anything more specific is the caller's to say.
+ * A lost session goes back to sign-in; an event that is not yours answers 404 like any
+ * missing thing. The message says "Saved." or "That did not save", in the deck's words;
+ * anything more specific is the caller's to say, with setMessage after the run.
  */
 export function useAdminAction() {
   const router = useRouter();
@@ -18,7 +19,12 @@ export function useAdminAction() {
   const [message, setMessage] = useState<{ text: string; error: boolean } | null>(null);
 
   const run = useCallback(
-    async (method: string, url: string, body?: unknown): Promise<ActionResult> => {
+    async (
+      method: string,
+      url: string,
+      body?: unknown,
+      options: { refresh?: boolean } = {},
+    ): Promise<ActionResult> => {
       setBusy(true);
       setMessage(null);
       try {
@@ -29,7 +35,7 @@ export function useAdminAction() {
           cache: "no-store",
         });
         if (response.status === 401) {
-          router.replace("/throne");
+          router.replace("/sign-in");
           return { ok: false, status: 401, data: null };
         }
         const data = response.headers.get("content-type")?.includes("json")
@@ -37,10 +43,15 @@ export function useAdminAction() {
           : null;
         if (response.ok) {
           setMessage({ text: copy["10.42"], error: false });
-          router.refresh();
+          if (options.refresh !== false) router.refresh();
           return { ok: true, status: response.status, data };
         }
-        if (response.status >= 500) setMessage({ text: copy["10.43"], error: true });
+        // A failure never passes in silence: "That did not save" unless the caller says
+        // something more specific. A 404 or 409 means the page is behind (the event or
+        // guest is gone, or changed in another tab), so it is redrawn from the server.
+        setMessage({ text: copy["10.43"], error: true });
+        if ((response.status === 404 || response.status === 409) && options.refresh !== false)
+          router.refresh();
         return { ok: false, status: response.status, data };
       } catch {
         setMessage({ text: copy["10.43"], error: true });

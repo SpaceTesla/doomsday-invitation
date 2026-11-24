@@ -150,8 +150,11 @@ test("a mantle in the guest list opens in full above the list, and closes back i
   await expect(page.getByRole("heading", { name: "Those summoned" })).toBeVisible();
   const card = page.locator(".cn-mantle-card");
   await expect(card).toHaveCount(0);
-  // Doom's row carries the name of the one who summons as Doom (the setting DOOM_NAME).
-  await expect(page.locator(".cn-guest-doom")).toHaveText("Arjun Rao");
+  // Doom's row reads like every other: the one who summons as Doom (the setting DOOM_NAME),
+  // then Doctor Doom as the mantle beneath.
+  const doom = page.locator(".cn-guest-doom");
+  await expect(doom.locator(".cn-guest-name")).toHaveText("Arjun Rao");
+  await expect(doom.locator(".cn-guest-mantle")).toHaveText("Doctor Doom");
 
   // Another guest's mantle: the character and whose it is.
   const thor = page.getByRole("button", { name: "Thor" });

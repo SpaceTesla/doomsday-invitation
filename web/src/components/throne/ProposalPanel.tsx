@@ -8,6 +8,7 @@ import { Label } from "@/components/Label";
 import { Panel, Well } from "@/components/Panel";
 import { timeInWords } from "@/domain/words";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { useEventPaths } from "./EventPaths";
 import { ActionMessage, useAdminAction } from "./useAdminAction";
 
 // Every quarter hour of the day, named in words as guests will read it.
@@ -31,6 +32,7 @@ export type ProposalView = {
 };
 
 export function ProposalPanel({ view }: { view: ProposalView }) {
+  const paths = useEventPaths();
   const action = useAdminAction();
   const dayId = useId();
   const hourId = useId();
@@ -65,7 +67,7 @@ export function ProposalPanel({ view }: { view: ProposalView }) {
 
   async function send() {
     setConfirming(false);
-    const url = view.decreed ? "/api/admin/plan" : "/api/admin/proposal";
+    const url = view.decreed ? `${paths.api}/plan` : `${paths.api}/proposal`;
     const result = await action.run("PUT", url, { day, hour, venue: venue.trim() });
     if (!result.ok && result.status === 422) {
       const reason = (result.data as { error?: string } | null)?.error;

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { E2E_PASSPHRASE } from "./constants";
+import { panel, signIn } from "./organizer";
 import { seed } from "./seed";
 
 // Headers and privacy on every kind of route (docs/ARCHITECTURE.md, 7.4): the security
@@ -22,11 +22,15 @@ test("every kind of route carries the security headers; private ones are never c
     // path, method, expected status, private (no-store)
     [links.Anish, "GET", 200, true],
     [`/s/${"x".repeat(43)}`, "GET", 404, true],
-    ["/", "GET", 404, false],
-    ["/throne", "GET", 200, true],
+    ["/", "GET", 200, true],
+    ["/sign-in", "GET", 200, true],
+    ["/sign-up", "GET", 200, true],
+    ["/dashboard", "GET", 307, true], // signed out: to sign-in
+    ["/throne", "GET", 307, true], // the old panel address: to the dashboard
     ["/api/health", "GET", 200, true],
     [`/api/g/${"x".repeat(43)}/accept`, "POST", 403, true], // no Origin header: refused first
-    ["/api/admin/export", "GET", 401, true],
+    ["/api/events/1/export", "GET", 401, true],
+    ["/api/events", "POST", 403, true], // no Origin header: refused first
     ["/api/cron/retention", "GET", 401, true],
     ["/robots.txt", "GET", 200, false],
     ["/art/hero-dust.webp", "GET", 200, false],
@@ -66,25 +70,23 @@ test("no screen asks anything of another origin", async ({ page, baseURL }) => {
   await expect(page.locator(".sm-name")).toBeAttached();
   await page.goto(links["Tara Menon"]);
   await expect(page.getByRole("heading", { name: "Council of Doom" })).toBeVisible();
-  await page.goto("/throne");
-  await page.getByRole("textbox", { name: "PASSPHRASE" }).fill(E2E_PASSPHRASE);
-  await page.getByRole("button", { name: "ENTER" }).click();
-  await page.waitForURL("**/throne/guests");
-  for (const section of ["characters", "proposal", "council"])
-    await page.goto(`/throne/${section}`);
+  await page.goto("/");
+  await page.goto("/sign-up");
+  await signIn(page);
+  for (const section of ["guests", "characters", "proposal", "council", "settings"])
+    await page.goto(panel(section));
   await page.goto(`/s/${"x".repeat(43)}`);
   expect([...foreign]).toEqual([]);
 });
 
-test("the administrator's session cookie is HttpOnly and SameSite=Strict", async ({ page }) => {
+test("the organizer's session cookie is HttpOnly and SameSite=Strict", async ({ page }) => {
   await seed([]);
-  await page.goto("/throne");
-  await page.getByRole("textbox", { name: "PASSPHRASE" }).fill(E2E_PASSPHRASE);
-  await page.getByRole("button", { name: "ENTER" }).click();
-  await page.waitForURL("**/throne/guests");
-  const cookie = (await page.context().cookies()).find((c) => c.name === "throne_session");
+  await signIn(page);
+  const cookie = (await page.context().cookies()).find((c) =>
+    c.name.endsWith("throne.session_token"),
+  );
   expect(cookie?.httpOnly).toBe(true);
   expect(cookie?.sameSite).toBe("Strict");
   // Script on the page cannot read it.
-  expect(await page.evaluate(() => document.cookie)).not.toContain("throne_session");
+  expect(await page.evaluate(() => document.cookie)).not.toContain("session_token");
 });

@@ -4,6 +4,23 @@ Milestone 7 (`ARCHITECTURE.md`, section 12). Everything here is done by the owne
 
 State on 16 November 2026: milestones 0A to 6 are live. Production is empty (no event, no guests, no characters), and `ADMIN_PASSPHRASE_HASH` is set in Vercel.
 
+## 0. Moving production to the organizer platform (from 18 November 2026)
+
+The branch `platform-mvp` turns the single event into one event among many, each owned by an organizer (`ARCHITECTURE.md`, section 4.5). Its migration, `0003_platform`, adds tables and columns and deletes nothing: every guest, link, mantle, approval, alternative and the decree stay as they are, and the existing event keeps id 1. Do these in order, yourself; none of them is done for you.
+
+1. **Rehearse on a copy, never on production.** Download the latest production backup (the custom-format dump CI keeps as an artifact before each migration), restore it into the local Docker database under another name, and run `npx tsx scripts/rehearse-migration.ts <that name>` from `web/`. The script header shows the two restore commands. It applies the migrations to the copy and checks that every old column of every row is unchanged and every link still finds its own guest, printing counts only. It was run on a copy of the local development database on 18 November 2026: 1 event, 5 guests, 38 characters, 1 alternative, all unchanged, 5 of 5 links working.
+2. **Set the new settings in Vercel** for preview and for production, without pasting values into a conversation:
+   - `npx vercel env add BETTER_AUTH_URL production` and enter `https://iron-throne.vercel.app` at its prompt (for preview, the preview address, or leave it unset: Vercel's own addresses are allowed).
+   - `npx vercel env add ORGANIZER_SIGNUP production` and enter `open` while you create your own account. Set it to `closed` (or remove it) afterwards to keep the beta closed.
+   - `SESSION_KEY` and `CRON_SECRET` are already set and are reused.
+3. **Open the pull request** to `main`. CI migrates the **preview** database and deploys a preview. Try it there: sign up, create an event, summon yourself.
+4. **Merge** when you are ready. CI backs production up, migrates it, smoke-tests and promotes. Existing guest links keep working throughout: the event and its tokens are untouched.
+5. **Claim the existing event.** Sign up on the live site with your email. Then, in your own terminal, with the production direct connection string in `DATABASE_URL` (never pasted into a conversation): `cd web`, `npm run organizer:claim -- --email <your email> --host-name "<your name>" --remote`. It prints only the event ids it claimed. The event then appears on your dashboard, with your name beneath Doctor Doom.
+6. **Close registration** (`ORGANIZER_SIGNUP=closed`) unless you mean to invite other organizers now, and redeploy.
+7. **Tidy the old settings** once all is well: `npx vercel env rm ADMIN_PASSPHRASE_HASH production`, and the same for `EVENT_TIMEZONE` and `DOOM_NAME`, in both environments.
+
+After step 4 the panel is no longer at `/throne` (it redirects to `/dashboard`), and the passphrase no longer works. Until step 5 no one can manage the existing event, but its guests are unaffected.
+
 ## 1. Before anything: what cannot be undone
 
 - **Finalising cannot be taken back.** After FINALISE THE PLAN you can only amend the decree, and every guest is shown that it changed. Do not finalise while testing.

@@ -1,2 +1,6 @@
-/** The panel's passphrase in the end-to-end tests only. Never used anywhere real. */
-export const E2E_PASSPHRASE = "e2e-only-passphrase";
+/** The organizer every end-to-end seed creates. Used only in the end-to-end tests. */
+export const E2E_ORGANIZER = {
+  name: "Doom Owner",
+  email: "owner@throne.test",
+  password: "e2e-only-password",
+} as const;

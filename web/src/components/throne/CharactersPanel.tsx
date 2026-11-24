@@ -8,6 +8,7 @@ import { Panel, Well } from "@/components/Panel";
 import { QuietControl } from "@/components/QuietControl";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { FACTIONS, byFaction, factionName, isFaction, type Faction } from "@/domain/factions";
+import { useEventPaths } from "./EventPaths";
 import { ActionMessage, useAdminAction } from "./useAdminAction";
 
 export type CharacterRow = {
@@ -20,6 +21,7 @@ export type CharacterRow = {
 const address = (g: { title: string; name: string }) => (g.title ? `${g.title} ${g.name}` : g.name);
 
 export function CharactersPanel({ characters }: { characters: CharacterRow[] }) {
+  const paths = useEventPaths();
   const add = useAdminAction();
   const remove = useAdminAction();
   const fieldId = useId();
@@ -32,7 +34,7 @@ export function CharactersPanel({ characters }: { characters: CharacterRow[] }) 
     event.preventDefault();
     const trimmed = name.trim();
     if (!trimmed) return;
-    const result = await add.run("POST", "/api/admin/characters", { name: trimmed, faction });
+    const result = await add.run("POST", `${paths.api}/characters`, { name: trimmed, faction });
     if (result.ok) setName("");
     else if (result.status === 409) {
       add.setMessage({ text: fill(copy["10.21"], { "[Character]": trimmed }), error: true });
@@ -42,11 +44,12 @@ export function CharactersPanel({ characters }: { characters: CharacterRow[] }) 
   async function removeCharacter(character: CharacterRow, confirmed: boolean) {
     const result = await remove.run(
       "DELETE",
-      `/api/admin/characters/${character.id}${confirmed ? "?confirm=1" : ""}`,
+      `${paths.api}/characters/${character.id}${confirmed ? "?confirm=1" : ""}`,
     );
     if (!result.ok && result.status === 409) {
       // Taken since the page loaded: warn, naming who holds it now.
       const holder = (result.data as { holder?: CharacterRow["holder"] } | null)?.holder ?? null;
+      remove.setMessage(null);
       setPending({ ...character, holder });
       return;
     }

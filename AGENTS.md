@@ -70,12 +70,12 @@ Run from `web/`. Docker Desktop must be running for the database and the tests.
 | Production build | `npm run build` |
 | Create a migration after changing `src/db/schema.ts` | `npm run db:generate` |
 | Apply migrations | `npm run db:migrate` |
-| A new administrator passphrase and its hash (the owner runs this in their own terminal) | `npm run admin:passphrase` |
-| A local-only passphrase: hash into `.env.local`, passphrase into a file, nothing printed | `npm run admin:passphrase -- --local <file>` |
+| Give the events with no owner (the first event) to an organizer, by email (the owner runs this) | `npm run organizer:claim -- --email <email> [--host-name "<name>"]` |
+| Rehearse pending migrations on a restored copy in the local database (counts only) | `npx tsx scripts/rehearse-migration.ts <database>` |
 | Copy approved assets and fonts into the application | `npm run assets:sync` |
 | Re-export the marks from the board generator | `python scripts/export-marks.py` |
 | Re-export the summons plates (then bake them to WebP in a browser) | `python scripts/export-plates.py <folder>` |
-| Fill the local database with a sample event and print its local links | `npm run seed:local` |
+| Fill the local database with a sample event and print its local links | `npm run seed:local [-- --owner <local organizer email>]` |
 | Remake the sounds (synthesised; then encode them with Docker's ffmpeg) | `python scripts/make-sounds.py <folder>`, then `bash scripts/encode-sounds.sh <folder>` |
 | End-to-end tests (build, fresh database, desktop and phone) | `npm run e2e` |
 | Deploying | Never by hand: push to `main` or open a pull request; `.github/workflows/ci.yml` does the rest (`docs/ARCHITECTURE.md`, section 8.4) |
